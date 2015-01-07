@@ -21,7 +21,7 @@
 # Uncomment this if it is not mobile development and you do not use remote debug feature.
 #*.deployproj
 #
-
+ovotext
 # Delphi compiler-generated binaries (safe to delete)
 *.exe
 *.dll
@@ -55,4 +55,5 @@
 lib/
 backup/
 *.~*
+*.bak
 /.project
