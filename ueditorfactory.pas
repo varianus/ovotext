@@ -56,7 +56,7 @@ begin
          AOwner.ActivePage := Sheet;
          SetFocus;
         end;
-      Sheet.Tag := Longint(Result);
+      Sheet.Tag := PtrUInt(Result);
       Result.Realign;
       if Result <> NIL then
          fEditors.Add(Result);
@@ -65,4 +65,4 @@ begin
    end;
 end;
 end.
-
+
