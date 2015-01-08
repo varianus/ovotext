@@ -37,6 +37,7 @@
 *.tds
 *.ppu
 *.lib
+*.lps
 *.o
 *.a
 
