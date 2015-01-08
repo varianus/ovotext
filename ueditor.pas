@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  SynEdit;
+  udmmain, SynEdit;
 
 type
 
@@ -18,9 +18,9 @@ type
     { private declarations }
   public
     procedure SetTextBuf(Buffer: PChar); override;
-
   public
     MasterForm:  TForm;
+    procedure LoadFromfile(FileName:TFileName);
   end; 
 
 var
@@ -38,6 +38,12 @@ begin
     Parent.SetTextBuf(Buffer)
  else
     inherited SetTextBuf(Buffer);
+end;
+
+procedure TfEditor.LoadFromfile(FileName: TFileName);
+begin
+  SynEdit1.Lines.LoadFromFile(FileName);
+  SynEdit1.Highlighter := dmMain.getHighLighter(ExtractFileExt(FileName));
 end;
 
 end.

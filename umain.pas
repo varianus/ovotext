@@ -48,7 +48,7 @@ type
     mnuMain: TMainMenu;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
-    PageControl1: TPageControl;
+    pcMain: TPageControl;
     SearchFind1: TSearchFind;
     SearchFindFirst1: TSearchFindFirst;
     SearchFindNext1: TSearchFindNext;
@@ -57,6 +57,7 @@ type
     procedure actAboutExecute(Sender: TObject);
     procedure actExitExecute(Sender: TObject);
     procedure FileNew1Execute(Sender: TObject);
+    procedure FileOpen1Accept(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
@@ -83,9 +84,18 @@ procedure TfMain.FileNew1Execute(Sender: TObject);
 var
   Editor: TfEditor;
 begin
-  Editor := EditorFactory.CreateTabSheet(PageControl1);
+  Editor := EditorFactory.CreateTabSheet(pcMain);
   Editor.Caption:= Format(RSNewFile, [1]);
 
+end;
+
+procedure TfMain.FileOpen1Accept(Sender: TObject);
+begin
+  with EditorFactory.CreateTabSheet(pcMain) do
+   begin
+      loadfromFile(FileOpen1.Dialog.FileName);
+      Caption:=ExtractFileName(FileOpen1.Dialog.FileName);
+   end;
 end;
 
 procedure TfMain.FormCreate(Sender: TObject);

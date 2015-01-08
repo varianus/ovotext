@@ -14,13 +14,13 @@ object fEditor: TfEditor
     Width = 796
     Align = alClient
     Font.Height = -13
-    Font.Name = 'Courier New'
+    Font.Name = 'Ubuntu Mono'
     Font.Pitch = fpFixed
-    Font.Quality = fqNonAntialiased
+    Font.Quality = fqCleartypeNatural
     ParentColor = False
     ParentFont = False
     TabOrder = 0
-    Gutter.Width = 57
+    Gutter.Width = 55
     Gutter.MouseActions = <    
       item
         ClickCount = ccAny
@@ -523,9 +523,6 @@ object fEditor: TfEditor
         ClickDir = cdDown
         Command = emcStartDragMove
       end>
-    Lines.Strings = (
-      'SynEdit1'
-    )
     VisibleSpecialChars = [vscSpace, vscTabAtLast]
     SelectedColor.FrameEdges = sfeAround
     SelectedColor.BackPriority = 50
@@ -558,7 +555,7 @@ object fEditor: TfEditor
         MouseActions = <>
       end
       object SynGutterLineNumber1: TSynGutterLineNumber
-        Width = 17
+        Width = 15
         MouseActions = <>
         MarkupInfo.Background = clBtnFace
         MarkupInfo.Foreground = clNone
