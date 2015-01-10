@@ -1,10 +1,10 @@
 object fMain: TfMain
-  Left = 2075
+  Left = 607
   Height = 688
-  Top = 237
+  Top = 214
   Width = 966
   Caption = 'ovoText'
-  ClientHeight = 668
+  ClientHeight = 667
   ClientWidth = 966
   Menu = mnuMain
   OnCreate = FormCreate
@@ -12,14 +12,14 @@ object fMain: TfMain
   LCLVersion = '1.3'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 23
-    Top = 645
+    Height = 21
+    Top = 646
     Width = 966
     Panels = <>
   end
   object pcMain: TPageControl
     Left = 0
-    Height = 645
+    Height = 646
     Top = 0
     Width = 966
     Align = alClient
@@ -30,66 +30,66 @@ object fMain: TfMain
     Images = imgList
     left = 432
     top = 75
-    object actExit: TAction
+    object FileExit: TAction
       Category = 'Apps'
       Caption = 'Exit'
       ImageIndex = 0
-      OnExecute = actExitExecute
+      OnExecute = FileExitExecute
     end
-    object actAbout: TAction
+    object HelpAbout: TAction
       Category = 'Apps'
       Caption = 'About...'
       ImageIndex = 20
-      OnExecute = actAboutExecute
+      OnExecute = HelpAboutExecute
     end
-    object EditCut1: TEditCut
+    object EditCut: TEditCut
       Category = 'Edit'
       Caption = '&Taglia'
       Hint = 'Taglia'
       ImageIndex = 23
       ShortCut = 16472
     end
-    object EditCopy1: TEditCopy
+    object EditCopy: TEditCopy
       Category = 'Edit'
       Caption = '&Copia'
       Hint = 'Copia'
       ImageIndex = 22
       ShortCut = 16451
     end
-    object EditPaste1: TEditPaste
+    object EditPaste: TEditPaste
       Category = 'Edit'
       Caption = '&Incolla'
       Hint = 'Incolla'
       ImageIndex = 24
       ShortCut = 16470
     end
-    object EditSelectAll1: TEditSelectAll
+    object EditSelectAll: TEditSelectAll
       Category = 'Edit'
       Caption = 'Selezion&a tutto'
       Hint = 'Seleziona tutto'
       ImageIndex = 15
       ShortCut = 16449
     end
-    object EditUndo1: TEditUndo
+    object EditUndo: TEditUndo
       Category = 'Edit'
       Caption = '&Annulla'
       Hint = 'Disfa'
       ImageIndex = 16
       ShortCut = 16474
     end
-    object SearchFind1: TSearchFind
+    object SearchFind: TSearchFind
       Category = 'Search'
       Caption = '&Trova...'
       ImageIndex = 8
       ShortCut = 16454
     end
-    object SearchReplace1: TSearchReplace
+    object SearchReplace: TSearchReplace
       Category = 'Search'
       Caption = '&Sostituisci'
       Dialog.Options = [frDown, frReplace, frReplaceAll, frHidePromptOnReplace]
       ImageIndex = 14
     end
-    object SearchFindFirst1: TSearchFindFirst
+    object SearchFindFirst: TSearchFindFirst
       Category = 'Search'
       Caption = '&Trova il primo'
       ImageIndex = 10
@@ -100,37 +100,42 @@ object fMain: TfMain
       ImageIndex = 9
       ShortCut = 114
     end
-    object FileOpen1: TFileOpen
+    object FileOpen: TFileOpen
       Category = 'File'
       Caption = '&Apri...'
       Hint = 'Apri'
       ImageIndex = 17
       ShortCut = 16463
-      OnAccept = FileOpen1Accept
+      OnAccept = FileOpenAccept
     end
-    object FileSaveAs1: TFileSaveAs
+    object FileSaveAs: TFileSaveAs
       Category = 'File'
       Caption = 'S&alva come...'
       Hint = 'Salva come'
       ImageIndex = 19
     end
-    object EditRedo1: TAction
+    object EditRedo: TAction
       Category = 'Edit'
       Caption = 'Redo'
       ImageIndex = 7
     end
-    object EditDelete1: TEditDelete
+    object EditDelete: TEditDelete
       Category = 'Edit'
       Caption = '&Elimina'
       Hint = 'Cancella'
       ImageIndex = 21
       ShortCut = 46
     end
-    object FileNew1: TAction
+    object FileNew: TAction
       Category = 'File'
       Caption = 'New'
       ImageIndex = 6
-      OnExecute = FileNew1Execute
+      OnExecute = FileNewExecute
+    end
+    object FileClose: TAction
+      Category = 'File'
+      Caption = 'FileClose'
+      ImageIndex = 2
     end
   end
   object mnuMain: TMainMenu
@@ -140,7 +145,7 @@ object fMain: TfMain
     object MenuItem1: TMenuItem
       Caption = 'File'
       object MenuItem5: TMenuItem
-        Action = FileOpen1
+        Action = FileOpen
         Bitmap.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           20000000000000040000640000006400000000000000000000002C86D8002D88
@@ -179,7 +184,7 @@ object fMain: TfMain
         }
       end
       object MenuItem20: TMenuItem
-        Action = FileNew1
+        Action = FileNew
         Bitmap.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           2000000000000004000064000000640000000000000000000000FFFFFF00BB6A
@@ -218,7 +223,7 @@ object fMain: TfMain
         }
       end
       object MenuItem6: TMenuItem
-        Action = FileSaveAs1
+        Action = FileSaveAs
         Bitmap.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           2000000000000004000064000000640000000000000000000000BA6A3600B969
@@ -257,7 +262,7 @@ object fMain: TfMain
         }
       end
       object MenuItem2: TMenuItem
-        Action = actExit
+        Action = FileExit
         Bitmap.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
@@ -294,13 +299,13 @@ object fMain: TfMain
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF006D9CD4896A9AD2FB6697CFEE
         }
-        OnClick = actExitExecute
+        OnClick = FileExitExecute
       end
     end
     object MenuItem7: TMenuItem
       Caption = 'Edit'
       object MenuItem9: TMenuItem
-        Action = EditUndo1
+        Action = EditUndo
         Bitmap.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           2000000000000004000064000000640000000000000000000000000000000000
@@ -339,7 +344,7 @@ object fMain: TfMain
         }
       end
       object MenuItem10: TMenuItem
-        Action = EditRedo1
+        Action = EditRedo
         Bitmap.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           2000000000000004000064000000640000000000000000000000FFFFFF000000
@@ -381,7 +386,7 @@ object fMain: TfMain
         Caption = '-'
       end
       object MenuItem12: TMenuItem
-        Action = EditCut1
+        Action = EditCut
         Bitmap.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
@@ -420,7 +425,7 @@ object fMain: TfMain
         }
       end
       object MenuItem13: TMenuItem
-        Action = EditCopy1
+        Action = EditCopy
         Bitmap.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
@@ -459,7 +464,7 @@ object fMain: TfMain
         }
       end
       object MenuItem14: TMenuItem
-        Action = EditPaste1
+        Action = EditPaste
         Bitmap.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
@@ -501,7 +506,7 @@ object fMain: TfMain
         Caption = '-'
       end
       object MenuItem16: TMenuItem
-        Action = EditSelectAll1
+        Action = EditSelectAll
         Bitmap.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           2000000000000004000064000000640000000000000000000000FFFFFF00898E
@@ -543,7 +548,7 @@ object fMain: TfMain
     object MenuItem8: TMenuItem
       Caption = 'Find'
       object MenuItem17: TMenuItem
-        Action = SearchFind1
+        Action = SearchFind
         Bitmap.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
@@ -582,7 +587,7 @@ object fMain: TfMain
         }
       end
       object MenuItem18: TMenuItem
-        Action = SearchReplace1
+        Action = SearchReplace
         Bitmap.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
@@ -663,7 +668,7 @@ object fMain: TfMain
     object MenuItem3: TMenuItem
       Caption = 'Help'
       object MenuItem4: TMenuItem
-        Action = actAbout
+        Action = HelpAbout
         Bitmap.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
           2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
@@ -700,7 +705,7 @@ object fMain: TfMain
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
         }
-        OnClick = actAboutExecute
+        OnClick = HelpAboutExecute
       end
     end
   end
@@ -1543,4 +1548,17 @@ object fMain: TfMain
       0000000000000000000000000000
     }
   end
-end
+  object FindDialog1: TFindDialog
+    Width = 483
+    Height = 136
+    left = 263
+    top = 144
+  end
+  object ReplaceDialog1: TReplaceDialog
+    Width = 480
+    Height = 184
+    Options = [frDown, frReplace, frReplaceAll, frHidePromptOnReplace]
+    left = 344
+    top = 144
+  end
+end

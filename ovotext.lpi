@@ -60,7 +60,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+        <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
     <RequiredPackages Count="2">
@@ -72,7 +72,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="8">
+    <Units Count="7">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -91,7 +91,6 @@
         <ComponentName Value="fAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uabout"/>
       </Unit2>
       <Unit3>
         <Filename Value="ueditor.pas"/>
@@ -102,28 +101,20 @@
         <UnitName Value="ueditor"/>
       </Unit3>
       <Unit4>
-        <Filename Value="ueditorfactory.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="uEditorFactory"/>
-      </Unit4>
-      <Unit5>
         <Filename Value="udmmain.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="dmMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <UnitName Value="udmmain"/>
-      </Unit5>
-      <Unit6>
+      </Unit4>
+      <Unit5>
         <Filename Value="stringcostants.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="Stringcostants"/>
-      </Unit6>
-      <Unit7>
+      </Unit5>
+      <Unit6>
         <Filename Value="supportfuncs.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="SupportFuncs"/>
-      </Unit7>
+      </Unit6>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -175,4 +166,4 @@
       </Item3>
     </Exceptions>
   </Debugging>
-</CONFIG>
+</CONFIG>

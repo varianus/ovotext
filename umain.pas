@@ -6,26 +6,28 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ActnList, Menus, ComCtrls, StdActns, uEditor, uEditorFactory, Stringcostants;
+  ActnList, Menus, ComCtrls, StdActns, uEditor, Stringcostants;
 
 type
 
   { TfMain }
 
   TfMain = class(TForm)
-    actExit: TAction;
-    actAbout: TAction;
-    FileNew1: TAction;
-    EditRedo1: TAction;
+    FileExit: TAction;
+    HelpAbout: TAction;
+    FileClose: TAction;
+    FileNew: TAction;
+    EditRedo: TAction;
     ActionList: TActionList;
-    EditCopy1: TEditCopy;
-    EditCut1: TEditCut;
-    EditDelete1: TEditDelete;
-    EditPaste1: TEditPaste;
-    EditSelectAll1: TEditSelectAll;
-    EditUndo1: TEditUndo;
-    FileOpen1: TFileOpen;
-    FileSaveAs1: TFileSaveAs;
+    EditCopy: TEditCopy;
+    EditCut: TEditCut;
+    EditDelete: TEditDelete;
+    EditPaste: TEditPaste;
+    EditSelectAll: TEditSelectAll;
+    EditUndo: TEditUndo;
+    FileOpen: TFileOpen;
+    FileSaveAs: TFileSaveAs;
+    FindDialog1: TFindDialog;
     imgList: TImageList;
     MenuItem10: TMenuItem;
     MenuItem11: TMenuItem;
@@ -49,15 +51,16 @@ type
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     pcMain: TPageControl;
-    SearchFind1: TSearchFind;
-    SearchFindFirst1: TSearchFindFirst;
+    ReplaceDialog1: TReplaceDialog;
+    SearchFind: TSearchFind;
+    SearchFindFirst: TSearchFindFirst;
     SearchFindNext1: TSearchFindNext;
-    SearchReplace1: TSearchReplace;
+    SearchReplace: TSearchReplace;
     StatusBar1: TStatusBar;
-    procedure actAboutExecute(Sender: TObject);
-    procedure actExitExecute(Sender: TObject);
-    procedure FileNew1Execute(Sender: TObject);
-    procedure FileOpen1Accept(Sender: TObject);
+    procedure HelpAboutExecute(Sender: TObject);
+    procedure FileExitExecute(Sender: TObject);
+    procedure FileNewExecute(Sender: TObject);
+    procedure FileOpenAccept(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
@@ -75,26 +78,25 @@ implementation
 
 { TfMain }
 
-procedure TfMain.actExitExecute(Sender: TObject);
+procedure TfMain.FileExitExecute(Sender: TObject);
 begin
   Application.terminate;
 end;
 
-procedure TfMain.FileNew1Execute(Sender: TObject);
+procedure TfMain.FileNewExecute(Sender: TObject);
 var
   Editor: TfEditor;
 begin
   Editor := EditorFactory.CreateTabSheet(pcMain);
-  Editor.Caption:= Format(RSNewFile, [1]);
 
 end;
 
-procedure TfMain.FileOpen1Accept(Sender: TObject);
+procedure TfMain.FileOpenAccept(Sender: TObject);
 begin
   with EditorFactory.CreateTabSheet(pcMain) do
    begin
-      loadfromFile(FileOpen1.Dialog.FileName);
-      Caption:=ExtractFileName(FileOpen1.Dialog.FileName);
+      loadfromFile(FileOpen.Dialog.FileName);
+      Caption:=ExtractFileName(FileOpen.Dialog.FileName);
    end;
 end;
 
@@ -102,8 +104,7 @@ procedure TfMain.FormCreate(Sender: TObject);
 begin
 //
  EditorFactory:=TEditorFactory.Create;
- EditorFactory.MasterForm:=self;
- FileNew1.Execute;
+ FileNew.Execute;
 
 end;
 
@@ -112,10 +113,10 @@ begin
  EditorFactory.Free;
 end;
 
-procedure TfMain.actAboutExecute(Sender: TObject);
+procedure TfMain.HelpAboutExecute(Sender: TObject);
 begin
 ///
 end;
 
 end.
-
+
