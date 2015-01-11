@@ -57,12 +57,12 @@ type
     SearchFindNext1: TSearchFindNext;
     SearchReplace: TSearchReplace;
     StatusBar1: TStatusBar;
-    procedure HelpAboutExecute(Sender: TObject);
     procedure FileExitExecute(Sender: TObject);
     procedure FileNewExecute(Sender: TObject);
     procedure FileOpenAccept(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure pcMainCloseTabClicked(Sender: TObject);
   private
     EditorFactory:TEditorFactory;
   public
@@ -113,9 +113,10 @@ begin
  EditorFactory.Free;
 end;
 
-procedure TfMain.HelpAboutExecute(Sender: TObject);
+procedure TfMain.pcMainCloseTabClicked(Sender: TObject);
 begin
-///
+ if Sender is TEditorTabSheet then
+   TEditorTabSheet(Sender).Editor.Close;
 end;
 
 end.

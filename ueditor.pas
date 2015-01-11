@@ -6,15 +6,25 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources,
+  LMessages, lclintf,
   comctrls, Forms, Controls, Graphics, Dialogs, contnrs,
-  Menus, udmmain, SynEdit, uEditorFactory;
+  Menus, udmmain, SynEdit;
+
+
+const
+    LM_DELETETHIS  =  LM_USER + 100;
 
 type
 
-
    TfEditor =class;
 
+   { TEditorTabSheet }
+
    TEditorTabSheet = class (TTabSheet)
+   public
+     Editor : TFEditor;
+     procedure WMDeleteThis(var Msg: TLMNoParams);  message lM_DELETETHIS;
+
    end;
 
    { TEditorFactory }
@@ -24,6 +34,8 @@ type
     FCurrentEditor: TfEditor;
     fEditors:TObjectList;
     fUntitledCounter :Integer;
+    procedure EditorSheetHide(Sender: TObject);
+    procedure EditorSheetShow(Sender: TObject);
     procedure SetCurrentEditor(AValue: TfEditor);
    public
      constructor Create;
@@ -42,6 +54,7 @@ type
     MenuItem5: TMenuItem;
     pumEdit: TPopupMenu;
     SynEdit1: TSynEdit;
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
   private
     fUntitled :Boolean;
   public
@@ -60,7 +73,21 @@ uses Stringcostants;
 
 {$R *.lfm}
 
+{ TEditorTabSheet }
+
+procedure TEditorTabSheet.WMDeleteThis(var Msg: TLMNoParams);
+begin
+  free;
+end;
+
 { TfEditor }
+
+procedure TfEditor.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  CloseAction := caNone;
+
+  PostMessage(Parent.Handle, lM_DELETETHIS, 0, 0);
+end;
 
 procedure TfEditor.SetTextBuf(Buffer: PChar);
 begin
@@ -104,7 +131,7 @@ end;
 function TEditorFactory.CreateTabSheet(AOwner: TPageControl; FileName: TFileName): TfEditor;
 
 var
-   Sheet: TTabSheet;
+   Sheet: TEditorTabSheet;
 begin
    Sheet := TEditorTabSheet.Create(AOwner);
    Result:= TfEditor.Create(sheet);
@@ -119,10 +146,12 @@ begin
          Parent := Sheet;
          Align := alClient;
          Visible := TRUE;
-         AOwner.ActivePage := Sheet;
          SetFocus;
         end;
-      Sheet.Tag := PtrUInt(Result);
+      Sheet.Editor := Result;
+      Sheet.OnHide:=@EditorSheetHide;
+      Sheet.OnShow:=@EditorSheetShow;
+      AOwner.ActivePage := Sheet;
       Result.Realign;
       if Result <> NIL then
          fEditors.Add(Result);
@@ -139,7 +168,21 @@ begin
      Result.LoadFromfile(FileName);
 end;
 
+procedure TEditorFactory.EditorSheetShow(Sender: TObject);
+var
+  Sheet: TEditorTabSheet absolute Sender;
+begin
+  FCurrentEditor := Sheet.Editor;
+end;
 
+
+procedure TEditorFactory.EditorSheetHide(Sender: TObject);
+var
+  Sheet: TEditorTabSheet absolute Sender;
+begin
+  if FCurrentEditor = Sheet.Editor then
+     FCurrentEditor := nil;
+end;
 
 end.
 

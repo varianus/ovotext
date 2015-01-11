@@ -24,6 +24,7 @@ object fMain: TfMain
     Width = 966
     Align = alClient
     TabOrder = 1
+    OnCloseTabClicked = pcMainCloseTabClicked
     Options = [nboShowCloseButtons]
   end
   object ActionList: TActionList
@@ -40,7 +41,6 @@ object fMain: TfMain
       Category = 'Apps'
       Caption = 'About...'
       ImageIndex = 20
-      OnExecute = HelpAboutExecute
     end
     object EditCut: TEditCut
       Category = 'Edit'
@@ -705,7 +705,6 @@ object fMain: TfMain
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
         }
-        OnClick = HelpAboutExecute
       end
     end
   end
