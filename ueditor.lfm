@@ -6,6 +6,7 @@ object fEditor: TfEditor
   Caption = 'fEditor'
   ClientHeight = 664
   ClientWidth = 796
+  OnClose = FormClose
   LCLVersion = '1.3'
   inline SynEdit1: TSynEdit
     Left = 0
@@ -19,6 +20,7 @@ object fEditor: TfEditor
     Font.Quality = fqCleartypeNatural
     ParentColor = False
     ParentFont = False
+    PopupMenu = pumEdit
     TabOrder = 0
     Gutter.Width = 55
     Gutter.MouseActions = <    
@@ -632,6 +634,25 @@ object fEditor: TfEditor
             Option = 1
           end>
       end
+    end
+  end
+  object pumEdit: TPopupMenu
+    left = 182
+    top = 114
+    object MenuItem1: TMenuItem
+      Action = fMain.EditCut
+    end
+    object MenuItem2: TMenuItem
+      Action = fMain.EditCopy
+    end
+    object MenuItem3: TMenuItem
+      Action = fMain.EditPaste
+    end
+    object MenuItem5: TMenuItem
+      Action = fMain.EditSelectAll
+    end
+    object MenuItem4: TMenuItem
+      Caption = '-'
     end
   end
 end
