@@ -1,7 +1,7 @@
 object fEditor: TfEditor
-  Left = 544
+  Left = 466
   Height = 664
-  Top = 165
+  Top = 170
   Width = 796
   Caption = 'fEditor'
   ClientHeight = 664
@@ -523,6 +523,8 @@ object fEditor: TfEditor
         ClickDir = cdDown
         Command = emcStartDragMove
       end>
+    Options = [eoAutoIndent, eoBracketHighlight, eoEnhanceHomeKey, eoGroupUndo, eoScrollPastEol, eoSmartTabs, eoTabIndent, eoTabsToSpaces, eoTrimTrailingSpaces, eoAltSetsColumnMode]
+    MouseOptions = [emAltSetsColumnMode]
     VisibleSpecialChars = [vscSpace, vscTabAtLast]
     SelectedColor.FrameEdges = sfeAround
     SelectedColor.BackPriority = 50

@@ -29,7 +29,6 @@ type
     SynIniSyn1: TSynIniSyn;
     SynJavaSyn1: TSynJavaSyn;
     SynLFMSyn1: TSynLFMSyn;
-    SynPasSyn1: TSynPasSyn;
     SynPerlSyn1: TSynPerlSyn;
     SynPHPSyn1: TSynPHPSyn;
     SynPoSyn1: TSynPoSyn;
@@ -77,7 +76,6 @@ var
 begin
 
   fHighlighters.clear;
-  stList:=TStringList.create;
   for i := ComponentCount - 1 downto 0 do
     begin
       if not (Components[i] is TSynCustomHighlighter) then
