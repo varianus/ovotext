@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ActnList, Menus, ComCtrls, StdActns, uEditor, Stringcostants;
+  ActnList, Menus, ComCtrls, StdActns, uEditor, udmmain;
 
 type
 
@@ -57,6 +57,12 @@ type
     SearchFindNext1: TSearchFindNext;
     SearchReplace: TSearchReplace;
     StatusBar1: TStatusBar;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    procedure FileCloseExecute(Sender: TObject);
     procedure FileExitExecute(Sender: TObject);
     procedure FileNewExecute(Sender: TObject);
     procedure FileOpenAccept(Sender: TObject);
@@ -83,6 +89,12 @@ begin
   Application.terminate;
 end;
 
+procedure TfMain.FileCloseExecute(Sender: TObject);
+begin
+  if Assigned(EditorFactory.CurrentEditor) then
+    EditorFactory.CurrentEditor.Close;
+end;
+
 procedure TfMain.FileNewExecute(Sender: TObject);
 var
   Editor: TfEditor;
@@ -94,10 +106,9 @@ end;
 procedure TfMain.FileOpenAccept(Sender: TObject);
 begin
   with EditorFactory.CreateTabSheet(pcMain) do
-   begin
+    begin
       loadfromFile(FileOpen.Dialog.FileName);
-      Caption:=ExtractFileName(FileOpen.Dialog.FileName);
-   end;
+    end;
 end;
 
 procedure TfMain.FormCreate(Sender: TObject);
@@ -105,7 +116,6 @@ begin
 //
  EditorFactory:=TEditorFactory.Create;
  FileNew.Execute;
-
 end;
 
 procedure TfMain.FormDestroy(Sender: TObject);
@@ -120,4 +130,4 @@ begin
 end;
 
 end.
-
+

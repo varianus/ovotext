@@ -1,10 +1,10 @@
 object fMain: TfMain
-  Left = 607
+  Left = 2015
   Height = 688
-  Top = 214
+  Top = 162
   Width = 966
   Caption = 'ovoText'
-  ClientHeight = 667
+  ClientHeight = 668
   ClientWidth = 966
   Menu = mnuMain
   OnCreate = FormCreate
@@ -12,20 +12,49 @@ object fMain: TfMain
   LCLVersion = '1.3'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 21
-    Top = 646
+    Height = 23
+    Top = 645
     Width = 966
     Panels = <>
   end
   object pcMain: TPageControl
     Left = 0
-    Height = 646
-    Top = 0
+    Height = 619
+    Top = 26
     Width = 966
     Align = alClient
     TabOrder = 1
     OnCloseTabClicked = pcMainCloseTabClicked
     Options = [nboShowCloseButtons]
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Height = 26
+    Top = 0
+    Width = 966
+    Caption = 'ToolBar1'
+    Images = imgList
+    TabOrder = 2
+    object ToolButton1: TToolButton
+      Left = 1
+      Top = 2
+      Action = FileNew
+    end
+    object ToolButton2: TToolButton
+      Left = 24
+      Top = 2
+      Action = FileOpen
+    end
+    object ToolButton3: TToolButton
+      Left = 47
+      Top = 2
+      Caption = 'ToolButton3'
+    end
+    object ToolButton4: TToolButton
+      Left = 70
+      Top = 2
+      Action = FileClose
+    end
   end
   object ActionList: TActionList
     Images = imgList
@@ -136,6 +165,7 @@ object fMain: TfMain
       Category = 'File'
       Caption = 'FileClose'
       ImageIndex = 2
+      OnExecute = FileCloseExecute
     end
   end
   object mnuMain: TMainMenu
@@ -1560,4 +1590,4 @@ object fMain: TfMain
     left = 344
     top = 144
   end
-end
+end
