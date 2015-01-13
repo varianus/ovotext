@@ -11,7 +11,7 @@ uses
   SynHighlighterXML, SynHighlighterLFM, synhighlighterunixshellscript,
   SynHighlighterCss, SynHighlighterPHP, SynHighlighterTeX, SynHighlighterSQL,
   SynHighlighterPython, SynHighlighterVB, SynHighlighterBat, SynHighlighterIni,
-  SynHighlighterPo, SynPluginSyncroEdit, fgl;
+  SynHighlighterPo, fgl;
 
 type
 
@@ -45,6 +45,7 @@ type
     procedure LoadHighlighters;
   public
     function getHighLighter(Extension:string): TSynCustomHighlighter;
+
   end;
 
 var
