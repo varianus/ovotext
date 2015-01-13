@@ -53,11 +53,15 @@ type
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
     pumEdit: TPopupMenu;
+    SaveDialog1: TSaveDialog;
     SynEdit1: TSynEdit;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
   private
+    FUntitled :Boolean;
+    FFileName :string;
     function GetModified: boolean;
-    fUntitled :Boolean;
+
   public
     procedure SetTextBuf(Buffer: PChar); override;
   public
@@ -87,8 +91,37 @@ end;
 procedure TfEditor.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   CloseAction := caNone;
-
+  Factory.fEditors.extract(Self);
   PostMessage(Parent.Handle, lM_DELETETHIS, 0, 0);
+end;
+
+procedure TfEditor.FormCloseQuery(Sender: TObject; var CanClose: boolean);
+begin
+  if not Modified then
+     begin
+        CanClose:= true;
+        exit;
+     end;
+  case MessageDlg(Format('Save changes to "%s"?',[Caption]), mtWarning, [mbYes, mbNo, mbCancel], 0) of
+    mrYes: begin
+           if FUntitled then
+              begin
+                 SaveDialog1.FileName:=Caption;
+                 if SaveDialog1.Execute then
+                    FFileName:= SaveDialog1.FileName
+                 else
+                    begin
+                      CanClose:=false;
+                      exit;
+                    end;
+              end;
+          SynEdit1.Lines.SaveToFile(FFileName);
+          CanClose:=true;
+    end;
+    mrNo: CanClose := true;
+    mrCancel: CanClose := false;
+  end;
+
 end;
 
 function TfEditor.GetModified: boolean;
@@ -99,15 +132,16 @@ end;
 procedure TfEditor.SetTextBuf(Buffer: PChar);
 begin
   if Assigned(Parent) then
-    Parent.SetTextBuf(Buffer)
- else
-    inherited SetTextBuf(Buffer);
+    Parent.SetTextBuf(Buffer);
+  inherited SetTextBuf(Buffer);
 end;
 
 procedure TfEditor.LoadFromfile(FileName: TFileName);
 begin
+  FFileName:= FileName;
   SynEdit1.Lines.LoadFromFile(FileName);
   SynEdit1.Highlighter := dmMain.getHighLighter(ExtractFileExt(FileName));
+  Caption:= ExtractFileName(fFileName);
 end;
 
 procedure TfEditor.SetUntitled;

@@ -1,12 +1,13 @@
 object fEditor: TfEditor
-  Left = 466
+  Left = 644
   Height = 664
-  Top = 170
+  Top = 225
   Width = 796
   Caption = 'fEditor'
   ClientHeight = 664
   ClientWidth = 796
   OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
   LCLVersion = '1.3'
   inline SynEdit1: TSynEdit
     Left = 0
@@ -654,5 +655,9 @@ object fEditor: TfEditor
     object MenuItem4: TMenuItem
       Caption = '-'
     end
+  end
+  object SaveDialog1: TSaveDialog
+    left = 276
+    top = 123
   end
 end
