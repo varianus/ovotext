@@ -67,6 +67,8 @@ type
   public
     Factory:  TEditorFactory;
     procedure LoadFromfile(FileName:TFileName);
+    Function Save:Boolean;
+    Function SaveAs(FileName:TFileName):boolean;
     procedure SetUntitled;
     Property Modified : boolean read GetModified;
   end;
@@ -142,6 +144,30 @@ begin
   SynEdit1.Lines.LoadFromFile(FileName);
   SynEdit1.Highlighter := dmMain.getHighLighter(ExtractFileExt(FileName));
   Caption:= ExtractFileName(fFileName);
+end;
+
+function TfEditor.Save: Boolean;
+begin
+  try
+    SynEdit1.Lines.SaveToFile(FFileName);
+    Result := true;
+    FUntitled:= false;
+  Except
+    Result := false;
+  end;
+end;
+
+function TfEditor.SaveAs(FileName: TFileName): boolean;
+begin
+  try
+    SynEdit1.Lines.SaveToFile(FileName);
+    FFileName:=FileName;
+    Result := true;
+    FUntitled:= false;
+  Except
+    Result := false;
+  end;
+
 end;
 
 procedure TfEditor.SetUntitled;
