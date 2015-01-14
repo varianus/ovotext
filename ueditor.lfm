@@ -554,6 +554,7 @@ object fEditor: TfEditor
     LineHighlightColor.Background = clNone
     LineHighlightColor.Foreground = clNone
     LineHighlightColor.FrameEdges = sfeAround
+    OnChange = SynEdit1Change
     inline SynGutterPartList1: TSynGutterPartList
       object SynGutterMarks1: TSynGutterMarks
         Width = 24

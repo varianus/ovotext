@@ -57,9 +57,11 @@ type
     SynEdit1: TSynEdit;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
+    procedure SynEdit1Change(Sender: TObject);
   private
     FUntitled :Boolean;
     FFileName :string;
+    Sheet: TEditorTabSheet;
     function GetModified: boolean;
 
   public
@@ -124,6 +126,14 @@ begin
     mrCancel: CanClose := false;
   end;
 
+end;
+
+procedure TfEditor.SynEdit1Change(Sender: TObject);
+begin
+  if SynEdit1.Modified then
+     sheet.ImageIndex:=26
+  else
+     sheet.ImageIndex:=19;
 end;
 
 function TfEditor.GetModified: boolean;
@@ -196,18 +206,17 @@ begin
 end;
 
 function TEditorFactory.CreateTabSheet(AOwner: TPageControl; FileName: TFileName): TfEditor;
-
 var
-   Sheet: TEditorTabSheet;
+   ASheet: TEditorTabSheet;
 begin
-   Sheet := TEditorTabSheet.Create(AOwner);
-   Result:= TfEditor.Create(sheet);
+   ASheet := TEditorTabSheet.Create(AOwner);
+   Result:= TfEditor.Create(Asheet);
    try
-      Sheet.PageControl := AOwner;
-      Sheet.ImageIndex := Sheet.TabIndex;
-      Result := TfEditor.Create(Sheet);
+      ASheet.PageControl := AOwner;
+      ASheet.ImageIndex := 19;
       with Result do
         begin
+         Sheet := ASheet;
          Factory := Self;
          BorderStyle := bsNone;
          Parent := Sheet;
@@ -215,24 +224,24 @@ begin
          Visible := TRUE;
          SetFocus;
         end;
-      Sheet.Editor := Result;
-      Sheet.OnHide:=@EditorSheetHide;
-      Sheet.OnShow:=@EditorSheetShow;
-      AOwner.ActivePage := Sheet;
+      ASheet.Editor := Result;
+      ASheet.OnHide:=@EditorSheetHide;
+      ASheet.OnShow:=@EditorSheetShow;
+      AOwner.ActivePage := ASheet;
       Result.Realign;
-      if Result <> NIL then
-         fEditors.Add(Result);
+      fEditors.Add(Result);
+      if FileName = '' then
+         begin
+            result.Caption:= Format(RSNewFile, [fUntitledCounter]);
+            Result.SetUntitled;
+            inc(fUntitledCounter);
+         end
+      else
+         Result.LoadFromfile(FileName);
+
    except
-      Sheet.Free;
+      ASheet.Free;
    end;
-  if FileName = '' then
-     begin
-        result.Caption:= Format(RSNewFile, [fUntitledCounter]);
-        Result.SetUntitled;
-        inc(fUntitledCounter);
-     end
-  else
-     Result.LoadFromfile(FileName);
 end;
 
 procedure TEditorFactory.EditorSheetShow(Sender: TObject);
