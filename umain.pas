@@ -13,6 +13,7 @@ type
   { TfMain }
 
   TfMain = class(TForm)
+    FileSave: TAction;
     FileExit: TAction;
     HelpAbout: TAction;
     FileClose: TAction;
@@ -59,9 +60,23 @@ type
     StatusBar1: TStatusBar;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
+    ToolButton10: TToolButton;
+    ToolButton11: TToolButton;
+    ToolButton12: TToolButton;
+    ToolButton13: TToolButton;
+    ToolButton14: TToolButton;
+    ToolButton15: TToolButton;
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
+    ToolButton6: TToolButton;
+    ToolButton7: TToolButton;
+    ToolButton8: TToolButton;
+    ToolButton9: TToolButton;
+    procedure EditRedoExecute(Sender: TObject);
+    procedure EditRedoUpdate(Sender: TObject);
+    procedure EditUndoUpdate(Sender: TObject);
     procedure FileCloseExecute(Sender: TObject);
     procedure FileExitExecute(Sender: TObject);
     procedure FileNewExecute(Sender: TObject);
@@ -71,6 +86,7 @@ type
     procedure pcMainCloseTabClicked(Sender: TObject);
   private
     EditorFactory:TEditorFactory;
+    function EditorAvalaible: boolean; inline;
   public
     { public declarations }
   end; 
@@ -91,8 +107,24 @@ end;
 
 procedure TfMain.FileCloseExecute(Sender: TObject);
 begin
-  if Assigned(EditorFactory.CurrentEditor) then
+  if EditorAvalaible then
     EditorFactory.CurrentEditor.Close;
+end;
+
+procedure TfMain.EditRedoExecute(Sender: TObject);
+begin
+ if EditorAvalaible then
+    EditorFactory.CurrentEditor.SynEdit1.Redo;
+end;
+
+procedure TfMain.EditRedoUpdate(Sender: TObject);
+begin
+  EditRedo.Enabled:= EditorAvalaible and EditorFactory.CurrentEditor.SynEdit1.CanRedo;
+end;
+
+procedure TfMain.EditUndoUpdate(Sender: TObject);
+begin
+  EditUndo.Enabled:= EditorAvalaible and EditorFactory.CurrentEditor.SynEdit1.CanUndo;
 end;
 
 procedure TfMain.FileNewExecute(Sender: TObject);
@@ -127,6 +159,11 @@ procedure TfMain.pcMainCloseTabClicked(Sender: TObject);
 begin
  if Sender is TEditorTabSheet then
    TEditorTabSheet(Sender).Editor.Close;
+end;
+
+function TfMain.EditorAvalaible: boolean;
+begin
+  Result := Assigned(EditorFactory.CurrentEditor);
 end;
 
 end.
