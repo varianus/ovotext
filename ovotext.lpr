@@ -15,8 +15,8 @@ SupportFuncs
 
 begin
   Application.Initialize;
-  Application.CreateForm(TfMain, fMain);
   Application.CreateForm(TdmMain, dmMain);
+  Application.CreateForm(TfMain, fMain);
   Application.Run;
 end.
 

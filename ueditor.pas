@@ -31,17 +31,20 @@ type
 
    TEditorFactory = class (TObject)
    private
-    FCurrentEditor: TfEditor;
+    FCurrentEditor: TSynEdit;
+    FCurrentSubForm: TfEditor;
     fEditors:TObjectList;
     fUntitledCounter :Integer;
     procedure EditorSheetHide(Sender: TObject);
     procedure EditorSheetShow(Sender: TObject);
-    procedure SetCurrentEditor(AValue: TfEditor);
+    procedure SetCurrentEditor(AValue: TSynEdit);
+    procedure SetCurrentSubForm(AValue: TfEditor);
    public
      constructor Create;
      destructor Destroy;  override;
      function CreateTabSheet(AOwner: TPageControl; FileName:TFileName=''): TfEditor;
-     Property CurrentEditor: TfEditor read FCurrentEditor write SetCurrentEditor;
+     Property CurrentSubForm: TfEditor read FCurrentSubForm write SetCurrentSubForm;
+     Property CurrentEditor: TSynEdit read FCurrentEditor write SetCurrentEditor;
 
    end;
 
@@ -53,16 +56,24 @@ type
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
     pumEdit: TPopupMenu;
+    SaveDialog1: TSaveDialog;
     SynEdit1: TSynEdit;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
+    procedure SynEdit1Change(Sender: TObject);
   private
+    FUntitled :Boolean;
+    FFileName :string;
+    Sheet: TEditorTabSheet;
     function GetModified: boolean;
-    fUntitled :Boolean;
+
   public
     procedure SetTextBuf(Buffer: PChar); override;
   public
     Factory:  TEditorFactory;
     procedure LoadFromfile(FileName:TFileName);
+    Function Save:Boolean;
+    Function SaveAs(FileName:TFileName):boolean;
     procedure SetUntitled;
     Property Modified : boolean read GetModified;
   end;
@@ -87,8 +98,45 @@ end;
 procedure TfEditor.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   CloseAction := caNone;
+  Factory.fEditors.extract(Self);
+  PostMessage(Parent.Handle, LM_DELETETHIS, 0, 0);
+end;
 
-  PostMessage(Parent.Handle, lM_DELETETHIS, 0, 0);
+procedure TfEditor.FormCloseQuery(Sender: TObject; var CanClose: boolean);
+begin
+  if not Modified then
+     begin
+        CanClose:= true;
+        exit;
+     end;
+  case MessageDlg(Format('Save changes to "%s"?',[Caption]), mtWarning, [mbYes, mbNo, mbCancel], 0) of
+    mrYes: begin
+           if FUntitled then
+              begin
+                 SaveDialog1.FileName:=Caption;
+                 if SaveDialog1.Execute then
+                    FFileName:= SaveDialog1.FileName
+                 else
+                    begin
+                      CanClose:=false;
+                      exit;
+                    end;
+              end;
+          SynEdit1.Lines.SaveToFile(FFileName);
+          CanClose:=true;
+    end;
+    mrNo: CanClose := true;
+    mrCancel: CanClose := false;
+  end;
+
+end;
+
+procedure TfEditor.SynEdit1Change(Sender: TObject);
+begin
+  if SynEdit1.Modified then
+     sheet.ImageIndex:=26
+  else
+     sheet.ImageIndex:=19;
 end;
 
 function TfEditor.GetModified: boolean;
@@ -99,15 +147,40 @@ end;
 procedure TfEditor.SetTextBuf(Buffer: PChar);
 begin
   if Assigned(Parent) then
-    Parent.SetTextBuf(Buffer)
- else
-    inherited SetTextBuf(Buffer);
+    Parent.SetTextBuf(Buffer);
+  inherited SetTextBuf(Buffer);
 end;
 
 procedure TfEditor.LoadFromfile(FileName: TFileName);
 begin
+  FFileName:= FileName;
   SynEdit1.Lines.LoadFromFile(FileName);
   SynEdit1.Highlighter := dmMain.getHighLighter(ExtractFileExt(FileName));
+  Caption:= ExtractFileName(fFileName);
+end;
+
+function TfEditor.Save: Boolean;
+begin
+  try
+    SynEdit1.Lines.SaveToFile(FFileName);
+    Result := true;
+    FUntitled:= false;
+  Except
+    Result := false;
+  end;
+end;
+
+function TfEditor.SaveAs(FileName: TFileName): boolean;
+begin
+  try
+    SynEdit1.Lines.SaveToFile(FileName);
+    FFileName:=FileName;
+    Result := true;
+    FUntitled:= false;
+  Except
+    Result := false;
+  end;
+
 end;
 
 procedure TfEditor.SetUntitled;
@@ -116,10 +189,10 @@ begin
 end;
 
 
-procedure TEditorFactory.SetCurrentEditor(AValue: TfEditor);
+procedure TEditorFactory.SetCurrentSubForm(AValue: TfEditor);
 begin
-  if FCurrentEditor=AValue then Exit;
-  FCurrentEditor:=AValue;
+  if FCurrentSubForm=AValue then Exit;
+  FCurrentSubForm:=AValue;
 end;
 
 constructor TEditorFactory.Create;
@@ -136,18 +209,17 @@ begin
 end;
 
 function TEditorFactory.CreateTabSheet(AOwner: TPageControl; FileName: TFileName): TfEditor;
-
 var
-   Sheet: TEditorTabSheet;
+   ASheet: TEditorTabSheet;
 begin
-   Sheet := TEditorTabSheet.Create(AOwner);
-   Result:= TfEditor.Create(sheet);
+   ASheet := TEditorTabSheet.Create(AOwner);
+   Result:= TfEditor.Create(Asheet);
    try
-      Sheet.PageControl := AOwner;
-      Sheet.ImageIndex := Sheet.TabIndex;
-      Result := TfEditor.Create(Sheet);
+      ASheet.PageControl := AOwner;
+      ASheet.ImageIndex := 19;
       with Result do
         begin
+         Sheet := ASheet;
          Factory := Self;
          BorderStyle := bsNone;
          Parent := Sheet;
@@ -155,31 +227,38 @@ begin
          Visible := TRUE;
          SetFocus;
         end;
-      Sheet.Editor := Result;
-      Sheet.OnHide:=@EditorSheetHide;
-      Sheet.OnShow:=@EditorSheetShow;
-      AOwner.ActivePage := Sheet;
+      ASheet.Editor := Result;
+      ASheet.OnHide:=@EditorSheetHide;
+      ASheet.OnShow:=@EditorSheetShow;
+      AOwner.ActivePage := ASheet;
       Result.Realign;
-      if Result <> NIL then
-         fEditors.Add(Result);
+      fEditors.Add(Result);
+      if FileName = '' then
+         begin
+            result.Caption:= Format(RSNewFile, [fUntitledCounter]);
+            Result.SetUntitled;
+            inc(fUntitledCounter);
+         end
+      else
+         Result.LoadFromfile(FileName);
+
    except
-      Sheet.Free;
+      ASheet.Free;
    end;
-  if FileName = '' then
-     begin
-        result.Caption:= Format(RSNewFile, [fUntitledCounter]);
-        Result.SetUntitled;
-        inc(fUntitledCounter);
-     end
-  else
-     Result.LoadFromfile(FileName);
 end;
 
 procedure TEditorFactory.EditorSheetShow(Sender: TObject);
 var
   Sheet: TEditorTabSheet absolute Sender;
 begin
-  FCurrentEditor := Sheet.Editor;
+  FCurrentSubform := Sheet.Editor;
+  FCurrentEditor := Sheet.Editor.SynEdit1;
+end;
+
+procedure TEditorFactory.SetCurrentEditor(AValue: TSynEdit);
+begin
+  if FCurrentEditor=AValue then Exit;
+  FCurrentEditor:=AValue;
 end;
 
 
@@ -187,8 +266,13 @@ procedure TEditorFactory.EditorSheetHide(Sender: TObject);
 var
   Sheet: TEditorTabSheet absolute Sender;
 begin
-  if FCurrentEditor = Sheet.Editor then
-     FCurrentEditor := nil;
+
+  if FCurrentSubForm = Sheet.Editor then
+    begin
+     FCurrentSubForm := nil;
+     FCurrentEditor:= nil;
+    end;
+
 end;
 
 end.

@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ActnList, Menus, ComCtrls, StdActns, uEditor, Stringcostants;
+  ActnList, Menus, ComCtrls, StdActns, uEditor, udmmain;
 
 type
 
@@ -14,6 +14,7 @@ type
 
   TfMain = class(TForm)
     FileCloseAll: TAction;
+    FileSave: TAction;
     FileExit: TAction;
     HelpAbout: TAction;
     FileClose: TAction;
@@ -28,7 +29,6 @@ type
     EditUndo: TEditUndo;
     FileOpen: TFileOpen;
     FileSaveAs: TFileSaveAs;
-    FindDialog1: TFindDialog;
     imgList: TImageList;
     MenuItem10: TMenuItem;
     MenuItem11: TMenuItem;
@@ -54,12 +54,30 @@ type
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     pcMain: TPageControl;
-    ReplaceDialog1: TReplaceDialog;
     SearchFind: TSearchFind;
     SearchFindFirst: TSearchFindFirst;
     SearchFindNext1: TSearchFindNext;
     SearchReplace: TSearchReplace;
     StatusBar1: TStatusBar;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton10: TToolButton;
+    ToolButton11: TToolButton;
+    ToolButton12: TToolButton;
+    ToolButton13: TToolButton;
+    ToolButton14: TToolButton;
+    ToolButton15: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
+    ToolButton6: TToolButton;
+    ToolButton7: TToolButton;
+    ToolButton8: TToolButton;
+    ToolButton9: TToolButton;
+    procedure EditRedoExecute(Sender: TObject);
+    procedure EditRedoUpdate(Sender: TObject);
+    procedure EditUndoUpdate(Sender: TObject);
     procedure FileCloseExecute(Sender: TObject);
     procedure FileExitExecute(Sender: TObject);
     procedure FileNewExecute(Sender: TObject);
@@ -67,8 +85,10 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure pcMainCloseTabClicked(Sender: TObject);
+    procedure SearchFindAccept(Sender: TObject);
   private
     EditorFactory:TEditorFactory;
+    function EditorAvalaible: boolean; inline;
   public
     { public declarations }
   end; 
@@ -89,8 +109,24 @@ end;
 
 procedure TfMain.FileCloseExecute(Sender: TObject);
 begin
- if Assigned(EditorFactory.CurrentEditor) then
-    EditorFactory.CurrentEditor.Close;
+  if EditorAvalaible then
+    EditorFactory.CurrentSubForm.Close;
+end;
+
+procedure TfMain.EditRedoExecute(Sender: TObject);
+begin
+ if EditorAvalaible then
+    EditorFactory.CurrentEditor.Redo;
+end;
+
+procedure TfMain.EditRedoUpdate(Sender: TObject);
+begin
+  EditRedo.Enabled:= EditorAvalaible and EditorFactory.CurrentEditor.CanRedo;
+end;
+
+procedure TfMain.EditUndoUpdate(Sender: TObject);
+begin
+  EditUndo.Enabled:= EditorAvalaible and EditorFactory.CurrentEditor.CanUndo;
 end;
 
 procedure TfMain.FileNewExecute(Sender: TObject);
@@ -104,10 +140,9 @@ end;
 procedure TfMain.FileOpenAccept(Sender: TObject);
 begin
   with EditorFactory.CreateTabSheet(pcMain) do
-   begin
+    begin
       loadfromFile(FileOpen.Dialog.FileName);
-      Caption:=ExtractFileName(FileOpen.Dialog.FileName);
-   end;
+    end;
 end;
 
 procedure TfMain.FormCreate(Sender: TObject);
@@ -115,7 +150,6 @@ begin
 //
  EditorFactory:=TEditorFactory.Create;
  FileNew.Execute;
-
 end;
 
 procedure TfMain.FormDestroy(Sender: TObject);
@@ -129,5 +163,17 @@ begin
    TEditorTabSheet(Sender).Editor.Close;
 end;
 
+procedure TfMain.SearchFindAccept(Sender: TObject);
+begin
+  if not EditorAvalaible then
+    exit;
+
+end;
+
+function TfMain.EditorAvalaible: boolean;
+begin
+  Result := Assigned(EditorFactory.CurrentSubForm);
+end;
+
 end.
-
+
