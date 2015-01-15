@@ -13,6 +13,7 @@ type
   { TfMain }
 
   TfMain = class(TForm)
+    FileCloseAll: TAction;
     FileExit: TAction;
     HelpAbout: TAction;
     FileClose: TAction;
@@ -40,6 +41,8 @@ type
     MenuItem18: TMenuItem;
     MenuItem19: TMenuItem;
     MenuItem20: TMenuItem;
+    MenuItem21: TMenuItem;
+    MenuItem22: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
@@ -57,6 +60,7 @@ type
     SearchFindNext1: TSearchFindNext;
     SearchReplace: TSearchReplace;
     StatusBar1: TStatusBar;
+    procedure FileCloseExecute(Sender: TObject);
     procedure FileExitExecute(Sender: TObject);
     procedure FileNewExecute(Sender: TObject);
     procedure FileOpenAccept(Sender: TObject);
@@ -81,6 +85,12 @@ implementation
 procedure TfMain.FileExitExecute(Sender: TObject);
 begin
   Application.terminate;
+end;
+
+procedure TfMain.FileCloseExecute(Sender: TObject);
+begin
+ if Assigned(EditorFactory.CurrentEditor) then
+    EditorFactory.CurrentEditor.Close;
 end;
 
 procedure TfMain.FileNewExecute(Sender: TObject);
