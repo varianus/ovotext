@@ -31,17 +31,20 @@ type
 
    TEditorFactory = class (TObject)
    private
-    FCurrentEditor: TfEditor;
+    FCurrentEditor: TSynEdit;
+    FCurrentSubForm: TfEditor;
     fEditors:TObjectList;
     fUntitledCounter :Integer;
     procedure EditorSheetHide(Sender: TObject);
     procedure EditorSheetShow(Sender: TObject);
-    procedure SetCurrentEditor(AValue: TfEditor);
+    procedure SetCurrentEditor(AValue: TSynEdit);
+    procedure SetCurrentSubForm(AValue: TfEditor);
    public
      constructor Create;
      destructor Destroy;  override;
      function CreateTabSheet(AOwner: TPageControl; FileName:TFileName=''): TfEditor;
-     Property CurrentEditor: TfEditor read FCurrentEditor write SetCurrentEditor;
+     Property CurrentSubForm: TfEditor read FCurrentSubForm write SetCurrentSubForm;
+     Property CurrentEditor: TSynEdit read FCurrentEditor write SetCurrentEditor;
 
    end;
 
@@ -96,7 +99,7 @@ procedure TfEditor.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   CloseAction := caNone;
   Factory.fEditors.extract(Self);
-  PostMessage(Parent.Handle, lM_DELETETHIS, 0, 0);
+  PostMessage(Parent.Handle, LM_DELETETHIS, 0, 0);
 end;
 
 procedure TfEditor.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -186,10 +189,10 @@ begin
 end;
 
 
-procedure TEditorFactory.SetCurrentEditor(AValue: TfEditor);
+procedure TEditorFactory.SetCurrentSubForm(AValue: TfEditor);
 begin
-  if FCurrentEditor=AValue then Exit;
-  FCurrentEditor:=AValue;
+  if FCurrentSubForm=AValue then Exit;
+  FCurrentSubForm:=AValue;
 end;
 
 constructor TEditorFactory.Create;
@@ -248,7 +251,14 @@ procedure TEditorFactory.EditorSheetShow(Sender: TObject);
 var
   Sheet: TEditorTabSheet absolute Sender;
 begin
-  FCurrentEditor := Sheet.Editor;
+  FCurrentSubform := Sheet.Editor;
+  FCurrentEditor := Sheet.Editor.SynEdit1;
+end;
+
+procedure TEditorFactory.SetCurrentEditor(AValue: TSynEdit);
+begin
+  if FCurrentEditor=AValue then Exit;
+  FCurrentEditor:=AValue;
 end;
 
 
@@ -256,8 +266,13 @@ procedure TEditorFactory.EditorSheetHide(Sender: TObject);
 var
   Sheet: TEditorTabSheet absolute Sender;
 begin
-  if FCurrentEditor = Sheet.Editor then
-     FCurrentEditor := nil;
+
+  if FCurrentSubForm = Sheet.Editor then
+    begin
+     FCurrentSubForm := nil;
+     FCurrentEditor:= nil;
+    end;
+
 end;
 
 end.

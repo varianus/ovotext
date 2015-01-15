@@ -28,7 +28,6 @@ type
     EditUndo: TEditUndo;
     FileOpen: TFileOpen;
     FileSaveAs: TFileSaveAs;
-    FindDialog1: TFindDialog;
     imgList: TImageList;
     MenuItem10: TMenuItem;
     MenuItem11: TMenuItem;
@@ -52,7 +51,6 @@ type
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     pcMain: TPageControl;
-    ReplaceDialog1: TReplaceDialog;
     SearchFind: TSearchFind;
     SearchFindFirst: TSearchFindFirst;
     SearchFindNext1: TSearchFindNext;
@@ -84,6 +82,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure pcMainCloseTabClicked(Sender: TObject);
+    procedure SearchFindAccept(Sender: TObject);
   private
     EditorFactory:TEditorFactory;
     function EditorAvalaible: boolean; inline;
@@ -108,23 +107,23 @@ end;
 procedure TfMain.FileCloseExecute(Sender: TObject);
 begin
   if EditorAvalaible then
-    EditorFactory.CurrentEditor.Close;
+    EditorFactory.CurrentSubForm.Close;
 end;
 
 procedure TfMain.EditRedoExecute(Sender: TObject);
 begin
  if EditorAvalaible then
-    EditorFactory.CurrentEditor.SynEdit1.Redo;
+    EditorFactory.CurrentEditor.Redo;
 end;
 
 procedure TfMain.EditRedoUpdate(Sender: TObject);
 begin
-  EditRedo.Enabled:= EditorAvalaible and EditorFactory.CurrentEditor.SynEdit1.CanRedo;
+  EditRedo.Enabled:= EditorAvalaible and EditorFactory.CurrentEditor.CanRedo;
 end;
 
 procedure TfMain.EditUndoUpdate(Sender: TObject);
 begin
-  EditUndo.Enabled:= EditorAvalaible and EditorFactory.CurrentEditor.SynEdit1.CanUndo;
+  EditUndo.Enabled:= EditorAvalaible and EditorFactory.CurrentEditor.CanUndo;
 end;
 
 procedure TfMain.FileNewExecute(Sender: TObject);
@@ -161,9 +160,16 @@ begin
    TEditorTabSheet(Sender).Editor.Close;
 end;
 
+procedure TfMain.SearchFindAccept(Sender: TObject);
+begin
+  if not EditorAvalaible then
+    exit;
+
+end;
+
 function TfMain.EditorAvalaible: boolean;
 begin
-  Result := Assigned(EditorFactory.CurrentEditor);
+  Result := Assigned(EditorFactory.CurrentSubForm);
 end;
 
 end.

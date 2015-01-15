@@ -1,7 +1,7 @@
 object fMain: TfMain
-  Left = 2015
+  Left = 2027
   Height = 688
-  Top = 162
+  Top = 214
   Width = 966
   Caption = 'ovoText'
   ClientHeight = 668
@@ -9,7 +9,7 @@ object fMain: TfMain
   Menu = mnuMain
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  LCLVersion = '1.3'
+  LCLVersion = '1.5'
   object StatusBar1: TStatusBar
     Left = 0
     Height = 23
@@ -183,6 +183,7 @@ object fMain: TfMain
       Caption = '&Trova...'
       ImageIndex = 8
       ShortCut = 16454
+      OnAccept = SearchFindAccept
     end
     object SearchReplace: TSearchReplace
       Category = 'Search'
@@ -1687,18 +1688,5 @@ object fMain: TfMain
       35FFB46734FFB26634FFB06533FFAE6433FFAC6332FFAA6232FFA96132FFA860
       31FFA76132FFAB693CFFBC8661FF
     }
-  end
-  object FindDialog1: TFindDialog
-    Width = 483
-    Height = 136
-    left = 263
-    top = 144
-  end
-  object ReplaceDialog1: TReplaceDialog
-    Width = 480
-    Height = 184
-    Options = [frDown, frReplace, frReplaceAll, frHidePromptOnReplace]
-    left = 344
-    top = 144
   end
 end
