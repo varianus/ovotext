@@ -15,9 +15,9 @@ object fEditor: TfEditor
     Top = 0
     Width = 796
     Align = alClient
-    Font.Height = -13
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -16
     Font.Name = 'Ubuntu Mono'
-    Font.Pitch = fpFixed
     Font.Quality = fqCleartypeNatural
     ParentColor = False
     ParentFont = False
@@ -25,7 +25,8 @@ object fEditor: TfEditor
     PopupMenu = pumEdit
     ShowHint = True
     TabOrder = 0
-    Gutter.Width = 55
+    Gutter.Visible = False
+    Gutter.Width = 57
     Gutter.MouseActions = <    
       item
         ClickCount = ccAny
@@ -563,7 +564,7 @@ object fEditor: TfEditor
         MouseActions = <>
       end
       object SynGutterLineNumber1: TSynGutterLineNumber
-        Width = 15
+        Width = 17
         MouseActions = <>
         MarkupInfo.Background = clBtnFace
         MarkupInfo.Foreground = clNone
@@ -663,4 +664,4 @@ object fEditor: TfEditor
     left = 276
     top = 123
   end
-end
+end

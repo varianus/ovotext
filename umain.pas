@@ -98,6 +98,7 @@ type
     EditorFactory:TEditorFactory;
     function EditorAvalaible: boolean; inline;
     Procedure PrepareSearch(Dialog:TFindDialog; Out SynOption: TSynSearchOptions) ;
+    procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
   public
     { public declarations }
   end; 
@@ -106,8 +107,7 @@ var
   fMain: TfMain;
 
 implementation
-uses lclproc;
-
+uses lclproc,   Stringcostants;
 {$R *.lfm}
 
 { TfMain }
@@ -149,13 +149,13 @@ procedure TfMain.FileNewExecute(Sender: TObject);
 var
   Editor: TfEditor;
 begin
-  Editor := EditorFactory.CreateTabSheet(pcMain);
+  Editor := EditorFactory.CreateTabSheet(pcMain, @EditorStatusChange);
 
 end;
 
 procedure TfMain.FileOpenAccept(Sender: TObject);
 begin
-  with EditorFactory.CreateTabSheet(pcMain) do
+  with EditorFactory.CreateTabSheet(pcMain, @EditorStatusChange) do
     begin
       loadfromFile(FileOpen.Dialog.FileName);
     end;
@@ -189,6 +189,7 @@ end;
 
 procedure TfMain.pcMainChange(Sender: TObject);
 begin
+  EditorStatusChange(nil,[scCaretX,scSelection,scInsertMode]);
   pcMain.Hint:= pcMain.ActivePage.Hint;
 end;
 
@@ -204,6 +205,22 @@ begin
     exit;
 
 end;
+procedure TfMain.EditorStatusChange(Sender: TObject;
+  Changes: TSynStatusChanges);
+begin
+  if not EditorAvalaible then exit;
+
+  if  (scCaretX in Changes) or (scCaretY in Changes) then
+     StatusBar1.Panels[1].Text:= Format(RSStatusBarPos,[EditorFactory.CurrentEditor.CaretY, EditorFactory.CurrentEditor.CaretX]);
+
+  if  (scSelection in Changes) then
+     StatusBar1.Panels[2].Text:= Format(RSStatusBarSel,[EditorFactory.CurrentEditor.SelEnd - EditorFactory.CurrentEditor.SelStart]);
+
+  if  (scInsertMode in Changes) then
+     if EditorFactory.CurrentEditor.InsertMode  then
+        StatusBar1.Panels[3].Text:= RSStatusBarInsMode
+     else
+        StatusBar1.Panels[3].Text:= RSStatusBarOvrMode;
 
 procedure TfMain.SearchFindExecute(Sender: TObject);
 begin
@@ -226,6 +243,9 @@ begin
   if frEntireScope in Dialog.Options then Include(SynOption, ssoEntireScope);
 
 end;
+
+
+
 
 end.
 

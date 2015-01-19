@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, FileUtil, LResources,
   LMessages, lclintf,
   comctrls, Forms, Controls, Graphics, Dialogs, contnrs,
-  Menus, udmmain, SynEdit;
+  Menus, udmmain, SynEdit, SynEditTypes;
 
 
 const
@@ -42,7 +42,7 @@ type
    public
      constructor Create;
      destructor Destroy;  override;
-     function CreateTabSheet(AOwner: TPageControl; FileName:TFileName=''): TfEditor;
+     function CreateTabSheet(AOwner: TPageControl;Event:TStatusChangeEvent; FileName:TFileName=''): TfEditor;
      Property CurrentSubForm: TfEditor read FCurrentSubForm write SetCurrentSubForm;
      Property CurrentEditor: TSynEdit read FCurrentEditor write SetCurrentEditor;
 
@@ -216,7 +216,7 @@ begin
    inherited Destroy;
 end;
 
-function TEditorFactory.CreateTabSheet(AOwner: TPageControl; FileName: TFileName): TfEditor;
+function TEditorFactory.CreateTabSheet(AOwner: TPageControl; Event:TStatusChangeEvent; FileName: TFileName): TfEditor;
 var
    ASheet: TEditorTabSheet;
 begin
@@ -234,6 +234,7 @@ begin
          Align := alClient;
          Visible := TRUE;
          SetFocus;
+         SynEdit1.OnStatusChange:=Event;
         end;
       ASheet.Editor := Result;
       ASheet.OnHide:=@EditorSheetHide;
@@ -284,4 +285,4 @@ begin
 end;
 
 end.
-
+

@@ -4,7 +4,7 @@ object fMain: TfMain
   Top = 217
   Width = 966
   Caption = 'ovoText'
-  ClientHeight = 667
+  ClientHeight = 668
   ClientWidth = 966
   Menu = mnuMain
   OnCreate = FormCreate
@@ -13,11 +13,12 @@ object fMain: TfMain
   LCLVersion = '1.5'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 21
-    Top = 646
+    Height = 23
+    Top = 645
     Width = 966
     Panels = <    
       item
+<<<<<<< HEAD
         Bevel = pbRaised
         Width = 150
       end    
@@ -26,13 +27,30 @@ object fMain: TfMain
       end    
       item
         Width = 50
+=======
+        Width = 100
+      end    
+      item
+        Width = 100
+      end    
+      item
+        Width = 100
+      end    
+      item
+        Width = 100
+>>>>>>> branch 'master' of https://github.com/varianus/ovotext.git
       end>
     SimplePanel = False
   end
   object pcMain: TPageControl
     Left = 0
+<<<<<<< HEAD
     Height = 622
     Top = 24
+=======
+    Height = 625
+    Top = 20
+>>>>>>> branch 'master' of https://github.com/varianus/ovotext.git
     Width = 966
     Align = alClient
     Images = imgList
@@ -1780,6 +1798,7 @@ object fMain: TfMain
       8AFF1D1D8AFE1D1D8AF11E1E8BC4
     }
   end
+<<<<<<< HEAD
   object AppProperties: TApplicationProperties
     ShowMenuGlyphs = sbgSystem
     OnShowHint = AppPropertiesShowHint
@@ -1794,4 +1813,7 @@ object fMain: TfMain
     left = 263
     top = 184
   end
-end
+end
+=======
+end
+>>>>>>> branch 'master' of https://github.com/varianus/ovotext.git
