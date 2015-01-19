@@ -90,6 +90,13 @@ uses Stringcostants;
 
 procedure TEditorTabSheet.WMDeleteThis(var Msg: TLMNoParams);
 begin
+
+  if Editor = Editor.Factory.CurrentSubForm then
+    begin
+     Editor.Factory.CurrentSubForm:= nil;
+    end;
+
+
   free;
 end;
 
@@ -134,7 +141,7 @@ end;
 procedure TfEditor.SynEdit1Change(Sender: TObject);
 begin
   if SynEdit1.Modified then
-     sheet.ImageIndex:=26
+     sheet.ImageIndex:=28
   else
      sheet.ImageIndex:=19;
 end;
@@ -157,6 +164,7 @@ begin
   SynEdit1.Lines.LoadFromFile(FileName);
   SynEdit1.Highlighter := dmMain.getHighLighter(ExtractFileExt(FileName));
   Caption:= ExtractFileName(fFileName);
+  Sheet.Hint:=FileName;
 end;
 
 function TfEditor.Save: Boolean;
@@ -276,4 +284,4 @@ begin
 end;
 
 end.
-
+

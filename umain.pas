@@ -6,16 +6,18 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ActnList, Menus, ComCtrls, StdActns, uEditor, udmmain;
+  ActnList, Menus, ComCtrls, StdActns, uEditor, udmmain, LCLType, SynEditTypes;
 
 type
 
   { TfMain }
 
   TfMain = class(TForm)
+    AppProperties: TApplicationProperties;
     FileCloseAll: TAction;
     FileSave: TAction;
     FileExit: TAction;
+    FindDialog: TFindDialog;
     HelpAbout: TAction;
     FileClose: TAction;
     FileNew: TAction;
@@ -54,10 +56,10 @@ type
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     pcMain: TPageControl;
-    SearchFind: TSearchFind;
-    SearchFindFirst: TSearchFindFirst;
-    SearchFindNext1: TSearchFindNext;
-    SearchReplace: TSearchReplace;
+    SearchFind: TAction;
+    SearchFindFirst: TAction;
+    SearchFindNext1: TAction;
+    SearchReplace: TAction;
     StatusBar1: TStatusBar;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
@@ -75,6 +77,8 @@ type
     ToolButton7: TToolButton;
     ToolButton8: TToolButton;
     ToolButton9: TToolButton;
+    procedure AppPropertiesShowHint(var HintStr: string; var CanShow: Boolean;
+      var HintInfo: THintInfo);
     procedure EditRedoExecute(Sender: TObject);
     procedure EditRedoUpdate(Sender: TObject);
     procedure EditUndoUpdate(Sender: TObject);
@@ -82,13 +86,18 @@ type
     procedure FileExitExecute(Sender: TObject);
     procedure FileNewExecute(Sender: TObject);
     procedure FileOpenAccept(Sender: TObject);
+    procedure FindDialogClose(Sender: TObject);
+    procedure FindDialogFind(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure pcMainChange(Sender: TObject);
     procedure pcMainCloseTabClicked(Sender: TObject);
     procedure SearchFindAccept(Sender: TObject);
+    procedure SearchFindExecute(Sender: TObject);
   private
     EditorFactory:TEditorFactory;
     function EditorAvalaible: boolean; inline;
+    Procedure PrepareSearch(Dialog:TFindDialog; Out SynOption: TSynSearchOptions) ;
   public
     { public declarations }
   end; 
@@ -97,6 +106,7 @@ var
   fMain: TfMain;
 
 implementation
+uses lclproc;
 
 {$R *.lfm}
 
@@ -117,6 +127,12 @@ procedure TfMain.EditRedoExecute(Sender: TObject);
 begin
  if EditorAvalaible then
     EditorFactory.CurrentEditor.Redo;
+end;
+
+procedure TfMain.AppPropertiesShowHint(var HintStr: string;
+  var CanShow: Boolean; var HintInfo: THintInfo);
+begin
+  StatusBar1.Panels[0].Text:=HintInfo.HintStr;
 end;
 
 procedure TfMain.EditRedoUpdate(Sender: TObject);
@@ -145,6 +161,20 @@ begin
     end;
 end;
 
+procedure TfMain.FindDialogClose(Sender: TObject);
+begin
+  self.BringToFront;
+end;
+
+procedure TfMain.FindDialogFind(Sender: TObject);
+var
+  Options: TSynSearchOptions;
+begin
+  PrepareSearch(FindDialog, Options);
+  EditorFactory.CurrentEditor.SearchReplace(FindDialog.FindText,'',Options);
+
+end;
+
 procedure TfMain.FormCreate(Sender: TObject);
 begin
 //
@@ -155,6 +185,11 @@ end;
 procedure TfMain.FormDestroy(Sender: TObject);
 begin
  EditorFactory.Free;
+end;
+
+procedure TfMain.pcMainChange(Sender: TObject);
+begin
+  pcMain.Hint:= pcMain.ActivePage.Hint;
 end;
 
 procedure TfMain.pcMainCloseTabClicked(Sender: TObject);
@@ -170,10 +205,27 @@ begin
 
 end;
 
+procedure TfMain.SearchFindExecute(Sender: TObject);
+begin
+  if EditorAvalaible then
+     FindDialog.Execute;
+end;
+
 function TfMain.EditorAvalaible: boolean;
 begin
-  Result := Assigned(EditorFactory.CurrentSubForm);
+  Result := Assigned(EditorFactory.CurrentSubForm) and Assigned(EditorFactory.CurrentEditor);;
+end;
+
+procedure TfMain.PrepareSearch(Dialog: TFindDialog; out
+  SynOption: TSynSearchOptions);
+begin
+  SynOption := [];
+  if not (frDown in Dialog.Options) then Include(SynOption, ssoBackwards);
+  if frWholeWord in Dialog.Options then Include(SynOption, ssoWholeWord);
+  if frMatchCase in Dialog.Options then Include(SynOption, ssoMatchCase);
+  if frEntireScope in Dialog.Options then Include(SynOption, ssoEntireScope);
+
 end;
 
 end.
-
+

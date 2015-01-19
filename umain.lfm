@@ -1,7 +1,7 @@
 object fMain: TfMain
-  Left = 525
+  Left = 579
   Height = 688
-  Top = 225
+  Top = 217
   Width = 966
   Caption = 'ovoText'
   ClientHeight = 667
@@ -9,28 +9,43 @@ object fMain: TfMain
   Menu = mnuMain
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  ShowHint = True
   LCLVersion = '1.5'
   object StatusBar1: TStatusBar
     Left = 0
     Height = 21
     Top = 646
     Width = 966
-    Panels = <>
+    Panels = <    
+      item
+        Bevel = pbRaised
+        Width = 150
+      end    
+      item
+        Width = 50
+      end    
+      item
+        Width = 50
+      end>
+    SimplePanel = False
   end
   object pcMain: TPageControl
     Left = 0
-    Height = 626
-    Top = 20
+    Height = 622
+    Top = 24
     Width = 966
     Align = alClient
     Images = imgList
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 1
+    OnChange = pcMainChange
     OnCloseTabClicked = pcMainCloseTabClicked
     Options = [nboShowCloseButtons]
   end
   object ToolBar1: TToolBar
     Left = 0
-    Height = 20
+    Height = 24
     Top = 0
     Width = 966
     BorderWidth = 3
@@ -134,12 +149,14 @@ object fMain: TfMain
     object FileExit: TAction
       Category = 'Apps'
       Caption = 'Exit'
+      Hint = 'Close application'
       ImageIndex = 0
       OnExecute = FileExitExecute
     end
     object HelpAbout: TAction
       Category = 'Apps'
       Caption = 'About...'
+      Hint = 'About ovotext'
       ImageIndex = 20
     end
     object EditCut: TEditCut
@@ -178,25 +195,26 @@ object fMain: TfMain
       OnUpdate = EditUndoUpdate
       ShortCut = 16474
     end
-    object SearchFind: TSearchFind
+    object SearchFind: TAction
       Category = 'Search'
-      Caption = '&Trova...'
+      Caption = '&Search'
+      Hint = 'Find'
       ImageIndex = 8
+      OnExecute = SearchFindExecute
       ShortCut = 16454
-      OnAccept = SearchFindAccept
     end
-    object SearchReplace: TSearchReplace
+    object SearchReplace: TAction
       Category = 'Search'
-      Caption = '&Sostituisci'
-      Dialog.Options = [frDown, frReplace, frReplaceAll, frHidePromptOnReplace]
+      Caption = '&Replace'
+      Hint = 'Search and Replace'
       ImageIndex = 14
     end
-    object SearchFindFirst: TSearchFindFirst
+    object SearchFindFirst: TAction
       Category = 'Search'
       Caption = '&Trova il primo'
       ImageIndex = 10
     end
-    object SearchFindNext1: TSearchFindNext
+    object SearchFindNext1: TAction
       Category = 'Search'
       Caption = 'Trova &successivo'
       ImageIndex = 9
@@ -233,23 +251,27 @@ object fMain: TfMain
     object FileNew: TAction
       Category = 'File'
       Caption = 'New'
+      Hint = 'Nuovo'
       ImageIndex = 6
       OnExecute = FileNewExecute
     end
     object FileClose: TAction
       Category = 'File'
       Caption = 'Close'
+      Hint = 'Chiudi scheda corrente'
       ImageIndex = 2
       OnExecute = FileCloseExecute
     end
     object FileCloseAll: TAction
       Category = 'File'
       Caption = 'Close All'
+      Hint = 'Chiudi tutte le schede'
       ImageIndex = 27
     end
     object FileSave: TAction
       Category = 'File'
       Caption = 'Save'
+      Hint = 'Salva'
       ImageIndex = 19
     end
   end
@@ -827,7 +849,7 @@ object fMain: TfMain
     left = 344
     top = 75
     Bitmap = {
-      4C691C0000001000000010000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      4C691D0000001000000010000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF006D9CD4896A9AD2FB6697CFEEFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00709ED6DB6D9C
@@ -1723,7 +1745,53 @@ object fMain: TfMain
       FF00FFFFFF00D29769FFFBF3ECFFFBF3ECFFFBF3ECFFFBF3ECFFFBF3ECFFFBF3
       ECFFFBF3ECFFFBF3ECFFC1784BFFFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00D9AB8EFFBC6A39FFBD6D3CFFBD6D3BFFBD6D3BFFBD6D3BFFBB69
-      37FFBB6937FFC68258FFE2C1AAFF
+      37FFBB6937FFC68258FFE2C1AAFF21219A7121219A9021219ACC21219AEE2121
+      9AFA21219AFE21219AFF212198FF212198FF22229DFF22229FFF22229DFF2121
+      9AEF2323A4CB21219854FFFFFF0021219A9BB1B1EEFFB1B1EEFFDEDEF7FFDEDE
+      F7FFDCDCF7FFD5D5F6FFCCCCF3FFD0D0F5FFDCDCF7FFDCDCF7FFCDCDF4FFC0C0
+      F1FE9999E8FB2B2BC8EC2121986321219AD8B0B0EDFF5858DBFFDCDCF7FFDCDC
+      F7FF2D2DD0FFD0D0F5FFCDCDF4FFD5D5F6FFDEDEF7FFD5D5F6FFC3C3F2FFBDBD
+      F0FF9797E8FF9999E8FF2323A4F821219AF0B0B0EDFF5555DAFFD5D5F6FFD5D5
+      F6FF2D2DD0FFCDCDF4FFD2D2F5FFDCDCF7FFDCDCF7FFCCCCF3FFBDBDF0FFBBBB
+      F0FF4F4FD8FFA1A1EAFF212198FE21219AFAACACEDFF5555DAFFCCCCF3FFCCCC
+      F3FF2D2DD0FFCCCCF3FFD9D9F6FFDCDCF7FFD2D2F5FFC0C0F1FFBDBDF0FFB9B9
+      F0FF4D4DD8FF8080E3FF202097FF21219AFEA9A9ECFF5454D9FFC3C3F2FFC3C3
+      F2FFC5C5F2FFD2D2F5FFDCDCF7FFD7D7F6FFC7C7F2FFBDBDF0FFB9B9F0FFB8B8
+      EFFF4B4BD8FF7979E2FF202093FF21219AFFA7A7ECFF5454D9FF2D2DD0FF2D2D
+      D0FF2E2ED1FF3434D3FF3636D3FF3131D2FF2D2DD0FF2D2DD0FF2D2DD0FF2D2D
+      D0FF4343D6FF7474E1FF1F1F92FF212198FFA4A4EBFF5252D9FF4F4FD8FF5050
+      D9FF5252D9FF5050D9FF5050D9FF4D4DD8FF4B4BD8FF4A4AD7FF4646D7FF4343
+      D6FF4545D6FF6C6CDFFF1F1F92FF212198FFA1A1EAFF4F4FD8FF4F4FD8FF5050
+      D9FF5050D9FF5252D9FF4D4DD8FF4D4DD8FF4B4BD8FF4848D7FF4545D6FF4141
+      D6FF4141D6FF6464DDFF1E1E8FFF212198FF9C9CE9FF4F4FD8FF4F4FD8FF4F4F
+      D8FF5050D9FF5050D9FF4D4DD8FF4A4AD7FF4848D7FF4545D6FF4141D6FF4040
+      D5FF3E3ED5FF5D5DDCFF1E1E8DFF212198FF9797E8FF4D4DD8FFDEDEF7FFDEDE
+      F7FFDEDEF7FFDEDEF7FFDEDEF7FFDEDEF7FFDEDEF7FFDEDEF7FFDEDEF7FFDEDE
+      F7FF3B3BD4FF5757DAFF1E1E8DFF21219AFF9595E8FF4D4DD8FFDCDCF7FF6666
+      DDFF6666DDFF6666DDFF6666DDFF6666DDFF6666DDFF6666DDFF6666DDFFDCDC
+      F7FF3636D3FF5050D9FF1E1E8BFF21219CFF9090E7FF4D4DD8FFDCDCF7FFA2A2
+      EBFFA2A2EBFFA2A2EBFFA2A2EBFFA2A2EBFFA2A2EBFFA2A2EBFFA2A2EBFFDCDC
+      F7FF3131D2FF4A4AD7FF1E1E8BFF21219AFE8F8FE6FF4D4DD8FFDCDCF7FF6666
+      DDFF6666DDFF6666DDFF6666DDFF6666DDFF6666DDFF6666DDFF6666DDFFDCDC
+      F7FF2D2DD0FF4343D6FF1D1D8AFE212198DE8686E5FF8585E4FFDEDEF7FFDEDE
+      F7FFDEDEF7FFDEDEF7FFDEDEF7FFDEDEF7FFDEDEF7FFDEDEF7FFDEDEF7FFDEDE
+      F7FF4343D6FF3E3ED5FF1D1D8AEDBA6A3600212198B5212198EE202097FF2020
+      97FF202093FF1F1F92FF1F1F90FF1E1E8FFF1E1E8DFF1E1E8DFF1E1E8BFF1D1D
+      8AFF1D1D8AFE1D1D8AF11E1E8BC4
     }
+  end
+  object AppProperties: TApplicationProperties
+    ShowMenuGlyphs = sbgSystem
+    OnShowHint = AppPropertiesShowHint
+    left = 536
+    top = 75
+  end
+  object FindDialog: TFindDialog
+    OnClose = FindDialogClose
+    Width = 483
+    Height = 136
+    OnFind = FindDialogFind
+    left = 263
+    top = 184
   end
 end

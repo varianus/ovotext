@@ -8,7 +8,7 @@ object fEditor: TfEditor
   ClientWidth = 796
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
-  LCLVersion = '1.3'
+  LCLVersion = '1.5'
   inline SynEdit1: TSynEdit
     Left = 0
     Height = 664
@@ -21,7 +21,9 @@ object fEditor: TfEditor
     Font.Quality = fqCleartypeNatural
     ParentColor = False
     ParentFont = False
+    ParentShowHint = False
     PopupMenu = pumEdit
+    ShowHint = True
     TabOrder = 0
     Gutter.Width = 55
     Gutter.MouseActions = <    
@@ -661,4 +663,4 @@ object fEditor: TfEditor
     left = 276
     top = 123
   end
-end
+end
