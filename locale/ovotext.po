@@ -1,0 +1,208 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: stringcostants.rsnewfile
+msgid "<new   %d>"
+msgstr ""
+
+#: tfeditor.caption
+msgid "fEditor"
+msgstr ""
+
+#: tfeditor.menuitem4.caption
+msgctxt "TFEDITOR.MENUITEM4.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfmain.caption
+msgid "ovoText"
+msgstr ""
+
+#: tfmain.editcopy.caption
+msgid "&Copia"
+msgstr ""
+
+#: tfmain.editcopy.hint
+msgid "Copia"
+msgstr ""
+
+#: tfmain.editcut.caption
+msgid "&Taglia"
+msgstr ""
+
+#: tfmain.editcut.hint
+msgid "Taglia"
+msgstr ""
+
+#: tfmain.editdelete.caption
+msgid "&Elimina"
+msgstr ""
+
+#: tfmain.editdelete.hint
+msgid "Cancella"
+msgstr ""
+
+#: tfmain.editpaste.caption
+msgid "&Incolla"
+msgstr ""
+
+#: tfmain.editpaste.hint
+msgid "Incolla"
+msgstr ""
+
+#: tfmain.editredo.caption
+msgid "Redo"
+msgstr ""
+
+#: tfmain.editselectall.caption
+msgid "Selezion&a tutto"
+msgstr ""
+
+#: tfmain.editselectall.hint
+msgid "Seleziona tutto"
+msgstr ""
+
+#: tfmain.editundo.caption
+msgid "&Annulla"
+msgstr ""
+
+#: tfmain.editundo.hint
+msgid "Disfa"
+msgstr ""
+
+#: tfmain.fileclose.caption
+msgid "Close"
+msgstr ""
+
+#: tfmain.fileclose.hint
+msgid "Chiudi scheda corrente"
+msgstr ""
+
+#: tfmain.filecloseall.caption
+msgid "Close All"
+msgstr ""
+
+#: tfmain.filecloseall.hint
+msgid "Chiudi tutte le schede"
+msgstr ""
+
+#: tfmain.fileexit.caption
+msgid "Exit"
+msgstr ""
+
+#: tfmain.fileexit.hint
+msgid "Close application"
+msgstr ""
+
+#: tfmain.filenew.caption
+msgid "New"
+msgstr ""
+
+#: tfmain.filenew.hint
+msgid "Nuovo"
+msgstr ""
+
+#: tfmain.fileopen.caption
+msgid "&Apri..."
+msgstr ""
+
+#: tfmain.fileopen.hint
+msgid "Apri"
+msgstr ""
+
+#: tfmain.filesave.caption
+msgid "Save"
+msgstr ""
+
+#: tfmain.filesave.hint
+msgid "Salva"
+msgstr ""
+
+#: tfmain.filesaveas.caption
+msgid "S&alva come..."
+msgstr ""
+
+#: tfmain.filesaveas.hint
+msgid "Salva come"
+msgstr ""
+
+#: tfmain.helpabout.caption
+msgid "About..."
+msgstr ""
+
+#: tfmain.helpabout.hint
+msgid "About ovotext"
+msgstr ""
+
+#: tfmain.menuitem1.caption
+msgid "File"
+msgstr ""
+
+#: tfmain.menuitem11.caption
+msgctxt "tfmain.menuitem11.caption"
+msgid "-"
+msgstr ""
+
+#: tfmain.menuitem15.caption
+msgctxt "TFMAIN.MENUITEM15.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfmain.menuitem3.caption
+msgid "Help"
+msgstr ""
+
+#: tfmain.menuitem7.caption
+msgid "Edit"
+msgstr ""
+
+#: tfmain.menuitem8.caption
+msgctxt "TFMAIN.MENUITEM8.CAPTION"
+msgid "Find"
+msgstr ""
+
+#: tfmain.searchfind.caption
+msgid "&Search"
+msgstr ""
+
+#: tfmain.searchfind.hint
+msgctxt "tfmain.searchfind.hint"
+msgid "Find"
+msgstr ""
+
+#: tfmain.searchfindfirst.caption
+msgid "&Trova il primo"
+msgstr ""
+
+#: tfmain.searchfindnext1.caption
+msgid "Trova &successivo"
+msgstr ""
+
+#: tfmain.searchreplace.caption
+msgid "&Replace"
+msgstr ""
+
+#: tfmain.searchreplace.hint
+msgid "Search and Replace"
+msgstr ""
+
+#: tfmain.toolbar1.caption
+msgid "ToolBar1"
+msgstr ""
+
+#: tfmain.toolbutton11.caption
+msgid "ToolButton11"
+msgstr ""
+
+#: tfmain.toolbutton12.caption
+msgid "ToolButton12"
+msgstr ""
+
+#: tfmain.toolbutton14.caption
+msgid "ToolButton14"
+msgstr ""
+
+#: tfmain.toolbutton5.caption
+msgid "ToolButton5"
+msgstr ""
+
