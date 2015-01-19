@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ActnList, Menus, ComCtrls, StdActns, uEditor, udmmain;
+  ActnList, Menus, ComCtrls, StdActns, uEditor, udmmain, SynEditTypes;
 
 type
 
@@ -89,6 +89,7 @@ type
   private
     EditorFactory:TEditorFactory;
     function EditorAvalaible: boolean; inline;
+    procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
   public
     { public declarations }
   end; 
@@ -133,13 +134,13 @@ procedure TfMain.FileNewExecute(Sender: TObject);
 var
   Editor: TfEditor;
 begin
-  Editor := EditorFactory.CreateTabSheet(pcMain);
+  Editor := EditorFactory.CreateTabSheet(pcMain, @EditorStatusChange);
 
 end;
 
 procedure TfMain.FileOpenAccept(Sender: TObject);
 begin
-  with EditorFactory.CreateTabSheet(pcMain) do
+  with EditorFactory.CreateTabSheet(pcMain, @EditorStatusChange) do
     begin
       loadfromFile(FileOpen.Dialog.FileName);
     end;
@@ -169,11 +170,29 @@ begin
     exit;
 
 end;
+procedure TfMain.EditorStatusChange(Sender: TObject;
+  Changes: TSynStatusChanges);
+begin
+  if not EditorAvalaible then exit;
+
+  if  (scCaretX in Changes) or (scCaretY in Changes) then
+     StatusBar1.Panels[2].Text:= Format('Line: %d  Col:%d',[EditorFactory.CurrentEditor.CaretY, EditorFactory.CurrentEditor.CaretX]);
+
+  if  (scSelection in Changes) then
+     StatusBar1.Panels[3].Text:= Format('Sel: %d ',[EditorFactory.CurrentEditor.SelEnd - EditorFactory.CurrentEditor.SelStart]);
+
+  //  scLeftChar, scTopLine, scLinesInWindow, scCharsInWindow,
+//    scInsertMode, scModified, scReadOnly
+
+end;
 
 function TfMain.EditorAvalaible: boolean;
 begin
   Result := Assigned(EditorFactory.CurrentSubForm);
 end;
+
+
+
 
 end.
 
