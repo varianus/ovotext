@@ -84,6 +84,7 @@ type
     procedure FileOpenAccept(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure pcMainChange(Sender: TObject);
     procedure pcMainCloseTabClicked(Sender: TObject);
     procedure SearchFindAccept(Sender: TObject);
   private
@@ -98,7 +99,8 @@ var
   fMain: TfMain;
 
 implementation
-
+uses
+  Stringcostants;
 {$R *.lfm}
 
 { TfMain }
@@ -158,6 +160,11 @@ begin
  EditorFactory.Free;
 end;
 
+procedure TfMain.pcMainChange(Sender: TObject);
+begin
+  EditorStatusChange(nil,[scCaretX,scSelection,scInsertMode]);
+end;
+
 procedure TfMain.pcMainCloseTabClicked(Sender: TObject);
 begin
  if Sender is TEditorTabSheet then
@@ -176,13 +183,16 @@ begin
   if not EditorAvalaible then exit;
 
   if  (scCaretX in Changes) or (scCaretY in Changes) then
-     StatusBar1.Panels[2].Text:= Format('Line: %d  Col:%d',[EditorFactory.CurrentEditor.CaretY, EditorFactory.CurrentEditor.CaretX]);
+     StatusBar1.Panels[1].Text:= Format(RSStatusBarPos,[EditorFactory.CurrentEditor.CaretY, EditorFactory.CurrentEditor.CaretX]);
 
   if  (scSelection in Changes) then
-     StatusBar1.Panels[3].Text:= Format('Sel: %d ',[EditorFactory.CurrentEditor.SelEnd - EditorFactory.CurrentEditor.SelStart]);
+     StatusBar1.Panels[2].Text:= Format(RSStatusBarSel,[EditorFactory.CurrentEditor.SelEnd - EditorFactory.CurrentEditor.SelStart]);
 
-  //  scLeftChar, scTopLine, scLinesInWindow, scCharsInWindow,
-//    scInsertMode, scModified, scReadOnly
+  if  (scInsertMode in Changes) then
+     if EditorFactory.CurrentEditor.InsertMode  then
+        StatusBar1.Panels[3].Text:= RSStatusBarInsMode
+     else
+        StatusBar1.Panels[3].Text:= RSStatusBarOvrMode;
 
 end;
 

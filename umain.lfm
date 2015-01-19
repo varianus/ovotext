@@ -17,7 +17,7 @@ object fMain: TfMain
     Width = 966
     Panels = <    
       item
-        Width = 200
+        Width = 100
       end    
       item
         Width = 100
@@ -38,6 +38,7 @@ object fMain: TfMain
     Align = alClient
     Images = imgList
     TabOrder = 1
+    OnChange = pcMainChange
     OnCloseTabClicked = pcMainCloseTabClicked
     Options = [nboShowCloseButtons]
   end
