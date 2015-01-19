@@ -18,16 +18,6 @@ object fMain: TfMain
     Width = 966
     Panels = <    
       item
-<<<<<<< HEAD
-        Bevel = pbRaised
-        Width = 150
-      end    
-      item
-        Width = 50
-      end    
-      item
-        Width = 50
-=======
         Width = 100
       end    
       item
@@ -38,19 +28,13 @@ object fMain: TfMain
       end    
       item
         Width = 100
->>>>>>> branch 'master' of https://github.com/varianus/ovotext.git
       end>
     SimplePanel = False
   end
   object pcMain: TPageControl
     Left = 0
-<<<<<<< HEAD
-    Height = 622
-    Top = 24
-=======
     Height = 625
     Top = 20
->>>>>>> branch 'master' of https://github.com/varianus/ovotext.git
     Width = 966
     Align = alClient
     Images = imgList
@@ -1798,7 +1782,6 @@ object fMain: TfMain
       8AFF1D1D8AFE1D1D8AF11E1E8BC4
     }
   end
-<<<<<<< HEAD
   object AppProperties: TApplicationProperties
     ShowMenuGlyphs = sbgSystem
     OnShowHint = AppPropertiesShowHint
@@ -1814,6 +1797,3 @@ object fMain: TfMain
     top = 184
   end
 end
-=======
-end
->>>>>>> branch 'master' of https://github.com/varianus/ovotext.git
