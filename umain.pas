@@ -222,6 +222,8 @@ begin
      else
         StatusBar1.Panels[3].Text:= RSStatusBarOvrMode;
 
+end;
+
 procedure TfMain.SearchFindExecute(Sender: TObject);
 begin
   if EditorAvalaible then

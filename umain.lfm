@@ -4,7 +4,7 @@ object fMain: TfMain
   Top = 217
   Width = 966
   Caption = 'ovoText'
-  ClientHeight = 668
+  ClientHeight = 667
   ClientWidth = 966
   Menu = mnuMain
   OnCreate = FormCreate
@@ -13,8 +13,8 @@ object fMain: TfMain
   LCLVersion = '1.5'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 23
-    Top = 645
+    Height = 21
+    Top = 646
     Width = 966
     Panels = <    
       item
@@ -33,8 +33,8 @@ object fMain: TfMain
   end
   object pcMain: TPageControl
     Left = 0
-    Height = 625
-    Top = 20
+    Height = 622
+    Top = 24
     Width = 966
     Align = alClient
     Images = imgList
@@ -1796,4 +1796,4 @@ object fMain: TfMain
     left = 263
     top = 184
   end
-end
+end
