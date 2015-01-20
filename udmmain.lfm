@@ -3,7 +3,7 @@ object dmMain: TdmMain
   OnDestroy = DataModuleDestroy
   OldCreateOrder = False
   Height = 313
-  HorizontalOffset = 2258
+  HorizontalOffset = 1145
   VerticalOffset = 282
   Width = 725
   object SynExporterHTML: TSynExporterHTML
@@ -19,6 +19,7 @@ object dmMain: TdmMain
     top = 8
   end
   object SynFreePascalSyn1: TSynFreePascalSyn
+    Enabled = False
     AsmAttri.FrameEdges = sfeAround
     CommentAttri.Foreground = clBlue
     CommentAttri.FrameEdges = sfeAround
@@ -42,6 +43,7 @@ object dmMain: TdmMain
   end
   object SynCppSyn1: TSynCppSyn
     DefaultFilter = 'Files C++ (*.c,*.cpp,*.h,*.hpp,*.hh)|*.c;*.cpp;*.h;*.hpp;*.hh'
+    Enabled = False
     AsmAttri.FrameEdges = sfeAround
     CommentAttri.FrameEdges = sfeAround
     DirecAttri.FrameEdges = sfeAround
@@ -57,6 +59,7 @@ object dmMain: TdmMain
   end
   object SynJavaSyn1: TSynJavaSyn
     DefaultFilter = 'File Java (*.java)|*.java'
+    Enabled = False
     AnnotationAttri.FrameEdges = sfeAround
     CommentAttri.FrameEdges = sfeAround
     DocumentAttri.FrameEdges = sfeAround
@@ -72,6 +75,7 @@ object dmMain: TdmMain
   end
   object SynPerlSyn1: TSynPerlSyn
     DefaultFilter = 'File Perl (*.pl,*.pm,*.cgi)|*.pl;*.pm;*.cgi'
+    Enabled = False
     CommentAttri.FrameEdges = sfeAround
     IdentifierAttri.FrameEdges = sfeAround
     InvalidAttri.FrameEdges = sfeAround
@@ -88,6 +92,7 @@ object dmMain: TdmMain
   end
   object SynHTMLSyn1: TSynHTMLSyn
     DefaultFilter = 'Documento HTML (*.htm,*.html)|*.htm;*.html'
+    Enabled = False
     AndAttri.FrameEdges = sfeAround
     ASPAttri.FrameEdges = sfeAround
     CDATAAttri.FrameEdges = sfeAround
@@ -105,6 +110,7 @@ object dmMain: TdmMain
   end
   object SynXMLSyn1: TSynXMLSyn
     DefaultFilter = 'Documenti XML (*.xml,*.xsd,*.xsl,*.xslt,*.dtd)|*.xml;*.xsd;*.xsl;*.xslt;*.dtd'
+    Enabled = False
     ElementAttri.FrameEdges = sfeAround
     AttributeAttri.FrameEdges = sfeAround
     NamespaceAttributeAttri.FrameEdges = sfeAround
@@ -124,6 +130,7 @@ object dmMain: TdmMain
   end
   object SynLFMSyn1: TSynLFMSyn
     DefaultFilter = 'File Form Lazarus (*.lfm)|*.lfm'
+    Enabled = False
     CommentAttri.FrameEdges = sfeAround
     IdentifierAttri.FrameEdges = sfeAround
     KeyAttri.FrameEdges = sfeAround
@@ -135,6 +142,7 @@ object dmMain: TdmMain
   end
   object SynUNIXShellScriptSyn1: TSynUNIXShellScriptSyn
     DefaultFilter = 'Script di shell Unix (*.sh)|*.sh'
+    Enabled = False
     CommentAttri.FrameEdges = sfeAround
     IdentifierAttri.FrameEdges = sfeAround
     KeyAttri.FrameEdges = sfeAround
@@ -149,6 +157,7 @@ object dmMain: TdmMain
   end
   object SynCssSyn1: TSynCssSyn
     DefaultFilter = 'Fogli di stile (*.css)|*.css'
+    Enabled = False
     CommentAttri.FrameEdges = sfeAround
     IdentifierAttri.FrameEdges = sfeAround
     KeyAttri.FrameEdges = sfeAround
@@ -161,6 +170,7 @@ object dmMain: TdmMain
   end
   object SynPHPSyn1: TSynPHPSyn
     DefaultFilter = 'File PHP (*.php,*.php3,*.phtml,*.inc)|*.php;*.php3;*.phtml;*.inc'
+    Enabled = False
     CommentAttri.FrameEdges = sfeAround
     IdentifierAttri.FrameEdges = sfeAround
     InvalidSymbolAttri.FrameEdges = sfeAround
@@ -175,6 +185,7 @@ object dmMain: TdmMain
   end
   object SynTeXSyn1: TSynTeXSyn
     DefaultFilter = 'File TeX (*.tex)|*.tex'
+    Enabled = False
     CommentAttri.FrameEdges = sfeAround
     TextAttri.FrameEdges = sfeAround
     ControlSequenceAttri.FrameEdges = sfeAround
@@ -187,6 +198,7 @@ object dmMain: TdmMain
   end
   object SynSQLSyn1: TSynSQLSyn
     DefaultFilter = 'File SQL (*.sql)|*.sql'
+    Enabled = False
     CommentAttri.FrameEdges = sfeAround
     DataTypeAttri.FrameEdges = sfeAround
     DefaultPackageAttri.FrameEdges = sfeAround
@@ -208,6 +220,7 @@ object dmMain: TdmMain
   end
   object SynPythonSyn1: TSynPythonSyn
     DefaultFilter = 'File Python (*.py)|*.py'
+    Enabled = False
     CommentAttri.FrameEdges = sfeAround
     IdentifierAttri.FrameEdges = sfeAround
     KeyAttri.FrameEdges = sfeAround
@@ -226,6 +239,7 @@ object dmMain: TdmMain
     top = 120
   end
   object SynVBSyn1: TSynVBSyn
+    Enabled = False
     CommentAttri.FrameEdges = sfeAround
     IdentifierAttri.FrameEdges = sfeAround
     KeyAttri.FrameEdges = sfeAround
@@ -238,6 +252,7 @@ object dmMain: TdmMain
   end
   object SynBatSyn1: TSynBatSyn
     DefaultFilter = 'File batch DOS (*.bat;*.cmd)|*.bat;*.cmd'
+    Enabled = False
     CommentAttri.FrameEdges = sfeAround
     IdentifierAttri.FrameEdges = sfeAround
     KeyAttri.FrameEdges = sfeAround
@@ -249,6 +264,7 @@ object dmMain: TdmMain
   end
   object SynIniSyn1: TSynIniSyn
     DefaultFilter = 'File INI (*.ini)|*.ini'
+    Enabled = False
     CommentAttri.FrameEdges = sfeAround
     TextAttri.FrameEdges = sfeAround
     SectionAttri.FrameEdges = sfeAround
@@ -262,6 +278,7 @@ object dmMain: TdmMain
   end
   object SynPoSyn1: TSynPoSyn
     DefaultFilter = 'Po Files (*.po)|*.po'
+    Enabled = False
     CommentAttri.FrameEdges = sfeAround
     TextAttri.FrameEdges = sfeAround
     KeyAttri.FrameEdges = sfeAround

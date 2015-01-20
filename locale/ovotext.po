@@ -5,6 +5,22 @@ msgstr "Content-Type: text/plain; charset=UTF-8"
 msgid "<new   %d>"
 msgstr ""
 
+#: stringcostants.rsstatusbarinsmode
+msgid "INS "
+msgstr ""
+
+#: stringcostants.rsstatusbarovrmode
+msgid "OVR "
+msgstr ""
+
+#: stringcostants.rsstatusbarpos
+msgid "Line: %d  Col:%d"
+msgstr ""
+
+#: stringcostants.rsstatusbarsel
+msgid "Sel: %d "
+msgstr ""
+
 #: tfeditor.caption
 msgid "fEditor"
 msgstr ""
@@ -19,35 +35,35 @@ msgid "ovoText"
 msgstr ""
 
 #: tfmain.editcopy.caption
-msgid "&Copia"
+msgid "&Copy"
 msgstr ""
 
 #: tfmain.editcopy.hint
-msgid "Copia"
+msgid "Copy"
 msgstr ""
 
 #: tfmain.editcut.caption
-msgid "&Taglia"
+msgid "&Cut"
 msgstr ""
 
 #: tfmain.editcut.hint
-msgid "Taglia"
+msgid "Cut"
 msgstr ""
 
 #: tfmain.editdelete.caption
-msgid "&Elimina"
+msgid "&Delete"
 msgstr ""
 
 #: tfmain.editdelete.hint
-msgid "Cancella"
+msgid "Delete"
 msgstr ""
 
 #: tfmain.editpaste.caption
-msgid "&Incolla"
+msgid "&Paste"
 msgstr ""
 
 #: tfmain.editpaste.hint
-msgid "Incolla"
+msgid "Paste"
 msgstr ""
 
 #: tfmain.editredo.caption
@@ -55,19 +71,19 @@ msgid "Redo"
 msgstr ""
 
 #: tfmain.editselectall.caption
-msgid "Selezion&a tutto"
+msgid "Select &all"
 msgstr ""
 
 #: tfmain.editselectall.hint
-msgid "Seleziona tutto"
+msgid "Select all"
 msgstr ""
 
 #: tfmain.editundo.caption
-msgid "&Annulla"
+msgid "&Undo"
 msgstr ""
 
 #: tfmain.editundo.hint
-msgid "Disfa"
+msgid "Undo"
 msgstr ""
 
 #: tfmain.fileclose.caption
@@ -75,7 +91,7 @@ msgid "Close"
 msgstr ""
 
 #: tfmain.fileclose.hint
-msgid "Chiudi scheda corrente"
+msgid "Close current tab"
 msgstr ""
 
 #: tfmain.filecloseall.caption
@@ -83,7 +99,7 @@ msgid "Close All"
 msgstr ""
 
 #: tfmain.filecloseall.hint
-msgid "Chiudi tutte le schede"
+msgid "Close all tab"
 msgstr ""
 
 #: tfmain.fileexit.caption
@@ -95,11 +111,13 @@ msgid "Close application"
 msgstr ""
 
 #: tfmain.filenew.caption
+msgctxt "tfmain.filenew.caption"
 msgid "New"
 msgstr ""
 
 #: tfmain.filenew.hint
-msgid "Nuovo"
+msgctxt "tfmain.filenew.hint"
+msgid "New"
 msgstr ""
 
 #: tfmain.fileopen.caption
@@ -111,19 +129,21 @@ msgid "Apri"
 msgstr ""
 
 #: tfmain.filesave.caption
+msgctxt "tfmain.filesave.caption"
 msgid "Save"
 msgstr ""
 
 #: tfmain.filesave.hint
-msgid "Salva"
+msgctxt "tfmain.filesave.hint"
+msgid "Save"
 msgstr ""
 
 #: tfmain.filesaveas.caption
-msgid "S&alva come..."
+msgid "Save as..."
 msgstr ""
 
 #: tfmain.filesaveas.hint
-msgid "Salva come"
+msgid "Save as "
 msgstr ""
 
 #: tfmain.helpabout.caption
@@ -171,11 +191,11 @@ msgid "Find"
 msgstr ""
 
 #: tfmain.searchfindfirst.caption
-msgid "&Trova il primo"
+msgid "&Find first"
 msgstr ""
 
 #: tfmain.searchfindnext1.caption
-msgid "Trova &successivo"
+msgid "Find next"
 msgstr ""
 
 #: tfmain.searchreplace.caption
@@ -188,21 +208,5 @@ msgstr ""
 
 #: tfmain.toolbar1.caption
 msgid "ToolBar1"
-msgstr ""
-
-#: tfmain.toolbutton11.caption
-msgid "ToolButton11"
-msgstr ""
-
-#: tfmain.toolbutton12.caption
-msgid "ToolButton12"
-msgstr ""
-
-#: tfmain.toolbutton14.caption
-msgid "ToolButton14"
-msgstr ""
-
-#: tfmain.toolbutton5.caption
-msgid "ToolButton5"
 msgstr ""
 

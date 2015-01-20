@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ActnList, Menus, ComCtrls, StdActns, uEditor, udmmain, LCLType, SynEditTypes;
+  ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, SynEditTypes;
 
 type
 
@@ -88,8 +88,10 @@ type
     procedure FileOpenAccept(Sender: TObject);
     procedure FindDialogClose(Sender: TObject);
     procedure FindDialogFind(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormResize(Sender: TObject);
     procedure pcMainChange(Sender: TObject);
     procedure pcMainCloseTabClicked(Sender: TObject);
     procedure SearchFindAccept(Sender: TObject);
@@ -175,16 +177,37 @@ begin
 
 end;
 
+procedure TfMain.FormActivate(Sender: TObject);
+begin
+  pcMainChange(pcMain);
+end;
+
 procedure TfMain.FormCreate(Sender: TObject);
 begin
 //
  EditorFactory:=TEditorFactory.Create;
  FileNew.Execute;
+
 end;
 
 procedure TfMain.FormDestroy(Sender: TObject);
 begin
  EditorFactory.Free;
+end;
+
+procedure TfMain.FormResize(Sender: TObject);
+var
+  i, sbSize :Integer;
+
+begin
+  sbSize:= 0;
+  StatusBar1.panels[StatusBar1.Panels.Count -1].Width := StatusBar1.Height;
+  ;
+  for i := 1 to StatusBar1.Panels.Count -1 do
+    inc(sbSize, StatusBar1.Panels[i].Width);
+
+  StatusBar1.Panels[0].Width := StatusBar1.Width - sbSize;
+
 end;
 
 procedure TfMain.pcMainChange(Sender: TObject);
@@ -250,4 +273,4 @@ end;
 
 
 end.
-
+

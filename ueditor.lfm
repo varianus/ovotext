@@ -18,6 +18,7 @@ object fEditor: TfEditor
     Font.CharSet = ANSI_CHARSET
     Font.Height = -16
     Font.Name = 'Ubuntu Mono'
+    Font.Pitch = fpFixed
     Font.Quality = fqCleartypeNatural
     ParentColor = False
     ParentFont = False

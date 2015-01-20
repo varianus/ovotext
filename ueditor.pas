@@ -224,6 +224,8 @@ begin
    Result:= TfEditor.Create(Asheet);
    try
       ASheet.PageControl := AOwner;
+      ASheet.OnHide:=@EditorSheetHide;
+      ASheet.OnShow:=@EditorSheetShow;
       ASheet.ImageIndex := 19;
       with Result do
         begin
@@ -237,9 +239,8 @@ begin
          SynEdit1.OnStatusChange:=Event;
         end;
       ASheet.Editor := Result;
-      ASheet.OnHide:=@EditorSheetHide;
-      ASheet.OnShow:=@EditorSheetShow;
       AOwner.ActivePage := ASheet;
+      ASheet.Show;
       Result.Realign;
       fEditors.Add(Result);
       if FileName = '' then
