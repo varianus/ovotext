@@ -92,6 +92,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure HelpAboutExecute(Sender: TObject);
     procedure pcMainChange(Sender: TObject);
     procedure pcMainCloseTabClicked(Sender: TObject);
     procedure SearchFindAccept(Sender: TObject);
@@ -109,7 +110,7 @@ var
   fMain: TfMain;
 
 implementation
-uses lclproc,   Stringcostants;
+uses lclproc,   Stringcostants, uabout;
 {$R *.lfm}
 
 { TfMain }
@@ -208,6 +209,12 @@ begin
 
   StatusBar1.Panels[0].Width := StatusBar1.Width - sbSize;
 
+end;
+
+procedure TfMain.HelpAboutExecute(Sender: TObject);
+begin
+  with TfAbout.Create(self) do
+    Show;
 end;
 
 procedure TfMain.pcMainChange(Sender: TObject);

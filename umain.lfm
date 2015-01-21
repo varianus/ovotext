@@ -162,6 +162,7 @@ object fMain: TfMain
       Caption = 'About...'
       Hint = 'About ovotext'
       ImageIndex = 20
+      OnExecute = HelpAboutExecute
     end
     object EditCut: TEditCut
       Category = 'Edit'
