@@ -29,7 +29,7 @@
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="ovotext"/>
+            <Filename Value="bin\ovotext"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
@@ -54,9 +54,6 @@
           </Linking>
         </CompilerOptions>
       </Item2>
-      <SharedMatrixOptions Count="1">
-        <Item1 ID="730043725210" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk3"/>
-      </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
@@ -90,7 +87,6 @@
         <ComponentName Value="fMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="umain"/>
       </Unit1>
       <Unit2>
         <Filename Value="uabout.pas"/>
@@ -98,6 +94,7 @@
         <ComponentName Value="fAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uabout"/>
       </Unit2>
       <Unit3>
         <Filename Value="ueditor.pas"/>
@@ -121,6 +118,7 @@
       <Unit6>
         <Filename Value="supportfuncs.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="SupportFuncs"/>
       </Unit6>
     </Units>
   </ProjectOptions>
