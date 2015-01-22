@@ -45,6 +45,9 @@ type
     MenuItem20: TMenuItem;
     MenuItem21: TMenuItem;
     MenuItem22: TMenuItem;
+    MenuItem23: TMenuItem;
+    MenuItem24: TMenuItem;
+    MenuItem25: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
@@ -55,7 +58,7 @@ type
     mnuMain: TMainMenu;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
-    pcMain: TPageControl;
+    pumEdit: TPopupMenu;
     SearchFind: TAction;
     SearchFindFirst: TAction;
     SearchFindNext1: TAction;
@@ -88,12 +91,9 @@ type
     procedure FileOpenAccept(Sender: TObject);
     procedure FindDialogClose(Sender: TObject);
     procedure FindDialogFind(Sender: TObject);
-    procedure FormActivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure FormResize(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
-    procedure pcMainChange(Sender: TObject);
     procedure pcMainCloseTabClicked(Sender: TObject);
     procedure SearchFindAccept(Sender: TObject);
     procedure SearchFindExecute(Sender: TObject);
@@ -122,46 +122,45 @@ end;
 
 procedure TfMain.FileCloseExecute(Sender: TObject);
 begin
-  if EditorAvalaible then
-    EditorFactory.CurrentSubForm.Close;
+  //if EditorAvalaible then
+  //  EditorFactory.CurrentSubForm.Close;
 end;
 
 procedure TfMain.EditRedoExecute(Sender: TObject);
 begin
- if EditorAvalaible then
-    EditorFactory.CurrentEditor.Redo;
+ //if EditorAvalaible then
+ //   EditorFactory.CurrentEditor.Redo;
 end;
 
 procedure TfMain.AppPropertiesShowHint(var HintStr: string;
   var CanShow: Boolean; var HintInfo: THintInfo);
 begin
-  StatusBar1.Panels[0].Text:=HintInfo.HintStr;
+  StatusBar1.Panels[3].Text:=HintInfo.HintStr;
 end;
 
 procedure TfMain.EditRedoUpdate(Sender: TObject);
 begin
-  EditRedo.Enabled:= EditorAvalaible and EditorFactory.CurrentEditor.CanRedo;
+  //EditRedo.Enabled:= EditorAvalaible and EditorFactory.CurrentEditor.CanRedo;
 end;
 
 procedure TfMain.EditUndoUpdate(Sender: TObject);
 begin
-  EditUndo.Enabled:= EditorAvalaible and EditorFactory.CurrentEditor.CanUndo;
+  //EditUndo.Enabled:= EditorAvalaible and EditorFactory.CurrentEditor.CanUndo;
 end;
 
 procedure TfMain.FileNewExecute(Sender: TObject);
 var
-  Editor: TfEditor;
+  Editor: TEditor;
 begin
-  Editor := EditorFactory.CreateTabSheet(pcMain, @EditorStatusChange);
+  Editor := EditorFactory.AddEditor();
 
 end;
 
 procedure TfMain.FileOpenAccept(Sender: TObject);
 begin
-  with EditorFactory.CreateTabSheet(pcMain, @EditorStatusChange) do
-    begin
-      loadfromFile(FileOpen.Dialog.FileName);
-    end;
+
+  EditorFactory.AddEditor(FileOpen.Dialog.FileName);
+
 end;
 
 procedure TfMain.FindDialogClose(Sender: TObject);
@@ -174,19 +173,19 @@ var
   Options: TSynSearchOptions;
 begin
   PrepareSearch(FindDialog, Options);
-  EditorFactory.CurrentEditor.SearchReplace(FindDialog.FindText,'',Options);
+  //EditorFactory.CurrentEditor.SearchReplace(FindDialog.FindText,'',Options);
 
-end;
-
-procedure TfMain.FormActivate(Sender: TObject);
-begin
-  pcMainChange(pcMain);
 end;
 
 procedure TfMain.FormCreate(Sender: TObject);
 begin
 //
- EditorFactory:=TEditorFactory.Create;
+ EditorFactory:=TEditorFactory.Create(Self);
+ EditorFactory.Align:=alClient;
+
+ EditorFactory.Parent := self;
+ EditorFactory.OnStatusChange:=@EditorStatusChange;
+
  FileNew.Execute;
 
 end;
@@ -196,37 +195,16 @@ begin
  EditorFactory.Free;
 end;
 
-procedure TfMain.FormResize(Sender: TObject);
-var
-  i, sbSize :Integer;
-
-begin
-  sbSize:= 0;
-  StatusBar1.panels[StatusBar1.Panels.Count -1].Width := StatusBar1.Height;
-  ;
-  for i := 1 to StatusBar1.Panels.Count -1 do
-    inc(sbSize, StatusBar1.Panels[i].Width);
-
-  StatusBar1.Panels[0].Width := StatusBar1.Width - sbSize;
-
-end;
-
 procedure TfMain.HelpAboutExecute(Sender: TObject);
 begin
   with TfAbout.Create(self) do
     Show;
 end;
 
-procedure TfMain.pcMainChange(Sender: TObject);
-begin
-  EditorStatusChange(nil,[scCaretX,scSelection,scInsertMode]);
-  pcMain.Hint:= pcMain.ActivePage.Hint;
-end;
-
 procedure TfMain.pcMainCloseTabClicked(Sender: TObject);
 begin
- if Sender is TEditorTabSheet then
-   TEditorTabSheet(Sender).Editor.Close;
+ //if Sender is TEditorTabSheet then
+ //  TEditorTabSheet(Sender).Editor.Close;
 end;
 
 procedure TfMain.SearchFindAccept(Sender: TObject);
@@ -241,28 +219,34 @@ begin
   if not EditorAvalaible then exit;
 
   if  (scCaretX in Changes) or (scCaretY in Changes) then
-     StatusBar1.Panels[1].Text:= Format(RSStatusBarPos,[EditorFactory.CurrentEditor.CaretY, EditorFactory.CurrentEditor.CaretX]);
+     StatusBar1.Panels[0].Text:= Format(RSStatusBarPos,[EditorFactory.CurrentEditor.CaretY, EditorFactory.CurrentEditor.CaretX]);
 
   if  (scSelection in Changes) then
-     StatusBar1.Panels[2].Text:= Format(RSStatusBarSel,[EditorFactory.CurrentEditor.SelEnd - EditorFactory.CurrentEditor.SelStart]);
+     StatusBar1.Panels[1].Text:= Format(RSStatusBarSel,[EditorFactory.CurrentEditor.SelEnd - EditorFactory.CurrentEditor.SelStart]);
 
   if  (scInsertMode in Changes) then
      if EditorFactory.CurrentEditor.InsertMode  then
-        StatusBar1.Panels[3].Text:= RSStatusBarInsMode
+        StatusBar1.Panels[2].Text:= RSStatusBarInsMode
      else
-        StatusBar1.Panels[3].Text:= RSStatusBarOvrMode;
+        StatusBar1.Panels[2].Text:= RSStatusBarOvrMode;
 
 end;
 
 procedure TfMain.SearchFindExecute(Sender: TObject);
+//var
+//  Editor : TfEditor;
 begin
-  if EditorAvalaible then
-     FindDialog.Execute;
+
+  if not EditorAvalaible then
+     exit;
+//  if Ed.SelAvail and (Ed.BlockBegin.Y = Ed.BlockEnd.Y) then FindDialog.FindText := Ed.SelText;
+  FindDialog.Execute;
 end;
 
 function TfMain.EditorAvalaible: boolean;
 begin
-  Result := Assigned(EditorFactory.CurrentSubForm) and Assigned(EditorFactory.CurrentEditor);;
+
+  //Result := Assigned(EditorFactory.CurrentSubForm) and Assigned(EditorFactory.CurrentEditor);;
 end;
 
 procedure TfMain.PrepareSearch(Dialog: TFindDialog; out

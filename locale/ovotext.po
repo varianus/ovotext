@@ -79,11 +79,6 @@ msgstr ""
 msgid "fEditor"
 msgstr ""
 
-#: tfeditor.menuitem4.caption
-msgctxt "TFEDITOR.MENUITEM4.CAPTION"
-msgid "-"
-msgstr ""
-
 #: tfmain.caption
 msgid "ovoText"
 msgstr ""
@@ -219,6 +214,11 @@ msgstr ""
 
 #: tfmain.menuitem15.caption
 msgctxt "TFMAIN.MENUITEM15.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfmain.menuitem25.caption
+msgctxt "TFMAIN.MENUITEM25.CAPTION"
 msgid "-"
 msgstr ""
 

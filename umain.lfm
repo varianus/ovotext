@@ -7,10 +7,8 @@ object fMain: TfMain
   ClientHeight = 668
   ClientWidth = 966
   Menu = mnuMain
-  OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  OnResize = FormResize
   ShowHint = True
   LCLVersion = '1.5'
   object StatusBar1: TStatusBar
@@ -20,36 +18,18 @@ object fMain: TfMain
     Width = 966
     Panels = <    
       item
-        Width = 500
-      end    
-      item
         Width = 100
       end    
       item
         Width = 100
       end    
       item
-        Width = 35
+        Width = 40
       end    
       item
-        Bevel = pbNone
-        Width = 25
+        Width = 100
       end>
     SimplePanel = False
-  end
-  object pcMain: TPageControl
-    Left = 0
-    Height = 621
-    Top = 24
-    Width = 966
-    Align = alClient
-    Images = imgList
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 1
-    OnChange = pcMainChange
-    OnCloseTabClicked = pcMainCloseTabClicked
-    Options = [nboShowCloseButtons]
   end
   object ToolBar1: TToolBar
     Left = 0
@@ -61,7 +41,7 @@ object fMain: TfMain
     ButtonWidth = 24
     Caption = 'ToolBar1'
     Images = imgList
-    TabOrder = 2
+    TabOrder = 1
     object ToolButton1: TToolButton
       Left = 1
       Top = 2
@@ -1798,5 +1778,24 @@ object fMain: TfMain
     OnFind = FindDialogFind
     left = 263
     top = 184
+  end
+  object pumEdit: TPopupMenu
+    left = 210
+    top = 142
+    object MenuItem21: TMenuItem
+      Action = EditCut
+    end
+    object MenuItem22: TMenuItem
+      Action = EditCopy
+    end
+    object MenuItem23: TMenuItem
+      Action = EditPaste
+    end
+    object MenuItem24: TMenuItem
+      Action = EditSelectAll
+    end
+    object MenuItem25: TMenuItem
+      Caption = '-'
+    end
   end
 end

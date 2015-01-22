@@ -4,6 +4,9 @@
     <Version Value="9"/>
     <PathDelim Value="\"/>
     <General>
+      <Flags>
+        <SaveOnlyProjectUnits Value="True"/>
+      </Flags>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
       <Title Value="ovotext"/>
@@ -98,29 +101,26 @@
         <UnitName Value="uabout"/>
       </Unit2>
       <Unit3>
-        <Filename Value="ueditor.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="fEditor"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="ueditor"/>
-      </Unit3>
-      <Unit4>
         <Filename Value="udmmain.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="dmMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-      </Unit4>
-      <Unit5>
+      </Unit3>
+      <Unit4>
         <Filename Value="stringcostants.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Stringcostants"/>
-      </Unit5>
-      <Unit6>
+      </Unit4>
+      <Unit5>
         <Filename Value="supportfuncs.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SupportFuncs"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="ueditor.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ueditor"/>
       </Unit6>
     </Units>
   </ProjectOptions>
