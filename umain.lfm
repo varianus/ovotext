@@ -7,6 +7,7 @@ object fMain: TfMain
   ClientHeight = 668
   ClientWidth = 966
   Menu = mnuMain
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   ShowHint = True
@@ -246,6 +247,7 @@ object fMain: TfMain
       Hint = 'Close current tab'
       ImageIndex = 2
       OnExecute = FileCloseExecute
+      ShortCut = 16499
     end
     object FileCloseAll: TAction
       Category = 'File'

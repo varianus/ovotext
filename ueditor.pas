@@ -5,7 +5,7 @@ unit ueditor;
 interface
 
 uses
-  Classes, SysUtils, Controls, comctrls, SynEditTypes, SynEdit,
+  Classes, SysUtils, Controls, dialogs, comctrls, SynEditTypes, SynEdit,
   Stringcostants;
 
 type
@@ -23,7 +23,11 @@ type
     FUntitled:boolean;
 
   public
+    Property Sheet: TEditorTabSheet read FSheet;
+    // -- //
     procedure LoadFromfile(FileName: TFileName);
+    function Save: Boolean;
+    function SaveAs(FileName: TFileName): boolean;
   end;
 
   { TEditorTabSheet }
@@ -31,9 +35,12 @@ type
   TEditorTabSheet = class (TTabSheet)
   private
     FEditor: TEditor;
+  protected
+    procedure DoShow; override;
+
   public
     Property Editor: TEditor read FEditor;
-
+    //--//
   end;
 
 
@@ -48,7 +55,9 @@ type
      property CurrentEditor: TEditor read GetCurrentEditor;
      property OnStatusChange: TStatusChangeEvent read FonStatusChange write FOnStatusChange;
      //--//
+     procedure DoCloseTabClicked(APage: TCustomPage); override;
      function AddEditor(FileName:TFilename=''): TEditor;
+     Function CloseEditor(Editor: TEditor):boolean;
      constructor Create(AOwner:TComponent); override;
      destructor Destroy;  override;
    end;
@@ -57,6 +66,16 @@ implementation
 uses
   udmmain;
 
+{ TEditorTabSheet }
+
+procedure TEditorTabSheet.DoShow;
+begin
+  inherited DoShow;
+
+end;
+
+{ TEditor }
+
 procedure TEditor.LoadFromfile(FileName: TFileName);
 begin
   FFileName:= FileName;
@@ -64,6 +83,23 @@ begin
   Highlighter := dmMain.getHighLighter(ExtractFileExt(FileName));
   FSheet.Caption:= ExtractFileName(fFileName);
   FSheet.Hint:=FileName;
+end;
+
+function TEditor.Save: Boolean;
+begin
+  Result := SaveAs(FFileName);
+end;
+
+function TEditor.SaveAs(FileName: TFileName): boolean;
+begin
+  try
+    Lines.SaveToFile(FileName);
+    FFileName:=FileName;
+    Result := true;
+    FUntitled:= false;
+  Except
+    Result := false;
+  end;
 end;
 
 { TEditorFactory }
@@ -80,7 +116,18 @@ procedure TEditorFactory.DoChange;
 begin
   inherited DoChange;
   Hint:= ActivePage.Hint;
+  if Assigned(OnStatusChange) then
+     OnStatusChange(GetCurrentEditor, [scCaretX,scCaretY,scModified,scInsertMode]);
 
+  TEditorTabSheet(ActivePage).Editor.SetFocus;
+end;
+
+procedure TEditorFactory.DoCloseTabClicked(APage: TCustomPage);
+begin
+  inherited DoCloseTabClicked(APage);
+  if Assigned(APage) and
+     (APage is TEditorTabSheet) then
+    CloseEditor(TEditorTabSheet(APage).FEditor);
 end;
 
 function TEditorFactory.AddEditor(FileName:TFilename=''): TEditor;
@@ -95,7 +142,9 @@ begin
   Result.Align:= alClient;
   Sheet.FEditor := Result;
   Result.OnStatusChange:=OnStatusChange;
-  OnStatusChange(Result, [scCaretX,scCaretY,scModified,scInsertMode]);
+  if Assigned(OnStatusChange) then
+     OnStatusChange(Result, [scCaretX,scCaretY,scModified,scInsertMode]);
+
   Result.Parent := Sheet;
   if FileName = '' then
      begin
@@ -107,6 +156,45 @@ begin
      Result.LoadFromfile(FileName);
 
    ActivePage := Sheet;
+
+end;
+
+function TEditorFactory.CloseEditor(Editor: TEditor): boolean;
+var
+  Sheet: TEditorTabSheet;
+begin
+  if not Editor.Modified then
+     begin
+        Result:= true;
+        exit;
+     end;
+
+  case MessageDlg(Format(RSSaveChanges, [Caption]), mtWarning, [mbYes, mbNo, mbCancel], 0) of
+    mrYes: begin
+           //if Editor.FUntitled then
+           //   begin
+           //      SaveDialog1.FileName:=Caption;
+           //      if SaveDialog1.Execute then
+           //         FFileName:= SaveDialog1.FileName
+           //      else
+           //         begin
+           //           result:=false;
+           //           exit;
+           //         end;
+              end;
+    //      Lines.SaveToFile(FFileName);
+    //      CanClose:=true;
+    //end;
+    //mrNo: Result := true;
+    //mrCancel: Result := false;
+  end;
+
+  if Result then
+     begin
+       Sheet := Editor.FSheet;
+       FreeAndNil(Editor);
+       FreeAndNil(Sheet);
+     end;
 end;
 
 constructor TEditorFactory.Create(AOwner: TComponent);

@@ -80,8 +80,7 @@ type
     ToolButton7: TToolButton;
     ToolButton8: TToolButton;
     ToolButton9: TToolButton;
-    procedure AppPropertiesShowHint(var HintStr: string; var CanShow: Boolean;
-      var HintInfo: THintInfo);
+    procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
     procedure EditRedoExecute(Sender: TObject);
     procedure EditRedoUpdate(Sender: TObject);
     procedure EditUndoUpdate(Sender: TObject);
@@ -91,26 +90,28 @@ type
     procedure FileOpenAccept(Sender: TObject);
     procedure FindDialogClose(Sender: TObject);
     procedure FindDialogFind(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
-    procedure pcMainCloseTabClicked(Sender: TObject);
     procedure SearchFindAccept(Sender: TObject);
     procedure SearchFindExecute(Sender: TObject);
   private
-    EditorFactory:TEditorFactory;
+    EditorFactory: TEditorFactory;
     function EditorAvalaible: boolean; inline;
-    Procedure PrepareSearch(Dialog:TFindDialog; Out SynOption: TSynSearchOptions) ;
+    procedure PrepareSearch(Dialog: TFindDialog; Out SynOption: TSynSearchOptions);
     procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
   public
     { public declarations }
-  end; 
+  end;
 
 var
   fMain: TfMain;
 
 implementation
-uses lclproc,   Stringcostants, uabout;
+
+uses lclproc, Stringcostants, uabout;
+
 {$R *.lfm}
 
 { TfMain }
@@ -122,30 +123,29 @@ end;
 
 procedure TfMain.FileCloseExecute(Sender: TObject);
 begin
-  //if EditorAvalaible then
-  //  EditorFactory.CurrentSubForm.Close;
+  if EditorAvalaible then
+    EditorFactory.CloseEditor(EditorFactory.CurrentEditor);
 end;
 
 procedure TfMain.EditRedoExecute(Sender: TObject);
 begin
- //if EditorAvalaible then
- //   EditorFactory.CurrentEditor.Redo;
+  if EditorAvalaible then
+    EditorFactory.CurrentEditor.Redo;
 end;
 
-procedure TfMain.AppPropertiesShowHint(var HintStr: string;
-  var CanShow: Boolean; var HintInfo: THintInfo);
+procedure TfMain.AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
 begin
-  StatusBar1.Panels[3].Text:=HintInfo.HintStr;
+  StatusBar1.Panels[3].Text := HintInfo.HintStr;
 end;
 
 procedure TfMain.EditRedoUpdate(Sender: TObject);
 begin
-  //EditRedo.Enabled:= EditorAvalaible and EditorFactory.CurrentEditor.CanRedo;
+  EditRedo.Enabled := EditorAvalaible and EditorFactory.CurrentEditor.CanRedo;
 end;
 
 procedure TfMain.EditUndoUpdate(Sender: TObject);
 begin
-  //EditUndo.Enabled:= EditorAvalaible and EditorFactory.CurrentEditor.CanUndo;
+  EditUndo.Enabled := EditorAvalaible and EditorFactory.CurrentEditor.CanUndo;
 end;
 
 procedure TfMain.FileNewExecute(Sender: TObject);
@@ -173,26 +173,32 @@ var
   Options: TSynSearchOptions;
 begin
   PrepareSearch(FindDialog, Options);
-  //EditorFactory.CurrentEditor.SearchReplace(FindDialog.FindText,'',Options);
+  EditorFactory.CurrentEditor.SearchReplace(FindDialog.FindText, '', Options);
 
+end;
+
+procedure TfMain.FormActivate(Sender: TObject);
+begin
+  EditorFactory.CurrentEditor.SetFocus;
 end;
 
 procedure TfMain.FormCreate(Sender: TObject);
 begin
-//
- EditorFactory:=TEditorFactory.Create(Self);
- EditorFactory.Align:=alClient;
 
- EditorFactory.Parent := self;
- EditorFactory.OnStatusChange:=@EditorStatusChange;
+  EditorFactory := TEditorFactory.Create(Self);
+  EditorFactory.Align := alClient;
+  EditorFactory.Options := [nboShowCloseButtons];
+  EditorFactory.OnStatusChange := @EditorStatusChange;
+  EditorFactory.Images := imgList;
+  EditorFactory.Parent := self;
 
- FileNew.Execute;
+  FileNew.Execute;
 
 end;
 
 procedure TfMain.FormDestroy(Sender: TObject);
 begin
- EditorFactory.Free;
+  EditorFactory.Free;
 end;
 
 procedure TfMain.HelpAboutExecute(Sender: TObject);
@@ -201,62 +207,73 @@ begin
     Show;
 end;
 
-procedure TfMain.pcMainCloseTabClicked(Sender: TObject);
-begin
- //if Sender is TEditorTabSheet then
- //  TEditorTabSheet(Sender).Editor.Close;
-end;
-
 procedure TfMain.SearchFindAccept(Sender: TObject);
 begin
   if not EditorAvalaible then
     exit;
 
 end;
-procedure TfMain.EditorStatusChange(Sender: TObject;
-  Changes: TSynStatusChanges);
+
+procedure TfMain.EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
+var
+  Editor: TEditor;
+
 begin
-  if not EditorAvalaible then exit;
+  if not EditorAvalaible then
+    exit;
 
-  if  (scCaretX in Changes) or (scCaretY in Changes) then
-     StatusBar1.Panels[0].Text:= Format(RSStatusBarPos,[EditorFactory.CurrentEditor.CaretY, EditorFactory.CurrentEditor.CaretX]);
+  Editor := EditorFactory.CurrentEditor;
 
-  if  (scSelection in Changes) then
-     StatusBar1.Panels[1].Text:= Format(RSStatusBarSel,[EditorFactory.CurrentEditor.SelEnd - EditorFactory.CurrentEditor.SelStart]);
+  if (scCaretX in Changes) or (scCaretY in Changes) then
+    StatusBar1.Panels[0].Text := Format(RSStatusBarPos, [Editor.CaretY, Editor.CaretX]);
 
-  if  (scInsertMode in Changes) then
-     if EditorFactory.CurrentEditor.InsertMode  then
-        StatusBar1.Panels[2].Text:= RSStatusBarInsMode
-     else
-        StatusBar1.Panels[2].Text:= RSStatusBarOvrMode;
+  if (scSelection in Changes) then
+    StatusBar1.Panels[1].Text := Format(RSStatusBarSel, [Editor.SelEnd - Editor.SelStart]);
+
+  if (scInsertMode in Changes) then
+    if Editor.InsertMode then
+      StatusBar1.Panels[2].Text := RSStatusBarInsMode
+    else
+      StatusBar1.Panels[2].Text := RSStatusBarOvrMode;
+
+  if (scModified in Changes) then
+    if Editor.Modified then
+      Editor.Sheet.ImageIndex := 28
+    else
+      Editor.Sheet.ImageIndex := 19;
 
 end;
 
 procedure TfMain.SearchFindExecute(Sender: TObject);
-//var
-//  Editor : TfEditor;
+var
+  Editor: TEditor;
 begin
 
   if not EditorAvalaible then
-     exit;
-//  if Ed.SelAvail and (Ed.BlockBegin.Y = Ed.BlockEnd.Y) then FindDialog.FindText := Ed.SelText;
+    exit;
+  Editor := EditorFactory.CurrentEditor;
+  if Editor.SelAvail and (Editor.BlockBegin.Y = Editor.BlockEnd.Y) then
+    FindDialog.FindText := Editor.SelText;
   FindDialog.Execute;
 end;
 
 function TfMain.EditorAvalaible: boolean;
 begin
 
-  //Result := Assigned(EditorFactory.CurrentSubForm) and Assigned(EditorFactory.CurrentEditor);;
+  Result := Assigned(EditorFactory.CurrentEditor);
 end;
 
-procedure TfMain.PrepareSearch(Dialog: TFindDialog; out
-  SynOption: TSynSearchOptions);
+procedure TfMain.PrepareSearch(Dialog: TFindDialog; out SynOption: TSynSearchOptions);
 begin
   SynOption := [];
-  if not (frDown in Dialog.Options) then Include(SynOption, ssoBackwards);
-  if frWholeWord in Dialog.Options then Include(SynOption, ssoWholeWord);
-  if frMatchCase in Dialog.Options then Include(SynOption, ssoMatchCase);
-  if frEntireScope in Dialog.Options then Include(SynOption, ssoEntireScope);
+  if not (frDown in Dialog.Options) then
+    Include(SynOption, ssoBackwards);
+  if frWholeWord in Dialog.Options then
+    Include(SynOption, ssoWholeWord);
+  if frMatchCase in Dialog.Options then
+    Include(SynOption, ssoMatchCase);
+  if frEntireScope in Dialog.Options then
+    Include(SynOption, ssoEntireScope);
 
 end;
 
@@ -264,4 +281,3 @@ end;
 
 
 end.
-

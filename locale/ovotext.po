@@ -5,6 +5,10 @@ msgstr "Content-Type: text/plain; charset=UTF-8"
 msgid "<new   %d>"
 msgstr ""
 
+#: stringcostants.rssavechanges
+msgid "Save changes to \"%s\"?"
+msgstr ""
+
 #: stringcostants.rsstatusbarinsmode
 msgid "INS "
 msgstr ""

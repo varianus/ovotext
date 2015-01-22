@@ -22,6 +22,7 @@ Resourcestring
   RSStatusBarSel = 'Sel: %d ';
   RSStatusBarInsMode = 'INS ';
   RSStatusBarOvrMode = 'OVR ';
+  RSSaveChanges = 'Save changes to "%s"?';
 
 implementation
 
