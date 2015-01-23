@@ -187,7 +187,6 @@ begin
 
   EditorFactory := TEditorFactory.Create(Self);
   EditorFactory.Align := alClient;
-  EditorFactory.Options := [nboShowCloseButtons];
   EditorFactory.OnStatusChange := @EditorStatusChange;
   EditorFactory.Images := imgList;
   EditorFactory.Parent := self;
@@ -260,7 +259,7 @@ end;
 function TfMain.EditorAvalaible: boolean;
 begin
 
-  Result := Assigned(EditorFactory.CurrentEditor);
+  Result := Assigned(EditorFactory) and Assigned(EditorFactory.CurrentEditor);
 end;
 
 procedure TfMain.PrepareSearch(Dialog: TFindDialog; out SynOption: TSynSearchOptions);

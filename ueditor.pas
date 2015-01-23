@@ -201,6 +201,8 @@ constructor TEditorFactory.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   fUntitledCounter:=0;
+  Options := Options + [nboShowCloseButtons];
+
 end;
 
 destructor TEditorFactory.Destroy;
