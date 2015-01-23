@@ -5,7 +5,7 @@ interface
 uses
   LCLVersion;
 const
-  DisplayAppName = 'OvoPlayer';
+  DisplayAppName = 'OvoText';
   AppVersion = '0.0.1';//{$i version.inc};
   BuildDate = {$I %DATE%};
   lazVersion  = lcl_version;         // Lazarus version (major.minor.micro)
@@ -14,7 +14,7 @@ const
   TargetOS    = {$I %FPCTARGETOS%};  // Target Operating System of FPC
 
 
-AppName  = 'ovoplayer';
+AppName  = 'ovotext';
 
 Resourcestring
   RSNewFile = '<new   %d>';
