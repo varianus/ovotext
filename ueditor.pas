@@ -164,11 +164,8 @@ var
   Sheet: TEditorTabSheet;
 begin
   if not Editor.Modified then
-     begin
-        Result:= true;
-        exit;
-     end;
-
+     Result:= true
+  else
   case MessageDlg(Format(RSSaveChanges, [Caption]), mtWarning, [mbYes, mbNo, mbCancel], 0) of
     mrYes: begin
            //if Editor.FUntitled then
@@ -176,7 +173,7 @@ begin
            //      SaveDialog1.FileName:=Caption;
            //      if SaveDialog1.Execute then
            //         FFileName:= SaveDialog1.FileName
-           //      else
+           //     else
            //         begin
            //           result:=false;
            //           exit;
@@ -211,4 +208,4 @@ begin
 end;
 
 end.
-
+

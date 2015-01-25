@@ -90,7 +90,6 @@
         <ComponentName Value="fMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="umain"/>
       </Unit1>
       <Unit2>
         <Filename Value="uabout.pas"/>
@@ -98,7 +97,6 @@
         <ComponentName Value="fAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uabout"/>
       </Unit2>
       <Unit3>
         <Filename Value="udmmain.pas"/>
@@ -106,11 +104,11 @@
         <ComponentName Value="dmMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
+        <UnitName Value="udmmain"/>
       </Unit3>
       <Unit4>
         <Filename Value="stringcostants.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="Stringcostants"/>
       </Unit4>
       <Unit5>
         <Filename Value="supportfuncs.pas"/>
@@ -119,7 +117,6 @@
       <Unit6>
         <Filename Value="ueditor.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="ueditor"/>
       </Unit6>
     </Units>
   </ProjectOptions>
@@ -131,6 +128,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="highlighters"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>
