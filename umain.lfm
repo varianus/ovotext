@@ -1800,4 +1800,8 @@ object fMain: TfMain
       Caption = '-'
     end
   end
+  object SaveDialog: TSaveDialog
+    left = 174
+    top = 239
+  end
 end

@@ -59,6 +59,7 @@ type
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     pumEdit: TPopupMenu;
+    SaveDialog: TSaveDialog;
     SearchFind: TAction;
     SearchFindFirst: TAction;
     SearchFindNext1: TAction;
@@ -99,6 +100,7 @@ type
   private
     EditorFactory: TEditorFactory;
     function EditorAvalaible: boolean; inline;
+    procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
     procedure PrepareSearch(Dialog: TFindDialog; Out SynOption: TSynSearchOptions);
     procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
   public
@@ -188,6 +190,7 @@ begin
   EditorFactory := TEditorFactory.Create(Self);
   EditorFactory.Align := alClient;
   EditorFactory.OnStatusChange := @EditorStatusChange;
+  EditorFactory.OnBeforeClose  := @BeforeCloseEditor;
   EditorFactory.Images := imgList;
   EditorFactory.Parent := self;
 
@@ -276,7 +279,33 @@ begin
 
 end;
 
+procedure TfMain.BeforeCloseEditor(Editor:TEditor; var Cancel:boolean);
+begin
+  if not Editor.Modified then
+     Cancel:= False
+  else
+  case MessageDlg(Format(RSSaveChanges, [ExtractFileName(Editor.Sheet.Caption)]), mtWarning, [mbYes, mbNo, mbCancel], 0) of
+    mrYes: begin
+           if Editor.Untitled then
+              begin
+                 SaveDialog.FileName:=Editor.Sheet.Caption;
+                 if SaveDialog.Execute then
+                    begin
+                      Editor.FileName:= SaveDialog.FileName;
+                    end
+                else
+                    begin
+                      Cancel:=true;
+                      exit;
+                    end;
+              end;
+          Editor.Save;
+          Cancel:=false;
+       end;
+    mrNo: Cancel := False;
+    mrCancel: Cancel := true;
+  end;
 
-
+end;
 
 end.

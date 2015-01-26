@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Controls, dialogs, comctrls, SynEditTypes, SynEdit,
-  Stringcostants;
+  Stringcostants, forms;
 
 type
 
@@ -16,18 +16,24 @@ type
 
   { TEditorFactory }
 
+  TOnBeforeClose = procedure(Editor: TEditor; var Cancel: boolean) of object;
+
   TEditor = class(TSynEdit)
   private
     FFileName: TFilename;
     FSheet: TEditorTabSheet;
     FUntitled:boolean;
+    procedure SetFileName(AValue: TFileName);
+    procedure SetUntitled(AValue: boolean);
 
   public
     Property Sheet: TEditorTabSheet read FSheet;
+    Property FileName: TFileName read FFileName write SetFileName;
+    property Untitled: boolean read FUntitled write SetUntitled;
     // -- //
-    procedure LoadFromfile(FileName: TFileName);
+    procedure LoadFromfile(AFileName: TFileName);
     function Save: Boolean;
-    function SaveAs(FileName: TFileName): boolean;
+    function SaveAs(AFileName: TFileName): boolean;
   end;
 
   { TEditorTabSheet }
@@ -46,14 +52,17 @@ type
 
   TEditorFactory = class (TPageControl)
    private
+     FOnBeforeClose: TOnBeforeClose;
      FonStatusChange: TStatusChangeEvent;
      fUntitledCounter :Integer;
      function GetCurrentEditor: TEditor;
+     procedure SetOnBeforeClose(AValue: TOnBeforeClose);
    protected
      procedure DoChange; override;
    public
      property CurrentEditor: TEditor read GetCurrentEditor;
      property OnStatusChange: TStatusChangeEvent read FonStatusChange write FOnStatusChange;
+     property OnBeforeClose: TOnBeforeClose read FOnBeforeClose write SetOnBeforeClose;
      //--//
      procedure DoCloseTabClicked(APage: TCustomPage); override;
      function AddEditor(FileName:TFilename=''): TEditor;
@@ -76,11 +85,27 @@ end;
 
 { TEditor }
 
-procedure TEditor.LoadFromfile(FileName: TFileName);
+procedure TEditor.SetFileName(AValue: TFileName);
 begin
-  FFileName:= FileName;
-  Lines.LoadFromFile(FileName);
-  Highlighter := dmMain.getHighLighter(ExtractFileExt(FileName));
+  if FFileName=AValue then Exit;
+  FFileName:=AValue;
+  if FFileName <> EmptyStr then
+     FUntitled:= false;
+end;
+
+procedure TEditor.SetUntitled(AValue: boolean);
+begin
+  if FUntitled=AValue then Exit;
+  FUntitled:=AValue;
+  if FUntitled then
+     FFileName:=EmptyStr;
+end;
+
+procedure TEditor.LoadFromfile(AFileName: TFileName);
+begin
+  FFileName:= AFileName;
+  Lines.LoadFromFile(FFileName);
+  Highlighter := dmMain.getHighLighter(ExtractFileExt(fFileName));
   FSheet.Caption:= ExtractFileName(fFileName);
   FSheet.Hint:=FileName;
 end;
@@ -90,11 +115,11 @@ begin
   Result := SaveAs(FFileName);
 end;
 
-function TEditor.SaveAs(FileName: TFileName): boolean;
+function TEditor.SaveAs(AFileName: TFileName): boolean;
 begin
   try
-    Lines.SaveToFile(FileName);
-    FFileName:=FileName;
+    FFileName:=AFileName;
+    Lines.SaveToFile(AFileName);
     Result := true;
     FUntitled:= false;
   Except
@@ -110,6 +135,12 @@ begin
   if (PageCount > 0) and (ActivePageIndex >= 0) then
      result := TEditorTabSheet(ActivePage).Editor;
 
+end;
+
+procedure TEditorFactory.SetOnBeforeClose(AValue: TOnBeforeClose);
+begin
+  if FOnBeforeClose=AValue then Exit;
+  FOnBeforeClose:=AValue;
 end;
 
 procedure TEditorFactory.DoChange;
@@ -162,35 +193,17 @@ end;
 function TEditorFactory.CloseEditor(Editor: TEditor): boolean;
 var
   Sheet: TEditorTabSheet;
+  Cancel: boolean;
 begin
-  if not Editor.Modified then
-     Result:= true
-  else
-  case MessageDlg(Format(RSSaveChanges, [Caption]), mtWarning, [mbYes, mbNo, mbCancel], 0) of
-    mrYes: begin
-           //if Editor.FUntitled then
-           //   begin
-           //      SaveDialog1.FileName:=Caption;
-           //      if SaveDialog1.Execute then
-           //         FFileName:= SaveDialog1.FileName
-           //     else
-           //         begin
-           //           result:=false;
-           //           exit;
-           //         end;
-              end;
-    //      Lines.SaveToFile(FFileName);
-    //      CanClose:=true;
-    //end;
-    //mrNo: Result := true;
-    //mrCancel: Result := false;
-  end;
+  Cancel:= True;
+  if Assigned(FOnBeforeClose) then
+     FOnBeforeClose(Editor, Cancel);
 
-  if Result then
+  if not Cancel then
      begin
        Sheet := Editor.FSheet;
-       FreeAndNil(Editor);
-       FreeAndNil(Sheet);
+       Application.ReleaseComponent(Editor);
+       Application.ReleaseComponent(Sheet);
      end;
 end;
 
@@ -208,4 +221,4 @@ begin
 end;
 
 end.
-
+
