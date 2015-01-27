@@ -15,17 +15,16 @@ type
   private
     FConfigFile:    string;
     fConfigDir:    string;
-    FNeedRestart: boolean;
     ResourcesPath: string;
     fIniFiles:     TMemIniFile;
     function ReadColor(const Section, Ident: string; const Default: TColor): TColor;
-    procedure WriteStringS(Section: string; BaseName: string; Values: TStrings);
-    function ReadStrings(Section: string; Name: string; Values: TStrings): integer;
     procedure WriteColor(const Section, Ident: string; const Value: TColor);
   public
     constructor Create;
     procedure ReadConfig;
     procedure SaveConfig;
+    procedure WriteStrings(Section: string; BaseName: string; Values: TStrings);
+    function ReadStrings(Section: string; Name: string; Values: TStrings): integer;
     Procedure ReadCustomParams(const Section:string; Params:TStrings);
     procedure SaveCustomParams(const Section:string; Params:TStrings);
     procedure RemoveSection(const Section:string);
@@ -90,7 +89,7 @@ end;
 
 procedure TConfig.SaveConfig;
 begin
-  fIniFiles.WriteString(SectionUnix, IdentResourcesPath, ResourcesPath);
+//  fIniFiles.WriteString(SectionUnix, IdentResourcesPath, ResourcesPath);
 
 end;
 
@@ -124,7 +123,7 @@ begin
     ExtractFilePath(ParamStr(0))));
 {$else}
   {$ifndef DARWIN}
-  ResourcesPath := fIniFiles.ReadString(SectionUnix, IdentResourcesPath, DefaultResourceDirectory);
+  ResourcesPath := fIniFiles.ReadString(SectionUnix, IdentResourcesPath, DefaultDirectory);
   {$endif}
 {$endif}
 end;

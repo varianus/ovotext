@@ -204,7 +204,8 @@ begin
   MRU.MenuItem := mnuOpenRecent;
   MRU.OnRecentFile:=@RecentFileEvent;
   MRU.MaxRecent:=10;
-  MRU.LoadRecentFilesFromIni(FConfig.ConfigFile,'Recent');
+  FConfig.ReadStrings('Recent','File', MRU.Recent);
+  MRU.ShowRecentFiles;
   EditorFactory := TEditorFactory.Create(Self);
   EditorFactory.Align := alClient;
   EditorFactory.OnStatusChange := @EditorStatusChange;
@@ -219,8 +220,7 @@ end;
 
 procedure TfMain.FormDestroy(Sender: TObject);
 begin
-  MRU.SaveRecentFilesToIni(FConfig.ConfigFile,'Recent');
-  FConfig.SaveConfig;
+  FConfig.WriteStrings('Recent', 'File', MRU.Recent);
   FConfig.free;
   FreeAndNil(EditorFactory);
 end;
@@ -348,4 +348,4 @@ begin
 
 end;
 
-end.
+end.
