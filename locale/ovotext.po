@@ -226,6 +226,24 @@ msgctxt "TFMAIN.MENUITEM25.CAPTION"
 msgid "-"
 msgstr ""
 
+#: tfmain.menuitem26.caption
+msgctxt "TFMAIN.MENUITEM26.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfmain.menuitem27.caption
+msgctxt "TFMAIN.MENUITEM27.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfmain.menuitem28.caption
+msgid "Clean recent file list"
+msgstr ""
+
+#: tfmain.menuitem29.caption
+msgid "Reopen all recent"
+msgstr ""
+
 #: tfmain.menuitem3.caption
 msgid "Help"
 msgstr ""
@@ -237,6 +255,10 @@ msgstr ""
 #: tfmain.menuitem8.caption
 msgctxt "TFMAIN.MENUITEM8.CAPTION"
 msgid "Find"
+msgstr ""
+
+#: tfmain.mnuopenrecent.caption
+msgid "Open Recent ..."
 msgstr ""
 
 #: tfmain.searchfind.caption

@@ -8,7 +8,7 @@ uses
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, umain, uabout, udmmain, Stringcostants,
-SupportFuncs;
+SupportFuncs, config;
 
 {$R *.res}
 

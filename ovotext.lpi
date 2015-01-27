@@ -70,16 +70,19 @@
         <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="2">
+    <RequiredPackages Count="3">
       <Item1>
-        <PackageName Value="SynEdit"/>
-        <MinVersion Major="1" Valid="True"/>
+        <PackageName Value="lazmrumenu"/>
       </Item1>
       <Item2>
-        <PackageName Value="LCL"/>
+        <PackageName Value="SynEdit"/>
+        <MinVersion Major="1" Valid="True"/>
       </Item2>
+      <Item3>
+        <PackageName Value="LCL"/>
+      </Item3>
     </RequiredPackages>
-    <Units Count="7">
+    <Units Count="8">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -116,12 +119,18 @@
       <Unit5>
         <Filename Value="supportfuncs.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="SupportFuncs"/>
       </Unit5>
       <Unit6>
         <Filename Value="ueditor.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ueditor"/>
       </Unit6>
+      <Unit7>
+        <Filename Value="config.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Config"/>
+      </Unit7>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
