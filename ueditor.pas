@@ -108,6 +108,8 @@ begin
   Highlighter := dmMain.getHighLighter(ExtractFileExt(fFileName));
   FSheet.Caption:= ExtractFileName(fFileName);
   FSheet.Hint:=FileName;
+  FUntitled:=false;
+
 end;
 
 function TEditor.Save: Boolean;
@@ -164,7 +166,35 @@ end;
 function TEditorFactory.AddEditor(FileName:TFilename=''): TEditor;
 var
   Sheet: TEditorTabSheet;
+  i: integer;
 begin
+  if FileName <> EmptyStr then
+    begin
+      // do not reopen same file
+      for i:= 0 to PageCount -1 do
+       begin
+        Sheet := TEditorTabSheet(Pages[i]);
+        if Sheet.Editor.FileName = FileName then
+          begin
+            ActivePageIndex:= i;
+            exit;
+          end;
+      end;
+
+    // try to reuse an empty shhet
+     for i:= 0 to PageCount -1 do
+       begin
+         Sheet := TEditorTabSheet(Pages[i]);
+         if (Sheet.Editor.Untitled) and not Sheet.Editor.Modified then
+           begin
+             Sheet.Editor.LoadFromfile(FileName);
+             ActivePageIndex:= i;
+             exit;
+           end;
+        end;
+
+    end;
+
   Sheet:= TEditorTabSheet.Create(Self);
   Sheet.PageControl := Self;
 
