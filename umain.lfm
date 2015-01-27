@@ -1,7 +1,7 @@
 object fMain: TfMain
-  Left = 579
+  Left = 771
   Height = 688
-  Top = 217
+  Top = 144
   Width = 966
   Caption = 'ovoText'
   ClientHeight = 668
@@ -58,71 +58,71 @@ object fMain: TfMain
       Top = 2
       Action = FileSave
     end
-    object ToolButton4: TToolButton
-      Left = 73
+    object tbbClose: TToolButton
+      Left = 281
       Top = 2
       Action = FileClose
     end
     object ToolButton5: TToolButton
-      Left = 97
+      Left = 73
       Height = 18
       Top = 2
       Width = 10
       Style = tbsSeparator
     end
     object ToolButton6: TToolButton
-      Left = 107
+      Left = 83
       Top = 2
       Action = EditCut
     end
     object ToolButton7: TToolButton
-      Left = 131
+      Left = 107
       Top = 2
       Action = EditCopy
     end
     object ToolButton8: TToolButton
-      Left = 155
+      Left = 131
       Top = 2
       Action = EditPaste
     end
     object ToolButton9: TToolButton
-      Left = 189
+      Left = 165
       Top = 2
       Action = EditUndo
     end
     object ToolButton10: TToolButton
-      Left = 213
+      Left = 189
       Top = 2
       Action = EditRedo
     end
     object ToolButton11: TToolButton
-      Left = 179
+      Left = 155
       Height = 18
       Top = 2
       Width = 10
       Style = tbsSeparator
     end
     object ToolButton12: TToolButton
-      Left = 237
+      Left = 213
       Height = 18
       Top = 2
       Width = 10
       Style = tbsSeparator
     end
     object ToolButton13: TToolButton
-      Left = 247
+      Left = 223
       Top = 2
       Action = SearchFind
     end
     object ToolButton14: TToolButton
-      Left = 295
+      Left = 271
       Height = 18
       Top = 2
       Width = 10
       Style = tbsSeparator
     end
     object ToolButton15: TToolButton
-      Left = 271
+      Left = 247
       Top = 2
       Action = SearchReplace
     end
@@ -345,6 +345,23 @@ object fMain: TfMain
           4460C88B4DBBC88C4FEEC88C4FF6C88C4FF7C88C4FF7C88D4FF7C98C4FF7C78B
           4FF7C5894BD4C4763B91B3683C06FFFFFF00FFFFFF00FFFFFF00
         }
+      end
+      object MenuItem26: TMenuItem
+        Caption = '-'
+      end
+      object mnuOpenRecent: TMenuItem
+        Caption = 'Open Recent ...'
+      end
+      object MenuItem29: TMenuItem
+        Caption = 'Reopen all recent'
+        OnClick = MenuItem29Click
+      end
+      object MenuItem28: TMenuItem
+        Caption = 'Clean recent file list'
+        OnClick = MenuItem28Click
+      end
+      object MenuItem27: TMenuItem
+        Caption = '-'
       end
       object MenuItem6: TMenuItem
         Action = FileSaveAs

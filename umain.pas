@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, SynEditTypes;
+  ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, SynEditTypes, mrumanager,
+  Config;
 
 type
 
@@ -48,6 +49,11 @@ type
     MenuItem23: TMenuItem;
     MenuItem24: TMenuItem;
     MenuItem25: TMenuItem;
+    MenuItem26: TMenuItem;
+    MenuItem27: TMenuItem;
+    MenuItem28: TMenuItem;
+    MenuItem29: TMenuItem;
+    mnuOpenRecent: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
@@ -75,7 +81,7 @@ type
     ToolButton15: TToolButton;
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
-    ToolButton4: TToolButton;
+    tbbClose: TToolButton;
     ToolButton5: TToolButton;
     ToolButton6: TToolButton;
     ToolButton7: TToolButton;
@@ -95,14 +101,19 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
+    procedure MenuItem28Click(Sender: TObject);
+    procedure MenuItem29Click(Sender: TObject);
     procedure SearchFindAccept(Sender: TObject);
     procedure SearchFindExecute(Sender: TObject);
   private
     EditorFactory: TEditorFactory;
+    MRU: TMRUMenuManager;
+    FConfig: TConfig;
     function EditorAvalaible: boolean; inline;
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
     procedure PrepareSearch(Dialog: TFindDialog; Out SynOption: TSynSearchOptions);
     procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
+    procedure RecentFileEvent (Sender : TObject; Const AFileName : String);
   public
     { public declarations }
   end;
@@ -162,6 +173,7 @@ procedure TfMain.FileOpenAccept(Sender: TObject);
 begin
 
   EditorFactory.AddEditor(FileOpen.Dialog.FileName);
+  MRU.AddToRecent(FileOpen.Dialog.FileName);
 
 end;
 
@@ -186,27 +198,51 @@ end;
 
 procedure TfMain.FormCreate(Sender: TObject);
 begin
-
+  FConfig := TConfig.Create;
+  FConfig.ReadConfig;
+  MRU := TMRUMenuManager.Create(Self);
+  MRU.MenuItem := mnuOpenRecent;
+  MRU.OnRecentFile:=@RecentFileEvent;
+  MRU.MaxRecent:=10;
+  MRU.LoadRecentFilesFromIni(FConfig.ConfigFile,'Recent');
   EditorFactory := TEditorFactory.Create(Self);
   EditorFactory.Align := alClient;
   EditorFactory.OnStatusChange := @EditorStatusChange;
   EditorFactory.OnBeforeClose  := @BeforeCloseEditor;
   EditorFactory.Images := imgList;
   EditorFactory.Parent := self;
-
   FileNew.Execute;
+  // move close button to right
+  tbbClose.Align:= alRight;
 
 end;
 
 procedure TfMain.FormDestroy(Sender: TObject);
 begin
-  EditorFactory.Free;
+  MRU.SaveRecentFilesToIni(FConfig.ConfigFile,'Recent');
+  FConfig.SaveConfig;
+  FConfig.free;
+  FreeAndNil(EditorFactory);
 end;
 
 procedure TfMain.HelpAboutExecute(Sender: TObject);
 begin
   with TfAbout.Create(self) do
     Show;
+end;
+
+procedure TfMain.MenuItem28Click(Sender: TObject);
+begin
+  MRU.Recent.Clear;
+  MRU.ShowRecentFiles;
+end;
+
+procedure TfMain.MenuItem29Click(Sender: TObject);
+var i : integer;
+begin
+  for i := 0 to MRU.Recent.Count -1 do
+    EditorFactory.AddEditor(MRU.Recent[i]);
+
 end;
 
 procedure TfMain.SearchFindAccept(Sender: TObject);
@@ -246,6 +282,11 @@ begin
 
 end;
 
+procedure TfMain.RecentFileEvent(Sender: TObject; const AFileName: String);
+begin
+  EditorFactory.AddEditor(AFileName);
+end;
+
 procedure TfMain.SearchFindExecute(Sender: TObject);
 var
   Editor: TEditor;
@@ -261,7 +302,6 @@ end;
 
 function TfMain.EditorAvalaible: boolean;
 begin
-
   Result := Assigned(EditorFactory) and Assigned(EditorFactory.CurrentEditor);
 end;
 
