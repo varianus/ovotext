@@ -71,7 +71,7 @@ const
   (HLClass: TSynProgressSyn; Filter : 'Progress Files (*.w,*.p,*.i)|*.w;*.p;*.i'; HL: nil),
   (HLClass: TSynEiffelSyn; Filter : 'Eiffel (*.e;*.ace)|*.e;*.ace'; HL: nil),
   (HLClass: TSynBaanSyn; Filter : 'Baan 4GL Files (*.cln)|*.cln'; HL: nil),
-  (HLClass: TSynDiffSyn; Filter : ''; HL: nil),
+  (HLClass: TSynDiffSyn; Filter : 'Diff Files (*.diff)|*.diff'; HL: nil),
   (HLClass: TSynJScriptSyn; Filter : 'Javascript Files (*.js)|*.js'; HL: nil),
   (HLClass: TSynM3Syn; Filter : 'Modula-3 Files (*.m3)|*.m3'; HL: nil),
   (HLClass: TSynLDRSyn; Filter : 'LEGO LDraw Files (*.ldr)|*.ldr'; HL: nil),
