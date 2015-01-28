@@ -170,10 +170,15 @@ begin
 end;
 
 procedure TfMain.FileOpenAccept(Sender: TObject);
+var
+  i:Integer;
 begin
 
-  EditorFactory.AddEditor(FileOpen.Dialog.FileName);
-  MRU.AddToRecent(FileOpen.Dialog.FileName);
+  for i :=0 to FileOpen.Dialog.Files.Count -1 do
+    begin
+      EditorFactory.AddEditor(FileOpen.Dialog.Files[i]);
+      MRU.AddToRecent(FileOpen.Dialog.Files[i]);
+    end;
 
 end;
 

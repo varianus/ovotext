@@ -4,7 +4,7 @@ object fMain: TfMain
   Top = 144
   Width = 966
   Caption = 'ovoText'
-  ClientHeight = 668
+  ClientHeight = 667
   ClientWidth = 966
   Menu = mnuMain
   OnActivate = FormActivate
@@ -14,8 +14,8 @@ object fMain: TfMain
   LCLVersion = '1.5'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 23
-    Top = 645
+    Height = 21
+    Top = 646
     Width = 966
     Panels = <    
       item
@@ -40,7 +40,6 @@ object fMain: TfMain
     BorderWidth = 3
     ButtonHeight = 18
     ButtonWidth = 24
-    Caption = 'ToolBar1'
     Images = imgList
     TabOrder = 1
     object ToolButton1: TToolButton
@@ -208,8 +207,9 @@ object fMain: TfMain
     end
     object FileOpen: TFileOpen
       Category = 'File'
-      Caption = '&Apri...'
-      Hint = 'Apri'
+      Caption = '&Open...'
+      Dialog.Options = [ofAllowMultiSelect, ofPathMustExist, ofFileMustExist, ofShareAware, ofEnableSizing, ofViewDetail, ofAutoPreview]
+      Hint = 'Open'
       ImageIndex = 17
       ShortCut = 16463
       OnAccept = FileOpenAccept
@@ -1821,4 +1821,4 @@ object fMain: TfMain
     left = 174
     top = 239
   end
-end
+end
