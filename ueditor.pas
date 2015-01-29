@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Controls, dialogs, comctrls, SynEditTypes, SynEdit,
-  Stringcostants, forms;
+  Stringcostants, forms, Graphics;
 
 type
 
@@ -67,6 +67,7 @@ type
      procedure DoCloseTabClicked(APage: TCustomPage); override;
      function AddEditor(FileName:TFilename=''): TEditor;
      Function CloseEditor(Editor: TEditor):boolean;
+     Function CloseAll:boolean;
      constructor Create(AOwner:TComponent); override;
      destructor Destroy;  override;
    end;
@@ -199,6 +200,9 @@ begin
   Sheet.PageControl := Self;
 
   Result := TEditor.Create(Sheet);
+  Result.Font.Name:='Ubuntu Mono';
+  Result.Font.Size:=11;
+  Result.Font.Quality:=fqCleartypeNatural;
   Result.FSheet := Sheet;
   Result.Align:= alClient;
   Sheet.FEditor := Result;
@@ -235,6 +239,16 @@ begin
        Application.ReleaseComponent(Editor);
        Application.ReleaseComponent(Sheet);
      end;
+end;
+
+function TEditorFactory.CloseAll: boolean;
+var
+  i: integer;
+begin
+  for i := 0 to PageCount -1 do
+    if not CloseEditor(TEditorTabSheet(Pages[i]).Editor)   then
+       break;
+
 end;
 
 constructor TEditorFactory.Create(AOwner: TComponent);

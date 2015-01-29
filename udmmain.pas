@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Dialogs,
-  SupportFuncs, SynEditHighlighter, SynExportHTML, fgl,
+  SupportFuncs, SynEditHighlighter, SynExportHTML, fgl, Graphics,
   // included with Lazarus
   SynHighlighterPas,
   SynHighlighterCpp, SynHighlighterJava, SynHighlighterPerl, SynHighlighterHTML,
@@ -100,6 +100,7 @@ type
   private
     fHighlighters: THighLighterList;
     procedure LoadHighlighters;
+    Procedure InitializeHighlighter(Highlighter:TSynCustomHighlighter);
   public
     function getHighLighter(Extension:string): TSynCustomHighlighter;
 
@@ -151,6 +152,42 @@ begin
 
 end;
 
+procedure TdmMain.InitializeHighlighter(Highlighter: TSynCustomHighlighter);
+var
+  i : Integer;
+  s: string;
+begin
+
+  for i := 0 to Highlighter.AttrCount -1 do
+    with Highlighter.Attribute[i] do
+      case name of
+        'Comment': begin
+                     Foreground:=clgreen;
+                     Style:=[fsItalic];
+                   end;
+        'String': begin
+                     Foreground:=clBlue;
+                     Style:=[];
+                   end;
+        'Symbol': begin
+                   end;
+        'Number': begin
+                     Foreground:=clblue;
+                   end;
+        'Directive': begin
+                     Foreground:=$00711796;
+                     Style:=[];
+                   end;
+        'Reserved word': begin
+                     Foreground:=$008F120A;
+                     Style:=[fsBold];
+                   end;
+
+      end;
+
+
+end;
+
 function TdmMain.getHighLighter(Extension: string): TSynCustomHighlighter;
 var
  tmp: integer;
@@ -161,7 +198,10 @@ begin
     begin
      idx := fHighlighters.Data[tmp];
      if not Assigned(ARHighlighter[idx].HL) then
-       ARHighlighter[idx].HL := ARHighlighter[idx].HLClass.Create(Self);
+       begin
+         ARHighlighter[idx].HL := ARHighlighter[idx].HLClass.Create(Self);
+         InitializeHighlighter(ARHighlighter[idx].HL);
+       end;
      result := ARHighlighter[idx].HL;
     end
   else

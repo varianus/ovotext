@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, SynEditTypes, mrumanager,
-  Config;
+  ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, SynEditTypes,
+  SynHighlighterPas, mrumanager, Config;
 
 type
 
@@ -53,6 +53,8 @@ type
     MenuItem27: TMenuItem;
     MenuItem28: TMenuItem;
     MenuItem29: TMenuItem;
+    MenuItem30: TMenuItem;
+    MenuItem31: TMenuItem;
     mnuOpenRecent: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -77,11 +79,12 @@ type
     ToolButton11: TToolButton;
     ToolButton12: TToolButton;
     ToolButton13: TToolButton;
-    ToolButton14: TToolButton;
     ToolButton15: TToolButton;
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     tbbClose: TToolButton;
+    tbbCloseAll: TToolButton;
+    tbbSepClose: TToolButton;
     ToolButton5: TToolButton;
     ToolButton6: TToolButton;
     ToolButton7: TToolButton;
@@ -91,6 +94,7 @@ type
     procedure EditRedoExecute(Sender: TObject);
     procedure EditRedoUpdate(Sender: TObject);
     procedure EditUndoUpdate(Sender: TObject);
+    procedure FileCloseAllExecute(Sender: TObject);
     procedure FileCloseExecute(Sender: TObject);
     procedure FileExitExecute(Sender: TObject);
     procedure FileNewExecute(Sender: TObject);
@@ -98,6 +102,7 @@ type
     procedure FindDialogClose(Sender: TObject);
     procedure FindDialogFind(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
@@ -161,6 +166,11 @@ begin
   EditUndo.Enabled := EditorAvalaible and EditorFactory.CurrentEditor.CanUndo;
 end;
 
+procedure TfMain.FileCloseAllExecute(Sender: TObject);
+begin
+  EditorFactory.CloseAll;
+end;
+
 procedure TfMain.FileNewExecute(Sender: TObject);
 var
   Editor: TEditor;
@@ -201,6 +211,14 @@ begin
   EditorFactory.CurrentEditor.SetFocus;
 end;
 
+procedure TfMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
+begin
+  if Assigned(EditorFactory) and (EditorFactory.PageCount > 0) then
+    CanClose:= EditorFactory.CloseAll
+  Else
+    CanClose:= true;
+end;
+
 procedure TfMain.FormCreate(Sender: TObject);
 begin
   FConfig := TConfig.Create;
@@ -219,6 +237,8 @@ begin
   EditorFactory.Parent := self;
   FileNew.Execute;
   // move close button to right
+  tbbCloseAll.Align:= alRight;
+  tbbSepClose.Align:= alRight;
   tbbClose.Align:= alRight;
 
 end;
@@ -353,4 +373,4 @@ begin
 
 end;
 
-end.
+end.
