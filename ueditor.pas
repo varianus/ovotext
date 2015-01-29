@@ -67,6 +67,7 @@ type
      procedure DoCloseTabClicked(APage: TCustomPage); override;
      function AddEditor(FileName:TFilename=''): TEditor;
      Function CloseEditor(Editor: TEditor):boolean;
+     Function CloseAll:boolean;
      constructor Create(AOwner:TComponent); override;
      destructor Destroy;  override;
    end;
@@ -235,6 +236,16 @@ begin
        Application.ReleaseComponent(Editor);
        Application.ReleaseComponent(Sheet);
      end;
+end;
+
+function TEditorFactory.CloseAll: boolean;
+var
+  i: integer;
+begin
+  for i := 0 to PageCount -1 do
+    if not CloseEditor(TEditorTabSheet(Pages[i]).Editor)   then
+       break;
+
 end;
 
 constructor TEditorFactory.Create(AOwner: TComponent);
