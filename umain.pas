@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, SynEditTypes, mrumanager,
-  Config;
+  ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, SynEditTypes,
+  SynHighlighterPas, mrumanager, Config;
 
 type
 
@@ -79,7 +79,6 @@ type
     ToolButton11: TToolButton;
     ToolButton12: TToolButton;
     ToolButton13: TToolButton;
-    ToolButton14: TToolButton;
     ToolButton15: TToolButton;
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;

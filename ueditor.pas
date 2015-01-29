@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Controls, dialogs, comctrls, SynEditTypes, SynEdit,
-  Stringcostants, forms;
+  Stringcostants, forms, Graphics;
 
 type
 
@@ -200,6 +200,9 @@ begin
   Sheet.PageControl := Self;
 
   Result := TEditor.Create(Sheet);
+  Result.Font.Name:='Ubuntu Mono';
+  Result.Font.Size:=11;
+  Result.Font.Quality:=fqCleartypeNatural;
   Result.FSheet := Sheet;
   Result.Align:= alClient;
   Sheet.FEditor := Result;
