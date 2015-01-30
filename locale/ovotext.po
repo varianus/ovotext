@@ -174,11 +174,11 @@ msgid "New"
 msgstr ""
 
 #: tfmain.fileopen.caption
-msgid "&Apri..."
+msgid "&Open..."
 msgstr ""
 
 #: tfmain.fileopen.hint
-msgid "Apri"
+msgid "Open"
 msgstr ""
 
 #: tfmain.filesave.caption
@@ -284,9 +284,5 @@ msgstr ""
 
 #: tfmain.searchreplace.hint
 msgid "Search and Replace"
-msgstr ""
-
-#: tfmain.toolbar1.caption
-msgid "ToolBar1"
 msgstr ""
 
