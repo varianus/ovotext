@@ -134,6 +134,7 @@ object fMain: TfMain
   end
   object ActionList: TActionList
     Images = imgList
+    OnUpdate = ActionListUpdate
     left = 432
     top = 75
     object FileExit: TAction
@@ -183,7 +184,6 @@ object fMain: TfMain
       Caption = '&Undo'
       Hint = 'Undo'
       ImageIndex = 16
-      OnUpdate = EditUndoUpdate
       ShortCut = 16474
     end
     object SearchFind: TAction
@@ -231,7 +231,6 @@ object fMain: TfMain
       Caption = 'Redo'
       ImageIndex = 7
       OnExecute = EditRedoExecute
-      OnUpdate = EditRedoUpdate
     end
     object EditDelete: TEditDelete
       Category = 'Edit'
@@ -1870,6 +1869,7 @@ object fMain: TfMain
     }
   end
   object AppProperties: TApplicationProperties
+    ShowButtonGlyphs = sbgSystem
     ShowMenuGlyphs = sbgSystem
     OnShowHint = AppPropertiesShowHint
     left = 536
@@ -1884,8 +1884,18 @@ object fMain: TfMain
     top = 184
   end
   object pumEdit: TPopupMenu
+    Images = imgList
     left = 210
     top = 142
+    object MenuItem32: TMenuItem
+      Action = EditUndo
+    end
+    object MenuItem33: TMenuItem
+      Action = EditRedo
+    end
+    object MenuItem34: TMenuItem
+      Caption = '-'
+    end
     object MenuItem21: TMenuItem
       Action = EditCut
     end

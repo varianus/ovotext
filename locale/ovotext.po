@@ -248,6 +248,11 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
+#: tfmain.menuitem34.caption
+msgctxt "TFMAIN.MENUITEM34.CAPTION"
+msgid "-"
+msgstr ""
+
 #: tfmain.menuitem7.caption
 msgid "Edit"
 msgstr ""

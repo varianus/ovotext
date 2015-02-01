@@ -5,8 +5,8 @@ unit ueditor;
 interface
 
 uses
-  Classes, SysUtils, Controls, dialogs, comctrls, SynEditTypes, SynEdit,
-  Stringcostants, forms, Graphics;
+  Classes, SysUtils, Controls, Dialogs, ComCtrls, SynEditTypes, SynEdit,
+  Stringcostants, Forms, Graphics, Config;
 
 type
 
@@ -17,62 +17,68 @@ type
   { TEditorFactory }
 
   TOnBeforeClose = procedure(Editor: TEditor; var Cancel: boolean) of object;
+  TOnEditorEvent = procedure(Editor: TEditor) of object;
 
   TEditor = class(TSynEdit)
   private
     FFileName: TFilename;
     FSheet: TEditorTabSheet;
-    FUntitled:boolean;
+    FUntitled: boolean;
     procedure SetFileName(AValue: TFileName);
     procedure SetUntitled(AValue: boolean);
 
   public
-    Property Sheet: TEditorTabSheet read FSheet;
-    Property FileName: TFileName read FFileName write SetFileName;
+    property Sheet: TEditorTabSheet read FSheet;
+    property FileName: TFileName read FFileName write SetFileName;
     property Untitled: boolean read FUntitled write SetUntitled;
     // -- //
     procedure LoadFromfile(AFileName: TFileName);
-    function Save: Boolean;
+    function Save: boolean;
     function SaveAs(AFileName: TFileName): boolean;
   end;
 
   { TEditorTabSheet }
 
-  TEditorTabSheet = class (TTabSheet)
+  TEditorTabSheet = class(TTabSheet)
   private
     FEditor: TEditor;
   protected
     procedure DoShow; override;
 
   public
-    Property Editor: TEditor read FEditor;
+    property Editor: TEditor read FEditor;
     //--//
   end;
 
 
-  TEditorFactory = class (TPageControl)
-   private
-     FOnBeforeClose: TOnBeforeClose;
-     FonStatusChange: TStatusChangeEvent;
-     fUntitledCounter :Integer;
-     function GetCurrentEditor: TEditor;
-     procedure SetOnBeforeClose(AValue: TOnBeforeClose);
-   protected
-     procedure DoChange; override;
-   public
-     property CurrentEditor: TEditor read GetCurrentEditor;
-     property OnStatusChange: TStatusChangeEvent read FonStatusChange write FOnStatusChange;
-     property OnBeforeClose: TOnBeforeClose read FOnBeforeClose write SetOnBeforeClose;
-     //--//
-     procedure DoCloseTabClicked(APage: TCustomPage); override;
-     function AddEditor(FileName:TFilename=''): TEditor;
-     Function CloseEditor(Editor: TEditor):boolean;
-     Function CloseAll:boolean;
-     constructor Create(AOwner:TComponent); override;
-     destructor Destroy;  override;
-   end;
+  TEditorFactory = class(TPageControl)
+  private
+    FOnBeforeClose: TOnBeforeClose;
+    FOnNewEditor: TOnEditorEvent;
+    FonStatusChange: TStatusChangeEvent;
+    fUntitledCounter: integer;
+    function GetCurrentEditor: TEditor;
+    procedure SetOnBeforeClose(AValue: TOnBeforeClose);
+    procedure SetOnNewEditor(AValue: TOnEditorEvent);
+  protected
+    procedure DoChange; override;
+  public
+    property CurrentEditor: TEditor read GetCurrentEditor;
+    property OnStatusChange: TStatusChangeEvent
+      read FonStatusChange write FOnStatusChange;
+    property OnBeforeClose: TOnBeforeClose read FOnBeforeClose write SetOnBeforeClose;
+    property OnNewEditor: TOnEditorEvent read FOnNewEditor write SetOnNewEditor;
+    //--//
+    procedure DoCloseTabClicked(APage: TCustomPage); override;
+    function AddEditor(FileName: TFilename = ''): TEditor;
+    function CloseEditor(Editor: TEditor): boolean;
+    function CloseAll: boolean;
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+  end;
 
 implementation
+
 uses
   udmmain;
 
@@ -88,32 +94,34 @@ end;
 
 procedure TEditor.SetFileName(AValue: TFileName);
 begin
-  if FFileName=AValue then Exit;
-  FFileName:=AValue;
+  if FFileName = AValue then
+    Exit;
+  FFileName := AValue;
   if FFileName <> EmptyStr then
-     FUntitled:= false;
+    FUntitled := False;
 end;
 
 procedure TEditor.SetUntitled(AValue: boolean);
 begin
-  if FUntitled=AValue then Exit;
-  FUntitled:=AValue;
+  if FUntitled = AValue then
+    Exit;
+  FUntitled := AValue;
   if FUntitled then
-     FFileName:=EmptyStr;
+    FFileName := EmptyStr;
 end;
 
 procedure TEditor.LoadFromfile(AFileName: TFileName);
 begin
-  FFileName:= AFileName;
+  FFileName := AFileName;
   Lines.LoadFromFile(FFileName);
   Highlighter := dmMain.getHighLighter(ExtractFileExt(fFileName));
-  FSheet.Caption:= ExtractFileName(fFileName);
-  FSheet.Hint:=FileName;
-  FUntitled:=false;
+  FSheet.Caption := ExtractFileName(fFileName);
+  FSheet.Hint := FileName;
+  FUntitled := False;
 
 end;
 
-function TEditor.Save: Boolean;
+function TEditor.Save: boolean;
 begin
   Result := SaveAs(FFileName);
 end;
@@ -121,12 +129,12 @@ end;
 function TEditor.SaveAs(AFileName: TFileName): boolean;
 begin
   try
-    FFileName:=AFileName;
+    FFileName := AFileName;
     Lines.SaveToFile(AFileName);
-    Result := true;
-    FUntitled:= false;
-  Except
-    Result := false;
+    Result := True;
+    FUntitled := False;
+  except
+    Result := False;
   end;
 end;
 
@@ -136,22 +144,30 @@ function TEditorFactory.GetCurrentEditor: TEditor;
 begin
   Result := nil;
   if (PageCount > 0) and (ActivePageIndex >= 0) then
-     result := TEditorTabSheet(ActivePage).Editor;
+    Result := TEditorTabSheet(ActivePage).Editor;
 
 end;
 
 procedure TEditorFactory.SetOnBeforeClose(AValue: TOnBeforeClose);
 begin
-  if FOnBeforeClose=AValue then Exit;
-  FOnBeforeClose:=AValue;
+  if FOnBeforeClose = AValue then
+    Exit;
+  FOnBeforeClose := AValue;
+end;
+
+procedure TEditorFactory.SetOnNewEditor(AValue: TOnEditorEvent);
+begin
+  if FOnNewEditor = AValue then
+    Exit;
+  FOnNewEditor := AValue;
 end;
 
 procedure TEditorFactory.DoChange;
 begin
   inherited DoChange;
-  Hint:= ActivePage.Hint;
+  Hint := ActivePage.Hint;
   if Assigned(OnStatusChange) then
-     OnStatusChange(GetCurrentEditor, [scCaretX,scCaretY,scModified,scInsertMode]);
+    OnStatusChange(GetCurrentEditor, [scCaretX, scCaretY, scModified, scInsertMode]);
 
   TEditorTabSheet(ActivePage).Editor.SetFocus;
 end;
@@ -159,68 +175,70 @@ end;
 procedure TEditorFactory.DoCloseTabClicked(APage: TCustomPage);
 begin
   inherited DoCloseTabClicked(APage);
-  if Assigned(APage) and
-     (APage is TEditorTabSheet) then
+  if Assigned(APage) and (APage is TEditorTabSheet) then
     CloseEditor(TEditorTabSheet(APage).FEditor);
 end;
 
-function TEditorFactory.AddEditor(FileName:TFilename=''): TEditor;
+function TEditorFactory.AddEditor(FileName: TFilename = ''): TEditor;
 var
   Sheet: TEditorTabSheet;
   i: integer;
 begin
   if FileName <> EmptyStr then
+  begin
+    // do not reopen same file
+    for i := 0 to PageCount - 1 do
     begin
-      // do not reopen same file
-      for i:= 0 to PageCount -1 do
-       begin
-        Sheet := TEditorTabSheet(Pages[i]);
-        if Sheet.Editor.FileName = FileName then
-          begin
-            ActivePageIndex:= i;
-            exit;
-          end;
+      Sheet := TEditorTabSheet(Pages[i]);
+      if Sheet.Editor.FileName = FileName then
+      begin
+        ActivePageIndex := i;
+        exit;
       end;
-
-    // try to reuse an empty shhet
-     for i:= 0 to PageCount -1 do
-       begin
-         Sheet := TEditorTabSheet(Pages[i]);
-         if (Sheet.Editor.Untitled) and not Sheet.Editor.Modified then
-           begin
-             Sheet.Editor.LoadFromfile(FileName);
-             ActivePageIndex:= i;
-             exit;
-           end;
-        end;
-
     end;
 
-  Sheet:= TEditorTabSheet.Create(Self);
+    // try to reuse an empty shhet
+    for i := 0 to PageCount - 1 do
+    begin
+      Sheet := TEditorTabSheet(Pages[i]);
+      if (Sheet.Editor.Untitled) and not Sheet.Editor.Modified then
+      begin
+        Sheet.Editor.LoadFromfile(FileName);
+        ActivePageIndex := i;
+        exit;
+      end;
+    end;
+
+  end;
+
+  Sheet := TEditorTabSheet.Create(Self);
   Sheet.PageControl := Self;
 
   Result := TEditor.Create(Sheet);
-  Result.Font.Name:='Ubuntu Mono';
-  Result.Font.Size:=11;
-  Result.Font.Quality:=fqCleartypeNatural;
+  Result.Font.Name := 'Ubuntu Mono';
+  Result.Font.Size := 11;
+  Result.Font.Quality := fqCleartypeNatural;
   Result.FSheet := Sheet;
-  Result.Align:= alClient;
+  Result.Align := alClient;
   Sheet.FEditor := Result;
-  Result.OnStatusChange:=OnStatusChange;
+  Result.OnStatusChange := OnStatusChange;
   if Assigned(OnStatusChange) then
-     OnStatusChange(Result, [scCaretX,scCaretY,scModified,scInsertMode]);
+    OnStatusChange(Result, [scCaretX, scCaretY, scModified, scInsertMode]);
 
   Result.Parent := Sheet;
   if FileName = '' then
-     begin
-       Sheet.Caption:= Format(RSNewFile, [fUntitledCounter]);
-       Result.FUntitled:= true;
-       inc(fUntitledCounter);
-     end
+  begin
+    Sheet.Caption := Format(RSNewFile, [fUntitledCounter]);
+    Result.FUntitled := True;
+    Inc(fUntitledCounter);
+  end
   else
-     Result.LoadFromfile(FileName);
+    Result.LoadFromfile(FileName);
 
-   ActivePage := Sheet;
+  ActivePage := Sheet;
+
+  if Assigned(FOnNewEditor) then
+    FOnNewEditor(Result);
 
 end;
 
@@ -229,32 +247,41 @@ var
   Sheet: TEditorTabSheet;
   Cancel: boolean;
 begin
-  Cancel:= True;
+  Cancel := True;
+  // if last tab in unused
+  if (PageCount = 1) and Editor.Untitled and not Editor.Modified and not
+    ConfigObj.AppSettings.CloseWithLastTab then
+    exit;
+
   if Assigned(FOnBeforeClose) then
-     FOnBeforeClose(Editor, Cancel);
+    FOnBeforeClose(Editor, Cancel);
 
   if not Cancel then
-     begin
-       Sheet := Editor.FSheet;
-       Application.ReleaseComponent(Editor);
-       Application.ReleaseComponent(Sheet);
-     end;
+  begin
+    Sheet := Editor.FSheet;
+    Editor.PopupMenu := nil;
+    Application.ReleaseComponent(Editor);
+    Application.ReleaseComponent(Sheet);
+    Application.ProcessMessages;
+    if (PageCount = 0) and not ConfigObj.AppSettings.CloseWithLastTab then
+       AddEditor();
+  end;
 end;
 
 function TEditorFactory.CloseAll: boolean;
 var
   i: integer;
 begin
-  for i := 0 to PageCount -1 do
-    if not CloseEditor(TEditorTabSheet(Pages[i]).Editor)   then
-       break;
+  for i := PageCount - 1 downto 0 do
+    if not CloseEditor(TEditorTabSheet(Pages[i]).Editor) then
+      break;
 
 end;
 
 constructor TEditorFactory.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  fUntitledCounter:=0;
+  fUntitledCounter := 0;
   Options := Options + [nboShowCloseButtons];
 
 end;
@@ -264,5 +291,4 @@ begin
   inherited Destroy;
 end;
 
-end.
-
+end.

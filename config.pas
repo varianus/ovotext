@@ -10,9 +10,15 @@ uses
 
 type
   { TConfig }
+  RAppSettings= record
+    CloseWithLastTab : boolean;
+  end;
+
+
 
   TConfig = class
   private
+    FAppSettings: RAppSettings;
     FConfigFile:    string;
     fConfigDir:    string;
     ResourcesPath: string;
@@ -29,11 +35,16 @@ type
     procedure SaveCustomParams(const Section:string; Params:TStrings);
     procedure RemoveSection(const Section:string);
     function GetResourcesPath: string;
-    Property ConfigDir: string read fConfigDir;
-    property ConfigFile: string read FConfigFile;
     procedure Flush;
     destructor Destroy; override;
+    // -- //
+    Property ConfigDir: string read fConfigDir;
+    property ConfigFile: string read FConfigFile;
+    property AppSettings: RAppSettings read FAppSettings write FAppSettings;
+
   end;
+
+function ConfigObj: TConfig;
 
 implementation
 
@@ -43,6 +54,9 @@ uses
 {$ifdef Darwin}
   , MacOSAll
 {$endif}  ;
+
+var
+  FConfigObj : TConfig;
 
 const
   SectionUnix    = 'UNIX';
@@ -71,6 +85,13 @@ begin
 
 end;
 
+function ConfigObj: TConfig;
+begin
+  if not Assigned(FConfigObj) then
+    FConfigObj := TConfig.Create;
+  result := FConfigObj;
+end;
+
 constructor TConfig.Create;
 begin
   FConfigFile := GetAppConfigFile(False {$ifdef NEEDCFGSUBDIR} , true{$ENDIF} );
@@ -89,7 +110,8 @@ end;
 
 procedure TConfig.SaveConfig;
 begin
-//  fIniFiles.WriteString(SectionUnix, IdentResourcesPath, ResourcesPath);
+  fIniFiles.WriteString(SectionUnix, IdentResourcesPath, ResourcesPath);
+  fIniFiles.WriteBool('Application','CloseWithLastTab',FAppSettings.CloseWithLastTab);
 
 end;
 
@@ -126,9 +148,12 @@ begin
   ResourcesPath := fIniFiles.ReadString(SectionUnix, IdentResourcesPath, DefaultDirectory);
   {$endif}
 {$endif}
+
+  FAppSettings.CloseWithLastTab:=fIniFiles.ReadBool('Application','CloseWithLastTab',false);
+
 end;
 
-procedure TConfig.WriteStringS(Section: string; BaseName: string;
+procedure TConfig.WriteStrings(Section: string; BaseName: string;
   Values: TStrings);
 var
   i: integer;
@@ -201,5 +226,15 @@ begin
 {$endif}
 
 end;
+
+initialization
+  FConfigObj:=nil;
+
+finalization
+  if Assigned(FConfigObj) then
+    begin
+      FConfigObj.SaveConfig;
+      FConfigObj.Free;
+    end;
 
 end.

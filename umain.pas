@@ -55,6 +55,9 @@ type
     MenuItem29: TMenuItem;
     MenuItem30: TMenuItem;
     MenuItem31: TMenuItem;
+    MenuItem32: TMenuItem;
+    MenuItem33: TMenuItem;
+    MenuItem34: TMenuItem;
     mnuOpenRecent: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -90,10 +93,9 @@ type
     ToolButton7: TToolButton;
     ToolButton8: TToolButton;
     ToolButton9: TToolButton;
+    procedure ActionListUpdate(AAction: TBasicAction; var Handled: Boolean);
     procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
     procedure EditRedoExecute(Sender: TObject);
-    procedure EditRedoUpdate(Sender: TObject);
-    procedure EditUndoUpdate(Sender: TObject);
     procedure FileCloseAllExecute(Sender: TObject);
     procedure FileCloseExecute(Sender: TObject);
     procedure FileExitExecute(Sender: TObject);
@@ -119,6 +121,7 @@ type
     procedure PrepareSearch(Dialog: TFindDialog; Out SynOption: TSynSearchOptions);
     procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
     procedure RecentFileEvent (Sender : TObject; Const AFileName : String);
+    procedure NewEditor(Editor: TEditor);
   public
     { public declarations }
   end;
@@ -156,14 +159,14 @@ begin
   StatusBar1.Panels[3].Text := HintInfo.HintStr;
 end;
 
-procedure TfMain.EditRedoUpdate(Sender: TObject);
+procedure TfMain.ActionListUpdate(AAction: TBasicAction; var Handled: Boolean);
+var
+  Avail : boolean;
 begin
-  EditRedo.Enabled := EditorAvalaible and EditorFactory.CurrentEditor.CanRedo;
-end;
-
-procedure TfMain.EditUndoUpdate(Sender: TObject);
-begin
-  EditUndo.Enabled := EditorAvalaible and EditorFactory.CurrentEditor.CanUndo;
+  Avail := EditorAvalaible;
+  EditRedo.Enabled := Avail and EditorFactory.CurrentEditor.CanRedo;
+  EditUndo.Enabled := Avail and EditorFactory.CurrentEditor.CanUndo;
+  Handled:=true;
 end;
 
 procedure TfMain.FileCloseAllExecute(Sender: TObject);
@@ -233,6 +236,7 @@ begin
   EditorFactory.Align := alClient;
   EditorFactory.OnStatusChange := @EditorStatusChange;
   EditorFactory.OnBeforeClose  := @BeforeCloseEditor;
+  EditorFactory.OnNewEditor:= @NewEditor;
   EditorFactory.Images := imgList;
   EditorFactory.Parent := self;
   FileNew.Execute;
@@ -312,6 +316,11 @@ begin
   EditorFactory.AddEditor(AFileName);
 end;
 
+procedure TfMain.NewEditor(Editor: TEditor);
+begin
+  Editor.PopupMenu:= pumEdit;
+end;
+
 procedure TfMain.SearchFindExecute(Sender: TObject);
 var
   Editor: TEditor;
@@ -373,4 +382,4 @@ begin
 
 end;
 
-end.
+end.
