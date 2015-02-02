@@ -14,11 +14,13 @@ type
   { TfMain }
 
   TfMain = class(TForm)
+    actFont: TAction;
     AppProperties: TApplicationProperties;
     FileCloseAll: TAction;
     FileSave: TAction;
     FileExit: TAction;
     FindDialog: TFindDialog;
+    FontDialog: TFontDialog;
     HelpAbout: TAction;
     FileClose: TAction;
     FileNew: TAction;
@@ -58,6 +60,8 @@ type
     MenuItem32: TMenuItem;
     MenuItem33: TMenuItem;
     MenuItem34: TMenuItem;
+    MenuItem35: TMenuItem;
+    MenuItem36: TMenuItem;
     mnuOpenRecent: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -93,8 +97,10 @@ type
     ToolButton7: TToolButton;
     ToolButton8: TToolButton;
     ToolButton9: TToolButton;
-    procedure ActionListUpdate(AAction: TBasicAction; var Handled: Boolean);
-    procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
+    procedure actFontExecute(Sender: TObject);
+    procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
+    procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean;
+      var HintInfo: THintInfo);
     procedure EditRedoExecute(Sender: TObject);
     procedure FileCloseAllExecute(Sender: TObject);
     procedure FileCloseExecute(Sender: TObject);
@@ -103,6 +109,7 @@ type
     procedure FileOpenAccept(Sender: TObject);
     procedure FindDialogClose(Sender: TObject);
     procedure FindDialogFind(Sender: TObject);
+    procedure FontDialogApplyClicked(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
@@ -120,7 +127,7 @@ type
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
     procedure PrepareSearch(Dialog: TFindDialog; Out SynOption: TSynSearchOptions);
     procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
-    procedure RecentFileEvent (Sender : TObject; Const AFileName : String);
+    procedure RecentFileEvent(Sender: TObject; const AFileName: string);
     procedure NewEditor(Editor: TEditor);
   public
     { public declarations }
@@ -154,19 +161,30 @@ begin
     EditorFactory.CurrentEditor.Redo;
 end;
 
-procedure TfMain.AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
+procedure TfMain.AppPropertiesShowHint(var HintStr: string;
+  var CanShow: boolean; var HintInfo: THintInfo);
 begin
   StatusBar1.Panels[3].Text := HintInfo.HintStr;
 end;
 
-procedure TfMain.ActionListUpdate(AAction: TBasicAction; var Handled: Boolean);
+procedure TfMain.ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
 var
-  Avail : boolean;
+  Avail: boolean;
 begin
   Avail := EditorAvalaible;
   EditRedo.Enabled := Avail and EditorFactory.CurrentEditor.CanRedo;
   EditUndo.Enabled := Avail and EditorFactory.CurrentEditor.CanUndo;
-  Handled:=true;
+  Handled := True;
+end;
+
+procedure TfMain.actFontExecute(Sender: TObject);
+var
+  i: integer;
+begin
+  FontDialog.Font.Assign(EditorFactory.CurrentEditor.Font);
+  if FontDialog.Execute then
+    for i := 0 to EditorFactory.PageCount - 1 do
+      TEditorTabSheet(EditorFactory.Pages[i]).Editor.Font.Assign(FontDialog.Font);
 end;
 
 procedure TfMain.FileCloseAllExecute(Sender: TObject);
@@ -184,14 +202,14 @@ end;
 
 procedure TfMain.FileOpenAccept(Sender: TObject);
 var
-  i:Integer;
+  i: integer;
 begin
 
-  for i :=0 to FileOpen.Dialog.Files.Count -1 do
-    begin
-      EditorFactory.AddEditor(FileOpen.Dialog.Files[i]);
-      MRU.AddToRecent(FileOpen.Dialog.Files[i]);
-    end;
+  for i := 0 to FileOpen.Dialog.Files.Count - 1 do
+  begin
+    EditorFactory.AddEditor(FileOpen.Dialog.Files[i]);
+    MRU.AddToRecent(FileOpen.Dialog.Files[i]);
+  end;
 
 end;
 
@@ -209,6 +227,15 @@ begin
 
 end;
 
+procedure TfMain.FontDialogApplyClicked(Sender: TObject);
+var
+  i: integer;
+begin
+  for i := 0 to EditorFactory.PageCount - 1 do
+    TEditorTabSheet(EditorFactory.Pages[i]).Editor.Font.Assign(FontDialog.Font);
+
+end;
+
 procedure TfMain.FormActivate(Sender: TObject);
 begin
   EditorFactory.CurrentEditor.SetFocus;
@@ -217,9 +244,9 @@ end;
 procedure TfMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 begin
   if Assigned(EditorFactory) and (EditorFactory.PageCount > 0) then
-    CanClose:= EditorFactory.CloseAll
-  Else
-    CanClose:= true;
+    CanClose := EditorFactory.CloseAll
+  else
+    CanClose := True;
 end;
 
 procedure TfMain.FormCreate(Sender: TObject);
@@ -228,29 +255,29 @@ begin
   FConfig.ReadConfig;
   MRU := TMRUMenuManager.Create(Self);
   MRU.MenuItem := mnuOpenRecent;
-  MRU.OnRecentFile:=@RecentFileEvent;
-  MRU.MaxRecent:=10;
-  FConfig.ReadStrings('Recent','File', MRU.Recent);
+  MRU.OnRecentFile := @RecentFileEvent;
+  MRU.MaxRecent := 10;
+  FConfig.ReadStrings('Recent', 'File', MRU.Recent);
   MRU.ShowRecentFiles;
   EditorFactory := TEditorFactory.Create(Self);
   EditorFactory.Align := alClient;
   EditorFactory.OnStatusChange := @EditorStatusChange;
-  EditorFactory.OnBeforeClose  := @BeforeCloseEditor;
-  EditorFactory.OnNewEditor:= @NewEditor;
+  EditorFactory.OnBeforeClose := @BeforeCloseEditor;
+  EditorFactory.OnNewEditor := @NewEditor;
   EditorFactory.Images := imgList;
   EditorFactory.Parent := self;
   FileNew.Execute;
   // move close button to right
-  tbbCloseAll.Align:= alRight;
-  tbbSepClose.Align:= alRight;
-  tbbClose.Align:= alRight;
+  tbbCloseAll.Align := alRight;
+  tbbSepClose.Align := alRight;
+  tbbClose.Align := alRight;
 
 end;
 
 procedure TfMain.FormDestroy(Sender: TObject);
 begin
   FConfig.WriteStrings('Recent', 'File', MRU.Recent);
-  FConfig.free;
+  FConfig.Free;
   FreeAndNil(EditorFactory);
 end;
 
@@ -268,9 +295,10 @@ begin
 end;
 
 procedure TfMain.MenuItem29Click(Sender: TObject);
-var i : integer;
+var
+  i: integer;
 begin
-  for i := 0 to MRU.Recent.Count -1 do
+  for i := 0 to MRU.Recent.Count - 1 do
     EditorFactory.AddEditor(MRU.Recent[i]);
 
 end;
@@ -296,7 +324,8 @@ begin
     StatusBar1.Panels[0].Text := Format(RSStatusBarPos, [Editor.CaretY, Editor.CaretX]);
 
   if (scSelection in Changes) then
-    StatusBar1.Panels[1].Text := Format(RSStatusBarSel, [Editor.SelEnd - Editor.SelStart]);
+    StatusBar1.Panels[1].Text :=
+      Format(RSStatusBarSel, [Editor.SelEnd - Editor.SelStart]);
 
   if (scInsertMode in Changes) then
     if Editor.InsertMode then
@@ -312,14 +341,14 @@ begin
 
 end;
 
-procedure TfMain.RecentFileEvent(Sender: TObject; const AFileName: String);
+procedure TfMain.RecentFileEvent(Sender: TObject; const AFileName: string);
 begin
   EditorFactory.AddEditor(AFileName);
 end;
 
 procedure TfMain.NewEditor(Editor: TEditor);
 begin
-  Editor.PopupMenu:= pumEdit;
+  Editor.PopupMenu := pumEdit;
 end;
 
 procedure TfMain.SearchFindExecute(Sender: TObject);
@@ -354,34 +383,35 @@ begin
 
 end;
 
-procedure TfMain.BeforeCloseEditor(Editor:TEditor; var Cancel:boolean);
+procedure TfMain.BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
 begin
   if not Editor.Modified then
-     Cancel:= False
+    Cancel := False
   else
-  case MessageDlg(Format(RSSaveChanges, [ExtractFileName(Editor.Sheet.Caption)]), mtWarning, [mbYes, mbNo, mbCancel], 0) of
-    mrYes: begin
-           if Editor.Untitled then
-              begin
-                 SaveDialog.FileName:=Editor.Sheet.Caption;
-                 if SaveDialog.Execute then
-                    begin
-                      Editor.FileName:= SaveDialog.FileName;
-                    end
-                else
-                    begin
-                      Cancel:=true;
-                      exit;
-                    end;
-              end;
-          Editor.Save;
-          Cancel:=false;
-       end;
-    mrNo: Cancel := False;
-    mrCancel: Cancel := true;
-  end;
+    case MessageDlg(Format(RSSaveChanges, [ExtractFileName(Editor.Sheet.Caption)]),
+        mtWarning, [mbYes, mbNo, mbCancel], 0) of
+      mrYes:
+      begin
+        if Editor.Untitled then
+        begin
+          SaveDialog.FileName := Editor.Sheet.Caption;
+          if SaveDialog.Execute then
+          begin
+            Editor.FileName := SaveDialog.FileName;
+          end
+          else
+          begin
+            Cancel := True;
+            exit;
+          end;
+        end;
+        Editor.Save;
+        Cancel := False;
+      end;
+      mrNo: Cancel := False;
+      mrCancel: Cancel := True;
+    end;
 
 end;
 
-end.
-
+end.

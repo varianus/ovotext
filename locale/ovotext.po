@@ -83,6 +83,10 @@ msgstr ""
 msgid "fEditor"
 msgstr ""
 
+#: tfmain.actfont.caption
+msgid "Select Font"
+msgstr ""
+
 #: tfmain.caption
 msgid "ovoText"
 msgstr ""
@@ -199,6 +203,10 @@ msgstr ""
 msgid "Save as "
 msgstr ""
 
+#: tfmain.fontdialog.title
+msgid "Select a Font"
+msgstr ""
+
 #: tfmain.helpabout.caption
 msgid "About..."
 msgstr ""
@@ -251,6 +259,10 @@ msgstr ""
 #: tfmain.menuitem34.caption
 msgctxt "TFMAIN.MENUITEM34.CAPTION"
 msgid "-"
+msgstr ""
+
+#: tfmain.menuitem35.caption
+msgid "Settings"
 msgstr ""
 
 #: tfmain.menuitem7.caption

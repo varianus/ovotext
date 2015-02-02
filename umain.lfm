@@ -4,7 +4,7 @@ object fMain: TfMain
   Top = 144
   Width = 966
   Caption = 'ovoText'
-  ClientHeight = 668
+  ClientHeight = 667
   ClientWidth = 966
   Menu = mnuMain
   OnActivate = FormActivate
@@ -15,8 +15,8 @@ object fMain: TfMain
   LCLVersion = '1.5'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 23
-    Top = 645
+    Height = 21
+    Top = 646
     Width = 966
     Panels = <    
       item
@@ -267,10 +267,15 @@ object fMain: TfMain
       Hint = 'Save'
       ImageIndex = 19
     end
+    object actFont: TAction
+      Category = 'Settings'
+      Caption = 'Select Font'
+      OnExecute = actFontExecute
+    end
   end
   object mnuMain: TMainMenu
     Images = imgList
-    left = 263
+    left = 264
     top = 75
     object MenuItem1: TMenuItem
       Caption = 'File'
@@ -888,6 +893,12 @@ object fMain: TfMain
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
         }
+      end
+    end
+    object MenuItem35: TMenuItem
+      Caption = 'Settings'
+      object MenuItem36: TMenuItem
+        Action = actFont
       end
     end
     object MenuItem3: TMenuItem
@@ -2132,4 +2143,15 @@ object fMain: TfMain
     left = 174
     top = 239
   end
-end
+  object FontDialog: TFontDialog
+    Width = 483
+    Height = 339
+    Title = 'Select a Font'
+    MinFontSize = 0
+    MaxFontSize = 0
+    Options = [fdEffects, fdForceFontExist, fdNoStyleSel, fdWysiwyg, fdApplyButton]
+    OnApplyClicked = FontDialogApplyClicked
+    left = 426
+    top = 166
+  end
+end
