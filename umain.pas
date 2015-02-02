@@ -264,6 +264,7 @@ procedure TfMain.MenuItem28Click(Sender: TObject);
 begin
   MRU.Recent.Clear;
   MRU.ShowRecentFiles;
+  FConfig.WriteStrings('Recent', 'File', MRU.Recent);
 end;
 
 procedure TfMain.MenuItem29Click(Sender: TObject);
@@ -382,4 +383,5 @@ begin
 
 end;
 
-end.
+end.
+
