@@ -4,7 +4,7 @@ object fMain: TfMain
   Top = 144
   Width = 966
   Caption = 'ovoText'
-  ClientHeight = 667
+  ClientHeight = 668
   ClientWidth = 966
   Menu = mnuMain
   OnActivate = FormActivate
@@ -15,8 +15,8 @@ object fMain: TfMain
   LCLVersion = '1.5'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 21
-    Top = 646
+    Height = 23
+    Top = 645
     Width = 966
     Panels = <    
       item
@@ -2149,9 +2149,9 @@ object fMain: TfMain
     Title = 'Select a Font'
     MinFontSize = 0
     MaxFontSize = 0
-    Options = [fdEffects, fdForceFontExist, fdNoStyleSel, fdWysiwyg, fdApplyButton]
+    Options = [fdForceFontExist, fdWysiwyg, fdApplyButton]
     OnApplyClicked = FontDialogApplyClicked
     left = 426
     top = 166
   end
-end
+end

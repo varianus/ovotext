@@ -5,7 +5,7 @@ unit Config;
 interface
 
 uses
-  Classes, SysUtils, Graphics, inifiles;
+  Classes, SysUtils, Graphics, inifiles, XMLPropStorage;
 
 
 type
@@ -22,14 +22,14 @@ type
     FConfigFile:    string;
     fConfigDir:    string;
     ResourcesPath: string;
-    fIniFiles:     TMemIniFile;
+    fConfigHolder:     TXMLConfigStorage;
     function ReadColor(const Section, Ident: string; const Default: TColor): TColor;
     procedure WriteColor(const Section, Ident: string; const Value: TColor);
   public
     constructor Create;
     procedure ReadConfig;
     procedure SaveConfig;
-    procedure WriteStrings(Section: string; BaseName: string; Values: TStrings);
+    procedure WriteStrings(Section: string; Name: string; Values: TStrings);
     function ReadStrings(Section: string; Name: string; Values: TStrings): integer;
     Procedure ReadCustomParams(const Section:string; Params:TStrings);
     procedure SaveCustomParams(const Section:string; Params:TStrings);
@@ -50,7 +50,7 @@ implementation
 
 { TConfig }
 uses
-  Fileutil
+  Fileutil, lclproc
 {$ifdef Darwin}
   , MacOSAll
 {$endif}  ;
@@ -96,29 +96,35 @@ constructor TConfig.Create;
 begin
   FConfigFile := GetAppConfigFile(False {$ifdef NEEDCFGSUBDIR} , true{$ENDIF} );
   fConfigDir :=  GetConfigDir;
-  fIniFiles  := TMemIniFile.Create(FConfigFile, False);
+  fConfigHolder  := TXMLConfigStorage.Create(FConfigFile, FileExistsUTF8(FConfigFile));
   ReadConfig;
 end;
 
 destructor TConfig.Destroy;
 begin
   SaveConfig;
-  fIniFiles.UpdateFile;
-  fIniFiles.Free;
+  fConfigHolder.WriteToDisk;
+  fConfigHolder.Free;
   inherited Destroy;
 end;
 
 procedure TConfig.SaveConfig;
 begin
-  fIniFiles.WriteString(SectionUnix, IdentResourcesPath, ResourcesPath);
-  fIniFiles.WriteBool('Application','CloseWithLastTab',FAppSettings.CloseWithLastTab);
+  fConfigHolder.SetValue(SectionUnix+'/'+ IdentResourcesPath, ResourcesPath);
+  fConfigHolder.SetValue('Application/CloseWithLastTab',FAppSettings.CloseWithLastTab);
 
 end;
 
+
+
+procedure TConfig.RemoveSection(const Section: string);
+begin
+//  fConfigHolder.EraseSection(Section);
+end;
 procedure TConfig.ReadCustomParams(const Section:string; Params: TStrings);
 begin
   Params.Clear;
-  fIniFiles.ReadSectionValues(Section, Params)
+//  fConfigHolder.GetValue()); Object(Section, Params)
 end;
 
 procedure TConfig.SaveCustomParams(const Section:string; Params: TStrings);
@@ -127,76 +133,52 @@ var
 begin
 for i := 0 to Params.Count -1 do
   begin
-     fIniFiles.WriteString(Section, Params.Names[i], Params.ValueFromIndex[i]);
+//     fConfigHolder.WriteString(Section, Params.Names[i], Params.ValueFromIndex[i]);
   end;
 end;
-
-procedure TConfig.RemoveSection(const Section: string);
-begin
-  fIniFiles.EraseSection(Section);
-end;
-
 
 procedure TConfig.ReadConfig;
 begin
 
 {$ifdef WINDOWS}
-  ResourcesPath := fIniFiles.ReadString(SectionUnix, IdentResourcesPath, ExtractFilePath(
-    ExtractFilePath(ParamStr(0))));
+  ResourcesPath := fConfigHolder.GetValue(SectionUnix+'/'+IdentResourcesPath, ExtractFilePath(ExtractFilePath(ParamStr(0))));
 {$else}
   {$ifndef DARWIN}
   ResourcesPath := fIniFiles.ReadString(SectionUnix, IdentResourcesPath, DefaultDirectory);
   {$endif}
 {$endif}
-
-  FAppSettings.CloseWithLastTab:=fIniFiles.ReadBool('Application','CloseWithLastTab',false);
+  FAppSettings.CloseWithLastTab:=fConfigHolder.GetValue('Application/CloseWithLastTab',false);
 
 end;
 
-procedure TConfig.WriteStrings(Section: string; BaseName: string;
-  Values: TStrings);
-var
-  i: integer;
+procedure TConfig.WriteStrings(Section: string; Name: string; Values: TStrings);
 begin
-  fIniFiles.EraseSection(Section);
-  for i := 0 to Values.Count - 1 do
-    begin
-    fIniFiles.WriteString(Section, BaseName + IntToStr(i), Values[i]);
-    end;
+  fConfigHolder.SetValue(Section+'/'+Name,Values);
 end;
 
 function TConfig.ReadStrings(Section: string; Name: string; Values: TStrings): integer;
-var
-  strs: TStringList;
-  i:    integer;
 begin
-  Values.Clear;
-  Strs := TStringList.Create;
-  fIniFiles.ReadSectionValues(Section, Strs);
-  for i := 0 to strs.Count - 1 do
-    Values.Add(strs.ValueFromIndex[i]);
-  strs.Free;
-  Result := Values.Count;
-
+  fConfigHolder.GetValue(Section+'/'+Name, Values);
+  result := Values.Count;
 end;
 
 function TConfig.ReadColor(const Section, Ident: string; const Default: TColor): TColor;
 var
   tmpString: string;
 begin
-  tmpString := fIniFiles.ReadString(Section, Ident, IntToHex(Default, 8));
+  tmpString := fConfigHolder.GetValue(Section+'/'+Ident, IntToHex(Default, 8));
   if not TryStrToInt(tmpString, Result) then
     Result := Default;
 end;
 
 procedure TConfig.WriteColor(const Section, Ident: string; const Value: TColor);
 begin
-  fIniFiles.WriteString(Section, Ident, '$' + IntToHex(Value, 8));
+  fConfigHolder.setValue(Section+'/'+Ident, '$' + IntToHex(Value, 8));
 end;
 
 procedure TConfig.Flush;
 begin
-  fIniFiles.UpdateFile;
+  fConfigHolder.WriteToDisk;
 end;
 
 function TConfig.GetResourcesPath: string;

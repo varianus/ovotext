@@ -257,6 +257,7 @@ begin
   MRU.MenuItem := mnuOpenRecent;
   MRU.OnRecentFile := @RecentFileEvent;
   MRU.MaxRecent := 10;
+  MRU.Recent.clear;
   FConfig.ReadStrings('Recent', 'File', MRU.Recent);
   MRU.ShowRecentFiles;
   EditorFactory := TEditorFactory.Create(Self);
@@ -414,4 +415,4 @@ begin
 
 end;
 
-end.
+end.
