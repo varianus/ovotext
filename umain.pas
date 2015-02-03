@@ -122,7 +122,6 @@ type
   private
     EditorFactory: TEditorFactory;
     MRU: TMRUMenuManager;
-    FConfig: TConfig;
     function EditorAvalaible: boolean; inline;
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
     procedure PrepareSearch(Dialog: TFindDialog; Out SynOption: TSynSearchOptions);
@@ -251,14 +250,12 @@ end;
 
 procedure TfMain.FormCreate(Sender: TObject);
 begin
-  FConfig := TConfig.Create;
-  FConfig.ReadConfig;
   MRU := TMRUMenuManager.Create(Self);
   MRU.MenuItem := mnuOpenRecent;
   MRU.OnRecentFile := @RecentFileEvent;
   MRU.MaxRecent := 10;
   MRU.Recent.clear;
-  FConfig.ReadStrings('Recent', 'File', MRU.Recent);
+  ConfigObj.ReadStrings('Recent', 'File', MRU.Recent);
   MRU.ShowRecentFiles;
   EditorFactory := TEditorFactory.Create(Self);
   EditorFactory.Align := alClient;
@@ -277,8 +274,7 @@ end;
 
 procedure TfMain.FormDestroy(Sender: TObject);
 begin
-  FConfig.WriteStrings('Recent', 'File', MRU.Recent);
-  FConfig.Free;
+  ConfigObj.WriteStrings('Recent', 'File', MRU.Recent);
   FreeAndNil(EditorFactory);
 end;
 
@@ -292,7 +288,7 @@ procedure TfMain.MenuItem28Click(Sender: TObject);
 begin
   MRU.Recent.Clear;
   MRU.ShowRecentFiles;
-  FConfig.WriteStrings('Recent', 'File', MRU.Recent);
+  ConfigObj.WriteStrings('Recent', 'File', MRU.Recent);
 end;
 
 procedure TfMain.MenuItem29Click(Sender: TObject);
