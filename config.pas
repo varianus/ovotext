@@ -144,7 +144,7 @@ begin
   ResourcesPath := fConfigHolder.GetValue(SectionUnix+'/'+IdentResourcesPath, ExtractFilePath(ExtractFilePath(ParamStr(0))));
 {$else}
   {$ifndef DARWIN}
-  ResourcesPath := fIniFiles.ReadString(SectionUnix, IdentResourcesPath, DefaultDirectory);
+  ResourcesPath := fConfigHolder.GetValue(SectionUnix+'/'+ IdentResourcesPath, DefaultDirectory);
   {$endif}
 {$endif}
   FAppSettings.CloseWithLastTab:=fConfigHolder.GetValue('Application/CloseWithLastTab',false);
