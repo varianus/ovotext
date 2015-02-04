@@ -215,9 +215,8 @@ begin
   Sheet.PageControl := Self;
 
   Result := TEditor.Create(Sheet);
-  //Result.Font.Name := 'Ubuntu Mono';
-  //Result.Font.Size := 11;
-  //Result.Font.Quality := fqCleartypeNatural;
+  Result.Font.Assign(ConfigObj.Font);
+
   Result.FSheet := Sheet;
   Result.Align := alClient;
   Sheet.FEditor := Result;
@@ -291,4 +290,4 @@ begin
   inherited Destroy;
 end;
 
-end.
+end.

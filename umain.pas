@@ -180,10 +180,14 @@ procedure TfMain.actFontExecute(Sender: TObject);
 var
   i: integer;
 begin
-  FontDialog.Font.Assign(EditorFactory.CurrentEditor.Font);
+  FontDialog.Font.Assign(ConfigObj.Font);
   if FontDialog.Execute then
+    begin
     for i := 0 to EditorFactory.PageCount - 1 do
       TEditorTabSheet(EditorFactory.Pages[i]).Editor.Font.Assign(FontDialog.Font);
+      ConfigObj.Font.Assign(FontDialog.Font);
+    end;
+
 end;
 
 procedure TfMain.FileCloseAllExecute(Sender: TObject);
@@ -233,6 +237,7 @@ begin
   for i := 0 to EditorFactory.PageCount - 1 do
     TEditorTabSheet(EditorFactory.Pages[i]).Editor.Font.Assign(FontDialog.Font);
 
+  ConfigObj.Font.Assign(FontDialog.Font);
 end;
 
 procedure TfMain.FormActivate(Sender: TObject);

@@ -14,16 +14,16 @@ type
     CloseWithLastTab : boolean;
   end;
 
-
-
   TConfig = class
   private
     FAppSettings: RAppSettings;
     FConfigFile:    string;
     fConfigDir:    string;
+    FFont: TFont;
     ResourcesPath: string;
     fConfigHolder:     TXMLConfigStorage;
     function ReadColor(const Section, Ident: string; const Default: TColor): TColor;
+    procedure SetFont(AValue: TFont);
     procedure WriteColor(const Section, Ident: string; const Value: TColor);
   public
     constructor Create;
@@ -31,15 +31,13 @@ type
     procedure SaveConfig;
     procedure WriteStrings(Section: string; Name: string; Values: TStrings);
     function ReadStrings(Section: string; Name: string; Values: TStrings): integer;
-    Procedure ReadCustomParams(const Section:string; Params:TStrings);
-    procedure SaveCustomParams(const Section:string; Params:TStrings);
-    procedure RemoveSection(const Section:string);
     function GetResourcesPath: string;
     procedure Flush;
     destructor Destroy; override;
     // -- //
     Property ConfigDir: string read fConfigDir;
     property ConfigFile: string read FConfigFile;
+    Property Font : TFont read FFont write SetFont;
     property AppSettings: RAppSettings read FAppSettings write FAppSettings;
 
   end;
@@ -50,7 +48,9 @@ implementation
 
 { TConfig }
 uses
-  Fileutil, lclproc
+  Fileutil, lclproc,
+// only for default font !
+  Synedit
 {$ifdef Darwin}
   , MacOSAll
 {$endif}  ;
@@ -94,6 +94,7 @@ end;
 
 constructor TConfig.Create;
 begin
+  FFont := Tfont.Create;
   FConfigFile := GetAppConfigFile(False {$ifdef NEEDCFGSUBDIR} , true{$ENDIF} );
   fConfigDir :=  GetConfigDir;
   fConfigHolder  := TXMLConfigStorage.Create(FConfigFile, FileExistsUTF8(FConfigFile));
@@ -105,6 +106,7 @@ begin
   SaveConfig;
   fConfigHolder.WriteToDisk;
   fConfigHolder.Free;
+  FFont.Free;
   inherited Destroy;
 end;
 
@@ -113,31 +115,13 @@ begin
   fConfigHolder.SetValue(SectionUnix+'/'+ IdentResourcesPath, ResourcesPath);
   fConfigHolder.SetValue('Application/CloseWithLastTab',FAppSettings.CloseWithLastTab);
 
-end;
-
-
-
-procedure TConfig.RemoveSection(const Section: string);
-begin
-//  fConfigHolder.EraseSection(Section);
-end;
-procedure TConfig.ReadCustomParams(const Section:string; Params: TStrings);
-begin
-  Params.Clear;
-//  fConfigHolder.GetValue()); Object(Section, Params)
-end;
-
-procedure TConfig.SaveCustomParams(const Section:string; Params: TStrings);
-var
-  i :Integer;
-begin
-for i := 0 to Params.Count -1 do
-  begin
-//     fConfigHolder.WriteString(Section, Params.Names[i], Params.ValueFromIndex[i]);
-  end;
+  fConfigHolder.SetValue('Editor/Font/Name',FFont.name);
+  fConfigHolder.SetValue('Editor/Font/Height',FFont.Height);
 end;
 
 procedure TConfig.ReadConfig;
+var
+  fontName:String;
 begin
 
 {$ifdef WINDOWS}
@@ -148,6 +132,18 @@ begin
   {$endif}
 {$endif}
   FAppSettings.CloseWithLastTab:=fConfigHolder.GetValue('Application/CloseWithLastTab',false);
+
+  fontName := fConfigHolder.GetValue('Editor/Font/Name',EmptyStr);
+  if fontName = EmptyStr then
+    begin
+      FFont.Name:=SynDefaultFontName;
+      FFont.Height:=SynDefaultFontHeight;
+    end
+  else
+    begin
+       FFont.Name:= fontName;
+       FFont.Height := fConfigHolder.GetValue('Editor/Font/Height',0);
+    end;
 
 end;
 
@@ -169,6 +165,11 @@ begin
   tmpString := fConfigHolder.GetValue(Section+'/'+Ident, IntToHex(Default, 8));
   if not TryStrToInt(tmpString, Result) then
     Result := Default;
+end;
+
+procedure TConfig.SetFont(AValue: TFont);
+begin
+  FFont.Assign(AValue);
 end;
 
 procedure TConfig.WriteColor(const Section, Ident: string; const Value: TColor);
