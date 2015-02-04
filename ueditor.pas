@@ -5,7 +5,8 @@ unit ueditor;
 interface
 
 uses
-  Classes, SysUtils, Controls, Dialogs, ComCtrls, SynEditTypes, SynEdit,
+  Classes, SysUtils, Controls, Dialogs, ComCtrls,
+  SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterChanges, SynGutterLineNumber,
   Stringcostants, Forms, Graphics, Config;
 
 type
@@ -24,10 +25,12 @@ type
     FFileName: TFilename;
     FSheet: TEditorTabSheet;
     FUntitled: boolean;
+    procedure CreateDefaultGutterParts;
     procedure SetFileName(AValue: TFileName);
     procedure SetUntitled(AValue: boolean);
 
   public
+    constructor Create(AOwner:Tcomponent); override;
     property Sheet: TEditorTabSheet read FSheet;
     property FileName: TFileName read FFileName write SetFileName;
     property Untitled: boolean read FUntitled write SetUntitled;
@@ -110,6 +113,12 @@ begin
     FFileName := EmptyStr;
 end;
 
+constructor TEditor.Create(AOwner: Tcomponent);
+begin
+  inherited Create(AOwner);
+  CreateDefaultGutterParts;
+end;
+
 procedure TEditor.LoadFromfile(AFileName: TFileName);
 begin
   FFileName := AFileName;
@@ -137,6 +146,21 @@ begin
     Result := False;
   end;
 end;
+
+procedure TEditor.CreateDefaultGutterParts;
+begin
+  Gutter.Parts.Clear;
+  with TSynGutterMarks.Create(Gutter.Parts) do
+      Name := 'SynGutterMarks1';
+  with TSynGutterLineNumber.Create(Gutter.Parts) do
+      Name := 'SynGutterLineNumber1';
+  with TSynGutterChanges.Create(Gutter.Parts) do
+      Name := 'SynGutterChanges1';
+end;
+
+
+
+
 
 { TEditorFactory }
 
