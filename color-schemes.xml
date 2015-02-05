@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CONFIG>
 	<Schema Name="Default">
-		<Background Color= "clwhite"/>		
+		<Background Color= "clwhite"/>
 		<Comment Color="clGreen"  Style="fsItalic" />
 		<String Color="clBlue"  Style="" />
 		<Symbol />
