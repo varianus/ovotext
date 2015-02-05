@@ -158,10 +158,6 @@ begin
       Name := 'SynGutterChanges1';
 end;
 
-
-
-
-
 { TEditorFactory }
 
 function TEditorFactory.GetCurrentEditor: TEditor;
@@ -244,6 +240,9 @@ begin
   Result.FSheet := Sheet;
   Result.Align := alClient;
   Sheet.FEditor := Result;
+
+  Result.Color:= ConfigObj.BackGroundColor;
+
   Result.OnStatusChange := OnStatusChange;
   if Assigned(OnStatusChange) then
     OnStatusChange(Result, [scCaretX, scCaretY, scModified, scInsertMode]);

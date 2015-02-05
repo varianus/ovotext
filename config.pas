@@ -22,7 +22,8 @@ type
     FFont: TFont;
     ResourcesPath: string;
     fConfigHolder:     TXMLConfigStorage;
-    function ReadColor(const Section, Ident: string; const Default: TColor): TColor;
+    fColorSchema:     TXMLConfigStorage;
+    function GetBackGroundColor: TColor;
     procedure SetFont(AValue: TFont);
     procedure WriteColor(const Section, Ident: string; const Value: TColor);
   public
@@ -33,12 +34,16 @@ type
     function ReadStrings(Section: string; Name: string; Values: TStrings): integer;
     function GetResourcesPath: string;
     procedure Flush;
+    function ReadColor(const Section, Ident: string; const Default: TColor): TColor;
+
     destructor Destroy; override;
     // -- //
     Property ConfigDir: string read fConfigDir;
     property ConfigFile: string read FConfigFile;
     Property Font : TFont read FFont write SetFont;
     property AppSettings: RAppSettings read FAppSettings write FAppSettings;
+    Property BackGroundColor: TColor read GetBackGroundColor;
+
 
   end;
 
@@ -98,6 +103,7 @@ begin
   FConfigFile := GetAppConfigFile(False {$ifdef NEEDCFGSUBDIR} , true{$ENDIF} );
   fConfigDir :=  GetConfigDir;
   fConfigHolder  := TXMLConfigStorage.Create(FConfigFile, FileExistsUTF8(FConfigFile));
+  fColorSchema  := TXMLConfigStorage.Create('color-schemes.xml', true);
   ReadConfig;
 end;
 
@@ -106,6 +112,7 @@ begin
   SaveConfig;
   fConfigHolder.WriteToDisk;
   fConfigHolder.Free;
+  fColorSchema.Free;
   FFont.Free;
   inherited Destroy;
 end;
@@ -158,13 +165,9 @@ begin
   result := Values.Count;
 end;
 
-function TConfig.ReadColor(const Section, Ident: string; const Default: TColor): TColor;
-var
-  tmpString: string;
+function TConfig.GetBackGroundColor: TColor;
 begin
-  tmpString := fConfigHolder.GetValue(Section+'/'+Ident, IntToHex(Default, 8));
-  if not TryStrToInt(tmpString, Result) then
-    Result := Default;
+  Result := ReadColor('Schema/Background','Color', clWindow);
 end;
 
 procedure TConfig.SetFont(AValue: TFont);
@@ -172,9 +175,24 @@ begin
   FFont.Assign(AValue);
 end;
 
-procedure TConfig.WriteColor(const Section, Ident: string; const Value: TColor);
+function TConfig.ReadColor(const Section, Ident: string; const Default: TColor): TColor;
+var
+  tmpString: string;
 begin
-  fConfigHolder.setValue(Section+'/'+Ident, '$' + IntToHex(Value, 8));
+  tmpString := fColorSchema.GetValue(Section+'/'+Ident, IntToHex(Default, 8));
+  if not IdentToColor(tmpString, Result) then
+     if not TryStrToInt(tmpString, Result) then
+       Result := Default;
+end;
+
+
+procedure TConfig.WriteColor(const Section, Ident: string; const Value: TColor);
+var
+  tmp : String;
+begin
+  IF not ColorToIdent(Value, tmp) then
+    tmp := '$' + IntToHex(Value, 8);
+  fConfigHolder.setValue(Section+'/'+Ident, tmp);
 end;
 
 procedure TConfig.Flush;

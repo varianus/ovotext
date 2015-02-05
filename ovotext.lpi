@@ -115,7 +115,6 @@
       <Unit4>
         <Filename Value="stringcostants.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="Stringcostants"/>
       </Unit4>
       <Unit5>
         <Filename Value="supportfuncs.pas"/>

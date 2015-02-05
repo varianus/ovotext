@@ -95,6 +95,7 @@ type
 
   TdmMain = class(TDataModule)
     SynExporterHTML: TSynExporterHTML;
+    SynPasSyn1: TSynPasSyn;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -110,7 +111,7 @@ var
   dmMain: TdmMain;
 
 implementation
-
+uses config;
 {$R *.lfm}
 
 { TdmMain }
@@ -162,7 +163,7 @@ begin
     with Highlighter.Attribute[i] do
       case name of
         'Comment': begin
-                     Foreground:=clgreen;
+                     Foreground:=ConfigObj.ReadColor('Schema/Comment','Color',clGreen) ;
                      Style:=[fsItalic];
                    end;
         'String': begin
