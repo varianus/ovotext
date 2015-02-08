@@ -5,9 +5,9 @@ unit umain;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, SynEditTypes,
-  SynHighlighterPas, mrumanager, Config;
+  Classes, SysUtils, XMLConf, FileUtil, LResources, Forms, Controls, Graphics,
+  Dialogs, ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType,
+  XMLPropStorage, SynEditTypes, SynHighlighterPas, mrumanager, Config;
 
 type
 

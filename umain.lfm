@@ -1,10 +1,10 @@
 object fMain: TfMain
-  Left = 771
+  Left = 611
   Height = 688
-  Top = 144
+  Top = 241
   Width = 966
   Caption = 'ovoText'
-  ClientHeight = 668
+  ClientHeight = 667
   ClientWidth = 966
   Menu = mnuMain
   OnActivate = FormActivate
@@ -15,8 +15,8 @@ object fMain: TfMain
   LCLVersion = '1.5'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 23
-    Top = 645
+    Height = 21
+    Top = 646
     Width = 966
     Panels = <    
       item
@@ -2154,4 +2154,4 @@ object fMain: TfMain
     left = 426
     top = 166
   end
-end
+end
