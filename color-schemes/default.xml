@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CONFIG>
+	<Schema Name="Build">
+		<Background Color="clWhite"/> 
+		<def:comment Color="clBlue" Styles="fsitalic"/>
+		<def:shebang Color="clBlue" Styles="fsbold"/>
+		<def:doc-comment-element Styles="fsitalic"/>
+		<def:constant Color="clFuchsia"/>
+		<def:special-char Color="$00CD5A6A"/>
+		<def:floating-point Color="$00CD5A6A"/>	
+		<def:identifier Color="$008C8A00"/>
+		<def:statement Color="$002A2AA5" Styles="fsbold"/>
+		<def:type Color="$00578B2E" Styles="fsbold"/>
+		<def:preprocessor Color="$00F020A0"/>
+		<def:error Styles="fsbold"/>
+		<def:note Color="clBlue" Styles="fsbold"/>
+		<def:underlined Styles="fsunderline,fsitalic"/>
+		<xml:tags Color="$008C8A00"/>
+		<xml:attribute-name Color="$00CD5A6A"/>
+	</Schema>
+</CONFIG>

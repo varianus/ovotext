@@ -166,11 +166,12 @@ begin
     begin
       tmpAttribs.Color:= clNone;
       case Name of
-        'Comment': tmpAttribs := ConfigObj.ReadFontAttributes('Comment', FontAttributes(clGreen, [fsItalic]));
-        'String': tmpAttribs := ConfigObj.ReadFontAttributes('String', FontAttributes(clBlue, []));
-        'Number': tmpAttribs := ConfigObj.ReadFontAttributes('Number', FontAttributes(clBlue, []));
-        'Directive': tmpAttribs := ConfigObj.ReadFontAttributes('Directive', FontAttributes($00711796, []));
-        'Reserved word': tmpAttribs := ConfigObj.ReadFontAttributes('Reserved word', FontAttributes($008F120A, [fsBold]));
+        'Comment': tmpAttribs := ConfigObj.ReadFontAttributes('def:comment', FontAttributes(clGreen, [fsItalic]));
+        'String': tmpAttribs := ConfigObj.ReadFontAttributes('def:string', FontAttributes(clBlue, []));
+        'Number': tmpAttribs := ConfigObj.ReadFontAttributes('def:floating-point', FontAttributes(clBlue, []));
+        'Directive': tmpAttribs := ConfigObj.ReadFontAttributes('def:preprocessor', FontAttributes($00711796, []));
+        'Reserved word': tmpAttribs := ConfigObj.ReadFontAttributes('def:statement', FontAttributes($008F120A, [fsBold]));
+        'Identifier': tmpAttribs := ConfigObj.ReadFontAttributes('def:identifier', FontAttributes($008F120A, [fsBold]));
       end;
       if tmpAttribs.Color <> clNone then
         begin
@@ -202,4 +203,4 @@ begin
     Result := nil;
 end;
 
-end.
+end.
