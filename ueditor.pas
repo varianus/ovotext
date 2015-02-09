@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Controls, Dialogs, ComCtrls,
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterChanges, SynGutterLineNumber,
-  Stringcostants, Forms, Graphics, Config;
+  Stringcostants, Forms, Graphics, Config, udmmain;
 
 type
 
@@ -81,9 +81,6 @@ type
   end;
 
 implementation
-
-uses
-  udmmain;
 
 { TEditorTabSheet }
 
@@ -242,6 +239,7 @@ begin
   Sheet.FEditor := Result;
 
   Result.Color:= ConfigObj.BackGroundColor;
+  Result.BookMarkOptions.BookmarkImages:=dmMain.imgBookMark;
 
   Result.OnStatusChange := OnStatusChange;
   if Assigned(OnStatusChange) then
