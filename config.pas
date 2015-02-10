@@ -16,7 +16,8 @@ type
   { RFontAttributes }
 
   TFontAttributes = record
-    Color: TColor;
+    Foreground: TColor;
+    Background: TColor;
     Styles: TFontStyles;
   end;
 
@@ -29,6 +30,8 @@ type
     ResourcesPath: string;
     fConfigHolder: TXMLConfigStorage;
     fColorSchema: TXMLConfigStorage;
+    fMappingHolder: TXMLConfigStorage;
+    fMapping: TStringList;
     function GetBackGroundColor: TColor;
     procedure SetFont(AValue: TFont);
     procedure WriteColor(const Section, Ident: string; const Value: TColor);
@@ -41,10 +44,9 @@ type
     function GetResourcesPath: string;
     procedure Flush;
     function ReadColor(const Section, Ident: string; const Default: TColor): TColor;
-    function ReadFontStyle(const Section, Ident: string;
-      const default: TFontStyles): TFontstyles;
-    function ReadFontAttributes(AttibuteName: string;
-      const Default: TFontAttributes): TFontAttributes;
+    function ReadFontStyle(const Section, Ident: string; const default: TFontStyles): TFontstyles;
+    function ReadFontAttributes(AttibuteName: string; const Default: TFontAttributes): TFontAttributes;
+    function MapAttribute(Attribute: string): string;
     destructor Destroy; override;
     // -- //
     property ConfigDir: string read fConfigDir;
@@ -55,8 +57,8 @@ type
   end;
 
 
-function FontAttributes(const Color: TColor;
-  const Styles: TFontStyles): TFontAttributes; inline;
+function FontAttributes(const Foreground: TColor = clNone; BackGround: Tcolor = clNone;
+  const Styles: TFontStyles = []): TFontAttributes; inline;
 
 function ConfigObj: TConfig;
 
@@ -64,7 +66,7 @@ implementation
 
 { TConfig }
 uses
-  Fileutil, lclproc, typinfo,
+  Fileutil, lclproc, typinfo, strutils,
   // only for default font !
   Synedit
 {$ifdef Darwin}
@@ -101,9 +103,11 @@ begin
 
 end;
 
-function FontAttributes(const Color: TColor; const Styles: TFontStyles): TFontAttributes; inline;
+function FontAttributes(const Foreground: TColor = clNone; BackGround: Tcolor = clNone;
+  const Styles: TFontStyles = []): TFontAttributes; inline;
 begin
-  Result.Color := Color;
+  Result.Foreground := Foreground;
+  Result.Background := Background;
   Result.Styles := Styles;
 end;
 
@@ -126,6 +130,10 @@ begin
   fConfigDir := GetConfigDir;
   fConfigHolder := TXMLConfigStorage.Create(FConfigFile, FileExistsUTF8(FConfigFile));
   fColorSchema := TXMLConfigStorage.Create('color-schemes.xml', True);
+  fMappingHolder := TXMLConfigStorage.Create('mapping.xml', True);
+  fMapping := TStringList.Create;
+  fMappingHolder.GetValue('Mapping/Attributes', fMapping);
+  fMappingHolder.Free;
   ReadConfig;
 end;
 
@@ -136,6 +144,7 @@ begin
   fConfigHolder.Free;
   fColorSchema.Free;
   FFont.Free;
+  fMapping.Free;
   inherited Destroy;
 end;
 
@@ -154,12 +163,11 @@ var
 begin
 
 {$ifdef WINDOWS}
-  ResourcesPath := fConfigHolder.GetValue(SectionUnix + '/' +
-    IdentResourcesPath, ExtractFilePath(ExtractFilePath(ParamStr(0))));
+  ResourcesPath := fConfigHolder.GetValue(SectionUnix + '/' + IdentResourcesPath,
+    ExtractFilePath(ExtractFilePath(ParamStr(0))));
 {$else}
   {$ifndef DARWIN}
-  ResourcesPath := fConfigHolder.GetValue(SectionUnix + '/' +
-    IdentResourcesPath, DefaultDirectory);
+  ResourcesPath := fConfigHolder.GetValue(SectionUnix + '/' + IdentResourcesPath, DefaultDirectory);
   {$endif}
 {$endif}
   FAppSettings.CloseWithLastTab :=
@@ -167,15 +175,15 @@ begin
 
   fontName := fConfigHolder.GetValue('Editor/Font/Name', EmptyStr);
   if fontName = EmptyStr then
-  begin
+    begin
     FFont.Name := SynDefaultFontName;
     FFont.Height := SynDefaultFontHeight;
-  end
+    end
   else
-  begin
+    begin
     FFont.Name := fontName;
     FFont.Height := fConfigHolder.GetValue('Editor/Font/Height', 0);
-  end;
+    end;
 
 end;
 
@@ -192,7 +200,7 @@ end;
 
 function TConfig.GetBackGroundColor: TColor;
 begin
-  Result := ReadColor('Schema/Background', 'Color', clWindow);
+  Result := ReadColor('Schema/text', 'background', clWindow);
 end;
 
 procedure TConfig.SetFont(AValue: TFont);
@@ -204,36 +212,50 @@ function TConfig.ReadColor(const Section, Ident: string; const Default: TColor):
 var
   tmpString: string;
 begin
-  try
+    try
     tmpString := fColorSchema.GetValue(Section + '/' + Ident, IntToHex(Default, 8));
     if not IdentToColor(tmpString, Result) then
       if not TryStrToInt(tmpString, Result) then
         Result := Default;
 
-  except
+    except
     Result := Default;
-  end;
+    end;
 end;
 
-function TConfig.ReadFontStyle(const Section, Ident: string;
-  const default: TFontStyles): TFontstyles;
+function TConfig.ReadFontStyle(const Section, Ident: string; const default: TFontStyles): TFontstyles;
 var
   tmp: string;
 begin
-  try
-    tmp := fColorSchema.GetValue(Section + '/' + Ident + '/' + 'Style', '');
+    try
+    tmp := fColorSchema.GetValue(Section + '/' + Ident + '/' + 'styles', '');
     Result := TFontStyles(StringToSet(PTypeInfo(TypeInfo(TFontstyles)), tmp));
-  except
+    except
     Result := default;
-  end;
+    end;
 
 end;
 
-function TConfig.ReadFontAttributes(AttibuteName: string;
-  const Default: TFontAttributes): TFontAttributes;
+function TConfig.ReadFontAttributes(AttibuteName: string; const Default: TFontAttributes): TFontAttributes;
 begin
-  Result.Color := ReadColor('Schema/' + AttibuteName, 'Color', Default.Color);
+  Result.Foreground := ReadColor('Schema/' + AttibuteName, 'foreground', Default.Foreground);
+  Result.Background := ReadColor('Schema/' + AttibuteName, 'background', Default.Background);
   Result.Styles := ReadFontStyle('Schema', AttibuteName, Default.Styles);
+
+end;
+
+function TConfig.MapAttribute(Attribute: string): string;
+var
+  i: integer;
+begin
+ Result := Attribute;
+ Attribute:= Attribute+'|';
+ for i := 0 to fMapping.Count-1 do
+  if pos(Attribute, fMapping.ValueFromIndex[i]) > 0 then
+    begin
+       Result := fMapping.Names[i];
+       exit;
+    end;
 
 end;
 
@@ -276,8 +298,7 @@ begin
 {$endif}
 
 {$ifdef WINDOWS}
-  Result := ExtractFilePath(ExtractFilePath(ParamStr(0))) +
-    ResourceSubDirectory + PathDelim;
+  Result := ExtractFilePath(ExtractFilePath(ParamStr(0))) + ResourceSubDirectory + PathDelim;
 {$endif}
 
 end;
@@ -287,9 +308,15 @@ initialization
 
 finalization
   if Assigned(FConfigObj) then
-  begin
+    begin
     FConfigObj.SaveConfig;
     FConfigObj.Free;
-  end;
+    end;
+
+
+
+
+
+
 
 end.

@@ -159,26 +159,35 @@ procedure TdmMain.InitializeHighlighter(Highlighter: TSynCustomHighlighter);
 var
   i: integer;
   s: string;
-  tmpAttribs: TFontAttributes;
+  tmpAttribs, DefaultAttrib: TFontAttributes;
 begin
+
+
+  DefaultAttrib:= ConfigObj.ReadFontAttributes('text', FontAttributes());
+
 
   for i := 0 to Highlighter.AttrCount - 1 do
     with Highlighter.Attribute[i] do
     begin
-      tmpAttribs.Color:= clNone;
       case Name of
-        'Comment': tmpAttribs := ConfigObj.ReadFontAttributes('def:comment', FontAttributes(clGreen, [fsItalic]));
-        'String': tmpAttribs := ConfigObj.ReadFontAttributes('def:string', FontAttributes(clBlue, []));
-        'Number': tmpAttribs := ConfigObj.ReadFontAttributes('def:floating-point', FontAttributes(clBlue, []));
-        'Directive': tmpAttribs := ConfigObj.ReadFontAttributes('def:preprocessor', FontAttributes($00711796, []));
-        'Reserved word': tmpAttribs := ConfigObj.ReadFontAttributes('def:statement', FontAttributes($008F120A, [fsBold]));
-        'Identifier': tmpAttribs := ConfigObj.ReadFontAttributes('def:identifier', FontAttributes($008F120A, [fsBold]));
+        'Comment': tmpAttribs := ConfigObj.ReadFontAttributes('def:comment',DefaultAttrib);
+        'String',
+        'Entity Reference': tmpAttribs := ConfigObj.ReadFontAttributes('def:string', DefaultAttrib);
+        'Number': tmpAttribs := ConfigObj.ReadFontAttributes('def:floating-point', DefaultAttrib);
+        'Directive',
+        'IDE Directive': tmpAttribs := ConfigObj.ReadFontAttributes('def:preprocessor',DefaultAttrib);
+        'Reserved word',
+        'Element Name': tmpAttribs := ConfigObj.ReadFontAttributes('def:statement', DefaultAttrib);
+        //'Identifier',
+        //'Attribute Name',
+        //'Text': tmpAttribs := ConfigObj.ReadFontAttributes('def:identifier', DefaultAttrib);
+        'Space': tmpAttribs := ConfigObj.ReadFontAttributes('def:identifier', DefaultAttrib);
+      else
+        tmpAttribs := DefaultAttrib;
       end;
-      if tmpAttribs.Color <> clNone then
-        begin
-          Highlighter.Attribute[i].Foreground:=tmpAttribs.Color;
-          Highlighter.Attribute[i].Style:=tmpAttribs.Styles;
-        end;
+      Highlighter.Attribute[i].Foreground:=tmpAttribs.Foreground;
+      Highlighter.Attribute[i].Background:=tmpAttribs.Background;
+      Highlighter.Attribute[i].Style:=tmpAttribs.Styles;
     end;
 
 

@@ -1,0 +1,449 @@
+ObjectPascal --> Assembler
+ObjectPascal --> Case label
+ObjectPascal --> Comment
+ObjectPascal --> Directive
+ObjectPascal --> IDE Directive
+ObjectPascal --> Identifier
+ObjectPascal --> Number
+ObjectPascal --> Reserved word
+ObjectPascal --> Space
+ObjectPascal --> String
+ObjectPascal --> Symbol
+C++ --> Assembler
+C++ --> Comment
+C++ --> Identifier
+C++ --> Illegal char
+C++ --> Number
+C++ --> Preprocessor
+C++ --> Reserved word
+C++ --> Space
+C++ --> String
+C++ --> Symbol
+Java --> Annotation
+Java --> Comment
+Java --> Documentation
+Java --> Identifier
+Java --> Invalid symbol
+Java --> Number
+Java --> Reserved word
+Java --> Space
+Java --> String
+Java --> Symbol
+Perl --> Comment
+Perl --> Identifier
+Perl --> Illegal char
+Perl --> Number
+Perl --> Operator
+Perl --> Pragma
+Perl --> Reserved word
+Perl --> Space
+Perl --> String
+Perl --> Symbol
+Perl --> Variable
+HTML document --> Asp
+HTML document --> CDATA
+HTML document --> Comment
+HTML document --> DOCTYPE
+HTML document --> Escape ampersand
+HTML document --> Identifier
+HTML document --> Reserved word
+HTML document --> Space
+HTML document --> Symbol
+HTML document --> Text
+HTML document --> Unknown word
+HTML document --> Value
+XML document --> Attribute Name
+XML document --> Attribute Value
+XML document --> CDATA Section
+XML document --> Comment
+XML document --> DOCTYPE Section
+XML document --> Element Name
+XML document --> Entity Reference
+XML document --> Namespace Attribute Name
+XML document --> Namespace Attribute Value
+XML document --> Processing Instruction
+XML document --> Symbol
+XML document --> Text
+XML document --> Whitespace
+Lazarus Form definition --> Comment
+Lazarus Form definition --> Identifier
+Lazarus Form definition --> Key
+Lazarus Form definition --> Number
+Lazarus Form definition --> Space
+Lazarus Form definition --> String
+Lazarus Form definition --> Symbol
+UNIX Shell Script --> Comment
+UNIX Shell Script --> Identifier
+UNIX Shell Script --> Number
+UNIX Shell Script --> Reserved word
+UNIX Shell Script --> Second reserved word
+UNIX Shell Script --> Space
+UNIX Shell Script --> String
+UNIX Shell Script --> Symbol
+UNIX Shell Script --> Variable
+Cascading style sheets --> Comment
+Cascading style sheets --> Identifier
+Cascading style sheets --> Key
+Cascading style sheets --> Number
+Cascading style sheets --> Space
+Cascading style sheets --> String
+Cascading style sheets --> Symbol
+PHP --> Comment
+PHP --> Identifier
+PHP --> Invalid symbol
+PHP --> Number
+PHP --> Reserved word
+PHP --> Space
+PHP --> String
+PHP --> Symbol
+PHP --> Variable
+TeX --> Comment
+TeX --> Math Mode
+TeX --> Round Bracket
+TeX --> Space
+TeX --> Square Bracket
+TeX --> TeX Command
+TeX --> Text
+SQL --> Comment
+SQL --> Data type
+SQL --> Default packages
+SQL --> Exception
+SQL --> Function
+SQL --> Identifier
+SQL --> Number
+SQL --> Reserved word
+SQL --> Reserved word (PL/SQL)
+SQL --> Space
+SQL --> SQL*Plus command
+SQL --> String
+SQL --> Symbol
+SQL --> Table Name
+SQL --> Variable
+Python --> Comment
+Python --> Documentation
+Python --> Float
+Python --> Hexadecimal
+Python --> Identifier
+Python --> Non-reserved keyword
+Python --> Number
+Python --> Octal
+Python --> Reserved word
+Python --> Space
+Python --> String
+Python --> Symbol
+Python --> SyntaxError
+Python --> System functions and variables
+Visual Basic --> Comment
+Visual Basic --> Identifier
+Visual Basic --> Number
+Visual Basic --> Reserved word
+Visual Basic --> Space
+Visual Basic --> String
+Visual Basic --> Symbol
+MS-DOS batch language --> Comment
+MS-DOS batch language --> Identifier
+MS-DOS batch language --> Key
+MS-DOS batch language --> Number
+MS-DOS batch language --> Space
+MS-DOS batch language --> Variable
+INI file --> Comment
+INI file --> Key
+INI file --> Number
+INI file --> Section
+INI file --> Space
+INI file --> String
+INI file --> Symbol
+INI file --> Text
+po language files --> Comment
+po language files --> Flags
+po language files --> Identifier
+po language files --> Key
+po language files --> Previous value
+po language files --> Space
+po language files --> String
+po language files --> Text
+Tcl/Tk --> Comment
+Tcl/Tk --> Identifier
+Tcl/Tk --> Number
+Tcl/Tk --> Reserved word
+Tcl/Tk --> Second reserved word
+Tcl/Tk --> Space
+Tcl/Tk --> String
+Tcl/Tk --> Symbol
+Ruby --> Comment
+Ruby --> Identifier
+Ruby --> Number
+Ruby --> Reserved word
+Ruby --> Second reserved word
+Ruby --> Space
+Ruby --> String
+Ruby --> Symbol
+CSharp --> Assembler
+CSharp --> Comment
+CSharp --> Identifier
+CSharp --> Illegal char
+CSharp --> Number
+CSharp --> Preprocessor
+CSharp --> Reserved word
+CSharp --> Space
+CSharp --> String
+CSharp --> Symbol
+Haskell --> Comment
+Haskell --> Identifier
+Haskell --> Number
+Haskell --> Reserved word
+Haskell --> Space
+Haskell --> String
+Haskell --> Symbol
+Foxpro --> Comment
+Foxpro --> Identifier
+Foxpro --> Number
+Foxpro --> Reserved word
+Foxpro --> Space
+Foxpro --> String
+Foxpro --> Symbol
+Inno Setup Script --> Comment
+Inno Setup Script --> Directive
+Inno Setup Script --> Identifier
+Inno Setup Script --> Illegal char
+Inno Setup Script --> Number
+Inno Setup Script --> Preprocessor
+Inno Setup Script --> Reserved word
+Inno Setup Script --> Section
+Inno Setup Script --> Space
+Inno Setup Script --> String
+Inno Setup Script --> Symbol
+Gembase --> Block
+Gembase --> Comment
+Gembase --> Form
+Gembase --> Function
+Gembase --> Identifier
+Gembase --> Key
+Gembase --> Number
+Gembase --> Qualifier
+Gembase --> Space
+Gembase --> Special variable
+Gembase --> String
+Gembase --> Symbol
+Gembase --> Variable
+CA-Clipper --> Comment
+CA-Clipper --> Identifier
+CA-Clipper --> Number
+CA-Clipper --> Operator
+CA-Clipper --> Preprocessor
+CA-Clipper --> Reserved word
+CA-Clipper --> Space
+CA-Clipper --> String
+Modelica --> Comment
+Modelica --> Directive
+Modelica --> Identifier
+Modelica --> Number
+Modelica --> Reserved word
+Modelica --> Space
+Modelica --> String
+Modelica --> Symbol
+Vrml97 --> Comment
+Vrml97 --> Event
+Vrml97 --> Identifier
+Vrml97 --> Non-reserved keyword
+Vrml97 --> Number
+Vrml97 --> Reserved word
+Vrml97 --> Space
+Vrml97 --> String
+Vrml97 --> Symbol
+Vrml97 --> Vrml_Appearance
+Vrml97 --> Vrml_Attribute
+Vrml97 --> Vrml_Definition
+Vrml97 --> Vrml_Event
+Vrml97 --> Vrml_Grouping
+Vrml97 --> Vrml_Interpolator
+Vrml97 --> Vrml_Light
+Vrml97 --> Vrml_Node
+Vrml97 --> Vrml_Parameter
+Vrml97 --> Vrml_Proto
+Vrml97 --> Vrml_Sensor
+Vrml97 --> Vrml_Shape
+Vrml97 --> Vrml_Shape_Hint
+Vrml97 --> Vrml_Time_dependent
+Vrml97 --> Vrml_Viewpoint
+Vrml97 --> Vrml_WorldInfo
+Vrml97 --> X3DDocType
+Vrml97 --> X3DHeader
+HP48 --> Null
+HP48 --> Asm Key
+HP48 --> Asm
+HP48 --> Asm Comment
+HP48 --> SASM Key
+HP48 --> SASM
+HP48 --> SASM Comment
+HP48 --> Rpl key
+HP48 --> Rpl
+HP48 --> Rpl comment
+AWK Script --> Comment
+AWK Script --> Identifier
+AWK Script --> Internal function
+AWK Script --> Number
+AWK Script --> Reserved word
+AWK Script --> Space
+AWK Script --> String
+AWK Script --> Symbol
+AWK Script --> System value
+Progress --> Comment
+Progress --> Data type
+Progress --> Event
+Progress --> Identifier
+Progress --> Include
+Progress --> Non-reserved keyword
+Progress --> Number
+Progress --> Preprocessor
+Progress --> Reserved word
+Progress --> Space
+Progress --> String
+Progress --> Symbol
+Eiffel --> Basic Types
+Eiffel --> Comment
+Eiffel --> Identifier
+Eiffel --> Lace
+Eiffel --> Operator And Symbols
+Eiffel --> Predefined
+Eiffel --> Reserved word
+Eiffel --> Result Value
+Eiffel --> Space
+Eiffel --> String
+Baan 4GL --> Comment
+Baan 4GL --> Directive
+Baan 4GL --> Identifier
+Baan 4GL --> Number
+Baan 4GL --> Reserved word
+Baan 4GL --> Space
+Baan 4GL --> String
+Baan 4GL --> Symbol
+Baan 4GL --> Variable
+Diff File --> Diff Added line
+Diff File --> Diff Changed Line
+Diff File --> Diff Chunk Line Counts
+Diff File --> Diff Chunk Marker
+Diff File --> Diff Chunk New Line Count
+Diff File --> Diff Chunk Original Line Count
+Diff File --> Diff Context Line
+Diff File --> Diff New File
+Diff File --> Diff Original File
+Diff File --> Diff Removed Line
+Diff File --> Space
+Diff File --> Unknown word
+Javascript --> Comment
+Javascript --> Event
+Javascript --> Identifier
+Javascript --> Non-reserved keyword
+Javascript --> Number
+Javascript --> Reserved word
+Javascript --> Space
+Javascript --> String
+Javascript --> Symbol
+Modula 3 --> Comment
+Modula 3 --> Identifier
+Modula 3 --> Key
+Modula 3 --> Number
+Modula 3 --> Preprocessor
+Modula 3 --> Reserved word
+Modula 3 --> Space
+Modula 3 --> String
+Modula 3 --> Symbol
+Modula 3 --> SyntaxError
+LEGO LDraw --> Color Value
+LEGO LDraw --> Comment
+LEGO LDraw --> FirstTri
+LEGO LDraw --> FourthTri
+LEGO LDraw --> Identifier
+LEGO LDraw --> Line
+LEGO LDraw --> OpLine
+LEGO LDraw --> Quad
+LEGO LDraw --> Reserved word
+LEGO LDraw --> SecondTri
+LEGO LDraw --> ThirdTri
+LEGO LDraw --> Triangle
+MS VBScript --> Comment
+MS VBScript --> Identifier
+MS VBScript --> Number
+MS VBScript --> Reserved word
+MS VBScript --> Space
+MS VBScript --> String
+MS VBScript --> Symbol
+Standard ML --> Character
+Standard ML --> Comment
+Standard ML --> Identifier
+Standard ML --> Number
+Standard ML --> Operator
+Standard ML --> Reserved word
+Standard ML --> Space
+Standard ML --> String
+Standard ML --> Symbol
+Standard ML --> SyntaxError
+CORBA IDL --> Comment
+CORBA IDL --> Data type
+CORBA IDL --> Identifier
+CORBA IDL --> Number
+CORBA IDL --> Preprocessor
+CORBA IDL --> Reserved word
+CORBA IDL --> Space
+CORBA IDL --> String
+CORBA IDL --> Symbol
+COBOL --> Area A Identifier
+COBOL --> Boolean value
+COBOL --> Comment
+COBOL --> Debugging Lines
+COBOL --> Identifier
+COBOL --> Indicator Area
+COBOL --> Number
+COBOL --> Preprocessor
+COBOL --> Reserved word
+COBOL --> Sequence Number Area
+COBOL --> Space
+COBOL --> String
+COBOL --> Tag Area
+GW-TEL script --> Comment
+GW-TEL script --> Identifier
+GW-TEL script --> Illegal char
+GW-TEL script --> Number
+GW-TEL script --> Reserved word
+GW-TEL script --> Space
+GW-TEL script --> String
+GW-TEL script --> Symbol
+x86 assembly language --> Comment
+x86 assembly language --> Identifier
+x86 assembly language --> Number
+x86 assembly language --> Reserved word
+x86 assembly language --> Space
+x86 assembly language --> String
+x86 assembly language --> Symbol
+Lua Script --> Comment
+Lua Script --> Function
+Lua Script --> Identifier
+Lua Script --> Number
+Lua Script --> Reserved word
+Lua Script --> Space
+Lua Script --> String
+Lua Script --> Symbol
+Fortran --> Comment
+Fortran --> Identifier
+Fortran --> Number
+Fortran --> Reserved word
+Fortran --> Space
+Fortran --> String
+Fortran --> Symbol
+Prolog --> Comment
+Prolog --> Directive
+Prolog --> Identifier
+Prolog --> Number
+Prolog --> Reserved word
+Prolog --> String
+Prolog --> Symbol
+Prolog --> Whitespace
+Resource --> Comment
+Resource --> Identifier
+Resource --> Number
+Resource --> Preprocessor
+Resource --> Reserved word
+Resource --> Space
+Resource --> String
+Resource --> Symbol
