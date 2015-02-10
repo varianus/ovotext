@@ -112,7 +112,7 @@ var
 
 implementation
 
-uses config;
+uses config, lclproc;
 
 {$R *.lfm}
 
@@ -158,33 +158,17 @@ end;
 procedure TdmMain.InitializeHighlighter(Highlighter: TSynCustomHighlighter);
 var
   i: integer;
-  s: string;
+  AttrName: string;
   tmpAttribs, DefaultAttrib: TFontAttributes;
 begin
-
-
   DefaultAttrib:= ConfigObj.ReadFontAttributes('text', FontAttributes());
-
-
   for i := 0 to Highlighter.AttrCount - 1 do
     with Highlighter.Attribute[i] do
     begin
-      case Name of
-        'Comment': tmpAttribs := ConfigObj.ReadFontAttributes('def:comment',DefaultAttrib);
-        'String',
-        'Entity Reference': tmpAttribs := ConfigObj.ReadFontAttributes('def:string', DefaultAttrib);
-        'Number': tmpAttribs := ConfigObj.ReadFontAttributes('def:floating-point', DefaultAttrib);
-        'Directive',
-        'IDE Directive': tmpAttribs := ConfigObj.ReadFontAttributes('def:preprocessor',DefaultAttrib);
-        'Reserved word',
-        'Element Name': tmpAttribs := ConfigObj.ReadFontAttributes('def:statement', DefaultAttrib);
-        //'Identifier',
-        //'Attribute Name',
-        //'Text': tmpAttribs := ConfigObj.ReadFontAttributes('def:identifier', DefaultAttrib);
-        'Space': tmpAttribs := ConfigObj.ReadFontAttributes('def:identifier', DefaultAttrib);
-      else
-        tmpAttribs := DefaultAttrib;
-      end;
+      AttrName := ConfigObj.MapAttribute(Highlighter.Attribute[i].Name);
+      debugln(Highlighter.Attribute[i].Name,' --> ',AttrName);
+
+      tmpAttribs := ConfigObj.ReadFontAttributes(AttrName,DefaultAttrib);
       Highlighter.Attribute[i].Foreground:=tmpAttribs.Foreground;
       Highlighter.Attribute[i].Background:=tmpAttribs.Background;
       Highlighter.Attribute[i].Style:=tmpAttribs.Styles;
@@ -213,4 +197,4 @@ begin
     Result := nil;
 end;
 
-end.
+end.
