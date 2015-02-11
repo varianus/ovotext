@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CONFIG>
   <Mapping AttributesCount="19">
-    <AttributesItem1 Value="def:identifier=Attribute Name|Element Name|Namespace Attribute Name|"/>
-    <AttributesItem2 Value="def:special-constant=CDATA|DOCTYPE|Namespace Attribute Value|Val|"/>
+    <AttributesItem1 Value="def:type=Attribute Name|Namespace Attribute Name|"/>
+    <AttributesItem2 Value="def:string=CDATA|DOCTYPE|Namespace Attribute Value|Val|"/>
     <AttributesItem3 Value="Character=Character|"/>
     <AttributesItem4 Value="def:comment=Comment|Documentation|Rpl comment|SASM Comment|"/>
     <AttributesItem5 Value="Data type=Data type|"/>
     <AttributesItem6 Value="def:preprocessor=IDE Directive|Include|Preprocessor|Processing Instruction|"/>
-    <AttributesItem7 Value="def:identifier=Identifier|"/>
+    <AttributesItem7 Value="def:identifier=Identifier|Element Name|"/>
     <AttributesItem8 Value="Hexadecimal=Hexadecimal|"/>
     <AttributesItem9 Value="Key=Key|Rpl key|SASM Key|SQL keyword|SQL*Plus command|TeX Command|"/>
     <AttributesItem10 Value="Macro=Pragma|"/>
@@ -19,6 +19,6 @@
     <AttributesItem16 Value="def:string=String|"/>
     <AttributesItem17 Value="def:symbol=Brackets|Round Bracket|Square Bracket|Symbol|"/>
     <AttributesItem18 Value="Text=Embedded text|Text|"/>
-    <AttributesItem19 Value="Variable=Special variable|"/>
+    <AttributesItem19 Value="Variable=Special variable|Variable|"/>
   </Mapping>
 </CONFIG>
