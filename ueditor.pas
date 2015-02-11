@@ -239,6 +239,7 @@ begin
   Sheet.FEditor := Result;
 
   Result.Color:= ConfigObj.BackGroundColor;
+  Result.Options:= Result.Options + [eoHideRightMargin];
   Result.BookMarkOptions.BookmarkImages:=dmMain.imgBookMark;
 
   Result.OnStatusChange := OnStatusChange;
