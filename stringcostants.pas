@@ -23,6 +23,8 @@ Resourcestring
   RSStatusBarInsMode = 'INS ';
   RSStatusBarOvrMode = 'OVR ';
   RSSaveChanges = 'Save changes to "%s"?';
+  //--
+  RSTextNotFound = 'Text not found:'#13#110'"%s"';
 
 implementation
 

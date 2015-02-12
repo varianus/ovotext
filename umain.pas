@@ -62,6 +62,8 @@ type
     MenuItem34: TMenuItem;
     MenuItem35: TMenuItem;
     MenuItem36: TMenuItem;
+    MenuItem37: TMenuItem;
+    MenuItem38: TMenuItem;
     mnuOpenRecent: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -74,9 +76,10 @@ type
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     pumEdit: TPopupMenu;
+    ReplaceDialog: TReplaceDialog;
     SaveDialog: TSaveDialog;
     SearchFind: TAction;
-    SearchFindFirst: TAction;
+    SearchFindPrevious: TAction;
     SearchFindNext1: TAction;
     SearchReplace: TAction;
     StatusBar1: TStatusBar;
@@ -99,8 +102,7 @@ type
     ToolButton9: TToolButton;
     procedure actFontExecute(Sender: TObject);
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
-    procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean;
-      var HintInfo: THintInfo);
+    procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
     procedure EditRedoExecute(Sender: TObject);
     procedure FileCloseAllExecute(Sender: TObject);
     procedure FileCloseExecute(Sender: TObject);
@@ -117,14 +119,26 @@ type
     procedure HelpAboutExecute(Sender: TObject);
     procedure MenuItem28Click(Sender: TObject);
     procedure MenuItem29Click(Sender: TObject);
+    procedure ReplaceDialogFind(Sender: TObject);
+    procedure ReplaceDialogReplace(Sender: TObject);
     procedure SearchFindAccept(Sender: TObject);
     procedure SearchFindExecute(Sender: TObject);
+    procedure SearchFindNext1Execute(Sender: TObject);
+    procedure SearchFindPreviousExecute(Sender: TObject);
+    procedure SearchReplaceExecute(Sender: TObject);
   private
     EditorFactory: TEditorFactory;
     MRU: TMRUMenuManager;
+
+    FindText, ReplaceText: string;
+    SynOption: TSynSearchOptions;
+
     function EditorAvalaible: boolean; inline;
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
-    procedure PrepareSearch(Dialog: TFindDialog; Out SynOption: TSynSearchOptions);
+    procedure ExecFind(Dialog: TFindDialog);
+    procedure PrepareReplace(Dialog: TReplaceDialog);
+
+    procedure PrepareSearch(Dialog: TFindDialog);
     procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
     procedure RecentFileEvent(Sender: TObject; const AFileName: string);
     procedure NewEditor(Editor: TEditor);
@@ -160,8 +174,7 @@ begin
     EditorFactory.CurrentEditor.Redo;
 end;
 
-procedure TfMain.AppPropertiesShowHint(var HintStr: string;
-  var CanShow: boolean; var HintInfo: THintInfo);
+procedure TfMain.AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
 begin
   StatusBar1.Panels[3].Text := HintInfo.HintStr;
 end;
@@ -185,7 +198,7 @@ begin
     begin
     for i := 0 to EditorFactory.PageCount - 1 do
       TEditorTabSheet(EditorFactory.Pages[i]).Editor.Font.Assign(FontDialog.Font);
-      ConfigObj.Font.Assign(FontDialog.Font);
+    ConfigObj.Font.Assign(FontDialog.Font);
     end;
 
 end;
@@ -209,10 +222,10 @@ var
 begin
 
   for i := 0 to FileOpen.Dialog.Files.Count - 1 do
-  begin
+    begin
     EditorFactory.AddEditor(FileOpen.Dialog.Files[i]);
     MRU.AddToRecent(FileOpen.Dialog.Files[i]);
-  end;
+    end;
 
 end;
 
@@ -222,11 +235,18 @@ begin
 end;
 
 procedure TfMain.FindDialogFind(Sender: TObject);
+begin
+  ExecFind(FindDialog);
+end;
+
+procedure TfMain.ExecFind(Dialog: TFindDialog);
 var
   Options: TSynSearchOptions;
 begin
-  PrepareSearch(FindDialog, Options);
-  EditorFactory.CurrentEditor.SearchReplace(FindDialog.FindText, '', Options);
+  PrepareSearch(Dialog);
+
+  if EditorFactory.CurrentEditor.SearchReplace(FindText, '', Options) = 0 then
+    ShowMessage(Format(RSTextNotfound, [Dialog.FindText]));
 
 end;
 
@@ -259,7 +279,7 @@ begin
   MRU.MenuItem := mnuOpenRecent;
   MRU.OnRecentFile := @RecentFileEvent;
   MRU.MaxRecent := 10;
-  MRU.Recent.clear;
+  MRU.Recent.Clear;
   ConfigObj.ReadStrings('Recent', 'File', MRU.Recent);
   MRU.ShowRecentFiles;
   EditorFactory := TEditorFactory.Create(Self);
@@ -302,6 +322,28 @@ var
 begin
   for i := 0 to MRU.Recent.Count - 1 do
     EditorFactory.AddEditor(MRU.Recent[i]);
+
+end;
+
+procedure TfMain.ReplaceDialogFind(Sender: TObject);
+begin
+  ExecFind(ReplaceDialog);
+end;
+
+procedure TfMain.ReplaceDialogReplace(Sender: TObject);
+var
+  Options: TSynSearchOptions;
+begin
+  PrepareReplace(ReplaceDialog);
+
+  if EditorFactory.CurrentEditor.SearchReplace(FindText, ReplaceText, Options) = 0 then
+    ShowMessage(Format(RSTextNotfound, [FindText]))
+  else
+    if (ssoReplace in Options) and not (ssoReplaceAll in Options) then
+      begin
+      Exclude(Options, ssoReplace);
+      EditorFactory.CurrentEditor.SearchReplace(FindText, '', Options);
+      end;
 
 end;
 
@@ -366,12 +408,64 @@ begin
   FindDialog.Execute;
 end;
 
+procedure TfMain.SearchFindNext1Execute(Sender: TObject);
+var
+  sOpt: TSynSearchOptions;
+  Ed: TEditor;
+begin
+  if (FindText = EmptyStr) then
+    Exit;
+  Ed := EditorFactory.CurrentEditor;
+  if Assigned(Ed) then
+    begin
+    sOpt := SynOption;
+    sOpt := sOpt - [ssoBackWards];
+    if Ed.SearchReplace(FindText, '', sOpt) = 0 then
+      ShowMessage(Format(RSTextNotfound, [FindText]));
+    ;
+    end;
+
+end;
+
+procedure TfMain.SearchFindPreviousExecute(Sender: TObject);
+var
+  sOpt: TSynSearchOptions;
+  Ed: TEditor;
+begin
+  if (FindText = EmptyStr) then
+    Exit;
+  Ed := EditorFactory.CurrentEditor;
+  if Assigned(Ed) then
+    begin
+    sOpt := SynOption;
+    sOpt := sOpt + [ssoBackWards];
+    if Ed.SearchReplace(FindText, '', sOpt) = 0 then
+      ShowMessage(Format(RSTextNotfound, [FindText]));
+    ;
+    end;
+
+end;
+
+procedure TfMain.SearchReplaceExecute(Sender: TObject);
+var
+  Editor: TEditor;
+begin
+
+  if not EditorAvalaible then
+    exit;
+  Editor := EditorFactory.CurrentEditor;
+  if Editor.SelAvail and (Editor.BlockBegin.Y = Editor.BlockEnd.Y) then
+    ReplaceDialog.FindText := Editor.SelText;
+  ReplaceDialog.Execute;
+end;
+
+
 function TfMain.EditorAvalaible: boolean;
 begin
   Result := Assigned(EditorFactory) and Assigned(EditorFactory.CurrentEditor);
 end;
 
-procedure TfMain.PrepareSearch(Dialog: TFindDialog; out SynOption: TSynSearchOptions);
+procedure TfMain.PrepareSearch(Dialog: TFindDialog);
 begin
   SynOption := [];
   if not (frDown in Dialog.Options) then
@@ -382,37 +476,57 @@ begin
     Include(SynOption, ssoMatchCase);
   if frEntireScope in Dialog.Options then
     Include(SynOption, ssoEntireScope);
+  FindText := Dialog.FindText;
 
 end;
+
+procedure TfMain.PrepareReplace(Dialog: TReplaceDialog);
+begin
+  PrepareSearch(Dialog);
+
+  if frReplace in Dialog.Options then
+    Include(SynOption, ssoReplace);
+
+  if frReplaceAll in Dialog.Options then
+    Include(SynOption, ssoReplaceAll);
+
+  if frFindNext in Dialog.Options then
+    begin
+    Exclude(SynOption, ssoReplace);
+    Exclude(SynOption, ssoReplaceAll);
+    end;
+  ReplaceText := Dialog.FindText;
+end;
+
 
 procedure TfMain.BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
 begin
   if not Editor.Modified then
     Cancel := False
   else
-    case MessageDlg(Format(RSSaveChanges, [ExtractFileName(Editor.Sheet.Caption)]),
-        mtWarning, [mbYes, mbNo, mbCancel], 0) of
+    case MessageDlg(Format(RSSaveChanges, [ExtractFileName(Editor.Sheet.Caption)]), mtWarning,
+        [mbYes, mbNo, mbCancel], 0) of
       mrYes:
-      begin
-        if Editor.Untitled then
         begin
+        if Editor.Untitled then
+          begin
           SaveDialog.FileName := Editor.Sheet.Caption;
           if SaveDialog.Execute then
-          begin
+            begin
             Editor.FileName := SaveDialog.FileName;
-          end
+            end
           else
-          begin
+            begin
             Cancel := True;
             exit;
+            end;
           end;
-        end;
         Editor.Save;
         Cancel := False;
-      end;
+        end;
       mrNo: Cancel := False;
       mrCancel: Cancel := True;
-    end;
+      end;
 
 end;
 

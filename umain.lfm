@@ -1,7 +1,7 @@
 object fMain: TfMain
-  Left = 611
+  Left = 631
   Height = 688
-  Top = 241
+  Top = 150
   Width = 966
   Caption = 'ovoText'
   ClientHeight = 668
@@ -199,16 +199,20 @@ object fMain: TfMain
       Caption = '&Replace'
       Hint = 'Search and Replace'
       ImageIndex = 14
+      OnExecute = SearchReplaceExecute
     end
-    object SearchFindFirst: TAction
+    object SearchFindPrevious: TAction
       Category = 'Search'
-      Caption = '&Find first'
+      Caption = '&Find Previous'
       ImageIndex = 10
+      OnExecute = SearchFindPreviousExecute
+      ShortCut = 8306
     end
     object SearchFindNext1: TAction
       Category = 'Search'
       Caption = 'Find next'
       ImageIndex = 9
+      OnExecute = SearchFindNext1Execute
       ShortCut = 114
     end
     object FileOpen: TFileOpen
@@ -854,6 +858,12 @@ object fMain: TfMain
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
         }
+      end
+      object MenuItem37: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem38: TMenuItem
+        Action = SearchFindPrevious
       end
       object MenuItem19: TMenuItem
         Action = SearchFindNext1
@@ -2153,5 +2163,15 @@ object fMain: TfMain
     OnApplyClicked = FontDialogApplyClicked
     left = 426
     top = 166
+  end
+  object ReplaceDialog: TReplaceDialog
+    OnClose = FindDialogClose
+    Width = 480
+    Height = 184
+    Options = [frDown, frReplace, frReplaceAll, frEntireScope, frHidePromptOnReplace]
+    OnFind = ReplaceDialogFind
+    OnReplace = ReplaceDialogReplace
+    left = 263
+    top = 264
   end
 end

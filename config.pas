@@ -313,10 +313,4 @@ finalization
     FConfigObj.Free;
     end;
 
-
-
-
-
-
-
 end.

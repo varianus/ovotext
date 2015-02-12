@@ -25,6 +25,12 @@ msgstr ""
 msgid "Sel: %d "
 msgstr ""
 
+#: stringcostants.rstextnotfound
+msgid ""
+"Text not found:\n"
+"n\"%s\"\n"
+msgstr ""
+
 #: tfabout.blicense.caption
 msgid "&License"
 msgstr ""
@@ -287,12 +293,12 @@ msgctxt "tfmain.searchfind.hint"
 msgid "Find"
 msgstr ""
 
-#: tfmain.searchfindfirst.caption
-msgid "&Find first"
-msgstr ""
-
 #: tfmain.searchfindnext1.caption
 msgid "Find next"
+msgstr ""
+
+#: tfmain.searchfindprevious.caption
+msgid "&Find Previous"
 msgstr ""
 
 #: tfmain.searchreplace.caption

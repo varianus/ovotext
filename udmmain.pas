@@ -174,7 +174,6 @@ begin
       Highlighter.Attribute[i].Style:=tmpAttribs.Styles;
     end;
 
-
 end;
 
 function TdmMain.getHighLighter(Extension: string): TSynCustomHighlighter;
@@ -197,4 +196,4 @@ begin
     Result := nil;
 end;
 
-end.
+end.
