@@ -30,7 +30,7 @@ type
     procedure SetUntitled(AValue: boolean);
 
   public
-    constructor Create(AOwner:Tcomponent); override;
+    constructor Create(AOwner: TComponent); override;
     property Sheet: TEditorTabSheet read FSheet;
     property FileName: TFileName read FFileName write SetFileName;
     property Untitled: boolean read FUntitled write SetUntitled;
@@ -67,8 +67,7 @@ type
     procedure DoChange; override;
   public
     property CurrentEditor: TEditor read GetCurrentEditor;
-    property OnStatusChange: TStatusChangeEvent
-      read FonStatusChange write FOnStatusChange;
+    property OnStatusChange: TStatusChangeEvent read FonStatusChange write FOnStatusChange;
     property OnBeforeClose: TOnBeforeClose read FOnBeforeClose write SetOnBeforeClose;
     property OnNewEditor: TOnEditorEvent read FOnNewEditor write SetOnNewEditor;
     //--//
@@ -110,7 +109,7 @@ begin
     FFileName := EmptyStr;
 end;
 
-constructor TEditor.Create(AOwner: Tcomponent);
+constructor TEditor.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   CreateDefaultGutterParts;
@@ -134,25 +133,25 @@ end;
 
 function TEditor.SaveAs(AFileName: TFileName): boolean;
 begin
-  try
+    try
     FFileName := AFileName;
     Lines.SaveToFile(AFileName);
     Result := True;
     FUntitled := False;
-  except
+    except
     Result := False;
-  end;
+    end;
 end;
 
 procedure TEditor.CreateDefaultGutterParts;
 begin
   Gutter.Parts.Clear;
   with TSynGutterMarks.Create(Gutter.Parts) do
-      Name := 'SynGutterMarks1';
+    Name := 'SynGutterMarks1';
   with TSynGutterLineNumber.Create(Gutter.Parts) do
-      Name := 'SynGutterLineNumber1';
+    Name := 'SynGutterLineNumber1';
   with TSynGutterChanges.Create(Gutter.Parts) do
-      Name := 'SynGutterChanges1';
+    Name := 'SynGutterChanges1';
 end;
 
 { TEditorFactory }
@@ -202,31 +201,31 @@ var
   i: integer;
 begin
   if FileName <> EmptyStr then
-  begin
+    begin
     // do not reopen same file
     for i := 0 to PageCount - 1 do
-    begin
+      begin
       Sheet := TEditorTabSheet(Pages[i]);
       if Sheet.Editor.FileName = FileName then
-      begin
+        begin
         ActivePageIndex := i;
         exit;
+        end;
       end;
-    end;
 
     // try to reuse an empty shhet
     for i := 0 to PageCount - 1 do
-    begin
+      begin
       Sheet := TEditorTabSheet(Pages[i]);
       if (Sheet.Editor.Untitled) and not Sheet.Editor.Modified then
-      begin
+        begin
         Sheet.Editor.LoadFromfile(FileName);
         ActivePageIndex := i;
         exit;
+        end;
       end;
-    end;
 
-  end;
+    end;
 
   Sheet := TEditorTabSheet.Create(Self);
   Sheet.PageControl := Self;
@@ -238,9 +237,9 @@ begin
   Result.Align := alClient;
   Sheet.FEditor := Result;
 
-  Result.Color:= ConfigObj.BackGroundColor;
-  Result.Options:= Result.Options + [eoHideRightMargin];
-  Result.BookMarkOptions.BookmarkImages:=dmMain.imgBookMark;
+  Result.Color := ConfigObj.BackGroundColor;
+  Result.Options := Result.Options + [eoHideRightMargin];
+  Result.BookMarkOptions.BookmarkImages := dmMain.imgBookMark;
 
   Result.OnStatusChange := OnStatusChange;
   if Assigned(OnStatusChange) then
@@ -248,11 +247,11 @@ begin
 
   Result.Parent := Sheet;
   if FileName = '' then
-  begin
+    begin
     Sheet.Caption := Format(RSNewFile, [fUntitledCounter]);
     Result.FUntitled := True;
     Inc(fUntitledCounter);
-  end
+    end
   else
     Result.LoadFromfile(FileName);
 
@@ -270,23 +269,24 @@ var
 begin
   Cancel := True;
   // if last tab in unused
-  if (PageCount = 1) and Editor.Untitled and not Editor.Modified and not
-    ConfigObj.AppSettings.CloseWithLastTab then
+  if (PageCount = 1) and Editor.Untitled and not Editor.Modified and not ConfigObj.AppSettings.CloseWithLastTab then
     exit;
 
   if Assigned(FOnBeforeClose) then
     FOnBeforeClose(Editor, Cancel);
 
   if not Cancel then
-  begin
+    begin
     Sheet := Editor.FSheet;
     Editor.PopupMenu := nil;
     Application.ReleaseComponent(Editor);
     Application.ReleaseComponent(Sheet);
     Application.ProcessMessages;
     if (PageCount = 0) and not ConfigObj.AppSettings.CloseWithLastTab then
-       AddEditor();
-  end;
+      AddEditor();
+    end;
+
+
 end;
 
 function TEditorFactory.CloseAll: boolean;
