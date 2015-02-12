@@ -199,6 +199,7 @@ function TEditorFactory.AddEditor(FileName: TFilename = ''): TEditor;
 var
   Sheet: TEditorTabSheet;
   i: integer;
+  DefaultAttr : TFontAttributes;
 begin
   if FileName <> EmptyStr then
     begin
@@ -232,10 +233,14 @@ begin
 
   Result := TEditor.Create(Sheet);
   Result.Font.Assign(ConfigObj.Font);
+  DefaultAttr := ConfigObj.ReadFontAttributes('text', FontAttributes());
 
   Result.FSheet := Sheet;
   Result.Align := alClient;
   Sheet.FEditor := Result;
+
+  Result.Font.Color := DefaultAttr.Foreground;
+  Result.Font.Style := DefaultAttr.Styles;
 
   Result.Color := ConfigObj.BackGroundColor;
   Result.Options := Result.Options + [eoHideRightMargin];
