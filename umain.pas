@@ -67,6 +67,7 @@ type
     MenuItem38: TMenuItem;
     MenuItem39: TMenuItem;
     MenuItem40: TMenuItem;
+    MenuItem41: TMenuItem;
     mnuOpenRecent: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -204,7 +205,7 @@ begin
   try
     for i := 0 to Ed.Lines.Count - 1 do
       begin
-        Ed.TextBetweenPoints[Point(1, i+1), Ed.PhysicalToLogicalPos(Point(Length(Ed.Lines[i])+1,i+1))] :=TrimLeft(Ed.Lines[i]);
+        Ed.SetLineText(i,TrimLeft(Ed.Lines[i]));
       end;
 
   finally

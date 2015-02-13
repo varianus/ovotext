@@ -32,9 +32,11 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     property Sheet: TEditorTabSheet read FSheet;
+    //-- Helper functions//
+    procedure SetLineText(Index:Integer; NewText: string);
+    // -- File handling//
     property FileName: TFileName read FFileName write SetFileName;
     property Untitled: boolean read FUntitled write SetUntitled;
-    // -- //
     procedure LoadFromfile(AFileName: TFileName);
     function Save: boolean;
     function SaveAs(AFileName: TFileName): boolean;
@@ -113,6 +115,11 @@ constructor TEditor.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   CreateDefaultGutterParts;
+end;
+
+procedure TEditor.SetLineText(Index: Integer; NewText: string);
+begin
+  TextBetweenPoints[Point(1, Index+1), PhysicalToLogicalPos(Point(Length(Lines[Index])+1,Index+1))] := NewText;
 end;
 
 procedure TEditor.LoadFromfile(AFileName: TFileName);

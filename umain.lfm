@@ -783,6 +783,9 @@ object fMain: TfMain
           88FF858A88FF858A88FF858A88FF858A88FF898E8C94FFFFFF00
         }
       end
+      object MenuItem41: TMenuItem
+        Caption = '-'
+      end
       object MenuItem39: TMenuItem
         Caption = 'Spaces operation'
         object MenuItem40: TMenuItem
