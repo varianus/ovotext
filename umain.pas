@@ -15,6 +15,7 @@ type
 
   TfMain = class(TForm)
     actFont: TAction;
+    actTrimLeading: TAction;
     AppProperties: TApplicationProperties;
     FileCloseAll: TAction;
     FileSave: TAction;
@@ -64,6 +65,8 @@ type
     MenuItem36: TMenuItem;
     MenuItem37: TMenuItem;
     MenuItem38: TMenuItem;
+    MenuItem39: TMenuItem;
+    MenuItem40: TMenuItem;
     mnuOpenRecent: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -102,6 +105,7 @@ type
     ToolButton9: TToolButton;
     procedure actFontExecute(Sender: TObject);
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
+    procedure actTrimLeadingExecute(Sender: TObject);
     procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
     procedure EditRedoExecute(Sender: TObject);
     procedure FileCloseAllExecute(Sender: TObject);
@@ -187,6 +191,26 @@ begin
   EditRedo.Enabled := Avail and EditorFactory.CurrentEditor.CanRedo;
   EditUndo.Enabled := Avail and EditorFactory.CurrentEditor.CanUndo;
   Handled := True;
+end;
+
+procedure TfMain.actTrimLeadingExecute(Sender: TObject);
+var
+  Ed: TEditor;
+  i: integer;
+begin
+
+  Ed := EditorFactory.CurrentEditor;
+  ed.BeginUpdate(True);
+  try
+    for i := 0 to Ed.Lines.Count - 1 do
+      begin
+        Ed.TextBetweenPoints[Point(1, i+1), Ed.PhysicalToLogicalPos(Point(Length(Ed.Lines[i])+1,i+1))] :=TrimLeft(Ed.Lines[i]);
+      end;
+
+  finally
+    ed.EndUpdate;
+  end;
+
 end;
 
 procedure TfMain.actFontExecute(Sender: TObject);
