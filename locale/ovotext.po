@@ -284,6 +284,11 @@ msgstr ""
 msgid "Spaces operation"
 msgstr ""
 
+#: tfmain.menuitem41.caption
+msgctxt "TFMAIN.MENUITEM41.CAPTION"
+msgid "-"
+msgstr ""
+
 #: tfmain.menuitem7.caption
 msgid "Edit"
 msgstr ""

@@ -121,6 +121,7 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormDropFiles(Sender: TObject; const FileNames: array of String);
     procedure HelpAboutExecute(Sender: TObject);
     procedure MenuItem28Click(Sender: TObject);
     procedure MenuItem29Click(Sender: TObject);
@@ -326,6 +327,15 @@ procedure TfMain.FormDestroy(Sender: TObject);
 begin
   ConfigObj.WriteStrings('Recent', 'File', MRU.Recent);
   FreeAndNil(EditorFactory);
+end;
+
+procedure TfMain.FormDropFiles(Sender: TObject; const FileNames: array of String);
+var
+  i: Integer;
+begin
+  for i := Low(FileNames) to High(FileNames) do
+    EditorFactory.AddEditor(FileNames[i]);
+
 end;
 
 procedure TfMain.HelpAboutExecute(Sender: TObject);
@@ -555,4 +565,4 @@ begin
 
 end;
 
-end.
+end.
