@@ -121,6 +121,7 @@
       <Unit5>
         <Filename Value="supportfuncs.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="SupportFuncs"/>
       </Unit5>
       <Unit6>
         <Filename Value="ueditor.pas"/>

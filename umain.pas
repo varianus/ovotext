@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics,
   Dialogs, ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType,
-  SynEditTypes, SynHighlighterPas, mrumanager, Config;
+  SynEditTypes, SynHighlighterPas, mrumanager, Config, SupportFuncs;
 
 type
 
@@ -15,6 +15,9 @@ type
 
   TfMain = class(TForm)
     actFont: TAction;
+    actTrimTrailing: TAction;
+    actTrim: TAction;
+    ActCompressSpaces: TAction;
     actTrimLeading: TAction;
     AppProperties: TApplicationProperties;
     FileCloseAll: TAction;
@@ -68,6 +71,9 @@ type
     MenuItem39: TMenuItem;
     MenuItem40: TMenuItem;
     MenuItem41: TMenuItem;
+    MenuItem42: TMenuItem;
+    MenuItem43: TMenuItem;
+    MenuItem44: TMenuItem;
     mnuOpenRecent: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -104,9 +110,12 @@ type
     ToolButton7: TToolButton;
     ToolButton8: TToolButton;
     ToolButton9: TToolButton;
+    procedure ActCompressSpacesExecute(Sender: TObject);
     procedure actFontExecute(Sender: TObject);
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
+    procedure actTrimExecute(Sender: TObject);
     procedure actTrimLeadingExecute(Sender: TObject);
+    procedure actTrimTrailingExecute(Sender: TObject);
     procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
     procedure EditRedoExecute(Sender: TObject);
     procedure FileCloseAllExecute(Sender: TObject);
@@ -195,6 +204,26 @@ begin
   Handled := True;
 end;
 
+procedure TfMain.actTrimExecute(Sender: TObject);
+var
+  Ed: TEditor;
+  i: integer;
+begin
+
+  Ed := EditorFactory.CurrentEditor;
+  ed.BeginUpdate(True);
+  try
+    for i := 0 to Ed.Lines.Count - 1 do
+      begin
+        Ed.SetLineText(i,Trim(Ed.Lines[i]));
+      end;
+
+  finally
+    ed.EndUpdate;
+  end;
+
+end;
+
 procedure TfMain.actTrimLeadingExecute(Sender: TObject);
 var
   Ed: TEditor;
@@ -215,6 +244,26 @@ begin
 
 end;
 
+procedure TfMain.actTrimTrailingExecute(Sender: TObject);
+var
+  Ed: TEditor;
+  i: integer;
+begin
+
+  Ed := EditorFactory.CurrentEditor;
+  ed.BeginUpdate(True);
+  try
+    for i := 0 to Ed.Lines.Count - 1 do
+      begin
+        Ed.SetLineText(i,TrimRight(Ed.Lines[i]));
+      end;
+
+  finally
+    ed.EndUpdate;
+  end;
+
+end;
+
 procedure TfMain.actFontExecute(Sender: TObject);
 var
   i: integer;
@@ -226,6 +275,26 @@ begin
       TEditorTabSheet(EditorFactory.Pages[i]).Editor.Font.Assign(FontDialog.Font);
     ConfigObj.Font.Assign(FontDialog.Font);
     end;
+
+end;
+
+procedure TfMain.ActCompressSpacesExecute(Sender: TObject);
+var
+  Ed: TEditor;
+  i: integer;
+begin
+
+  Ed := EditorFactory.CurrentEditor;
+  ed.BeginUpdate(True);
+  try
+    for i := 0 to Ed.Lines.Count - 1 do
+      begin
+        Ed.SetLineText(i,RemoveSpacesInExcess(Ed.Lines[i]));
+      end;
+
+  finally
+    ed.EndUpdate;
+  end;
 
 end;
 

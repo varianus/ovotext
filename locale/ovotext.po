@@ -89,12 +89,24 @@ msgstr ""
 msgid "fEditor"
 msgstr ""
 
+#: tfmain.actcompressspaces.caption
+msgid "Reduce multiple spaces"
+msgstr ""
+
 #: tfmain.actfont.caption
 msgid "Select Font"
 msgstr ""
 
+#: tfmain.acttrim.caption
+msgid "Trim"
+msgstr ""
+
 #: tfmain.acttrimleading.caption
 msgid "Trim Leading spaces"
+msgstr ""
+
+#: tfmain.acttrimtrailing.caption
+msgid "Trim Trailing spaces"
 msgstr ""
 
 #: tfmain.caption
