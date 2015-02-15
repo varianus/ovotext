@@ -397,10 +397,6 @@ begin
      begin
        EditorFactory.AddEditor(ParamStrUTF8(i));
      end;
-
-
-
-
 end;
 
 procedure TfMain.FormDestroy(Sender: TObject);

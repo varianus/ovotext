@@ -166,7 +166,7 @@ begin
     with Highlighter.Attribute[i] do
     begin
       AttrName := ConfigObj.MapAttribute(Highlighter.Attribute[i].Name);
-      debugln(Highlighter.Attribute[i].Name,' --> ',AttrName);
+    //  debugln(Highlighter.Attribute[i].Name,' --> ',AttrName);
 
       tmpAttribs := ConfigObj.ReadFontAttributes(AttrName,DefaultAttrib);
       Highlighter.Attribute[i].Foreground:=tmpAttribs.Foreground;
@@ -196,4 +196,4 @@ begin
     Result := nil;
 end;
 
-end.
+end.
