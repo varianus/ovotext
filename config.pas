@@ -129,12 +129,14 @@ begin
     );
   fConfigDir := GetConfigDir;
   fConfigHolder := TXMLConfigStorage.Create(FConfigFile, FileExistsUTF8(FConfigFile));
-  fColorSchema := TXMLConfigStorage.Create('color-schemes.xml', True);
-  fMappingHolder := TXMLConfigStorage.Create('mapping.xml', True);
+  ReadConfig;
+
+  fColorSchema := TXMLConfigStorage.Create(IncludeTrailingPathDelimiter(ResourcesPath)+ 'color-schemes.xml', True);
+  fMappingHolder := TXMLConfigStorage.Create(IncludeTrailingPathDelimiter(ResourcesPath)+'mapping.xml', True);
   fMapping := TStringList.Create;
   fMappingHolder.GetValue('Mapping/Attributes', fMapping);
   fMappingHolder.Free;
-  ReadConfig;
+
 end;
 
 destructor TConfig.Destroy;
