@@ -369,6 +369,8 @@ begin
 end;
 
 procedure TfMain.FormCreate(Sender: TObject);
+var
+  i: integer;
 begin
   MRU := TMRUMenuManager.Create(Self);
   MRU.MenuItem := mnuOpenRecent;
@@ -389,6 +391,15 @@ begin
   tbbCloseAll.Align := alRight;
   tbbSepClose.Align := alRight;
   tbbClose.Align := alRight;
+  // Parameters
+
+  for i := 1 to Paramcount do
+     begin
+       EditorFactory.AddEditor(ParamStrUTF8(i));
+     end;
+
+
+
 
 end;
 
