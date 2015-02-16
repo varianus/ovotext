@@ -161,13 +161,12 @@ var
   AttrName: string;
   tmpAttribs, DefaultAttrib: TFontAttributes;
 begin
-  DefaultAttrib:= ConfigObj.ReadFontAttributes('text', FontAttributes());
+  DefaultAttrib:= ConfigObj.ReadFontAttributes('Default/Text', FontAttributes());
+
   for i := 0 to Highlighter.AttrCount - 1 do
     with Highlighter.Attribute[i] do
     begin
-      AttrName := ConfigObj.MapAttribute(Highlighter.Attribute[i].Name);
-    //  debugln(Highlighter.Attribute[i].Name,' --> ',AttrName);
-
+      AttrName:=CleanupName(Highlighter.GetLanguageName)+'/'+CleanupName(Highlighter.Attribute[i].Name)+'/';
       tmpAttribs := ConfigObj.ReadFontAttributes(AttrName,DefaultAttrib);
       Highlighter.Attribute[i].Foreground:=tmpAttribs.Foreground;
       Highlighter.Attribute[i].Background:=tmpAttribs.Background;

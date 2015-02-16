@@ -30,8 +30,6 @@ type
     ResourcesPath: string;
     fConfigHolder: TXMLConfigStorage;
     fColorSchema: TXMLConfigStorage;
-    fMappingHolder: TXMLConfigStorage;
-    fMapping: TStringList;
     function GetBackGroundColor: TColor;
     procedure SetFont(AValue: TFont);
     procedure WriteColor(const Section, Ident: string; const Value: TColor);
@@ -46,7 +44,6 @@ type
     function ReadColor(const Section, Ident: string; const Default: TColor): TColor;
     function ReadFontStyle(const Section, Ident: string; const default: TFontStyles): TFontstyles;
     function ReadFontAttributes(AttibuteName: string; const Default: TFontAttributes): TFontAttributes;
-    function MapAttribute(Attribute: string): string;
     destructor Destroy; override;
     // -- //
     property ConfigDir: string read fConfigDir;
@@ -57,8 +54,7 @@ type
   end;
 
 
-function FontAttributes(const Foreground: TColor = clNone; BackGround: Tcolor = clNone;
-  const Styles: TFontStyles = []): TFontAttributes; inline;
+function FontAttributes(const Foreground: TColor = clNone; BackGround: Tcolor = clNone; const Styles: TFontStyles = []): TFontAttributes; inline;
 
 function ConfigObj: TConfig;
 
@@ -103,8 +99,7 @@ begin
 
 end;
 
-function FontAttributes(const Foreground: TColor = clNone; BackGround: Tcolor = clNone;
-  const Styles: TFontStyles = []): TFontAttributes; inline;
+function FontAttributes(const Foreground: TColor = clNone; BackGround: Tcolor = clNone; const Styles: TFontStyles = []): TFontAttributes; inline;
 begin
   Result.Foreground := Foreground;
   Result.Background := Background;
@@ -131,11 +126,7 @@ begin
   fConfigHolder := TXMLConfigStorage.Create(FConfigFile, FileExistsUTF8(FConfigFile));
   ReadConfig;
 
-  fColorSchema := TXMLConfigStorage.Create(IncludeTrailingPathDelimiter(ResourcesPath)+ 'color-schemes.xml', True);
-  fMappingHolder := TXMLConfigStorage.Create(IncludeTrailingPathDelimiter(ResourcesPath)+'mapping.xml', True);
-  fMapping := TStringList.Create;
-  fMappingHolder.GetValue('Mapping/Attributes', fMapping);
-  fMappingHolder.Free;
+  fColorSchema := TXMLConfigStorage.Create(IncludeTrailingPathDelimiter(ResourcesPath) + 'color-schemes.xml', True);
 
 end;
 
@@ -146,7 +137,6 @@ begin
   fConfigHolder.Free;
   fColorSchema.Free;
   FFont.Free;
-  fMapping.Free;
   inherited Destroy;
 end;
 
@@ -177,15 +167,15 @@ begin
 
   fontName := fConfigHolder.GetValue('Editor/Font/Name', EmptyStr);
   if fontName = EmptyStr then
-    begin
+  begin
     FFont.Name := SynDefaultFontName;
     FFont.Height := SynDefaultFontHeight;
-    end
+  end
   else
-    begin
+  begin
     FFont.Name := fontName;
     FFont.Height := fConfigHolder.GetValue('Editor/Font/Height', 0);
-    end;
+  end;
 
 end;
 
@@ -202,7 +192,7 @@ end;
 
 function TConfig.GetBackGroundColor: TColor;
 begin
-  Result := ReadColor('Schema/text', 'background', clWindow);
+  Result := ReadColor('Default/Text', 'Background', clWindow);
 end;
 
 procedure TConfig.SetFont(AValue: TFont);
@@ -214,53 +204,37 @@ function TConfig.ReadColor(const Section, Ident: string; const Default: TColor):
 var
   tmpString: string;
 begin
-    try
-    tmpString := fColorSchema.GetValue(Section + '/' + Ident, IntToHex(Default, 8));
+  try
+    tmpString := fColorSchema.GetValue(Section + Ident, IntToHex(Default, 8));
     if not IdentToColor(tmpString, Result) then
       if not TryStrToInt(tmpString, Result) then
         Result := Default;
 
-    except
+  except
     Result := Default;
-    end;
+  end;
 end;
 
 function TConfig.ReadFontStyle(const Section, Ident: string; const default: TFontStyles): TFontstyles;
 var
   tmp: string;
 begin
-    try
-    tmp := fColorSchema.GetValue(Section + '/' + Ident + '/' + 'styles', '');
+  try
+    tmp := fColorSchema.GetValue(Section + Ident, '');
     Result := TFontStyles(StringToSet(PTypeInfo(TypeInfo(TFontstyles)), tmp));
-    except
+  except
     Result := default;
-    end;
+  end;
 
 end;
 
 function TConfig.ReadFontAttributes(AttibuteName: string; const Default: TFontAttributes): TFontAttributes;
 begin
-  Result.Foreground := ReadColor('Schema/' + AttibuteName, 'foreground', Default.Foreground);
-  Result.Background := ReadColor('Schema/' + AttibuteName, 'background', Default.Background);
-  Result.Styles := ReadFontStyle('Schema', AttibuteName, Default.Styles);
+  Result.Foreground := ReadColor('Schema/' + AttibuteName, 'Foreground', Default.Foreground);
+  Result.Background := ReadColor('Schema/' + AttibuteName, 'Background', Default.Background);
+  Result.Styles := ReadFontStyle('Schema/' + AttibuteName, 'Style', Default.Styles);
 
 end;
-
-function TConfig.MapAttribute(Attribute: string): string;
-var
-  i: integer;
-begin
- Result := Attribute;
- Attribute:= Attribute+'|';
- for i := 0 to fMapping.Count-1 do
-  if pos(Attribute, fMapping.ValueFromIndex[i]) > 0 then
-    begin
-       Result := fMapping.Names[i];
-       exit;
-    end;
-
-end;
-
 
 procedure TConfig.WriteColor(const Section, Ident: string; const Value: TColor);
 var
@@ -310,9 +284,11 @@ initialization
 
 finalization
   if Assigned(FConfigObj) then
-    begin
+  begin
     FConfigObj.SaveConfig;
     FConfigObj.Free;
-    end;
+  end;
+
+
 
 end.

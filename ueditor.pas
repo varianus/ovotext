@@ -240,7 +240,7 @@ begin
 
   Result := TEditor.Create(Sheet);
   Result.Font.Assign(ConfigObj.Font);
-  DefaultAttr := ConfigObj.ReadFontAttributes('text', FontAttributes());
+  DefaultAttr := ConfigObj.ReadFontAttributes('Default/Text/', FontAttributes());
 
   Result.FSheet := Sheet;
   Result.Align := alClient;
@@ -249,7 +249,8 @@ begin
   Result.Font.Color := DefaultAttr.Foreground;
   Result.Font.Style := DefaultAttr.Styles;
 
-  Result.Color := ConfigObj.BackGroundColor;
+  Result.Color := DefaultAttr.Background;
+
   Result.Options := Result.Options + [eoHideRightMargin];
   Result.BookMarkOptions.BookmarkImages := dmMain.imgBookMark;
 
@@ -324,4 +325,4 @@ begin
   inherited Destroy;
 end;
 
-end.
+end.

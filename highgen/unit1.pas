@@ -24,8 +24,8 @@ uses
   SynHighlighterM3, SynHighlighterLDraw, SynHighlighterVBScript,
   SynHighlighterSml, SynHighlighterIDL, SynHighlighterCobol, SynHighlighterGWS,
   SynHighlighterAsm, SynHighlighterLua, SynHighlighterFortran,
-  SynHighlighterProlog, SynHighlighterRC
-  , DOM, XmlRead, XMLPropStorage, typinfo;
+  SynHighlighterProlog, SynHighlighterRC,
+  XMLPropStorage, typinfo;
 
 type
   RHighlighter = record
@@ -94,6 +94,8 @@ type
 
   TForm1 = class(TForm)
     Button2: TButton;
+    OpenDialog1: TOpenDialog;
+    SaveDialog1: TSaveDialog;
     procedure Button2Click(Sender: TObject);
   private
     { private declarations }
@@ -129,7 +131,6 @@ begin
   for c:= 1 to Length(aName) do
   if not (upcase(aName[c])  in['A'..'Z','0'..'9','_']) then
     aName[c] := '_';
-
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
@@ -162,15 +163,18 @@ var
 
 begin
   st := TStringList.Create;
-  doc := TXMLConfigStorage.Create('C:\Ex-D\lazarus\ide\ColorTwilight.xml', True);
-  cfg := TXMLConfigStorage.Create('x.xml', False);
+  if not (OpenDialog1.Execute and SaveDialog1.Execute) then
+     exit;
+
+  doc := TXMLConfigStorage.Create(OpenDialog1.filename, True);
+  cfg := TXMLConfigStorage.Create(SaveDialog1.filename, False);
 
   doc.GetValue('Lazarus/ColorSchemes/Names/', st);
   schemaName := st[0];
   cfg.SetValue('Schema/Name', schemaName);
 
   tmps := 'Lazarus/ColorSchemes/Globals/Scheme' + schemaName + '/ahaDefault/';
-  InOut(tmps, 'Schema/Default/Text');
+  InOut(tmps, 'Schema/Default/Text/');
 
   for i := 0 to HIGHLIGHTERCOUNT -1 do
     begin

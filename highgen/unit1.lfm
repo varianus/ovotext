@@ -1,19 +1,28 @@
 object Form1: TForm1
   Left = 721
-  Height = 91
-  Top = 181
+  Height = 282
+  Top = 234
   Width = 241
   Caption = 'Form1'
-  ClientHeight = 91
+  ClientHeight = 282
   ClientWidth = 241
   LCLVersion = '1.5'
   object Button2: TButton
-    Left = 16
+    Left = 32
     Height = 25
-    Top = 24
+    Top = 112
     Width = 75
-    Caption = 'Button2'
+    Caption = 'Convert'
     OnClick = Button2Click
     TabOrder = 0
+  end
+  object OpenDialog1: TOpenDialog
+    Filter = 'Color*.xml|Color*.xml'
+    left = 48
+    top = 16
+  end
+  object SaveDialog1: TSaveDialog
+    left = 152
+    top = 18
   end
 end
