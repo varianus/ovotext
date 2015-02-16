@@ -5,7 +5,7 @@ unit Config;
 interface
 
 uses
-  Classes, SysUtils, Graphics, inifiles, XMLPropStorage;
+  Classes, SysUtils, Graphics, XMLPropStorage;
 
 type
   { TConfig }
@@ -62,7 +62,7 @@ implementation
 
 { TConfig }
 uses
-  Fileutil, lclproc, typinfo, strutils,
+  Fileutil, lclproc, typinfo,
   // only for default font !
   Synedit
 {$ifdef Darwin}
