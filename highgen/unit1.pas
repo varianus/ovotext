@@ -149,15 +149,15 @@ var
   var
     tm: string;
   begin
-    tm := doc.GetValue(inPath + 'Foreground', '');
-    if tm <> EmptyStr then
-      cfg.SetValue(OutPath+ 'Foreground', tm);
-    tm := doc.GetValue(inPath + 'Background', '');
-    if tm <> EmptyStr then
-      cfg.SetValue(OutPath+ 'Background', tm);
     tm := doc.GetValue(inPath + 'Style', '');
     if tm <> EmptyStr then
       cfg.SetValue(OutPath + 'Style', tm);
+    tm := doc.GetValue(inPath + 'Background', '');
+    if tm <> EmptyStr then
+      cfg.SetValue(OutPath+ 'Background', tm);
+    tm := doc.GetValue(inPath + 'Foreground', '');
+    if tm <> EmptyStr then
+      cfg.SetValue(OutPath+ 'Foreground', tm);
 
   end;
 
@@ -175,7 +175,7 @@ begin
 
   tmps := 'Lazarus/ColorSchemes/Globals/Scheme' + schemaName + '/ahaDefault/';
   InOut(tmps, 'Schema/Default/Text/');
-
+  st.clear;
   for i := 0 to HIGHLIGHTERCOUNT -1 do
     begin
       HlName:=ARHighlighter[i].HLClass.GetLanguageName;
@@ -184,7 +184,7 @@ begin
       for j:= 0 to hl.AttrCount -1 do
         begin
           HLAttr:= hl.Attribute[j].Name;
-          CleanupName(HlName);
+          CleanupName(HLAttr);
           inOut('Lazarus/ColorSchemes/Lang'+HlName+'/Scheme'+schemaName+'/'+HLattr+'/','Schema/'+hlname+'/'+HLAttr+'/');
         end;
     end;

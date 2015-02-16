@@ -126,7 +126,7 @@ begin
   fConfigHolder := TXMLConfigStorage.Create(FConfigFile, FileExistsUTF8(FConfigFile));
   ReadConfig;
 
-  fColorSchema := TXMLConfigStorage.Create(IncludeTrailingPathDelimiter(ResourcesPath) + 'color-schemes.xml', True);
+  fColorSchema := TXMLConfigStorage.Create(IncludeTrailingPathDelimiter(ResourcesPath) + 'color-schema.xml', True);
 
 end;
 
