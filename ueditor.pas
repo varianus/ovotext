@@ -33,7 +33,7 @@ type
     constructor Create(AOwner: TComponent); override;
     property Sheet: TEditorTabSheet read FSheet;
     //-- Helper functions//
-    procedure SetLineText(Index:Integer; NewText: string);
+    procedure SetLineText(Index: integer; NewText: string);
     // -- File handling//
     property FileName: TFileName read FFileName write SetFileName;
     property Untitled: boolean read FUntitled write SetUntitled;
@@ -65,6 +65,7 @@ type
     function GetCurrentEditor: TEditor;
     procedure SetOnBeforeClose(AValue: TOnBeforeClose);
     procedure SetOnNewEditor(AValue: TOnEditorEvent);
+    procedure ShowHintEvent(Sender: TObject; HintInfo: PHintInfo);
   protected
     procedure DoChange; override;
   public
@@ -82,7 +83,7 @@ type
   end;
 
 implementation
-
+uses lclproc;
 { TEditorTabSheet }
 
 procedure TEditorTabSheet.DoShow;
@@ -117,9 +118,9 @@ begin
   CreateDefaultGutterParts;
 end;
 
-procedure TEditor.SetLineText(Index: Integer; NewText: string);
+procedure TEditor.SetLineText(Index: integer; NewText: string);
 begin
-  TextBetweenPoints[Point(1, Index+1), PhysicalToLogicalPos(Point(Length(Lines[Index])+1,Index+1))] := NewText;
+  TextBetweenPoints[Point(1, Index + 1), PhysicalToLogicalPos(Point(Length(Lines[Index]) + 1, Index + 1))] := NewText;
 end;
 
 procedure TEditor.LoadFromfile(AFileName: TFileName);
@@ -128,7 +129,7 @@ begin
   Lines.LoadFromFile(FFileName);
   Highlighter := dmMain.getHighLighter(ExtractFileExt(fFileName));
   FSheet.Caption := ExtractFileName(fFileName);
-  FSheet.Hint := FileName;
+//  FSheet.Hint := FileName;
   FUntitled := False;
 
 end;
@@ -140,14 +141,14 @@ end;
 
 function TEditor.SaveAs(AFileName: TFileName): boolean;
 begin
-    try
+  try
     FFileName := AFileName;
     Lines.SaveToFile(AFileName);
     Result := True;
     FUntitled := False;
-    except
+  except
     Result := False;
-    end;
+  end;
 end;
 
 procedure TEditor.CreateDefaultGutterParts;
@@ -188,7 +189,7 @@ end;
 procedure TEditorFactory.DoChange;
 begin
   inherited DoChange;
-  Hint := ActivePage.Hint;
+//  Hint := TEditorTabSheet(ActivePage).Editor.FileName;
   if Assigned(OnStatusChange) then
     OnStatusChange(GetCurrentEditor, [scCaretX, scCaretY, scModified, scInsertMode]);
 
@@ -206,7 +207,7 @@ function TEditorFactory.AddEditor(FileName: TFilename = ''): TEditor;
 var
   Sheet: TEditorTabSheet;
   i: integer;
-  DefaultAttr : TFontAttributes;
+  DefaultAttr: TFontAttributes;
 begin
   if FileName <> EmptyStr then
     begin
@@ -243,6 +244,8 @@ begin
   DefaultAttr := ConfigObj.ReadFontAttributes('Default/Text/', FontAttributes());
 
   Result.FSheet := Sheet;
+//  ShowHint:=True;
+
   Result.Align := alClient;
   Sheet.FEditor := Result;
 
@@ -312,12 +315,25 @@ begin
 
 end;
 
+procedure TEditorFactory.ShowHintEvent(Sender: TObject; HintInfo: PHintInfo);
+var
+  Tab: integer;
+
+begin
+  if (PageCount=0) or (HintInfo=nil) then exit;
+  Tab:=TabIndexAtClientPos(ScreenToClient(Mouse.CursorPos));
+
+  if Tab<0 then exit;
+  HintInfo^.HintStr := TEditorTabSheet(Pages[Tab]).Editor.FileName;
+
+end;
+
 constructor TEditorFactory.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   fUntitledCounter := 0;
   Options := Options + [nboShowCloseButtons];
-
+  OnShowHint:= @ShowHintEvent;
 end;
 
 destructor TEditorFactory.Destroy;
@@ -325,4 +341,6 @@ begin
   inherited Destroy;
 end;
 
-end.
+
+
+end.
