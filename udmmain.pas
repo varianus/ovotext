@@ -7,7 +7,6 @@ interface
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Dialogs,
   SupportFuncs, SynEditHighlighter, SynExportHTML, fgl, Graphics,
-  XMLPropStorage,
   // included with Lazarus
   SynHighlighterPas,
   SynHighlighterCpp, SynHighlighterJava, SynHighlighterPerl, SynHighlighterHTML,
@@ -132,7 +131,6 @@ end;
 procedure TdmMain.LoadHighlighters;
 var
   i, j: integer;
-  Highlighter: TSynCustomHighlighter;
   filter: string;
   stList: TStringList;
 begin
@@ -195,4 +193,4 @@ begin
     Result := nil;
 end;
 
-end.
+end.

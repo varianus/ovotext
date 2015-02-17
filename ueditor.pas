@@ -37,7 +37,7 @@ type
     // -- File handling//
     property FileName: TFileName read FFileName write SetFileName;
     property Untitled: boolean read FUntitled write SetUntitled;
-    procedure LoadFromfile(AFileName: TFileName);
+    procedure LoadFromFile(AFileName: TFileName);
     function Save: boolean;
     function SaveAs(AFileName: TFileName): boolean;
   end;
@@ -129,7 +129,6 @@ begin
   Lines.LoadFromFile(FFileName);
   Highlighter := dmMain.getHighLighter(ExtractFileExt(fFileName));
   FSheet.Caption := ExtractFileName(fFileName);
-//  FSheet.Hint := FileName;
   FUntitled := False;
 
 end;
@@ -222,7 +221,7 @@ begin
         end;
       end;
 
-    // try to reuse an empty shhet
+    // try to reuse an empty sheet
     for i := 0 to PageCount - 1 do
       begin
       Sheet := TEditorTabSheet(Pages[i]);
@@ -244,7 +243,6 @@ begin
   DefaultAttr := ConfigObj.ReadFontAttributes('Default/Text/', FontAttributes());
 
   Result.FSheet := Sheet;
-//  ShowHint:=True;
 
   Result.Align := alClient;
   Sheet.FEditor := Result;
@@ -281,17 +279,16 @@ end;
 function TEditorFactory.CloseEditor(Editor: TEditor): boolean;
 var
   Sheet: TEditorTabSheet;
-  Cancel: boolean;
 begin
-  Cancel := True;
+  Result := True;
   // if last tab in unused
   if (PageCount = 1) and Editor.Untitled and not Editor.Modified and not ConfigObj.AppSettings.CloseWithLastTab then
     exit;
 
   if Assigned(FOnBeforeClose) then
-    FOnBeforeClose(Editor, Cancel);
+    FOnBeforeClose(Editor, Result);
 
-  if not Cancel then
+  if not Result then
     begin
     Sheet := Editor.FSheet;
     Editor.PopupMenu := nil;
@@ -312,7 +309,6 @@ begin
   for i := PageCount - 1 downto 0 do
     if not CloseEditor(TEditorTabSheet(Pages[i]).Editor) then
       break;
-
 end;
 
 procedure TEditorFactory.ShowHintEvent(Sender: TObject; HintInfo: PHintInfo);

@@ -304,10 +304,8 @@ begin
 end;
 
 procedure TfMain.FileNewExecute(Sender: TObject);
-var
-  Editor: TEditor;
 begin
-  Editor := EditorFactory.AddEditor();
+ EditorFactory.AddEditor();
 
 end;
 
@@ -335,12 +333,10 @@ begin
 end;
 
 procedure TfMain.ExecFind(Dialog: TFindDialog);
-var
-  Options: TSynSearchOptions;
 begin
   PrepareSearch(Dialog);
 
-  if EditorFactory.CurrentEditor.SearchReplace(FindText, '', Options) = 0 then
+  if EditorFactory.CurrentEditor.SearchReplace(FindText, '', SynOption) = 0 then
     ShowMessage(Format(RSTextNotfound, [Dialog.FindText]));
 
 end;
@@ -395,6 +391,7 @@ begin
 
   for i := 1 to Paramcount do
      begin
+       //if not para
        EditorFactory.AddEditor(ParamStrUTF8(i));
      end;
 end;
@@ -442,18 +439,17 @@ begin
 end;
 
 procedure TfMain.ReplaceDialogReplace(Sender: TObject);
-var
-  Options: TSynSearchOptions;
+
 begin
   PrepareReplace(ReplaceDialog);
 
-  if EditorFactory.CurrentEditor.SearchReplace(FindText, ReplaceText, Options) = 0 then
+  if EditorFactory.CurrentEditor.SearchReplace(FindText, ReplaceText, SynOption) = 0 then
     ShowMessage(Format(RSTextNotfound, [FindText]))
   else
-    if (ssoReplace in Options) and not (ssoReplaceAll in Options) then
+    if (ssoReplace in SynOption) and not (ssoReplaceAll in SynOption) then
       begin
-      Exclude(Options, ssoReplace);
-      EditorFactory.CurrentEditor.SearchReplace(FindText, '', Options);
+      Exclude(SynOption, ssoReplace);
+      EditorFactory.CurrentEditor.SearchReplace(FindText, '', SynOption);
       end;
 
 end;
@@ -641,4 +637,4 @@ begin
 
 end;
 
-end.
+end.
