@@ -1,12 +1,24 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
+#: stringcostants.rscannotsave
+msgid ""
+"Can not save changes to\n"
+" \"%s\"\n"
+msgstr ""
+
+#: stringcostants.rserror
+msgid "Error"
+msgstr ""
+
 #: stringcostants.rsnewfile
 msgid "<new   %d>"
 msgstr ""
 
 #: stringcostants.rssavechanges
-msgid "Save changes to \"%s\"?"
+msgid ""
+"Save changes to\n"
+" \"%s\"?\n"
 msgstr ""
 
 #: stringcostants.rsstatusbarinsmode
@@ -28,7 +40,7 @@ msgstr ""
 #: stringcostants.rstextnotfound
 msgid ""
 "Text not found:\n"
-"n\"%s\"\n"
+"\"%s\"\n"
 msgstr ""
 
 #: tfabout.blicense.caption

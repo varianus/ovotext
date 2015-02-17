@@ -231,6 +231,7 @@ object fMain: TfMain
       Caption = 'Save as...'
       Hint = 'Save as '
       ImageIndex = 26
+      OnAccept = FileSaveAsAccept
     end
     object EditRedo: TAction
       Category = 'Edit'
@@ -272,6 +273,7 @@ object fMain: TfMain
       Caption = 'Save'
       Hint = 'Save'
       ImageIndex = 19
+      OnExecute = FileSaveExecute
     end
     object actFont: TAction
       Category = 'Settings'

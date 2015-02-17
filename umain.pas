@@ -123,6 +123,8 @@ type
     procedure FileExitExecute(Sender: TObject);
     procedure FileNewExecute(Sender: TObject);
     procedure FileOpenAccept(Sender: TObject);
+    procedure FileSaveAsAccept(Sender: TObject);
+    procedure FileSaveExecute(Sender: TObject);
     procedure FindDialogClose(Sender: TObject);
     procedure FindDialogFind(Sender: TObject);
     procedure FontDialogApplyClicked(Sender: TObject);
@@ -130,7 +132,7 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure FormDropFiles(Sender: TObject; const FileNames: array of String);
+    procedure FormDropFiles(Sender: TObject; const FileNames: array of string);
     procedure HelpAboutExecute(Sender: TObject);
     procedure MenuItem28Click(Sender: TObject);
     procedure MenuItem29Click(Sender: TObject);
@@ -148,6 +150,7 @@ type
     FindText, ReplaceText: string;
     SynOption: TSynSearchOptions;
 
+    function AskFileName(Editor: TEditor): boolean;
     function EditorAvalaible: boolean; inline;
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
     procedure ExecFind(Dialog: TFindDialog);
@@ -201,6 +204,7 @@ begin
   Avail := EditorAvalaible;
   EditRedo.Enabled := Avail and EditorFactory.CurrentEditor.CanRedo;
   EditUndo.Enabled := Avail and EditorFactory.CurrentEditor.CanUndo;
+  FileSave.Enabled := Avail and EditorFactory.CurrentEditor.Modified;
   Handled := True;
 end;
 
@@ -214,9 +218,9 @@ begin
   ed.BeginUpdate(True);
   try
     for i := 0 to Ed.Lines.Count - 1 do
-      begin
-        Ed.SetLineText(i,Trim(Ed.Lines[i]));
-      end;
+    begin
+      Ed.SetLineText(i, Trim(Ed.Lines[i]));
+    end;
 
   finally
     ed.EndUpdate;
@@ -234,9 +238,9 @@ begin
   ed.BeginUpdate(True);
   try
     for i := 0 to Ed.Lines.Count - 1 do
-      begin
-        Ed.SetLineText(i,TrimLeft(Ed.Lines[i]));
-      end;
+    begin
+      Ed.SetLineText(i, TrimLeft(Ed.Lines[i]));
+    end;
 
   finally
     ed.EndUpdate;
@@ -254,9 +258,9 @@ begin
   ed.BeginUpdate(True);
   try
     for i := 0 to Ed.Lines.Count - 1 do
-      begin
-        Ed.SetLineText(i,TrimRight(Ed.Lines[i]));
-      end;
+    begin
+      Ed.SetLineText(i, TrimRight(Ed.Lines[i]));
+    end;
 
   finally
     ed.EndUpdate;
@@ -270,11 +274,11 @@ var
 begin
   FontDialog.Font.Assign(ConfigObj.Font);
   if FontDialog.Execute then
-    begin
+  begin
     for i := 0 to EditorFactory.PageCount - 1 do
       TEditorTabSheet(EditorFactory.Pages[i]).Editor.Font.Assign(FontDialog.Font);
     ConfigObj.Font.Assign(FontDialog.Font);
-    end;
+  end;
 
 end;
 
@@ -288,9 +292,9 @@ begin
   ed.BeginUpdate(True);
   try
     for i := 0 to Ed.Lines.Count - 1 do
-      begin
-        Ed.SetLineText(i,RemoveSpacesInExcess(Ed.Lines[i]));
-      end;
+    begin
+      Ed.SetLineText(i, RemoveSpacesInExcess(Ed.Lines[i]));
+    end;
 
   finally
     ed.EndUpdate;
@@ -305,7 +309,7 @@ end;
 
 procedure TfMain.FileNewExecute(Sender: TObject);
 begin
- EditorFactory.AddEditor();
+  EditorFactory.AddEditor();
 
 end;
 
@@ -315,10 +319,35 @@ var
 begin
 
   for i := 0 to FileOpen.Dialog.Files.Count - 1 do
-    begin
+  begin
     EditorFactory.AddEditor(FileOpen.Dialog.Files[i]);
     MRU.AddToRecent(FileOpen.Dialog.Files[i]);
-    end;
+  end;
+
+end;
+
+procedure TfMain.FileSaveAsAccept(Sender: TObject);
+var
+  Editor : TEditor;
+begin
+  Editor := EditorFactory.CurrentEditor;
+
+ if AskFileName(Editor) then
+    Editor.Save;
+
+end;
+
+procedure TfMain.FileSaveExecute(Sender: TObject);
+var
+  Editor : TEditor;
+begin
+  Editor := EditorFactory.CurrentEditor;
+  if Editor.Untitled then
+     if not AskFileName(Editor) then
+          begin
+            Exit;
+          end;
+ Editor.Save;
 
 end;
 
@@ -390,10 +419,10 @@ begin
   // Parameters
 
   for i := 1 to Paramcount do
-     begin
-       //if not para
-       EditorFactory.AddEditor(ParamStrUTF8(i));
-     end;
+  begin
+    //if not para
+    EditorFactory.AddEditor(ParamStrUTF8(i));
+  end;
 end;
 
 procedure TfMain.FormDestroy(Sender: TObject);
@@ -402,9 +431,9 @@ begin
   FreeAndNil(EditorFactory);
 end;
 
-procedure TfMain.FormDropFiles(Sender: TObject; const FileNames: array of String);
+procedure TfMain.FormDropFiles(Sender: TObject; const FileNames: array of string);
 var
-  i: Integer;
+  i: integer;
 begin
   for i := Low(FileNames) to High(FileNames) do
     EditorFactory.AddEditor(FileNames[i]);
@@ -446,11 +475,11 @@ begin
   if EditorFactory.CurrentEditor.SearchReplace(FindText, ReplaceText, SynOption) = 0 then
     ShowMessage(Format(RSTextNotfound, [FindText]))
   else
-    if (ssoReplace in SynOption) and not (ssoReplaceAll in SynOption) then
-      begin
-      Exclude(SynOption, ssoReplace);
-      EditorFactory.CurrentEditor.SearchReplace(FindText, '', SynOption);
-      end;
+  if (ssoReplace in SynOption) and not (ssoReplaceAll in SynOption) then
+  begin
+    Exclude(SynOption, ssoReplace);
+    EditorFactory.CurrentEditor.SearchReplace(FindText, '', SynOption);
+  end;
 
 end;
 
@@ -524,13 +553,13 @@ begin
     Exit;
   Ed := EditorFactory.CurrentEditor;
   if Assigned(Ed) then
-    begin
+  begin
     sOpt := SynOption;
     sOpt := sOpt - [ssoBackWards];
     if Ed.SearchReplace(FindText, '', sOpt) = 0 then
       ShowMessage(Format(RSTextNotfound, [FindText]));
     ;
-    end;
+  end;
 
 end;
 
@@ -543,13 +572,13 @@ begin
     Exit;
   Ed := EditorFactory.CurrentEditor;
   if Assigned(Ed) then
-    begin
+  begin
     sOpt := SynOption;
     sOpt := sOpt + [ssoBackWards];
     if Ed.SearchReplace(FindText, '', sOpt) = 0 then
       ShowMessage(Format(RSTextNotfound, [FindText]));
     ;
-    end;
+  end;
 
 end;
 
@@ -598,15 +627,31 @@ begin
     Include(SynOption, ssoReplaceAll);
 
   if frFindNext in Dialog.Options then
-    begin
+  begin
     Exclude(SynOption, ssoReplace);
     Exclude(SynOption, ssoReplaceAll);
-    end;
+  end;
   ReplaceText := Dialog.FindText;
 end;
 
+function TfMain.AskFileName(Editor: TEditor): boolean;
+begin
+  SaveDialog.FileName := Editor.Sheet.Caption;
+  if SaveDialog.Execute then
+  begin
+    Editor.FileName := SaveDialog.FileName;
+    Result := True;
+  end
+  else
+  begin
+    Result := False;
+  end;
+
+end;
 
 procedure TfMain.BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
+var
+  Retry: boolean;
 begin
   if not Editor.Modified then
     Cancel := False
@@ -614,27 +659,19 @@ begin
     case MessageDlg(Format(RSSaveChanges, [ExtractFileName(Editor.Sheet.Caption)]), mtWarning,
         [mbYes, mbNo, mbCancel], 0) of
       mrYes:
-        begin
+      begin
         if Editor.Untitled then
+          if not AskFileName(Editor) then
           begin
-          SaveDialog.FileName := Editor.Sheet.Caption;
-          if SaveDialog.Execute then
-            begin
-            Editor.FileName := SaveDialog.FileName;
-            end
-          else
-            begin
             Cancel := True;
-            exit;
-            end;
+            Exit;
           end;
-        Editor.Save;
-        Cancel := False;
-        end;
+        Cancel := not Editor.Save;
+      end;
       mrNo: Cancel := False;
       mrCancel: Cancel := True;
-      end;
+    end;
 
 end;
 
-end.
+end.

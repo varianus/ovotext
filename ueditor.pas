@@ -139,15 +139,32 @@ begin
 end;
 
 function TEditor.SaveAs(AFileName: TFileName): boolean;
+var
+  Retry: boolean;
 begin
-  try
-    FFileName := AFileName;
-    Lines.SaveToFile(AFileName);
-    Result := True;
-    FUntitled := False;
-  except
-    Result := False;
-  end;
+   repeat
+      Retry := False;
+        try
+          FFileName := AFileName;
+          Lines.SaveToFile(AFileName);
+          Result := True;
+          FUntitled := False;
+          Modified:= False;
+        except
+          Result := False;
+        end;
+
+      if not Result then
+      begin
+        case MessageDlg(RSError, Format(RSCannotSave, [fFileName]), mtError, [mbRetry, mbCancel, mbIgnore], 0) of
+          mrAbort: Result := False;
+          mrIgnore: Result := True;
+          mrRetry: Retry := True;
+        end;
+      end;
+    until not Retry;
+
+
 end;
 
 procedure TEditor.CreateDefaultGutterParts;
@@ -339,4 +356,4 @@ end;
 
 
 
-end.
+end.
