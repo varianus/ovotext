@@ -121,6 +121,10 @@ msgstr ""
 msgid "Select Font"
 msgstr ""
 
+#: tfmain.actfullnametoclipboard.caption
+msgid "Full File name to clipboard"
+msgstr ""
+
 #: tfmain.acttrim.caption
 msgid "Trim"
 msgstr ""
@@ -322,6 +326,11 @@ msgstr ""
 
 #: tfmain.menuitem41.caption
 msgctxt "TFMAIN.MENUITEM41.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfmain.menuitem47.caption
+msgctxt "TFMAIN.MENUITEM47.CAPTION"
 msgid "-"
 msgstr ""
 

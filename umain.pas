@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics,
-  Dialogs, ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType,
+  Dialogs, ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd,
   SynEditTypes, SynHighlighterPas, mrumanager, Config, SupportFuncs;
 
 type
@@ -15,6 +15,7 @@ type
 
   TfMain = class(TForm)
     actFont: TAction;
+    actFullNameToClipBoard: TAction;
     actTrimTrailing: TAction;
     actTrim: TAction;
     ActCompressSpaces: TAction;
@@ -74,6 +75,9 @@ type
     MenuItem42: TMenuItem;
     MenuItem43: TMenuItem;
     MenuItem44: TMenuItem;
+    MenuItem45: TMenuItem;
+    MenuItem46: TMenuItem;
+    MenuItem47: TMenuItem;
     mnuOpenRecent: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -112,6 +116,7 @@ type
     ToolButton9: TToolButton;
     procedure ActCompressSpacesExecute(Sender: TObject);
     procedure actFontExecute(Sender: TObject);
+    procedure actFullNameToClipBoardExecute(Sender: TObject);
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
     procedure actTrimExecute(Sender: TObject);
     procedure actTrimLeadingExecute(Sender: TObject);
@@ -204,11 +209,14 @@ end;
 procedure TfMain.ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
 var
   Avail: boolean;
+  ed: TEditor;
 begin
   Avail := EditorAvalaible;
-  EditRedo.Enabled := Avail and EditorFactory.CurrentEditor.CanRedo;
-  EditUndo.Enabled := Avail and EditorFactory.CurrentEditor.CanUndo;
-  FileSave.Enabled := Avail and EditorFactory.CurrentEditor.Modified;
+  Ed :=  EditorFactory.CurrentEditor;
+  EditRedo.Enabled := Avail and Ed.CanRedo;
+  EditUndo.Enabled := Avail and Ed.CanUndo;
+  FileSave.Enabled := Avail and Ed.Modified;
+  actFullNameToClipBoard.Enabled:= Avail and not ed.Untitled;
   Handled := True;
 end;
 
@@ -284,6 +292,14 @@ begin
     ConfigObj.Font.Assign(FontDialog.Font);
   end;
 
+end;
+
+procedure TfMain.actFullNameToClipBoardExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  Ed := EditorFactory.CurrentEditor;
+  Clipboard.AsText:=Ed.FileName;
 end;
 
 procedure TfMain.ActCompressSpacesExecute(Sender: TObject);

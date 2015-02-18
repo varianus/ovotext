@@ -5,7 +5,7 @@ object fMain: TfMain
   Width = 966
   AllowDropFiles = True
   Caption = 'ovoText'
-  ClientHeight = 667
+  ClientHeight = 668
   ClientWidth = 966
   Menu = mnuMain
   OnActivate = FormActivate
@@ -17,8 +17,8 @@ object fMain: TfMain
   LCLVersion = '1.5'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 21
-    Top = 646
+    Height = 23
+    Top = 645
     Width = 966
     Panels = <    
       item
@@ -299,6 +299,10 @@ object fMain: TfMain
       Category = 'Tools'
       Caption = 'Reduce multiple spaces'
       OnExecute = ActCompressSpacesExecute
+    end
+    object actFullNameToClipBoard: TAction
+      Caption = 'Full File name to clipboard'
+      OnExecute = actFullNameToClipBoardExecute
     end
   end
   object mnuMain: TMainMenu
@@ -803,6 +807,12 @@ object fMain: TfMain
         }
       end
       object MenuItem41: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem46: TMenuItem
+        Action = actFullNameToClipBoard
+      end
+      object MenuItem47: TMenuItem
         Caption = '-'
       end
       object MenuItem39: TMenuItem
@@ -2226,6 +2236,9 @@ object fMain: TfMain
     object MenuItem25: TMenuItem
       Caption = '-'
     end
+    object MenuItem45: TMenuItem
+      Action = actFullNameToClipBoard
+    end
   end
   object SaveDialog: TSaveDialog
     left = 688
@@ -2252,4 +2265,4 @@ object fMain: TfMain
     left = 592
     top = 168
   end
-end
+end
