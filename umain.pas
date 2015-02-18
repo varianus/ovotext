@@ -173,6 +173,10 @@ uses lclproc, Stringcostants, uabout;
 
 {$R *.lfm}
 
+const
+  IDX_IMG_MODIFIED = 28;
+  IDX_IMG_STANDARD = 19;
+
 { TfMain }
 
 procedure TfMain.FileExitExecute(Sender: TObject);
@@ -515,9 +519,9 @@ begin
 
   if (scModified in Changes) then
     if Editor.Modified then
-      Editor.Sheet.ImageIndex := 28
+      Editor.Sheet.ImageIndex := IDX_IMG_MODIFIED
     else
-      Editor.Sheet.ImageIndex := 19;
+      Editor.Sheet.ImageIndex := IDX_IMG_STANDARD;
 
 end;
 
@@ -558,7 +562,6 @@ begin
     sOpt := sOpt - [ssoBackWards];
     if Ed.SearchReplace(FindText, '', sOpt) = 0 then
       ShowMessage(Format(RSTextNotfound, [FindText]));
-    ;
   end;
 
 end;
@@ -577,7 +580,6 @@ begin
     sOpt := sOpt + [ssoBackWards];
     if Ed.SearchReplace(FindText, '', sOpt) = 0 then
       ShowMessage(Format(RSTextNotfound, [FindText]));
-    ;
   end;
 
 end;
@@ -650,8 +652,6 @@ begin
 end;
 
 procedure TfMain.BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
-var
-  Retry: boolean;
 begin
   if not Editor.Modified then
     Cancel := False
@@ -674,4 +674,4 @@ begin
 
 end;
 
-end.
+end.
