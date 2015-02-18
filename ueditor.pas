@@ -335,16 +335,18 @@ end;
 function TEditorFactory.CloseEditor(Editor: TEditor): boolean;
 var
   Sheet: TEditorTabSheet;
+  Cancel: boolean;
 begin
   Result := True;
   // if last tab in unused
   if (PageCount = 1) and Editor.Untitled and not Editor.Modified and not ConfigObj.AppSettings.CloseWithLastTab then
     exit;
 
+  Cancel := false;
   if Assigned(FOnBeforeClose) then
-    FOnBeforeClose(Editor, Result);
+    FOnBeforeClose(Editor, Cancel);
 
-  if not Result then
+  if not Cancel then
     begin
       Sheet := Editor.FSheet;
       Editor.PopupMenu := nil;
@@ -353,7 +355,9 @@ begin
       Application.ProcessMessages;
       if (PageCount = 0) and not ConfigObj.AppSettings.CloseWithLastTab then
         AddEditor();
-    end;
+    end
+  else
+    Result := False;
 
 end;
 
