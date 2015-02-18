@@ -25,11 +25,17 @@ resourcestring
   RSStatusBarInsMode = 'INS ';
   RSStatusBarOvrMode = 'OVR ';
   //-- Files
-  RSSaveChanges = 'Save changes to'+LineEnding+' "%s"?';
-  RSCannotSave = 'Can not save changes to'+LineEnding+' "%s"';
+  RSSaveChanges = 'Save changes to'+LineEnding+
+                  ' "%s"?';
+  RSCannotSave = 'Can not save changes to'+LineEnding+
+                 ' "%s"';
+  RSAskFileCreation = '"%s"'+LineEnding+
+                      'does not exists. Do you want to create it?';
+  RSCannotCreate = 'Can not create'+LineEnding+
+                 ' "%s"';
   //--
   RSTextNotFound = 'Text not found:'+LineEnding+'"%s"';
 
 implementation
 
-end.
+end.

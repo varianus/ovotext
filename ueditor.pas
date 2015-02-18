@@ -66,6 +66,7 @@ type
     procedure SetOnBeforeClose(AValue: TOnBeforeClose);
     procedure SetOnNewEditor(AValue: TOnEditorEvent);
     procedure ShowHintEvent(Sender: TObject; HintInfo: PHintInfo);
+    function CreateEmptyFile(AFileName: TFileName): boolean;
   protected
     procedure DoChange; override;
   public
@@ -83,7 +84,9 @@ type
   end;
 
 implementation
+
 uses lclproc;
+
 { TEditorTabSheet }
 
 procedure TEditorTabSheet.DoShow;
@@ -98,6 +101,7 @@ procedure TEditor.SetFileName(AValue: TFileName);
 begin
   if FFileName = AValue then
     Exit;
+
   FFileName := AValue;
   if FFileName <> EmptyStr then
     FUntitled := False;
@@ -107,6 +111,7 @@ procedure TEditor.SetUntitled(AValue: boolean);
 begin
   if FUntitled = AValue then
     Exit;
+
   FUntitled := AValue;
   if FUntitled then
     FFileName := EmptyStr;
@@ -142,19 +147,19 @@ function TEditor.SaveAs(AFileName: TFileName): boolean;
 var
   Retry: boolean;
 begin
-   repeat
-      Retry := False;
-        try
-          FFileName := AFileName;
-          Lines.SaveToFile(AFileName);
-          Result := True;
-          FUntitled := False;
-          Modified:= False;
-        except
-          Result := False;
-        end;
+  repeat
+    Retry := False;
+    try
+      FFileName := AFileName;
+      Lines.SaveToFile(AFileName);
+      Result := True;
+      FUntitled := False;
+      Modified := False;
+    except
+      Result := False;
+    end;
 
-      if not Result then
+    if not Result then
       begin
         case MessageDlg(RSError, Format(RSCannotSave, [fFileName]), mtError, [mbRetry, mbCancel, mbIgnore], 0) of
           mrAbort: Result := False;
@@ -162,8 +167,33 @@ begin
           mrRetry: Retry := True;
         end;
       end;
-    until not Retry;
+  until not Retry;
 
+end;
+
+function TEditorFactory.CreateEmptyFile(AFileName: TFileName): boolean;
+var
+  fs: TFileStream;
+  Retry: boolean;
+begin
+  repeat
+    Retry := False;
+    try
+      fs := TFileStream.Create(AFileName, fmCreate);
+      fs.Free;
+      Result := True;
+    except
+      Result := False;
+    end;
+
+    if not Result then
+      begin
+        case MessageDlg(RSError, Format(RSCannotCreate, [AFileName]), mtError, [mbRetry, mbAbort], 0) of
+          mrAbort: Result := False;
+          mrRetry: Retry := True;
+        end;
+      end;
+  until not Retry;
 
 end;
 
@@ -205,7 +235,7 @@ end;
 procedure TEditorFactory.DoChange;
 begin
   inherited DoChange;
-//  Hint := TEditorTabSheet(ActivePage).Editor.FileName;
+  //  Hint := TEditorTabSheet(ActivePage).Editor.FileName;
   if Assigned(OnStatusChange) then
     OnStatusChange(GetCurrentEditor, [scCaretX, scCaretY, scModified, scInsertMode]);
 
@@ -230,25 +260,34 @@ begin
     // do not reopen same file
     for i := 0 to PageCount - 1 do
       begin
-      Sheet := TEditorTabSheet(Pages[i]);
-      if Sheet.Editor.FileName = FileName then
-        begin
-        ActivePageIndex := i;
-        exit;
+        Sheet := TEditorTabSheet(Pages[i]);
+        if Sheet.Editor.FileName = FileName then
+          begin
+            ActivePageIndex := i;
+            exit;
+          end;
+      end;
+
+    if (FileName <> EmptyStr) and not FileExists(FileName) then
+      begin
+        case MessageDlg('', format(RSAskFileCreation, [FileName]), mtConfirmation, [mbYes, mbNo], 0) of
+          mrNo: Exit;
+          mrYes: if not CreateEmptyFile(FileName) then
+              Exit;
         end;
       end;
 
     // try to reuse an empty sheet
     for i := 0 to PageCount - 1 do
       begin
-      Sheet := TEditorTabSheet(Pages[i]);
-      if (Sheet.Editor.Untitled) and not Sheet.Editor.Modified then
-        begin
-        Sheet.Editor.LoadFromfile(FileName);
-        ActivePageIndex := i;
-        exit;
+        Sheet := TEditorTabSheet(Pages[i]);
+        if (Sheet.Editor.Untitled) and not Sheet.Editor.Modified then
+          begin
+            Sheet.Editor.LoadFromfile(FileName);
+            ActivePageIndex := i;
+            exit;
+          end;
         end;
-      end;
 
     end;
 
@@ -277,11 +316,11 @@ begin
     OnStatusChange(Result, [scCaretX, scCaretY, scModified, scInsertMode]);
 
   Result.Parent := Sheet;
-  if FileName = '' then
+  if FileName = EmptyStr then
     begin
-    Sheet.Caption := Format(RSNewFile, [fUntitledCounter]);
-    Result.FUntitled := True;
-    Inc(fUntitledCounter);
+      Sheet.Caption := Format(RSNewFile, [fUntitledCounter]);
+      Result.FUntitled := True;
+      Inc(fUntitledCounter);
     end
   else
     Result.LoadFromfile(FileName);
@@ -307,15 +346,14 @@ begin
 
   if not Result then
     begin
-    Sheet := Editor.FSheet;
-    Editor.PopupMenu := nil;
-    Application.ReleaseComponent(Editor);
-    Application.ReleaseComponent(Sheet);
-    Application.ProcessMessages;
-    if (PageCount = 0) and not ConfigObj.AppSettings.CloseWithLastTab then
-      AddEditor();
+      Sheet := Editor.FSheet;
+      Editor.PopupMenu := nil;
+      Application.ReleaseComponent(Editor);
+      Application.ReleaseComponent(Sheet);
+      Application.ProcessMessages;
+      if (PageCount = 0) and not ConfigObj.AppSettings.CloseWithLastTab then
+        AddEditor();
     end;
-
 
 end;
 
@@ -333,10 +371,13 @@ var
   Tab: integer;
 
 begin
-  if (PageCount=0) or (HintInfo=nil) then exit;
-  Tab:=TabIndexAtClientPos(ScreenToClient(Mouse.CursorPos));
+  if (PageCount = 0) or (HintInfo = nil) then
+    Exit;
+  Tab := TabIndexAtClientPos(ScreenToClient(Mouse.CursorPos));
 
-  if Tab<0 then exit;
+  if Tab < 0 then
+    Exit;
+
   HintInfo^.HintStr := TEditorTabSheet(Pages[Tab]).Editor.FileName;
 
 end;
@@ -346,7 +387,7 @@ begin
   inherited Create(AOwner);
   fUntitledCounter := 0;
   Options := Options + [nboShowCloseButtons];
-  OnShowHint:= @ShowHintEvent;
+  OnShowHint := @ShowHintEvent;
 end;
 
 destructor TEditorFactory.Destroy;
@@ -356,4 +397,4 @@ end;
 
 
 
-end.
+end.

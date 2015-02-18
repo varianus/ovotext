@@ -1,6 +1,18 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
+#: stringcostants.rsaskfilecreation
+msgid ""
+"\"%s\"\n"
+"does not exists. Do you want to create it?\n"
+msgstr ""
+
+#: stringcostants.rscannotcreate
+msgid ""
+"Can not create\n"
+" \"%s\"\n"
+msgstr ""
+
 #: stringcostants.rscannotsave
 msgid ""
 "Can not save changes to\n"
