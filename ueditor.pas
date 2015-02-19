@@ -79,6 +79,7 @@ type
     function AddEditor(FileName: TFilename = ''): TEditor;
     function CloseEditor(Editor: TEditor): boolean;
     function CloseAll: boolean;
+    function SaveAll: boolean;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   end;
@@ -392,6 +393,15 @@ var
 begin
   for i := PageCount - 1 downto 0 do
     if not CloseEditor(TEditorTabSheet(Pages[i]).Editor) then
+      break;
+end;
+
+function TEditorFactory.SaveAll: boolean;
+var
+  i: integer;
+begin
+  for i := PageCount - 1 downto 0 do
+    if not TEditorTabSheet(Pages[i]).Editor.Save then
       break;
 end;
 

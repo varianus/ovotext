@@ -16,6 +16,7 @@ type
   TfMain = class(TForm)
     actFont: TAction;
     actFullNameToClipBoard: TAction;
+    FileSaveAll: TAction;
     actTrimTrailing: TAction;
     actTrim: TAction;
     ActCompressSpaces: TAction;
@@ -78,6 +79,9 @@ type
     MenuItem45: TMenuItem;
     MenuItem46: TMenuItem;
     MenuItem47: TMenuItem;
+    MenuItem48: TMenuItem;
+    MenuItem49: TMenuItem;
+    MenuItem50: TMenuItem;
     mnuOpenRecent: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
