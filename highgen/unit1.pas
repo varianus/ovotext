@@ -175,6 +175,11 @@ begin
 
   tmps := 'Lazarus/ColorSchemes/Globals/Scheme' + schemaName + '/ahaDefault/';
   InOut(tmps, 'Schema/Default/Text/');
+  tmps := 'Lazarus/ColorSchemes/Globals/Scheme' + schemaName + '/ahaGutter/';
+  InOut(tmps, 'Schema/Default/Gutter/');
+  tmps := 'Lazarus/ColorSchemes/Globals/Scheme' + schemaName + '/ahaLineNumber/';
+  InOut(tmps, 'Schema/Default/LineNumber/');
+
   st.clear;
   for i := 0 to HIGHLIGHTERCOUNT -1 do
     begin

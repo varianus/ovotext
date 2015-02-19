@@ -198,14 +198,39 @@ begin
 end;
 
 procedure TEditor.CreateDefaultGutterParts;
+var
+  SpecialAttr : TFontAttributes;
+  DefaultAttr : TFontAttributes;
 begin
   Gutter.Parts.Clear;
+  DefaultAttr := ConfigObj.ReadFontAttributes('Default/Gutter/', FontAttributes());
+  Gutter.Color:= DefaultAttr.Background;
+
   with TSynGutterMarks.Create(Gutter.Parts) do
-    Name := 'SynGutterMarks1';
+    Begin
+      Name := 'SynGutterMarks1';
+      MarkupInfo.Background := DefaultAttr.Background;
+      MarkupInfo.Foreground:= DefaultAttr.Foreground;
+      MarkupInfo.Style := DefaultAttr.Styles;
+    end;
   with TSynGutterLineNumber.Create(Gutter.Parts) do
-    Name := 'SynGutterLineNumber1';
-  with TSynGutterChanges.Create(Gutter.Parts) do
-    Name := 'SynGutterChanges1';
+    begin
+       Name := 'SynGutterLineNumber1';
+       SpecialAttr := ConfigObj.ReadFontAttributes('Default/LineNumber/', DefaultAttr);
+       MarkupInfo.Background := SpecialAttr.Background;
+       MarkupInfo.Foreground:= SpecialAttr.Foreground;
+       MarkupInfo.Style := SpecialAttr.Styles;
+    end;
+  with TSynGutterSeparator.Create(Gutter.Parts) do
+    begin
+       Name := 'SynGutterSeparator1';
+       SpecialAttr := ConfigObj.ReadFontAttributes('Default/LineNumber/', DefaultAttr);
+       MarkupInfo.Background := SpecialAttr.Foreground;
+       MarkupInfo.Foreground:= SpecialAttr.Background;
+       LineWidth:=1;
+       Width:=2;
+    end;
+
 end;
 
 { TEditorFactory }
@@ -253,7 +278,7 @@ function TEditorFactory.AddEditor(FileName: TFilename = ''): TEditor;
 var
   Sheet: TEditorTabSheet;
   i: integer;
-  DefaultAttr: TFontAttributes;
+  SpecialAttr, DefaultAttr: TFontAttributes;
 begin
   if FileName <> EmptyStr then
     begin

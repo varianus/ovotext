@@ -3,6 +3,8 @@
   <Schema Name="son_of_obsidian_theme">
     <Default>
       <Text Background="$002A2822" Foreground="$00F3F2F1"/>
+      <Gutter Background="$002A2822" Foreground="$0063C793"/>
+      <LineNumber Background="$002A2822" Foreground="$0063C793"/>
     </Default>
     <ObjectPascal>
       <Assembler Background="$002A2822" Foreground="$0063C793"/>
