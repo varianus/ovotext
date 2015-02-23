@@ -245,6 +245,10 @@ msgctxt "tfmain.filesave.hint"
 msgid "Save"
 msgstr ""
 
+#: tfmain.filesaveall.caption
+msgid "Save All"
+msgstr ""
+
 #: tfmain.filesaveas.caption
 msgid "Save as..."
 msgstr ""
@@ -331,6 +335,11 @@ msgstr ""
 
 #: tfmain.menuitem47.caption
 msgctxt "TFMAIN.MENUITEM47.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfmain.menuitem48.caption
+msgctxt "TFMAIN.MENUITEM48.CAPTION"
 msgid "-"
 msgstr ""
 

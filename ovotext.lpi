@@ -85,7 +85,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="8">
+    <Units Count="9">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -133,6 +133,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="Config"/>
       </Unit7>
+      <Unit8>
+        <Filename Value="ucheckfilechange.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uCheckFileChange"/>
+      </Unit8>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
