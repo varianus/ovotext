@@ -38,6 +38,7 @@ const
 
 resourcestring
   RSError = 'Error';
+  RSReload = 'Reload';
   RSNewFile = '<new   %d>';
   RSStatusBarPos = 'Line: %d  Col:%d';
   RSStatusBarSel = 'Sel: %d ';
@@ -52,6 +53,18 @@ resourcestring
                       'does not exists. Do you want to create it?';
   RSCannotCreate = 'Can not create'+LineEnding+
                  ' "%s"';
+  RSReloadSimple = '%s' +LineEnding+LineEnding+
+                   'This file has been modified by another application.'+LineEnding+
+                   'Do you want to reload it?';
+
+  RSReloadModified = '%s' +LineEnding+LineEnding+
+                     'This file has been modified by another application.'+LineEnding+
+                     'Do you want to reload it and lose changes?';
+
+  RSKeepDeleted = '%s' +LineEnding+LineEnding+
+                     'This file has been deleted by another application.'+LineEnding+
+                     'Do you want to keep it in the editor?';
+
   //--
   RSTextNotFound = 'Text not found:'+LineEnding+'"%s"';
 

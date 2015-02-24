@@ -98,7 +98,7 @@ type
     //--//
     procedure DoCloseTabClicked(APage: TCustomPage); override;
     function AddEditor(FileName: TFilename = ''): TEditor;
-    function CloseEditor(Editor: TEditor): boolean;
+    function CloseEditor(Editor: TEditor; Force:boolean=false): boolean;
     function CloseAll: boolean;
     function SaveAll: boolean;
     procedure DoCheckFileChanges;
@@ -230,10 +230,30 @@ end;
 
 procedure TEditorFactory.OnFileChange(Sender: TObject; FileName: TFileName;
   Data: Pointer; State: TFWStateChange);
+var
+  ed: TEditor;
+  dlgText: String;
 begin
+  ed := TEditor(Data);
   case State of
-    fwscModified : begin DebugLn('Modified ', FileName); end;
-    fwscDeleted : begin DebugLn('Deleted ', FileName); end;
+    fwscModified : begin
+                     if ed.Modified then
+                       dlgText:= RSReloadModified
+                     else
+                       dlgText:= RSReloadsimple;
+
+                     if MessageDlg(RSReload, Format(dlgText, [FileName]), mtConfirmation, [mbyes, mbno], 0) = mrYes then
+                       ed.LoadFromFile(FileName)
+                     else
+                       ed.Modified:=true;
+
+                   end;
+    fwscDeleted : begin
+                    if MessageDlg(RSReload, Format(dlgText, [FileName]), mtConfirmation, [mbyes, mbno], 0) = mrYes then
+                       ed.LoadFromFile(FileName)
+                     else
+                       CloseEditor(Ed, True);
+                   end;
   end;
   FWatcher.Update(FileName);
 end;
@@ -407,7 +427,7 @@ begin
 
 end;
 
-function TEditorFactory.CloseEditor(Editor: TEditor): boolean;
+function TEditorFactory.CloseEditor(Editor: TEditor; Force:boolean=false): boolean;
 var
   Sheet: TEditorTabSheet;
   Cancel: boolean;
@@ -418,10 +438,10 @@ begin
     exit;
 
   Cancel := false;
-  if Assigned(FOnBeforeClose) then
+  if Assigned(FOnBeforeClose) and not Force then
     FOnBeforeClose(Editor, Cancel);
 
-  if not Cancel then
+  if (not Cancel) or Force then
     begin
       Sheet := Editor.FSheet;
       Editor.PopupMenu := nil;
