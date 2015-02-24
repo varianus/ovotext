@@ -144,6 +144,7 @@ type
     procedure actTrimExecute(Sender: TObject);
     procedure actTrimLeadingExecute(Sender: TObject);
     procedure actTrimTrailingExecute(Sender: TObject);
+    procedure AppPropertiesActivate(Sender: TObject);
     procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
     procedure EditRedoExecute(Sender: TObject);
     procedure FileCloseAllExecute(Sender: TObject);
@@ -303,6 +304,11 @@ begin
 
 end;
 
+procedure TfMain.AppPropertiesActivate(Sender: TObject);
+begin
+ EditorFactory.DoCheckFileChanges;
+end;
+
 procedure TfMain.actFontExecute(Sender: TObject);
 var
   i: integer;
@@ -375,8 +381,9 @@ var
 begin
   Editor := EditorFactory.CurrentEditor;
 
- if AskFileName(Editor) then
-    Editor.Save;
+// if AskFileName(Editor) then
+
+  Editor.SaveAs(FileSaveAs.Dialog.FileName);
 
 end;
 
@@ -463,8 +470,9 @@ begin
 
   for i := 1 to Paramcount do
   begin
-    //if not para
-    EditorFactory.AddEditor(ParamStrUTF8(i));
+    // dirty hack to skip parameter as --debug=....
+    if copy(ParamStrUTF8(i),1,2) <> '--' then
+       EditorFactory.AddEditor(ParamStrUTF8(i));
   end;
 end;
 

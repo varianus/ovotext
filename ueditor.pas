@@ -25,8 +25,8 @@ interface
 
 uses
   Classes, SysUtils, Controls, Dialogs, ComCtrls,
-  SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterChanges, SynGutterLineNumber,
-  Stringcostants, Forms, Graphics, Config, udmmain;
+  SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,SynGutterChanges,
+  Stringcostants, Forms, Graphics, Config, udmmain, uCheckFileChange;
 
 type
 
@@ -81,11 +81,13 @@ type
     FOnNewEditor: TOnEditorEvent;
     FonStatusChange: TStatusChangeEvent;
     fUntitledCounter: integer;
+    FWatcher : TFileWatcher;
     function GetCurrentEditor: TEditor;
     procedure SetOnBeforeClose(AValue: TOnBeforeClose);
     procedure SetOnNewEditor(AValue: TOnEditorEvent);
     procedure ShowHintEvent(Sender: TObject; HintInfo: PHintInfo);
     function CreateEmptyFile(AFileName: TFileName): boolean;
+    procedure OnFileChange(Sender: TObject; FileName :TFileName; Data:Pointer; State:TFWStateChange);
   protected
     procedure DoChange; override;
   public
@@ -99,6 +101,7 @@ type
     function CloseEditor(Editor: TEditor): boolean;
     function CloseAll: boolean;
     function SaveAll: boolean;
+    procedure DoCheckFileChanges;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   end;
@@ -124,7 +127,14 @@ begin
 
   FFileName := AValue;
   if FFileName <> EmptyStr then
-    FUntitled := False;
+    begin
+      FUntitled := False;
+      Highlighter := dmMain.getHighLighter(ExtractFileExt(fFileName));
+      FSheet.Caption := ExtractFileName(fFileName);
+    end
+  else
+    FUntitled:=true;
+
 end;
 
 procedure TEditor.SetUntitled(AValue: boolean);
@@ -150,17 +160,15 @@ end;
 
 procedure TEditor.LoadFromfile(AFileName: TFileName);
 begin
-  FFileName := AFileName;
+  SetFileName(AFileName);
   Lines.LoadFromFile(FFileName);
-  Highlighter := dmMain.getHighLighter(ExtractFileExt(fFileName));
-  FSheet.Caption := ExtractFileName(fFileName);
-  FUntitled := False;
 
 end;
 
 function TEditor.Save: boolean;
 begin
   Result := SaveAs(FFileName);
+  TEditorFactory(Sheet.Owner).FWatcher.Update(FFileName);
 end;
 
 function TEditor.SaveAs(AFileName: TFileName): boolean;
@@ -170,8 +178,11 @@ begin
   repeat
     Retry := False;
     try
-      FFileName := AFileName;
+      if FFileName <> EmptyStr then
+         TEditorFactory(Sheet.Owner).FWatcher.RemoveFile(FFileName);
+      SetFileName(AFileName);
       Lines.SaveToFile(AFileName);
+      TEditorFactory(Sheet.Owner).FWatcher.AddFile(FFileName,Self);
       Result := True;
       FUntitled := False;
       Modified := False;
@@ -217,6 +228,16 @@ begin
 
 end;
 
+procedure TEditorFactory.OnFileChange(Sender: TObject; FileName: TFileName;
+  Data: Pointer; State: TFWStateChange);
+begin
+  case State of
+    fwscModified : begin DebugLn('Modified ', FileName); end;
+    fwscDeleted : begin DebugLn('Deleted ', FileName); end;
+  end;
+  FWatcher.Update(FileName);
+end;
+
 procedure TEditor.CreateDefaultGutterParts;
 var
   SpecialAttr : TFontAttributes;
@@ -249,6 +270,11 @@ begin
        MarkupInfo.Foreground:= SpecialAttr.Background;
        LineWidth:=1;
        Width:=2;
+    end;
+  with TSynGutterChanges.Create(Gutter.Parts) do
+    begin
+       Name := 'SynGutterChanges';
+       Visible:=false;
     end;
 
 end;
@@ -329,6 +355,7 @@ begin
         if (Sheet.Editor.Untitled) and not Sheet.Editor.Modified then
           begin
             Sheet.Editor.LoadFromfile(FileName);
+            FWatcher.AddFile(FileName, Sheet.Editor);
             ActivePageIndex := i;
             exit;
           end;
@@ -368,7 +395,10 @@ begin
       Inc(fUntitledCounter);
     end
   else
-    Result.LoadFromfile(FileName);
+    begin
+      Result.LoadFromfile(FileName);
+      FWatcher.AddFile(FileName, Result);
+    end;
 
   ActivePage := Sheet;
 
@@ -395,6 +425,7 @@ begin
     begin
       Sheet := Editor.FSheet;
       Editor.PopupMenu := nil;
+      FWatcher.RemoveFile(Editor.FileName);
       Application.ReleaseComponent(Editor);
       Application.ReleaseComponent(Sheet);
       Application.ProcessMessages;
@@ -424,6 +455,11 @@ begin
       break;
 end;
 
+procedure TEditorFactory.DoCheckFileChanges;
+begin
+  FWatcher.CheckFiles;
+end;
+
 procedure TEditorFactory.ShowHintEvent(Sender: TObject; HintInfo: PHintInfo);
 var
   Tab: integer;
@@ -443,6 +479,8 @@ end;
 constructor TEditorFactory.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  FWatcher := TFileWatcher.Create;
+  FWatcher.OnFileStateChange:=@OnFileChange;
   fUntitledCounter := 0;
   Options := Options + [nboShowCloseButtons];
   OnShowHint := @ShowHintEvent;
@@ -450,6 +488,7 @@ end;
 
 destructor TEditorFactory.Destroy;
 begin
+  FWatcher.Free;
   inherited Destroy;
 end;
 
