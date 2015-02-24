@@ -124,8 +124,9 @@ begin
           end
       end;
 
-   if (wFileInfo.Size <> FileInfo.Size) or
-      (wFileInfo.Time <> FileInfo.Time)
+   if wFileInfo.Exists and
+      ((wFileInfo.Size <> FileInfo.Size) or
+       (wFileInfo.Time <> FileInfo.Time))
     then
       begin
         Result := fwscModified;

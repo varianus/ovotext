@@ -249,8 +249,11 @@ begin
 
                    end;
     fwscDeleted : begin
-                    if MessageDlg(RSReload, Format(dlgText, [FileName]), mtConfirmation, [mbyes, mbno], 0) = mrYes then
-                       ed.LoadFromFile(FileName)
+                    if MessageDlg(RSReload, Format(RSKeepDeleted, [FileName]), mtConfirmation, [mbyes, mbno], 0) = mrYes then
+                       begin
+                          ed.Modified:=true;
+                          FWatcher.Update(FileName);
+                       end
                      else
                        CloseEditor(Ed, True);
                    end;
