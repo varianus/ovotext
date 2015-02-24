@@ -1,3 +1,22 @@
+{ Ovotext - simple text editor
+
+  Copyright (C) 2015 Marco Caselli <marcocas@gmail.com>
+
+  This source is free software; you can redistribute it and/or modify it under
+  the terms of the GNU General Public License as published by the Free
+  Software Foundation; either version 2 of the License, or (at your option)
+  any later version.
+
+  This code is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+  details.
+
+  A copy of the GNU General Public License is available on the World Wide Web
+  at <http://www.gnu.org/copyleft/gpl.html>. You can also obtain it by writing
+  to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+  MA 02111-1307, USA.
+}
 unit umain;
 
 {$mode objfpc}{$H+}
@@ -125,6 +144,7 @@ type
     procedure actTrimExecute(Sender: TObject);
     procedure actTrimLeadingExecute(Sender: TObject);
     procedure actTrimTrailingExecute(Sender: TObject);
+    procedure AppPropertiesActivate(Sender: TObject);
     procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
     procedure EditRedoExecute(Sender: TObject);
     procedure FileCloseAllExecute(Sender: TObject);
@@ -284,6 +304,11 @@ begin
 
 end;
 
+procedure TfMain.AppPropertiesActivate(Sender: TObject);
+begin
+ EditorFactory.DoCheckFileChanges;
+end;
+
 procedure TfMain.actFontExecute(Sender: TObject);
 var
   i: integer;
@@ -356,8 +381,9 @@ var
 begin
   Editor := EditorFactory.CurrentEditor;
 
- if AskFileName(Editor) then
-    Editor.Save;
+// if AskFileName(Editor) then
+
+  Editor.SaveAs(FileSaveAs.Dialog.FileName);
 
 end;
 
@@ -444,8 +470,9 @@ begin
 
   for i := 1 to Paramcount do
   begin
-    //if not para
-    EditorFactory.AddEditor(ParamStrUTF8(i));
+    // dirty hack to skip parameter as --debug=....
+    if copy(ParamStrUTF8(i),1,2) <> '--' then
+       EditorFactory.AddEditor(ParamStrUTF8(i));
   end;
 end;
 

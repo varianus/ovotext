@@ -85,7 +85,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="8">
+    <Units Count="9">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -104,6 +104,7 @@
         <ComponentName Value="fAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uabout"/>
       </Unit2>
       <Unit3>
         <Filename Value="udmmain.pas"/>
@@ -133,6 +134,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="Config"/>
       </Unit7>
+      <Unit8>
+        <Filename Value="ucheckfilechange.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uCheckFileChange"/>
+      </Unit8>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

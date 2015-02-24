@@ -23,8 +23,36 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
+#: stringcostants.rskeepdeleted
+msgid ""
+"%s\n"
+"\n"
+"This file has been deleted by another application.\n"
+"Do you want to keep it in the editor?\n"
+msgstr ""
+
 #: stringcostants.rsnewfile
 msgid "<new   %d>"
+msgstr ""
+
+#: stringcostants.rsreload
+msgid "Reload"
+msgstr ""
+
+#: stringcostants.rsreloadmodified
+msgid ""
+"%s\n"
+"\n"
+"This file has been modified by another application.\n"
+"Do you want to reload it and lose changes?\n"
+msgstr ""
+
+#: stringcostants.rsreloadsimple
+msgid ""
+"%s\n"
+"\n"
+"This file has been modified by another application.\n"
+"Do you want to reload it?\n"
 msgstr ""
 
 #: stringcostants.rssavechanges
@@ -245,6 +273,10 @@ msgctxt "tfmain.filesave.hint"
 msgid "Save"
 msgstr ""
 
+#: tfmain.filesaveall.caption
+msgid "Save All"
+msgstr ""
+
 #: tfmain.filesaveas.caption
 msgid "Save as..."
 msgstr ""
@@ -331,6 +363,11 @@ msgstr ""
 
 #: tfmain.menuitem47.caption
 msgctxt "TFMAIN.MENUITEM47.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfmain.menuitem48.caption
+msgctxt "TFMAIN.MENUITEM48.CAPTION"
 msgid "-"
 msgstr ""
 

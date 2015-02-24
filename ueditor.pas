@@ -1,3 +1,22 @@
+{ Ovotext - simple text editor
+
+  Copyright (C) 2015 Marco Caselli <marcocas@gmail.com>
+
+  This source is free software; you can redistribute it and/or modify it under
+  the terms of the GNU General Public License as published by the Free
+  Software Foundation; either version 2 of the License, or (at your option)
+  any later version.
+
+  This code is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+  details.
+
+  A copy of the GNU General Public License is available on the World Wide Web
+  at <http://www.gnu.org/copyleft/gpl.html>. You can also obtain it by writing
+  to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+  MA 02111-1307, USA.
+}
 unit ueditor;
 
 {$mode objfpc}{$H+}
@@ -6,8 +25,8 @@ interface
 
 uses
   Classes, SysUtils, Controls, Dialogs, ComCtrls,
-  SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterChanges, SynGutterLineNumber,
-  Stringcostants, Forms, Graphics, Config, udmmain;
+  SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,SynGutterChanges,
+  Stringcostants, Forms, Graphics, Config, udmmain, uCheckFileChange;
 
 type
 
@@ -62,11 +81,13 @@ type
     FOnNewEditor: TOnEditorEvent;
     FonStatusChange: TStatusChangeEvent;
     fUntitledCounter: integer;
+    FWatcher : TFileWatcher;
     function GetCurrentEditor: TEditor;
     procedure SetOnBeforeClose(AValue: TOnBeforeClose);
     procedure SetOnNewEditor(AValue: TOnEditorEvent);
     procedure ShowHintEvent(Sender: TObject; HintInfo: PHintInfo);
     function CreateEmptyFile(AFileName: TFileName): boolean;
+    procedure OnFileChange(Sender: TObject; FileName :TFileName; Data:Pointer; State:TFWStateChange);
   protected
     procedure DoChange; override;
   public
@@ -77,9 +98,10 @@ type
     //--//
     procedure DoCloseTabClicked(APage: TCustomPage); override;
     function AddEditor(FileName: TFilename = ''): TEditor;
-    function CloseEditor(Editor: TEditor): boolean;
+    function CloseEditor(Editor: TEditor; Force:boolean=false): boolean;
     function CloseAll: boolean;
     function SaveAll: boolean;
+    procedure DoCheckFileChanges;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   end;
@@ -105,7 +127,14 @@ begin
 
   FFileName := AValue;
   if FFileName <> EmptyStr then
-    FUntitled := False;
+    begin
+      FUntitled := False;
+      Highlighter := dmMain.getHighLighter(ExtractFileExt(fFileName));
+      FSheet.Caption := ExtractFileName(fFileName);
+    end
+  else
+    FUntitled:=true;
+
 end;
 
 procedure TEditor.SetUntitled(AValue: boolean);
@@ -131,17 +160,15 @@ end;
 
 procedure TEditor.LoadFromfile(AFileName: TFileName);
 begin
-  FFileName := AFileName;
+  SetFileName(AFileName);
   Lines.LoadFromFile(FFileName);
-  Highlighter := dmMain.getHighLighter(ExtractFileExt(fFileName));
-  FSheet.Caption := ExtractFileName(fFileName);
-  FUntitled := False;
 
 end;
 
 function TEditor.Save: boolean;
 begin
   Result := SaveAs(FFileName);
+  TEditorFactory(Sheet.Owner).FWatcher.Update(FFileName);
 end;
 
 function TEditor.SaveAs(AFileName: TFileName): boolean;
@@ -151,8 +178,11 @@ begin
   repeat
     Retry := False;
     try
-      FFileName := AFileName;
+      if FFileName <> EmptyStr then
+         TEditorFactory(Sheet.Owner).FWatcher.RemoveFile(FFileName);
+      SetFileName(AFileName);
       Lines.SaveToFile(AFileName);
+      TEditorFactory(Sheet.Owner).FWatcher.AddFile(FFileName,Self);
       Result := True;
       FUntitled := False;
       Modified := False;
@@ -198,6 +228,36 @@ begin
 
 end;
 
+procedure TEditorFactory.OnFileChange(Sender: TObject; FileName: TFileName;
+  Data: Pointer; State: TFWStateChange);
+var
+  ed: TEditor;
+  dlgText: String;
+begin
+  ed := TEditor(Data);
+  case State of
+    fwscModified : begin
+                     if ed.Modified then
+                       dlgText:= RSReloadModified
+                     else
+                       dlgText:= RSReloadsimple;
+
+                     if MessageDlg(RSReload, Format(dlgText, [FileName]), mtConfirmation, [mbyes, mbno], 0) = mrYes then
+                       ed.LoadFromFile(FileName)
+                     else
+                       ed.Modified:=true;
+
+                   end;
+    fwscDeleted : begin
+                    if MessageDlg(RSReload, Format(dlgText, [FileName]), mtConfirmation, [mbyes, mbno], 0) = mrYes then
+                       ed.LoadFromFile(FileName)
+                     else
+                       CloseEditor(Ed, True);
+                   end;
+  end;
+  FWatcher.Update(FileName);
+end;
+
 procedure TEditor.CreateDefaultGutterParts;
 var
   SpecialAttr : TFontAttributes;
@@ -230,6 +290,11 @@ begin
        MarkupInfo.Foreground:= SpecialAttr.Background;
        LineWidth:=1;
        Width:=2;
+    end;
+  with TSynGutterChanges.Create(Gutter.Parts) do
+    begin
+       Name := 'SynGutterChanges';
+       Visible:=false;
     end;
 
 end;
@@ -310,6 +375,7 @@ begin
         if (Sheet.Editor.Untitled) and not Sheet.Editor.Modified then
           begin
             Sheet.Editor.LoadFromfile(FileName);
+            FWatcher.AddFile(FileName, Sheet.Editor);
             ActivePageIndex := i;
             exit;
           end;
@@ -349,7 +415,10 @@ begin
       Inc(fUntitledCounter);
     end
   else
-    Result.LoadFromfile(FileName);
+    begin
+      Result.LoadFromfile(FileName);
+      FWatcher.AddFile(FileName, Result);
+    end;
 
   ActivePage := Sheet;
 
@@ -358,7 +427,7 @@ begin
 
 end;
 
-function TEditorFactory.CloseEditor(Editor: TEditor): boolean;
+function TEditorFactory.CloseEditor(Editor: TEditor; Force:boolean=false): boolean;
 var
   Sheet: TEditorTabSheet;
   Cancel: boolean;
@@ -369,13 +438,14 @@ begin
     exit;
 
   Cancel := false;
-  if Assigned(FOnBeforeClose) then
+  if Assigned(FOnBeforeClose) and not Force then
     FOnBeforeClose(Editor, Cancel);
 
-  if not Cancel then
+  if (not Cancel) or Force then
     begin
       Sheet := Editor.FSheet;
       Editor.PopupMenu := nil;
+      FWatcher.RemoveFile(Editor.FileName);
       Application.ReleaseComponent(Editor);
       Application.ReleaseComponent(Sheet);
       Application.ProcessMessages;
@@ -405,6 +475,11 @@ begin
       break;
 end;
 
+procedure TEditorFactory.DoCheckFileChanges;
+begin
+  FWatcher.CheckFiles;
+end;
+
 procedure TEditorFactory.ShowHintEvent(Sender: TObject; HintInfo: PHintInfo);
 var
   Tab: integer;
@@ -424,6 +499,8 @@ end;
 constructor TEditorFactory.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  FWatcher := TFileWatcher.Create;
+  FWatcher.OnFileStateChange:=@OnFileChange;
   fUntitledCounter := 0;
   Options := Options + [nboShowCloseButtons];
   OnShowHint := @ShowHintEvent;
@@ -431,6 +508,7 @@ end;
 
 destructor TEditorFactory.Destroy;
 begin
+  FWatcher.Free;
   inherited Destroy;
 end;
 
