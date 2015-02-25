@@ -194,6 +194,13 @@ begin
         end;
     end;
 
+  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Comment/','Schema/DefaultLang/Comment/');
+  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/String/','Schema/DefaultLang/String/');
+  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Reserved_word/','Schema/DefaultLang/Keyword/');
+  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Symbol/','Schema/DefaultLang/Symbol/');
+  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Whitespace/','Schema/DefaultLang/Whitespace/');
+  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Identifier/','Schema/DefaultLang/Identifier/');
+
   cfg.WriteToDisk;
   cfg.Free;
   doc.Free;

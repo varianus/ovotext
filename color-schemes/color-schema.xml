@@ -146,5 +146,11 @@
       <String Background="$002A2822" Foreground="$000076EC"/>
       <Symbol Background="$002A2822" Foreground="$00F3F2F1"/>
     </Javascript>
+    <DefaultLang>
+      <Comment Style="fsBold" Background="$002A2822" Foreground="$007B7466"/>
+      <String Background="$002A2822" Foreground="$000076EC"/>
+      <Keyword Style="fsBold" Background="$002A2822" Foreground="$0063C793"/>
+      <Symbol Background="$002A2822" Foreground="$00F3F2F1"/>
+    </DefaultLang>
   </Schema>
 </CONFIG>

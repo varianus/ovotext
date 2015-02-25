@@ -24,7 +24,7 @@ unit Config;
 interface
 
 uses
-  Classes, SysUtils, Graphics, XMLPropStorage;
+  Classes, SysUtils, Graphics, XMLPropStorage, XMLConf, DOM;
 
 type
   { TConfig }
@@ -40,6 +40,14 @@ type
     Styles: TFontStyles;
   end;
 
+  { TXMLConfigExtended }
+
+  TXMLConfigExtended = class (TXMLConfig)
+  public
+    function PathExists(APath: string): boolean;
+  end;
+
+
   TConfig = class
   private
     FAppSettings: RAppSettings;
@@ -47,6 +55,7 @@ type
     fConfigDir: string;
     FFont: TFont;
     ResourcesPath: string;
+    fXMLConfigExtended : TXMLConfigExtended;
     fConfigHolder: TXMLConfigStorage;
     fColorSchema: TXMLConfigStorage;
     function GetBackGroundColor: TColor;
@@ -68,6 +77,7 @@ type
     property ConfigDir: string read fConfigDir;
     property ConfigFile: string read FConfigFile;
     property Font: TFont read FFont write SetFont;
+    property XMLConfigExtended : TXMLConfigExtended read fXMLConfigExtended;
     property AppSettings: RAppSettings read FAppSettings write FAppSettings;
     property BackGroundColor: TColor read GetBackGroundColor;
   end;
@@ -108,6 +118,28 @@ const
 
   SectionGeneral = 'General';
 
+
+  function NextToken(const S: string; var SeekPos: Integer;
+    const TokenDelim: Char): string;
+  var
+    TokStart: Integer;
+  begin
+    repeat
+      if SeekPos > Length(s) then begin Result := ''; Exit end;
+      if S[SeekPos] = TokenDelim then Inc(SeekPos) else Break;
+    until false;
+    TokStart := SeekPos; { TokStart := first character not in TokenDelims }
+
+    while (SeekPos <= Length(s)) and not(S[SeekPos] = TokenDelim) do Inc(SeekPos);
+
+    { Calculate result := s[TokStart, ... , SeekPos-1] }
+    result := Copy(s, TokStart, SeekPos-TokStart);
+
+    { We don't have to do Inc(seekPos) below. But it's obvious that searching
+      for next token can skip SeekPos, since we know S[SeekPos] is TokenDelim. }
+    Inc(SeekPos);
+  end;
+
 function GetConfigDir: string;
 var
   Path: string;
@@ -133,6 +165,37 @@ begin
 end;
 
 
+function TXMLConfigExtended.PathExists(APath: string): boolean;
+  { Find a children element, nil if not found. }
+  function FindElementChildren(Element: TDOMElement;
+    const ElementName: string): TDOMElement;
+  var
+    Node: TDOMNode;
+  begin
+    Node := Element.FindNode(ElementName);
+    if (Node <> nil) and (Node.NodeType = ELEMENT_NODE) then
+      Result := Node as TDOMElement else
+      Result := nil;
+  end;
+
+var
+  SeekPos: Integer;
+  PathComponent: string;
+  fElement: TDOMElement;
+begin
+  fElement := Doc.DocumentElement ;
+  SeekPos := 1;
+  while fElement <> nil do
+  begin
+    PathComponent := NextToken(APath, SeekPos, '/');
+    if PathComponent = '' then break;
+    fElement := FindElementChildren(fElement, PathComponent);
+  end;
+
+  Result :=  Assigned(fElement);
+end;
+
+
 constructor TConfig.Create;
 begin
   FFont := Tfont.Create;
@@ -144,8 +207,9 @@ begin
   fConfigDir := GetConfigDir;
   fConfigHolder := TXMLConfigStorage.Create(FConfigFile, FileExistsUTF8(FConfigFile));
   ReadConfig;
-
-  fColorSchema := TXMLConfigStorage.Create(IncludeTrailingPathDelimiter(ResourcesPath) + 'color-schema.xml', True);
+  FXMLConfigExtended := TXMLConfigExtended.Create(nil);
+  fXMLConfigExtended.Filename:= IncludeTrailingPathDelimiter(ResourcesPath) + 'color-schema.xml';
+  fColorSchema := TXMLConfigStorage.Create(FXMLConfigExtended);
 
 end;
 
@@ -156,6 +220,7 @@ begin
   fConfigHolder.Free;
   fColorSchema.Free;
   FFont.Free;
+  FXMLConfigExtended.free;
   inherited Destroy;
 end;
 

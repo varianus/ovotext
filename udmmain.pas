@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Dialogs,
-  SupportFuncs, SynEditHighlighter, SynExportHTML, fgl, Graphics,
+  SupportFuncs, SynEditHighlighter, SynExportHTML, fgl, Graphics, config,
   // included with Lazarus
   SynHighlighterPas,
   SynHighlighterCpp, SynHighlighterJava, SynHighlighterPerl, SynHighlighterHTML,
@@ -117,8 +117,12 @@ type
     procedure DataModuleDestroy(Sender: TObject);
   private
     fHighlighters: THighLighterList;
+    procedure FontAttribToAttribute(Attribute: TSynHighlighterAttributes;
+      Attrib: TFontAttributes);
     procedure LoadHighlighters;
     procedure InitializeHighlighter(Highlighter: TSynCustomHighlighter);
+    procedure SetAttribute(AttrName: string;
+      Attribute: TSynHighlighterAttributes; DefaultAttrib: TFontAttributes);
   public
     function getHighLighter(Extension: string): TSynCustomHighlighter;
 
@@ -130,7 +134,7 @@ var
 
 implementation
 
-uses config, lclproc;
+uses lclproc;
 
 {$R *.lfm}
 
@@ -172,22 +176,53 @@ begin
 
 end;
 
+
+procedure TdmMain.FontAttribToAttribute( Attribute: TSynHighlighterAttributes; Attrib: TFontAttributes);
+begin
+  Attribute.Foreground:=Attrib.Foreground;
+  Attribute.Background:=Attrib.Background;
+  Attribute.Style:=Attrib.Styles;
+
+end;
+
+procedure TdmMain.SetAttribute(AttrName:string; Attribute: TSynHighlighterAttributes; DefaultAttrib: TFontAttributes);
+var
+  tmpAttribs: TFontAttributes;
+begin
+  if not Assigned(Attribute) then
+    exit;
+  tmpAttribs := ConfigObj.ReadFontAttributes(AttrName,DefaultAttrib);
+  FontAttribToAttribute(Attribute, tmpAttribs);
+end;
+
 procedure TdmMain.InitializeHighlighter(Highlighter: TSynCustomHighlighter);
 var
   i: integer;
   AttrName: string;
-  tmpAttribs, DefaultAttrib: TFontAttributes;
+  DefaultAttrib: TFontAttributes;
 begin
   DefaultAttrib:= ConfigObj.ReadFontAttributes('Default/Text', FontAttributes());
 
-  for i := 0 to Highlighter.AttrCount - 1 do
-    with Highlighter.Attribute[i] do
+  if Configobj.XMLConfigExtended.PathExists(CleanupName(Highlighter.GetLanguageName)) then
     begin
-      AttrName:=CleanupName(Highlighter.GetLanguageName)+'/'+CleanupName(Highlighter.Attribute[i].Name)+'/';
-      tmpAttribs := ConfigObj.ReadFontAttributes(AttrName,DefaultAttrib);
-      Highlighter.Attribute[i].Foreground:=tmpAttribs.Foreground;
-      Highlighter.Attribute[i].Background:=tmpAttribs.Background;
-      Highlighter.Attribute[i].Style:=tmpAttribs.Styles;
+      for i := 0 to Highlighter.AttrCount - 1 do
+        begin
+          AttrName:=CleanupName(Highlighter.GetLanguageName)+'/'+CleanupName(Highlighter.Attribute[i].Name)+'/';
+          SetAttribute(AttrName, Highlighter.Attribute[i], DefaultAttrib);
+        end;
+    end
+  else
+    begin
+      for i := 0 to Highlighter.AttrCount - 1 do
+          FontAttribToAttribute(Highlighter.Attribute[i], DefaultAttrib);
+
+      SetAttribute('DefaultLang/String/', Highlighter.StringAttribute, DefaultAttrib);
+      SetAttribute('DefaultLang/Comment/', Highlighter.CommentAttribute, DefaultAttrib);
+      SetAttribute('DefaultLang/Identifier/', Highlighter.IdentifierAttribute, DefaultAttrib);
+      SetAttribute('DefaultLang/Keyword/', Highlighter.KeywordAttribute, DefaultAttrib);
+      SetAttribute('DefaultLang/Symbol/', Highlighter.SymbolAttribute, DefaultAttrib);
+      SetAttribute('DefaultLang/Whitespace/', Highlighter.WhitespaceAttribute, DefaultAttrib);
+
     end;
 
 end;
