@@ -125,6 +125,7 @@ type
       Attribute: TSynHighlighterAttributes; DefaultAttrib: TFontAttributes);
   public
     function getHighLighter(Extension: string): TSynCustomHighlighter;
+    procedure GetFiters(List:TStrings);
 
   end;
 
@@ -231,6 +232,7 @@ function TdmMain.getHighLighter(Extension: string): TSynCustomHighlighter;
 var
   tmp: integer;
   idx: integer;
+
 begin
   tmp := fHighlighters.IndexOf(Extension);
   if tmp > -1 then
@@ -245,6 +247,17 @@ begin
   end
   else
     Result := nil;
+end;
+
+procedure TdmMain.GetFiters(List: TStrings);
+var
+  i: integer;
+begin
+  List.Clear;
+  list.Capacity:= HIGHLIGHTERCOUNT;
+  for i := 0 to HIGHLIGHTERCOUNT - 1 do
+    list.Add(ARHighlighter[i].Filter);
+
 end;
 
 end.

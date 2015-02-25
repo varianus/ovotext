@@ -26,7 +26,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics,
   Dialogs, ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd,
-  SynEditTypes, SynHighlighterPas, mrumanager, Config, SupportFuncs;
+  SynEditTypes, SynHighlighterPas, mrumanager, Config, SupportFuncs, udmmain;
 
 type
 
@@ -446,6 +446,8 @@ end;
 procedure TfMain.FormCreate(Sender: TObject);
 var
   i: integer;
+  st: TstringList;
+
 begin
   MRU := TMRUMenuManager.Create(Self);
   MRU.MenuItem := mnuOpenRecent;
@@ -467,6 +469,11 @@ begin
   tbbSepClose.Align := alRight;
   tbbClose.Align := alRight;
   // Parameters
+  st:= TStringList.Create;
+
+  dmMain.GetFiters(st);
+  FileOpen.Dialog.Filter := st.Text;
+  st.free;
 
   for i := 1 to Paramcount do
   begin
