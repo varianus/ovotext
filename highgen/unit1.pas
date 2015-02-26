@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  SynEditHighlighter,
+  SynEditHighlighter, SynEdit,
   // included with Lazarus
   SynHighlighterPas,
   SynHighlighterCpp, SynHighlighterJava, SynHighlighterPerl, SynHighlighterHTML,
@@ -93,10 +93,12 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
-    Button2: TButton;
+    bConvert: TButton;
+    bTemplate: TButton;
     OpenDialog1: TOpenDialog;
     SaveDialog1: TSaveDialog;
-    procedure Button2Click(Sender: TObject);
+    procedure bConvertClick(Sender: TObject);
+    procedure bTemplateClick(Sender: TObject);
   private
     { private declarations }
   public
@@ -133,7 +135,8 @@ begin
     aName[c] := '_';
 end;
 
-procedure TForm1.Button2Click(Sender: TObject);
+
+procedure TForm1.bConvertClick(Sender: TObject);
 var
   doc: TXMLConfigStorage;
   cfg: TXMLConfigStorage;
@@ -158,7 +161,6 @@ var
     tm := doc.GetValue(inPath + 'Foreground', '');
     if tm <> EmptyStr then
       cfg.SetValue(OutPath+ 'Foreground', tm);
-
   end;
 
 begin
@@ -206,6 +208,98 @@ begin
   doc.Free;
   st.Free;
 
+end;
+
+procedure TForm1.bTemplateClick(Sender: TObject);
+var
+  cfg: TXMLConfigStorage;
+  st: TStringList;
+  sy: TSynEdit;
+  i,j: integer;
+  tmps: string;
+  HlName:string;
+  HLAttr:string;
+  hl :TSynCustomHighlighter;
+
+  procedure WriteColor(const Ident: string; const Value: TColor);
+  var
+    tmp: string;
+  begin
+
+    if not ColorToIdent(Value, tmp) then
+      tmp := '$' + IntToHex(Value, 8);
+    cfg.setValue(Ident, tmp);
+  end;
+
+  procedure OutAttr( OutPath: string; Attr: TSynHighlighterAttributes);
+  var
+    tm: string;
+  begin
+    if attr = nil then exit;
+    cfg.SetValue(OutPath + 'Style', SetToString(getpropinfo(Attr,'Style'), Integer(Attr.Style)));
+    WriteColor(OutPath+ 'Background', Attr.Background);
+    WriteColor(OutPath+ 'Foreground', Attr.Foreground);
+
+  end;
+
+begin
+  st := TStringList.Create;
+  if not (SaveDialog1.Execute) then
+     exit;
+
+  cfg := TXMLConfigStorage.Create(SaveDialog1.filename, False);
+
+  cfg.SetValue('Schema/Name', 'DefaultSchema');
+
+  sy := TSynEdit.Create(self);
+
+  cfg.SetValue('Schema/Default/Text/Style', SetToString(GetPropInfo(sy.font,'Style'), Integer(sy.Font.Style)));
+  WriteColor('Schema/Default/Text/Background', sy.Color);
+  WriteColor('Schema/Default/Text/Foreground', sy.Font.Color);
+
+{  cfg.SetValue('Schema/Default/Text/Style', SetToString(TypeInfo(TFontstyles), Integer(sy.Font.Style)));
+  WriteColor('Schema/Default/Text/Background', sy.Color);
+  WriteColor('Schema/Default/Text/Foreground', sy.Font.Color);
+
+  cfg.SetValue('Schema/Default/Text/Style', SetToString(TypeInfo(TFontstyles), Integer(sy.Font.Style)));
+  WriteColor('Schema/Default/Text/Background', sy.Color);
+  WriteColor('Schema/Default/Text/Foreground', sy.Font.Color);
+
+
+  tmps := 'Lazarus/ColorSchemes/Globals/Scheme' + schemaName + '/ahaGutter/';
+  InOut(tmps, 'Schema/Default/Gutter/');
+  tmps := 'Lazarus/ColorSchemes/Globals/Scheme' + schemaName + '/ahaLineNumber/';
+  InOut(tmps, 'Schema/Default/LineNumber/');
+  }
+
+
+  st.clear;
+  for i := 0 to HIGHLIGHTERCOUNT -1 do
+    begin
+      HlName:=ARHighlighter[i].HLClass.GetLanguageName;
+      CleanupName(HlName);
+      hl:= ARHighlighter[i].HLClass.Create(nil);
+      for j:= 0 to hl.AttrCount -1 do
+        begin
+          HLAttr:= hl.Attribute[j].Name;
+          CleanupName(HLAttr);
+          OutAttr('Schema/'+hlname+'/'+HLAttr+'/',hl.Attribute[j]);
+        end;
+      if hl is TSynPasSyn then
+         begin
+           OutAttr('Schema/DefaultLang/Comment/', hl.CommentAttribute);
+           OutAttr('Schema/DefaultLang/String/',hl.StringAttribute);
+           OutAttr('Schema/DefaultLang/Keyword/',hl.KeywordAttribute);
+           OutAttr('Schema/DefaultLang/Symbol/',hl.SymbolAttribute);
+           OutAttr('Schema/DefaultLang/Whitespace/',hl.WhitespaceAttribute);
+           OutAttr('Schema/DefaultLang/Identifier/',hl.IdentifierAttribute);
+         end;
+    end;
+
+
+  cfg.WriteToDisk;
+  cfg.Free;
+  st.Free;
 end;
 
 end.

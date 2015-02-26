@@ -3,26 +3,35 @@ object Form1: TForm1
   Height = 282
   Top = 234
   Width = 241
-  Caption = 'Form1'
+  Caption = 'Color schema tools'
   ClientHeight = 282
   ClientWidth = 241
   LCLVersion = '1.5'
-  object Button2: TButton
-    Left = 32
-    Height = 25
-    Top = 112
-    Width = 75
-    Caption = 'Convert'
-    OnClick = Button2Click
+  object bConvert: TButton
+    Left = 24
+    Height = 57
+    Top = 24
+    Width = 168
+    Caption = 'Convert Lazarus schema'
+    OnClick = bConvertClick
     TabOrder = 0
+  end
+  object bTemplate: TButton
+    Left = 24
+    Height = 57
+    Top = 96
+    Width = 168
+    Caption = 'Create full template'
+    OnClick = bTemplateClick
+    TabOrder = 1
   end
   object OpenDialog1: TOpenDialog
     Filter = 'Color*.xml|Color*.xml'
-    left = 48
-    top = 16
+    left = 24
+    top = 200
   end
   object SaveDialog1: TSaveDialog
-    left = 152
-    top = 18
+    left = 120
+    top = 208
   end
 end
