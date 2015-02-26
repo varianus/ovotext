@@ -26,6 +26,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Dialogs,
   SupportFuncs, SynEditHighlighter, SynExportHTML, fgl, Graphics, config,
+  Stringcostants,
   // included with Lazarus
   SynHighlighterPas,
   SynHighlighterCpp, SynHighlighterJava, SynHighlighterPerl, SynHighlighterHTML,
@@ -125,7 +126,7 @@ type
       Attribute: TSynHighlighterAttributes; DefaultAttrib: TFontAttributes);
   public
     function getHighLighter(Extension: string): TSynCustomHighlighter;
-    procedure GetFiters(List:TStrings);
+    function GetFiters: string;
 
   end;
 
@@ -204,7 +205,7 @@ var
 begin
   DefaultAttrib:= ConfigObj.ReadFontAttributes('Default/Text', FontAttributes());
 
-  if Configobj.XMLConfigExtended.PathExists(CleanupName(Highlighter.GetLanguageName)) then
+  if Configobj.XMLConfigExtended.PathExists('Schema/'+CleanupName(Highlighter.GetLanguageName)) then
     begin
       for i := 0 to Highlighter.AttrCount - 1 do
         begin
@@ -217,14 +218,15 @@ begin
       for i := 0 to Highlighter.AttrCount - 1 do
           FontAttribToAttribute(Highlighter.Attribute[i], DefaultAttrib);
 
-      SetAttribute('DefaultLang/String/', Highlighter.StringAttribute, DefaultAttrib);
-      SetAttribute('DefaultLang/Comment/', Highlighter.CommentAttribute, DefaultAttrib);
-      SetAttribute('DefaultLang/Identifier/', Highlighter.IdentifierAttribute, DefaultAttrib);
-      SetAttribute('DefaultLang/Keyword/', Highlighter.KeywordAttribute, DefaultAttrib);
-      SetAttribute('DefaultLang/Symbol/', Highlighter.SymbolAttribute, DefaultAttrib);
-      SetAttribute('DefaultLang/Whitespace/', Highlighter.WhitespaceAttribute, DefaultAttrib);
+      SetAttribute('Schema/DefaultLang/String/', Highlighter.StringAttribute, DefaultAttrib);
+      SetAttribute('Schema/DefaultLang/Comment/', Highlighter.CommentAttribute, DefaultAttrib);
+      SetAttribute('Schema/DefaultLang/Identifier/', Highlighter.IdentifierAttribute, DefaultAttrib);
+      SetAttribute('Schema/DefaultLang/Keyword/', Highlighter.KeywordAttribute, DefaultAttrib);
+      SetAttribute('Schema/DefaultLang/Symbol/', Highlighter.SymbolAttribute, DefaultAttrib);
+      SetAttribute('Schema/DefaultLang/Whitespace/', Highlighter.WhitespaceAttribute, DefaultAttrib);
 
     end;
+    ConfigObj.XMLConfigExtended.CloseKey;
 
 end;
 
@@ -249,14 +251,13 @@ begin
     Result := nil;
 end;
 
-procedure TdmMain.GetFiters(List: TStrings);
+function TdmMain.GetFiters: string;
 var
   i: integer;
 begin
-  List.Clear;
-  list.Capacity:= HIGHLIGHTERCOUNT;
+  Result := RSAllFile + ' ('+GetAllFilesMask+')|' + GetAllFilesMask;
   for i := 0 to HIGHLIGHTERCOUNT - 1 do
-    list.Add(ARHighlighter[i].Filter);
+   result := Result+'|' +ARHighlighter[i].Filter;
 
 end;
 

@@ -1,6 +1,10 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
+#: stringcostants.rsallfile
+msgid "All files"
+msgstr ""
+
 #: stringcostants.rsaskfilecreation
 msgid ""
 "\"%s\"\n"

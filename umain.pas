@@ -446,7 +446,6 @@ end;
 procedure TfMain.FormCreate(Sender: TObject);
 var
   i: integer;
-  st: TstringList;
 
 begin
   MRU := TMRUMenuManager.Create(Self);
@@ -469,11 +468,7 @@ begin
   tbbSepClose.Align := alRight;
   tbbClose.Align := alRight;
   // Parameters
-  st:= TStringList.Create;
-
-  dmMain.GetFiters(st);
-  FileOpen.Dialog.Filter := st.Text;
-  st.free;
+  FileOpen.Dialog.Filter :=  dmMain.GetFiters;
 
   for i := 1 to Paramcount do
   begin
