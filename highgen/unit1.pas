@@ -95,9 +95,12 @@ type
   TForm1 = class(TForm)
     bConvert: TButton;
     bTemplate: TButton;
+    bCreateSamples: TButton;
     OpenDialog1: TOpenDialog;
     SaveDialog1: TSaveDialog;
+    SelectDirectoryDialog1: TSelectDirectoryDialog;
     procedure bConvertClick(Sender: TObject);
+    procedure bCreateSamplesClick(Sender: TObject);
     procedure bTemplateClick(Sender: TObject);
   private
     { private declarations }
@@ -194,6 +197,7 @@ begin
           CleanupName(HLAttr);
           inOut('Lazarus/ColorSchemes/Lang'+HlName+'/Scheme'+schemaName+'/'+HLattr+'/','Schema/'+hlname+'/'+HLAttr+'/');
         end;
+      hl.Free;
     end;
 
   inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Comment/','Schema/DefaultLang/Comment/');
@@ -208,6 +212,37 @@ begin
   doc.Free;
   st.Free;
 
+end;
+
+procedure TForm1.bCreateSamplesClick(Sender: TObject);
+var
+  i,j: integer;
+  HlName:string;
+  tmps: string;
+  hl :TSynCustomHighlighter;
+  st: TStringList;
+
+begin
+  if not (SelectDirectoryDialog1.Execute) then
+     exit;
+
+  st := TStringList.Create;
+  for i := 0 to HIGHLIGHTERCOUNT -1 do
+  begin
+    HlName:=ARHighlighter[i].HLClass.GetLanguageName;
+    CleanupName(HlName);
+    hl:= ARHighlighter[i].HLClass.Create(nil);
+    st.Text:= hl.SampleSource;
+    tmps := Copy(ARHighlighter[i].filter,pos('|', ARHighlighter[i].filter)+2, Length(ARHighlighter[i].filter));
+    j := pos(';', tmps)-1;
+    if j < 1 then
+       j := Length(tmps);
+    tmps := Copy(tmps, 1, j);
+    st.SaveToFile(IncludeTrailingPathDelimiter(SelectDirectoryDialog1.FileName)+HlName+tmps);
+    hl.Free;
+  end;
+
+  st.free;
 end;
 
 procedure TForm1.bTemplateClick(Sender: TObject);
@@ -294,6 +329,7 @@ begin
            OutAttr('Schema/DefaultLang/Whitespace/',hl.WhitespaceAttribute);
            OutAttr('Schema/DefaultLang/Identifier/',hl.IdentifierAttribute);
          end;
+      hl.Free;
     end;
 
 
