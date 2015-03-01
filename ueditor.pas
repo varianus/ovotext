@@ -24,7 +24,7 @@ unit ueditor;
 interface
 
 uses
-  Classes, SysUtils, Controls, Dialogs, ComCtrls,
+  Classes, SysUtils, Controls, Dialogs, ComCtrls, LCLProc,
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,SynGutterChanges,
   Stringcostants, Forms, Graphics, Config, udmmain, uCheckFileChange;
 
@@ -45,9 +45,9 @@ type
     FSheet: TEditorTabSheet;
     FUntitled: boolean;
     procedure CreateDefaultGutterParts;
+    procedure QuickSort(L, R: Integer; CompareFn: TStringsSortCompare);
     procedure SetFileName(AValue: TFileName);
     procedure SetUntitled(AValue: boolean);
-
   public
     constructor Create(AOwner: TComponent); override;
     property Sheet: TEditorTabSheet read FSheet;
@@ -57,6 +57,8 @@ type
     property FileName: TFileName read FFileName write SetFileName;
     property Untitled: boolean read FUntitled write SetUntitled;
     procedure LoadFromFile(AFileName: TFileName);
+    Procedure Sort(Ascending:boolean);
+    //
     function Save: boolean;
     function SaveAs(AFileName: TFileName): boolean;
   end;
@@ -108,8 +110,6 @@ type
 
 implementation
 
-uses lclproc;
-
 { TEditorTabSheet }
 
 procedure TEditorTabSheet.DoShow;
@@ -158,11 +158,19 @@ begin
   TextBetweenPoints[Point(1, Index + 1), PhysicalToLogicalPos(Point(Length(Lines[Index]) + 1, Index + 1))] := NewText;
 end;
 
-procedure TEditor.LoadFromfile(AFileName: TFileName);
+procedure TEditor.LoadFromFile(AFileName: TFileName);
 begin
   SetFileName(AFileName);
   Lines.LoadFromFile(FFileName);
 
+end;
+
+procedure TEditor.Sort(Ascending: boolean);
+var
+  f : TStringsSortCompare;
+begin
+  f := @CompareStr;
+  QuickSort(0, Lines.Count -1, f);
 end;
 
 function TEditor.Save: boolean;
@@ -302,6 +310,45 @@ begin
 
 end;
 
+procedure TEditor.QuickSort(L, R: Integer; CompareFn: TStringsSortCompare);
+var
+  Pivot, vL, vR: Integer;
+begin
+  //if ExchangeItems is override call that, else call (faster) ExchangeItemsInt
+  if R - L <= 1 then begin // a little bit of time saver
+    if L < R then
+      if CompareFn(Lines[L], Lines[R]) > 0 then
+        Lines.Exchange(L, R);
+    Exit;
+  end;
+
+  vL := L;
+  vR := R;
+
+  Pivot := L + Random(R - L); // they say random is best
+
+  while vL < vR do begin
+    while (vL < Pivot) and (CompareFn(Lines[vL], Lines[Pivot]) <= 0) do
+      Inc(vL);
+
+    while (vR > Pivot) and (CompareFn(Lines[vR], Lines[Pivot]) > 0) do
+      Dec(vR);
+
+    Lines.Exchange(vL, vR);
+
+    if Pivot = vL then // swap pivot if we just hit it from one side
+      Pivot := vR
+    else if Pivot = vR then
+      Pivot := vL;
+  end;
+
+  if Pivot - 1 >= L then
+    QuickSort(L, Pivot - 1, CompareFn);
+  if Pivot + 1 <= R then
+    QuickSort(Pivot + 1, R, CompareFn);
+end;
+
+
 { TEditorFactory }
 
 function TEditorFactory.GetCurrentEditor: TEditor;
@@ -342,6 +389,8 @@ begin
   if Assigned(APage) and (APage is TEditorTabSheet) then
     CloseEditor(TEditorTabSheet(APage).FEditor);
 end;
+
+
 
 function TEditorFactory.AddEditor(FileName: TFilename = ''): TEditor;
 var

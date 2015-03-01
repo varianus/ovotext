@@ -24,9 +24,9 @@ unit umain;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics,
-  Dialogs, ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd,
-  SynEditTypes, SynHighlighterPas, mrumanager, Config, SupportFuncs, udmmain;
+  Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
+  ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, SynEditTypes,
+  SynHighlighterPas, mrumanager, Config, SupportFuncs, udmmain, uDglGoTo;
 
 type
 
@@ -35,6 +35,13 @@ type
   TfMain = class(TForm)
     actFont: TAction;
     actFullNameToClipBoard: TAction;
+    actGoTo: TAction;
+    MenuItem53: TMenuItem;
+    MenuItem54: TMenuItem;
+    MenuItem55: TMenuItem;
+    SortAscending: TAction;
+    Action2: TAction;
+    SortDescending: TAction;
     FileSaveAll: TAction;
     actTrimTrailing: TAction;
     actTrim: TAction;
@@ -101,6 +108,8 @@ type
     MenuItem48: TMenuItem;
     MenuItem49: TMenuItem;
     MenuItem50: TMenuItem;
+    MenuItem51: TMenuItem;
+    MenuItem52: TMenuItem;
     mnuOpenRecent: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -140,6 +149,7 @@ type
     procedure ActCompressSpacesExecute(Sender: TObject);
     procedure actFontExecute(Sender: TObject);
     procedure actFullNameToClipBoardExecute(Sender: TObject);
+    procedure actGoToExecute(Sender: TObject);
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
     procedure actTrimExecute(Sender: TObject);
     procedure actTrimLeadingExecute(Sender: TObject);
@@ -172,6 +182,8 @@ type
     procedure SearchFindNext1Execute(Sender: TObject);
     procedure SearchFindPreviousExecute(Sender: TObject);
     procedure SearchReplaceExecute(Sender: TObject);
+    procedure SortAscendingExecute(Sender: TObject);
+    procedure SortDescendingExecute(Sender: TObject);
   private
     EditorFactory: TEditorFactory;
     MRU: TMRUMenuManager;
@@ -329,6 +341,17 @@ var
 begin
   Ed := EditorFactory.CurrentEditor;
   Clipboard.AsText:=Ed.FileName;
+end;
+
+procedure TfMain.actGoToExecute(Sender: TObject);
+begin
+  with TdlgGoTo.Create(Self) do
+    begin
+      Editor := EditorFactory.CurrentEditor;
+      ShowModal;
+      Free;
+    end;
+
 end;
 
 procedure TfMain.ActCompressSpacesExecute(Sender: TObject);
@@ -644,6 +667,39 @@ begin
   if Editor.SelAvail and (Editor.BlockBegin.Y = Editor.BlockEnd.Y) then
     ReplaceDialog.FindText := Editor.SelText;
   ReplaceDialog.Execute;
+end;
+
+
+procedure TfMain.SortAscendingExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+
+  Ed := EditorFactory.CurrentEditor;
+  ed.BeginUpdate(True);
+  try
+    Ed.Sort(true);
+  finally
+    Ed.EndUpdate;
+  end;
+
+end;
+
+procedure TfMain.SortDescendingExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+
+  Ed := EditorFactory.CurrentEditor;
+  ed.BeginUpdate(True);
+  try
+    Ed.Sort(False);
+  finally
+    Ed.EndUpdate;
+  end;
+
+end;
+
 end;
 
 

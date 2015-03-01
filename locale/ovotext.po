@@ -87,6 +87,24 @@ msgid ""
 "\"%s\"\n"
 msgstr ""
 
+#: tdlggoto.buttonpanel1.okbutton.caption
+msgctxt "TDLGGOTO.BUTTONPANEL1.OKBUTTON.CAPTION"
+msgid "Go to"
+msgstr ""
+
+#: tdlggoto.caption
+msgctxt "tdlggoto.caption"
+msgid "Go to"
+msgstr ""
+
+#: tdlggoto.label1.caption
+msgid "Line number"
+msgstr ""
+
+#: tdlggoto.label2.caption
+msgid "Column number"
+msgstr ""
+
 #: tfabout.blicense.caption
 msgid "&License"
 msgstr ""
@@ -155,6 +173,14 @@ msgstr ""
 
 #: tfmain.actfullnametoclipboard.caption
 msgid "Full File name to clipboard"
+msgstr ""
+
+#: tfmain.actgoto.caption
+msgid "Go To ..."
+msgstr ""
+
+#: tfmain.action2.caption
+msgid "Action2"
 msgstr ""
 
 #: tfmain.acttrim.caption
@@ -375,6 +401,14 @@ msgctxt "TFMAIN.MENUITEM48.CAPTION"
 msgid "-"
 msgstr ""
 
+#: tfmain.menuitem52.caption
+msgid "Navigation"
+msgstr ""
+
+#: tfmain.menuitem53.caption
+msgid "Sort"
+msgstr ""
+
 #: tfmain.menuitem7.caption
 msgid "Edit"
 msgstr ""
@@ -411,5 +445,13 @@ msgstr ""
 
 #: tfmain.searchreplace.hint
 msgid "Search and Replace"
+msgstr ""
+
+#: tfmain.sortascending.caption
+msgid "Sort Ascending"
+msgstr ""
+
+#: tfmain.sortdescending.caption
+msgid "Sort Descending"
 msgstr ""
 
