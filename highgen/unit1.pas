@@ -292,21 +292,13 @@ begin
   WriteColor('Schema/Default/Text/Background', sy.Color);
   WriteColor('Schema/Default/Text/Foreground', sy.Font.Color);
 
-{  cfg.SetValue('Schema/Default/Text/Style', SetToString(TypeInfo(TFontstyles), Integer(sy.Font.Style)));
-  WriteColor('Schema/Default/Text/Background', sy.Color);
-  WriteColor('Schema/Default/Text/Foreground', sy.Font.Color);
+//  cfg.SetValue('Schema/Default/Gutter/Style', SetToString(TypeInfo(TFontstyles), Integer(sy.Gutter. Font.Style)));
+  WriteColor('Schema/Default/Gutter/Background', sy.Gutter.Color);
+  WriteColor('Schema/Default/Gutter/Foreground', sy.Gutter.LineNumberPart(0).MarkupInfo.Foreground);
 
-  cfg.SetValue('Schema/Default/Text/Style', SetToString(TypeInfo(TFontstyles), Integer(sy.Font.Style)));
-  WriteColor('Schema/Default/Text/Background', sy.Color);
-  WriteColor('Schema/Default/Text/Foreground', sy.Font.Color);
-
-
-  tmps := 'Lazarus/ColorSchemes/Globals/Scheme' + schemaName + '/ahaGutter/';
-  InOut(tmps, 'Schema/Default/Gutter/');
-  tmps := 'Lazarus/ColorSchemes/Globals/Scheme' + schemaName + '/ahaLineNumber/';
-  InOut(tmps, 'Schema/Default/LineNumber/');
-  }
-
+  cfg.SetValue('Schema/Default/LineNumber/Style', SetToString(GetPropInfo(sy.Gutter.LineNumberPart(0).MarkupInfo,'Style'), Integer(sy.Gutter.LineNumberPart(0).MarkupInfo.Style)));
+  WriteColor('Schema/Default/LineNumber/Background', sy.Gutter.LineNumberPart(0).MarkupInfo.Background);
+  WriteColor('Schema/Default/LineNumber/Foreground', sy.Gutter.LineNumberPart(0).MarkupInfo.Foreground);
 
   st.clear;
   for i := 0 to HIGHLIGHTERCOUNT -1 do
