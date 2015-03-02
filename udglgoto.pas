@@ -38,17 +38,17 @@ implementation
 
 procedure TdlgGoTo.FormShow(Sender: TObject);
 begin
-  seLine.MaxValue:=Editor.Lines.Count;
+  seLine.MaxValue:= Editor.Lines.Count;
 end;
 
 procedure TdlgGoTo.OKButtonClick(Sender: TObject);
 begin
-  Editor.CaretXY := Point(seColumn.Value, seLine.Value-1);
+  Editor.CaretXY := Point(seColumn.Value, seLine.Value);
 end;
 
 procedure TdlgGoTo.seLineChange(Sender: TObject);
 begin
-  seColumn.MaxValue:= Length(Editor.Lines[seLine.Value -1]);
+  seColumn.MaxValue:= Length(Editor.Lines[seLine.Value]);
 end;
 
 end.

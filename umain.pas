@@ -253,6 +253,7 @@ begin
   EditUndo.Enabled := Avail and Ed.CanUndo;
   FileSave.Enabled := Avail and Ed.Modified;
   actFullNameToClipBoard.Enabled:= Avail and not ed.Untitled;
+  actGoTo.Enabled:= Avail and (ed.Lines.Count > 0);
   Handled := True;
 end;
 
