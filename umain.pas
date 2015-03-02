@@ -700,9 +700,6 @@ begin
 
 end;
 
-end;
-
-
 function TfMain.EditorAvalaible: boolean;
 begin
   Result := Assigned(EditorFactory) and Assigned(EditorFactory.CurrentEditor);
