@@ -297,8 +297,8 @@ begin
     begin
        Name := 'SynGutterSeparator1';
        SpecialAttr := ConfigObj.ReadFontAttributes('Default/LineNumber/', DefaultAttr);
-       MarkupInfo.Background := SpecialAttr.Foreground;
-       MarkupInfo.Foreground:= SpecialAttr.Background;
+       MarkupInfo.Background := SpecialAttr.Background;
+       MarkupInfo.Foreground:= SpecialAttr.Foreground;
        LineWidth:=1;
        Width:=2;
     end;
@@ -465,6 +465,7 @@ begin
       Sheet.Caption := Format(RSNewFile, [fUntitledCounter]);
       Result.FUntitled := True;
       Inc(fUntitledCounter);
+      Text:=EmptyStr;
     end
   else
     begin
