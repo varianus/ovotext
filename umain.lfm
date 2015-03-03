@@ -1156,6 +1156,13 @@ object fMain: TfMain
           88FF858A88FF858A88FF858A88FF858A88FFBBBBBBFFFFFFFF00
         }
       end
+      object mnuTabs: TMenuItem
+        Caption = 'Tabs'
+        OnClick = mnuTabsClick
+        object MenuItem56: TMenuItem
+          Caption = '-'
+        end
+      end
     end
     object MenuItem3: TMenuItem
       Caption = 'Help'

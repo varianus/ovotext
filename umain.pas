@@ -39,6 +39,8 @@ type
     MenuItem53: TMenuItem;
     MenuItem54: TMenuItem;
     MenuItem55: TMenuItem;
+    MenuItem56: TMenuItem;
+    mnuTabs: TMenuItem;
     SortAscending: TAction;
     Action2: TAction;
     SortDescending: TAction;
@@ -175,6 +177,7 @@ type
     procedure HelpAboutExecute(Sender: TObject);
     procedure MenuItem28Click(Sender: TObject);
     procedure MenuItem29Click(Sender: TObject);
+    procedure mnuTabsClick(Sender: TObject);
     procedure ReplaceDialogFind(Sender: TObject);
     procedure ReplaceDialogReplace(Sender: TObject);
     procedure SearchFindAccept(Sender: TObject);
@@ -201,6 +204,7 @@ type
     procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
     procedure RecentFileEvent(Sender: TObject; const AFileName: string);
     procedure NewEditor(Editor: TEditor);
+    procedure ShowTabs(Sender: TObject);
   public
     { public declarations }
   end;
@@ -536,6 +540,29 @@ var
 begin
   for i := 0 to MRU.Recent.Count - 1 do
     EditorFactory.AddEditor(MRU.Recent[i]);
+
+end;
+
+procedure TfMain.ShowTabs(Sender: TObject);
+begin
+  EditorFactory.ActivePageIndex:= (Sender as TMenuItem).Tag;
+end;
+
+procedure TfMain.mnuTabsClick(Sender: TObject);
+var
+  i: integer;
+  mnuitem: TMenuItem;
+begin
+  mnuTabs.Clear;
+
+  for i := 0 to EditorFactory.PageCount - 1 do
+    begin
+      mnuitem := TMenuItem.Create(mnuTabs);
+      mnuitem.Caption:=EditorFactory.Pages[i].Caption;
+      mnuitem.Tag:=i;
+      mnuitem.OnClick := @ShowTabs;
+      mnuTabs.Add(mnuitem);
+    end;
 
 end;
 
