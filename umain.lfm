@@ -316,9 +316,10 @@ object fMain: TfMain
       ImageIndex = 30
       OnExecute = actGoToExecute
     end
-    object Action2: TAction
+    object actPrint: TAction
       Category = 'File'
-      Caption = 'Action2'
+      Caption = 'Print'
+      OnExecute = actPrintExecute
     end
     object SortAscending: TAction
       Category = 'Tools'
@@ -329,6 +330,9 @@ object fMain: TfMain
       Category = 'Tools'
       Caption = 'Sort Descending'
       OnExecute = SortDescendingExecute
+    end
+    object Action1: TAction
+      Caption = 'Action1'
     end
   end
   object mnuMain: TMainMenu
@@ -430,6 +434,12 @@ object fMain: TfMain
         OnClick = MenuItem28Click
       end
       object MenuItem27: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem57: TMenuItem
+        Action = actPrint
+      end
+      object MenuItem58: TMenuItem
         Caption = '-'
       end
       object MenuItem49: TMenuItem
@@ -2494,5 +2504,9 @@ object fMain: TfMain
     OnReplace = ReplaceDialogReplace
     left = 592
     top = 168
+  end
+  object PrintDialog1: TPrintDialog
+    left = 256
+    top = 170
   end
 end

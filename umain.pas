@@ -26,7 +26,8 @@ interface
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, SynEditTypes,
-  SynHighlighterPas, mrumanager, Config, SupportFuncs, udmmain, uDglGoTo;
+  SynHighlighterPas, mrumanager, PrintersDlgs, Config, SupportFuncs, udmmain,
+  uDglGoTo, SynEditPrint;
 
 type
 
@@ -36,13 +37,17 @@ type
     actFont: TAction;
     actFullNameToClipBoard: TAction;
     actGoTo: TAction;
+    Action1: TAction;
     MenuItem53: TMenuItem;
     MenuItem54: TMenuItem;
     MenuItem55: TMenuItem;
     MenuItem56: TMenuItem;
+    MenuItem57: TMenuItem;
+    MenuItem58: TMenuItem;
     mnuTabs: TMenuItem;
+    PrintDialog1: TPrintDialog;
     SortAscending: TAction;
-    Action2: TAction;
+    actPrint: TAction;
     SortDescending: TAction;
     FileSaveAll: TAction;
     actTrimTrailing: TAction;
@@ -153,6 +158,7 @@ type
     procedure actFullNameToClipBoardExecute(Sender: TObject);
     procedure actGoToExecute(Sender: TObject);
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
+    procedure actPrintExecute(Sender: TObject);
     procedure actTrimExecute(Sender: TObject);
     procedure actTrimLeadingExecute(Sender: TObject);
     procedure actTrimTrailingExecute(Sender: TObject);
@@ -193,6 +199,7 @@ type
 
     FindText, ReplaceText: string;
     SynOption: TSynSearchOptions;
+    prn: TSynEditPrint;
 
     function AskFileName(Editor: TEditor): boolean;
     function EditorAvalaible: boolean; inline;
@@ -259,6 +266,19 @@ begin
   actFullNameToClipBoard.Enabled:= Avail and not ed.Untitled;
   actGoTo.Enabled:= Avail and (ed.Lines.Count > 0);
   Handled := True;
+end;
+
+procedure TfMain.actPrintExecute(Sender: TObject);
+var
+  Ed: TEditor;
+  i: integer;
+begin
+
+  Ed := EditorFactory.CurrentEditor;
+  prn.SynEdit:= Ed;
+  if PrintDialog1.Execute then
+     prn.Print;
+
 end;
 
 procedure TfMain.actTrimExecute(Sender: TObject);
@@ -504,6 +524,10 @@ begin
     if copy(ParamStrUTF8(i),1,2) <> '--' then
        EditorFactory.AddEditor(ParamStrUTF8(i));
   end;
+
+  prn := TSynEditPrint.Create(Self);
+  prn.Colors:= true;
+
 end;
 
 procedure TfMain.FormDestroy(Sender: TObject);

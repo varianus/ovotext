@@ -179,8 +179,12 @@ msgstr ""
 msgid "Go To ..."
 msgstr ""
 
-#: tfmain.action2.caption
-msgid "Action2"
+#: tfmain.action1.caption
+msgid "Action1"
+msgstr ""
+
+#: tfmain.actprint.caption
+msgid "Print"
 msgstr ""
 
 #: tfmain.acttrim.caption
@@ -409,6 +413,16 @@ msgstr ""
 msgid "Sort"
 msgstr ""
 
+#: tfmain.menuitem56.caption
+msgctxt "tfmain.menuitem56.caption"
+msgid "-"
+msgstr ""
+
+#: tfmain.menuitem58.caption
+msgctxt "TFMAIN.MENUITEM58.CAPTION"
+msgid "-"
+msgstr ""
+
 #: tfmain.menuitem7.caption
 msgid "Edit"
 msgstr ""
@@ -420,6 +434,10 @@ msgstr ""
 
 #: tfmain.mnuopenrecent.caption
 msgid "Open Recent ..."
+msgstr ""
+
+#: tfmain.mnutabs.caption
+msgid "Tabs"
 msgstr ""
 
 #: tfmain.searchfind.caption
