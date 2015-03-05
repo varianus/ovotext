@@ -36,7 +36,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="highlighters"/>
+            <OtherUnitFiles Value="highlighters;printing"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -57,7 +57,7 @@
             </Options>
           </Linking>
           <Other>
-            <CustomOptions Value="-FcUTF8"/>
+            <CustomOptions Value="-FcUTF8 -O4"/>
           </Other>
         </CompilerOptions>
       </Item2>
