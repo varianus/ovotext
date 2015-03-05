@@ -3,37 +3,37 @@ unit SynEditPrintMiscProcs;
 interface
 
 uses
-  LCLIntf, LCLType, Classes, SynEditTypes, Graphics;
+  LCLIntf, LCLType, Classes, Graphics;
 
 // Converting tabs to spaces: To use the function several times it's better
 // to use a function pointer that is set to the fastest conversion function.
 type
-  TConvertTabsProc = function(const Line: UnicodeString;
-    TabWidth: Integer): UnicodeString;
+  TConvertTabsProc = function(const Line: String;
+    TabWidth: Integer): String;
 
 function GetBestConvertTabsProc(TabWidth: Integer): TConvertTabsProc;
 // This is the slowest conversion function which can handle TabWidth <> 2^n.
-function ConvertTabs(const Line: UnicodeString; TabWidth: Integer): UnicodeString;
+function ConvertTabs(const Line: String; TabWidth: Integer): String;
 
 type
-  TConvertTabsProcEx = function(const Line: UnicodeString; TabWidth: Integer;
-    var HasTabs: Boolean): UnicodeString;
+  TConvertTabsProcEx = function(const Line: String; TabWidth: Integer;
+    var HasTabs: Boolean): String;
 
 function GetBestConvertTabsProcEx(TabWidth: Integer): TConvertTabsProcEx;
 // This is the slowest conversion function which can handle TabWidth <> 2^n.
-function ConvertTabsEx(const Line: UnicodeString; TabWidth: Integer;
-  var HasTabs: Boolean): UnicodeString;
+function ConvertTabsEx(const Line: String; TabWidth: Integer;
+  var HasTabs: Boolean): String;
 
-function GetExpandedLength(const aStr: UnicodeString; aTabWidth: Integer): Integer;
+function GetExpandedLength(const aStr: String; aTabWidth: Integer): Integer;
 
 function CharIndex2CaretPos(Index, TabWidth: Integer;
-  const Line: UnicodeString): Integer;
-function CaretPos2CharIndex(Position, TabWidth: Integer; const Line: UnicodeString;
+  const Line: String): Integer;
+function CaretPos2CharIndex(Position, TabWidth: Integer; const Line: String;
   var InsideTabChar: Boolean): Integer;
 implementation
 
 // Please don't change this function; no stack frame and efficient register use.
-function GetHasTabs(pLine: PWideChar; var CharsBefore: Integer): Boolean;
+function GetHasTabs(pLine: PChar; var CharsBefore: Integer): Boolean;
 begin
   CharsBefore := 0;
   if Assigned(pLine) then
@@ -51,10 +51,10 @@ begin
 end;
 
 
-function ConvertTabs1Ex(const Line: UnicodeString; TabWidth: Integer;
-  var HasTabs: Boolean): UnicodeString;
+function ConvertTabs1Ex(const Line: string; TabWidth: Integer;
+  var HasTabs: Boolean): string;
 var
-  pDest: PWideChar;
+  pDest: PChar;
   nBeforeTab: Integer;
 begin
   Result := Line;  // increment reference count only
@@ -73,18 +73,18 @@ begin
     HasTabs := False;
 end;
 
-function ConvertTabs1(const Line: UnicodeString; TabWidth: Integer): UnicodeString;
+function ConvertTabs1(const Line: string; TabWidth: Integer): string;
 var
   HasTabs: Boolean;
 begin
   Result := ConvertTabs1Ex(Line, TabWidth, HasTabs);
 end;
 
-function ConvertTabs2nEx(const Line: UnicodeString; TabWidth: Integer;
-  var HasTabs: Boolean): UnicodeString;
+function ConvertTabs2nEx(const Line: string; TabWidth: Integer;
+  var HasTabs: Boolean): string;
 var
   i, DestLen, TabCount, TabMask: Integer;
-  pSrc, pDest: PWideChar;
+  pSrc, pDest: PChar;
 begin
   Result := Line;  // increment reference count only
   if GetHasTabs(pointer(Line), DestLen) then
@@ -109,8 +109,8 @@ begin
     // Set the length of the expanded string.
     SetLength(Result, DestLen);
     DestLen := 0;
-    pSrc := PWideChar(Line);
-    pDest := PWideChar(Result);
+    pSrc := PChar(Line);
+    pDest := PChar(Result);
     // We use another TabMask here to get the difference to 2^n.
     TabMask := TabWidth - 1;
     repeat
@@ -148,18 +148,18 @@ begin
     HasTabs := False;
 end;
 
-function ConvertTabs2n(const Line: UnicodeString; TabWidth: Integer): UnicodeString;
+function ConvertTabs2n(const Line: string; TabWidth: Integer): string;
 var
   HasTabs: Boolean;
 begin
   Result := ConvertTabs2nEx(Line, TabWidth, HasTabs);
 end;
 
-function ConvertTabsEx(const Line: UnicodeString; TabWidth: Integer;
-  var HasTabs: Boolean): UnicodeString;
+function ConvertTabsEx(const Line: string; TabWidth: Integer;
+  var HasTabs: Boolean): string;
 var
   i, DestLen, TabCount: Integer;
-  pSrc, pDest: PWideChar;
+  pSrc, pDest: PChar;
 begin
   Result := Line;  // increment reference count only
   if GetHasTabs(pointer(Line), DestLen) then
@@ -183,8 +183,8 @@ begin
     // Set the length of the expanded string.
     SetLength(Result, DestLen);
     DestLen := 0;
-    pSrc := PWideChar(Line);
-    pDest := PWideChar(Result);
+    pSrc := PChar(Line);
+    pDest := PChar(Result);
     repeat
       if pSrc^ = #9 then
       begin
@@ -219,7 +219,7 @@ begin
     HasTabs := False;
 end;
 
-function ConvertTabs(const Line: UnicodeString; TabWidth: Integer): UnicodeString;
+function ConvertTabs(const Line: string; TabWidth: Integer): string;
 var
   HasTabs: Boolean;
 begin
@@ -256,12 +256,12 @@ begin
       Result := @ConvertTabsEx;
 end;
 
-function GetExpandedLength(const aStr: UnicodeString; aTabWidth: Integer): Integer;
+function GetExpandedLength(const aStr: string; aTabWidth: Integer): Integer;
 var
-  iRun: PWideChar;
+  iRun: PChar;
 begin
   Result := 0;
-  iRun := PWideChar(aStr);
+  iRun := PChar(aStr);
   while iRun^ <> #0 do
   begin
     if iRun^ = #9 then
@@ -273,10 +273,10 @@ begin
 end;
 
 function CharIndex2CaretPos(Index, TabWidth: Integer;
-  const Line: UnicodeString): Integer;
+  const Line: string): Integer;
 var
   iChar: Integer;
-  pNext: PWideChar;
+  pNext: PChar;
 begin
 // possible sanity check here: Index := Max(Index, Length(Line));
   if Index > 1 then
@@ -324,11 +324,11 @@ begin
     Result := 1;
 end;
 
-function CaretPos2CharIndex(Position, TabWidth: Integer; const Line: UnicodeString;
+function CaretPos2CharIndex(Position, TabWidth: Integer; const Line: string;
   var InsideTabChar: Boolean): Integer;
 var
   iPos: Integer;
-  pNext: PWideChar;
+  pNext: PChar;
 begin
   InsideTabChar := False;
   if Position > 1 then

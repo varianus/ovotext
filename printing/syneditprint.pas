@@ -361,21 +361,10 @@ procedure TSynEditPrint.CalcPages;
 var
   AStr, Text: string;
   StrWidth, i: Integer;
-  j: Integer;
-  AList: TList;
   YPos: Integer;
 //  MaxWidth: Integer;                                                          //sb 2000-09-23
   PageLine: TPageLine;
 
-  procedure CountWrapped;
-  //Counts the number of lines a line is wrapped to
-  var
-    j: Integer;
-  begin
-    for j := 0 to AList.Count - 1 do
-      YPos := YPos + FLineHeight;
-  end;
-  
 begin
   InitRanges;
   for i := 0 to FPages.Count - 1 do
