@@ -396,7 +396,7 @@ function TEditorFactory.AddEditor(FileName: TFilename = ''): TEditor;
 var
   Sheet: TEditorTabSheet;
   i: integer;
-  SpecialAttr, DefaultAttr: TFontAttributes;
+  DefaultAttr: TFontAttributes;
 begin
   if FileName <> EmptyStr then
     begin

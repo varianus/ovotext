@@ -271,7 +271,6 @@ end;
 procedure TfMain.actPrintExecute(Sender: TObject);
 var
   Ed: TEditor;
-  i: integer;
 begin
 
   Ed := EditorFactory.CurrentEditor;
