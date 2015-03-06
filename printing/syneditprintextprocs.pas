@@ -3,7 +3,7 @@ unit SynEditPrintExtProcs;
 interface
 
 uses
-  LCLIntf, LCLType, Classes, Graphics;
+  LCLType, Classes, Graphics;
 
 // Converting tabs to spaces: To use the function several times it's better
 // to use a function pointer that is set to the fastest conversion function.

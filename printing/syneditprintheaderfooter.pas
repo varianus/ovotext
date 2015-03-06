@@ -98,7 +98,7 @@ unit SynEditPrintHeaderFooter;
 interface
 
 uses
-  LCLIntf, Classes, Graphics, SysUtils, SynEditPrintTypes, SynEditPrintMargins;
+  Classes, Graphics, SysUtils, SynEditPrintTypes, SynEditPrintMargins;
 
 type
   //An item in a header or footer. An item has a text,Font,LineNumber and

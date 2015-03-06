@@ -86,7 +86,7 @@ unit SynEditPrint;
 interface
 
 uses
-  LCLIntf, LCLType, SysUtils, Classes, Graphics, Printers, SynEdit, SynEditPrintTypes,
+  LCLType, SysUtils, Classes, Graphics, Printers, SynEdit, SynEditPrintTypes,
   SynEditPrintHeaderFooter, SynEditPrinterInfo, SynEditPrintMargins,
   SynEditMiscProcs, SynEditPrintExtProcs, SynEditHighlighter;
 
@@ -315,10 +315,9 @@ begin
     FCanvas.Font.PixelsPerInch := FFont.PixelsPerInch;
     FCanvas.Font.Size := TmpSize;
   end;
-  GetTextMetrics(FCanvas.Handle, FTextMetrics);
-  CharWidth := FTextMetrics.tmAveCharWidth;
-  FMargins.InitPage(FCanvas, 1, FPrinterInfo, FLineNumbers, FLineNumbersInMargin,
-    FLines.Count - 1 + FLineOffset);
+//  GetTextMetrics(FCanvas.Handle, FTextMetrics); FTextMetrics.tmAveCharWidth;
+  CharWidth := FCanvas.TextExtent('W').cx;
+  FMargins.InitPage(FCanvas, 1, FPrinterInfo, FLineNumbers, FLineNumbersInMargin,     FLines.Count - 1 + FLineOffset);
   CalcPages;
   FHeader.InitPrint(FCanvas, FPageCount, FTitle, FMargins);
   FFooter.InitPrint(FCanvas, FPageCount, FTitle, FMargins);
@@ -386,7 +385,7 @@ begin
   AStr := StringOfChar('W', FMaxCol);
   FMaxWidth := FCanvas.TextWidth(AStr);
 {end}                                                                           //sb 2000-09-23
-  FLineHeight := FTextMetrics.tmHeight + FTextMetrics.tmExternalLeading;
+  FLineHeight := FCanvas.TextHeight('|');// FTextMetrics.tmHeight + FTextMetrics.tmExternalLeading;
 
   FPageCount := 1;
   PageLine := TPageLine.Create;
@@ -498,13 +497,13 @@ var
     while (LCount < AList.Count) and (TokenEnd > TWrapPos(AList[LCount]).Index) do begin
       AStr := Copy(Text, Last, TWrapPos(AList[LCount]).Index - Last);
       Last := TWrapPos(AList[LCount]).Index + 1;
-      ExtTextOut(FCanvas.Handle, FMargins.PLeft + FirstPos * FCharWidth, FYPos, 0, nil, PChar(AStr), Length(AStr), @FETODist[0]);
+      FCanvas.textOut(FMargins.PLeft + FirstPos * FCharWidth, FYPos,AStr);
       FirstPos := 0;
       LCount := LCount + 1;
       FYPos := FYPos + FLineHeight;
     end;
     AStr := Copy(Text, Last, TokenEnd - Last + 1);
-    ExtTextOut(FCanvas.Handle, FMargins.PLeft + FirstPos * FCharWidth, FYPos, 0, nil, PChar(AStr), Length(AStr), @FETODist[0]);
+    FCanvas.textOut(FMargins.PLeft + FirstPos * FCharWidth, FYPos, AStr);
     //Ready for next token:
     TokenStart := TokenPos + Length(Token) - Length(AStr);
   end;
@@ -556,7 +555,8 @@ begin
         end;
       end;
       if not Handled then
-        ExtTextOut(FCanvas.Handle, FMargins.PLeft + (TokenPos - TokenStart) * FCharWidth, FYPos, 0, nil, PChar(Token), Length(Token), @FETODist[0]);
+        FCanvas.TextOut(FMargins.PLeft + (TokenPos - TokenStart) * FCharWidth, FYPos, Token);
+//        ExtTextOut(FCanvas.Handle, FMargins.PLeft + (TokenPos - TokenStart) * FCharWidth, FYPos, 0, nil, PChar(Token), Length(Token), @FETODist[0]);
       FHighLighter.Next;
     end;
     RestoreCurrentFont;
@@ -693,27 +693,18 @@ function TSynEditPrint.GetPageCount: Integer;
 {Returns total page count. If pages hasn't been counted before,
  then a UpdatePages is called with a temporary canvas}
 var
-  TmpCanvas: TCanvas;
+  TmpCanvas: TPrinterCanvas;
   DC: HDC;
 begin
   Result := 0;
   if FPagesCounted then
     Result := FPageCount
   else begin
-    TmpCanvas := TCanvas.Create;
+    TmpCanvas := TPrinterCanvasRef.Create(printer);
     try
-      DC := GetDC(0);
-      try
-        if DC <> 0 then begin
-          TmpCanvas.Handle := DC;
-          UpdatePages(TmpCanvas);
-          TmpCanvas.Handle := 0;
-          Result := FPageCount;
-          FPagesCounted := True;
-        end;
-      finally
-        ReleaseDC(0, DC);
-      end;
+       UpdatePages(TmpCanvas);
+       Result := FPageCount;
+       FPagesCounted := True;
     finally
       TmpCanvas.Free;
     end;
