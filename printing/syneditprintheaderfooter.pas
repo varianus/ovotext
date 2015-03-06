@@ -98,7 +98,7 @@ unit SynEditPrintHeaderFooter;
 interface
 
 uses
-  Windows, Classes, Graphics, SysUtils, SynEditPrintTypes, SynEditPrintMargins;
+  LCLIntf, Classes, Graphics, SysUtils, SynEditPrintTypes, SynEditPrintMargins;
 
 type
   //An item in a header or footer. An item has a text,Font,LineNumber and
@@ -216,7 +216,7 @@ type
 implementation
 
 uses
-  SynEditMiscProcs;
+  SynEditMiscProcs, SynEditPrintExtProcs;
 
 {begin}                                                                         //gp 2000-06-24
 // Helper routine for AsString processing.
@@ -509,7 +509,7 @@ var
   i, CurLine: Integer;
   AItem: THeaderFooterItem;
   FOrgHeight: Integer;
-  TextMetric: TTextMetric;
+  TextMetric: TLCLTextMetric;
 begin
   FFrameHeight := -1;
   if FItems.Count <= 0 then Exit;
@@ -524,10 +524,10 @@ begin
       FOrgHeight := FFrameHeight;
     end;
     ACanvas.Font.Assign(AItem.Font);
-    GetTextMetrics(ACanvas.Handle, TextMetric);
-    with TLineInfo(FLineInfo[CurLine - 1]), TextMetric do begin
+    ACanvas.GetTextMetrics(TextMetric);
+    with TLineInfo(FLineInfo[CurLine - 1])  do begin
       LineHeight := Max(LineHeight, ACanvas.TextHeight('W'));
-      MaxBaseDist := Max(MaxBaseDist, tmHeight - tmDescent);
+      MaxBaseDist := Max(MaxBaseDist, TextMetric.Height - TextMetric.Descender);
     end;
     FFrameHeight := Max(FFrameHeight, FOrgHeight + ACanvas.TextHeight('W'));
   end;
@@ -623,7 +623,8 @@ var
   i, X, Y, CurLine: Integer;
   AStr: string;
   AItem: THeaderFooterItem;
-  OldAlign: UINT;
+  OldAlign: TTextLayout;
+  TextStyle: TTextStyle;
   TheAlignment: TAlignment;
 begin
   if (FFrameHeight <= 0) then Exit; //No header/footer
@@ -662,9 +663,14 @@ begin
       end;
     end;
       {Aligning at base line - Fonts can have different size in headers and footers}
-    OldAlign := SetTextAlign(ACanvas.Handle, TA_BASELINE);
+    TextStyle := ACanvas.TextStyle;
+    OldAlign := TextStyle.Layout;
+    TextStyle.Layout:=tlBottom;
+    ACanvas.TextStyle := TextStyle;
     ACanvas.TextOut(X, Y + TLineInfo(FLineInfo[CurLine - 1]).MaxBaseDist, AStr);
-    SetTextAlign(ACanvas.Handle, OldAlign);
+    TextStyle.Layout := OldAlign;
+    ACanvas.TextStyle := TextStyle;
+
   end;
   RestoreFontPenBrush(ACanvas);
 end;

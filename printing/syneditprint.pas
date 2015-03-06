@@ -86,9 +86,9 @@ unit SynEditPrint;
 interface
 
 uses
-  Windows, SysUtils, Classes, Graphics, Printers, SynEdit, SynEditPrintTypes,
+  LCLIntf, LCLType, SysUtils, Classes, Graphics, Printers, SynEdit, SynEditPrintTypes,
   SynEditPrintHeaderFooter, SynEditPrinterInfo, SynEditPrintMargins,
-  SynEditMiscProcs, SynEditPrintMiscProcs, SynEditHighlighter;
+  SynEditMiscProcs, SynEditPrintExtProcs, SynEditHighlighter;
 
 type
   TPageLine =

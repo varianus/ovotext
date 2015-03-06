@@ -46,7 +46,7 @@ unit SynEditPrintMarginsDialog;
 interface
 
 uses
-  Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
+  SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, Dialogs, DsgnIntf, SynEditPrint, SynEditPrintTypes,
   SynEditPrintMargins;
 

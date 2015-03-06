@@ -28,7 +28,7 @@ uses
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, umain, uabout, udmmain, Stringcostants, SupportFuncs, config,
-  uCheckFileChange, udglgoto, printer4lazarus, SynEditPrintMiscProcs;
+  uCheckFileChange, udglgoto, printer4lazarus, SynEditPrintExtProcs;
 
 {$R *.res}
 

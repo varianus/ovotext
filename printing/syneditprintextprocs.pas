@@ -1,4 +1,4 @@
-unit SynEditPrintMiscProcs;
+unit SynEditPrintExtProcs;
 
 interface
 
@@ -30,6 +30,14 @@ function CharIndex2CaretPos(Index, TabWidth: Integer;
   const Line: String): Integer;
 function CaretPos2CharIndex(Position, TabWidth: Integer; const Line: String;
   var InsideTabChar: Boolean): Integer;
+
+// Remove all '/' characters from string by changing them into '\.'.
+// Change all '\' characters into '\\' to allow for unique decoding.
+function EncodeString(s: string): string;
+
+// Decodes string, encoded with EncodeString.
+function DecodeString(s: string): string;
+
 implementation
 
 // Please don't change this function; no stack frame and efficient register use.
@@ -371,7 +379,49 @@ begin
   else
     Result := Position;
 end;
+function EncodeString(s: string): string;
+var
+  i, j: integer;
+begin
+  SetLength(Result, 2 * Length(s)); // worst case
+  j := 0;
+  for i := 1 to Length(s) do begin
+    Inc(j);
+    if s[i] = '\' then begin
+      Result[j] := '\';
+      Result[j + 1] := '\';
+      Inc(j);
+    end else if s[i] = '/' then begin
+      Result[j] := '\';
+      Result[j + 1] := '.';
+      Inc(j);
+    end else
+      Result[j] := s[i];
+  end; //for
+  SetLength(Result, j);
+end; { EncodeString }
 
+function DecodeString(s: string): string;
+var
+  i, j: integer;
+begin
+  SetLength(Result, Length(s)); // worst case
+  j := 0;
+  i := 1;
+  while i <= Length(s) do begin
+    Inc(j);
+    if s[i] = '\' then begin
+      Inc(i);
+      if s[i] = '\' then
+        Result[j] := '\'
+      else
+        Result[j] := '/';
+    end else
+      Result[j] := s[i];
+    Inc(i);
+  end; //for
+  SetLength(Result,j);
+end; { DecodeString }
 
 end.
 

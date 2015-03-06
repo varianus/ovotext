@@ -49,7 +49,7 @@ unit SynEditPrintPreview;
 interface
 
 uses
-  Windows, Classes, Controls, Messages, SysUtils, Graphics, Forms,
+  Classes, Controls, Messages, SysUtils, Graphics, Forms,
   SynEditPrint;
 
 type

@@ -159,9 +159,9 @@
         <UnitName Value="uDglGoTo"/>
       </Unit9>
       <Unit10>
-        <Filename Value="printing\syneditprintmiscprocs.pas"/>
+        <Filename Value="printing\syneditprintextprocs.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="SynEditPrintMiscProcs"/>
+        <UnitName Value="SynEditPrintExtProcs"/>
       </Unit10>
     </Units>
   </ProjectOptions>
