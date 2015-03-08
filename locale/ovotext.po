@@ -1,6 +1,10 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
+#: stringcostants.rsadministratirights
+msgid "Warning, you are using the root account, you may harm your system!"
+msgstr ""
+
 #: stringcostants.rsallfile
 msgid "All files"
 msgstr ""
@@ -329,6 +333,10 @@ msgstr ""
 
 #: tfmain.helpabout.hint
 msgid "About ovotext"
+msgstr ""
+
+#: tfmain.lbmessage.caption
+msgid "lbMessage"
 msgstr ""
 
 #: tfmain.menuitem1.caption

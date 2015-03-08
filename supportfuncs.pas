@@ -24,12 +24,22 @@ unit SupportFuncs;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes, SysUtils
+  {$IFDEF UNIX}
+  ,BaseUnix
+  {$ENDIF}
+  ;
 //Remove invalid char from highlighters name and attributes
 Function CleanupName(aName:string):string;
 
 //Split a delimited string in a Stringlist
 procedure StrToStrings(S, Sep: string; const List: TStrings; const AllowEmptyString: boolean = True);
+
+{$IFDEF UNIX}
+function isRoot:boolean;
+{$ENDIF}
+
+
 
 
 function RemoveSpacesInExcess(s: string): string;
@@ -85,6 +95,13 @@ begin
     List.EndUpdate;
   end;
 end;
+{$IFDEF UNIX}
+function isRoot: boolean;
+begin
+  Result:= FpGetuid = 0;
+end;
+{$ENDIF}
+
 
 end.
 

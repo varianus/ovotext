@@ -1,11 +1,11 @@
 object fMain: TfMain
-  Left = 631
+  Left = 579
   Height = 688
-  Top = 150
+  Top = 217
   Width = 966
   AllowDropFiles = True
   Caption = 'ovoText'
-  ClientHeight = 668
+  ClientHeight = 667
   ClientWidth = 966
   Menu = mnuMain
   OnActivate = FormActivate
@@ -17,8 +17,8 @@ object fMain: TfMain
   LCLVersion = '1.5'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 23
-    Top = 645
+    Height = 21
+    Top = 646
     Width = 966
     Panels = <    
       item
@@ -51,12 +51,12 @@ object fMain: TfMain
       Action = FileNew
     end
     object ToolButton2: TToolButton
-      Left = 25
+      Left = 38
       Top = 2
       Action = FileOpen
     end
     object ToolButton3: TToolButton
-      Left = 49
+      Left = 62
       Top = 2
       Action = FileSave
     end
@@ -66,7 +66,7 @@ object fMain: TfMain
       Action = FileClose
     end
     object ToolButton5: TToolButton
-      Left = 73
+      Left = 25
       Height = 18
       Top = 2
       Width = 13
@@ -78,34 +78,34 @@ object fMain: TfMain
       Action = EditCut
     end
     object ToolButton7: TToolButton
-      Left = 110
+      Left = 120
       Top = 2
       Action = EditCopy
     end
     object ToolButton8: TToolButton
-      Left = 134
+      Left = 144
       Top = 2
       Action = EditPaste
     end
     object ToolButton9: TToolButton
-      Left = 168
+      Left = 181
       Top = 2
       Action = EditUndo
     end
     object ToolButton10: TToolButton
-      Left = 192
+      Left = 205
       Top = 2
       Action = EditRedo
     end
     object ToolButton11: TToolButton
-      Left = 158
+      Left = 110
       Height = 18
       Top = 2
       Width = 10
       Style = tbsDivider
     end
     object ToolButton12: TToolButton
-      Left = 216
+      Left = 168
       Height = 18
       Top = 2
       Width = 13
@@ -117,22 +117,38 @@ object fMain: TfMain
       Action = SearchFind
     end
     object ToolButton15: TToolButton
-      Left = 253
+      Left = 268
       Top = 2
       Action = SearchReplace
     end
     object tbbCloseAll: TToolButton
-      Left = 277
+      Left = 292
       Top = 2
       Action = FileCloseAll
     end
     object tbbSepClose: TToolButton
-      Left = 301
+      Left = 253
       Height = 18
       Top = 2
       Width = 15
       Style = tbsDivider
     end
+  end
+  object lbMessage: TStaticText
+    Left = 0
+    Height = 24
+    Top = 24
+    Width = 966
+    Align = alTop
+    Alignment = taCenter
+    Caption = 'lbMessage'
+    Color = clRed
+    Font.Color = clWhite
+    Font.Style = [fsBold]
+    ParentFont = False
+    ParentColor = False
+    TabOrder = 2
+    Visible = False
   end
   object ActionList: TActionList
     Images = imgList

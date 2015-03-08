@@ -45,6 +45,7 @@ resourcestring
   RSStatusBarSel = 'Sel: %d ';
   RSStatusBarInsMode = 'INS ';
   RSStatusBarOvrMode = 'OVR ';
+  RSAdministratiRights = 'Warning, you are using the root account, you may harm your system!';
   //-- Files
   RSSaveChanges = 'Save changes to'+LineEnding+
                   ' "%s"?';

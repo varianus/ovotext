@@ -25,9 +25,9 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, SynEditTypes,
-  SynHighlighterPas, mrumanager, PrintersDlgs, Config, SupportFuncs, udmmain,
-  uDglGoTo, SynEditPrint;
+  ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls,
+  SynEditTypes, SynHighlighterPas, mrumanager, PrintersDlgs, Config,
+  SupportFuncs, udmmain, uDglGoTo, SynEditPrint;
 
 type
 
@@ -135,6 +135,7 @@ type
     SearchFindPrevious: TAction;
     SearchFindNext1: TAction;
     SearchReplace: TAction;
+    lbMessage: TStaticText;
     StatusBar1: TStatusBar;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
@@ -431,6 +432,7 @@ begin
 // if AskFileName(Editor) then
 
   Editor.SaveAs(FileSaveAs.Dialog.FileName);
+  MRU.AddToRecent(FileSaveAs.Dialog.FileName);
 
 end;
 
@@ -526,6 +528,16 @@ begin
 
   prn := TSynEditPrint.Create(Self);
   prn.Colors:= true;
+
+  {$IFDEF UNIX}
+  if isRoot then
+    begin
+      lbMessage.Caption:= RSAdministratiRights;
+      lbMessage.Visible:= true;
+    end;
+  {$ENDIF}
+
+
 
 end;
 
@@ -651,6 +663,7 @@ end;
 procedure TfMain.RecentFileEvent(Sender: TObject; const AFileName: string);
 begin
   EditorFactory.AddEditor(AFileName);
+  MRU.AddToRecent(AFileName);
 end;
 
 procedure TfMain.NewEditor(Editor: TEditor);
