@@ -25,14 +25,14 @@
       <CharSet Value="04B0"/>
       <StringTable Comments="A simple editor" CompanyName="Marco Caselli" FileDescription="Marco Caselli Editor" InternalName="ovotext" LegalCopyright="Marco Caselli" LegalTrademarks="Marco Caselli" ProductName="ovotext" ProductVersion="0.1"/>
     </VersionInfo>
-    <BuildModes Count="2">
+    <BuildModes Count="4">
       <Item1 Name="Debug" Default="True"/>
       <Item2 Name="Release">
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="bin\ovotext"/>
+            <Filename Value="bin\$(TargetOS)\ovotext"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
@@ -61,6 +61,82 @@
           </Other>
         </CompilerOptions>
       </Item2>
+      <Item3 Name="Debug64">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="bin\$(TargetOS)\ovotext"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="highlighters;printing"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Parsing>
+            <SyntaxOptions>
+              <IncludeAssertionCode Value="True"/>
+            </SyntaxOptions>
+          </Parsing>
+          <CodeGeneration>
+            <Checks>
+              <IOChecks Value="True"/>
+              <RangeChecks Value="True"/>
+              <OverflowChecks Value="True"/>
+              <StackChecks Value="True"/>
+            </Checks>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="win64"/>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <DebugInfoType Value="dsDwarf2Set"/>
+              <UseExternalDbgSyms Value="True"/>
+            </Debugging>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+        </CompilerOptions>
+      </Item3>
+      <Item4 Name="Release64">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="bin\$(TargetOS)\ovotext"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="highlighters;printing"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="win64"/>
+            <Optimizations>
+              <OptimizationLevel Value="3"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+          <Other>
+            <CustomOptions Value="-FcUTF8 -O4"/>
+          </Other>
+        </CompilerOptions>
+      </Item4>
       <SharedMatrixOptions Count="1">
         <Item1 ID="188379435715" Modes="Release" Value="-dEnableUTF8RTL"/>
       </SharedMatrixOptions>
@@ -115,7 +191,6 @@
         <ComponentName Value="fAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uabout"/>
       </Unit2>
       <Unit3>
         <Filename Value="udmmain.pas"/>
@@ -123,32 +198,26 @@
         <ComponentName Value="dmMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <UnitName Value="udmmain"/>
       </Unit3>
       <Unit4>
         <Filename Value="stringcostants.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="Stringcostants"/>
       </Unit4>
       <Unit5>
         <Filename Value="supportfuncs.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="SupportFuncs"/>
       </Unit5>
       <Unit6>
         <Filename Value="ueditor.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="ueditor"/>
       </Unit6>
       <Unit7>
         <Filename Value="config.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="Config"/>
       </Unit7>
       <Unit8>
         <Filename Value="ucheckfilechange.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uCheckFileChange"/>
       </Unit8>
       <Unit9>
         <Filename Value="udglgoto.pas"/>
@@ -156,12 +225,10 @@
         <ComponentName Value="dlgGoTo"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uDglGoTo"/>
       </Unit9>
       <Unit10>
         <Filename Value="printing\syneditprintextprocs.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="SynEditPrintExtProcs"/>
       </Unit10>
     </Units>
   </ProjectOptions>
@@ -169,7 +236,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="bin\ovotext"/>
+      <Filename Value="bin\$(TargetOS)\ovotext"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
