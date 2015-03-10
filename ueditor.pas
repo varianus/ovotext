@@ -354,10 +354,18 @@ end;
 procedure TEditor.TextOperation(Operation: TTextOperation);
 var
   i: integer;
+  tmpst: TStringList;
 begin
 
   if SelAvail then
-    SelText:= Operation(SelText)
+    begin
+      tmpst := TStringList.Create;
+      tmpst.Text:=SelText;
+      for i := 0 to tmpst.Count - 1 do
+        tmpst[i] := Operation(tmpst[i]);
+      SelText:= copy(tmpst.Text, 1, Length(tmpst.Text)-Length(LineEnding));
+
+    end
   else
     begin
       BeginUpdate(True);
@@ -539,18 +547,27 @@ function TEditorFactory.CloseAll: boolean;
 var
   i: integer;
 begin
+  result:= true;
   for i := PageCount - 1 downto 0 do
     if not CloseEditor(TEditorTabSheet(Pages[i]).Editor) then
-      break;
+      begin
+        Result:= false;
+        break;
+      end;
 end;
 
 function TEditorFactory.SaveAll: boolean;
 var
   i: integer;
 begin
+  result:= true;
   for i := PageCount - 1 downto 0 do
     if not TEditorTabSheet(Pages[i]).Editor.Save then
-      break;
+      begin
+        Result:= false;
+        break;
+      end;
+
 end;
 
 procedure TEditorFactory.DoCheckFileChanges;
