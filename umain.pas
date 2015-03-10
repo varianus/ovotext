@@ -38,12 +38,17 @@ type
     actFullNameToClipBoard: TAction;
     actGoTo: TAction;
     Action1: TAction;
+    actUpperCase: TAction;
+    actLowerCase: TAction;
     MenuItem53: TMenuItem;
     MenuItem54: TMenuItem;
     MenuItem55: TMenuItem;
     MenuItem56: TMenuItem;
     MenuItem57: TMenuItem;
     MenuItem58: TMenuItem;
+    MenuItem59: TMenuItem;
+    MenuItem60: TMenuItem;
+    MenuItem61: TMenuItem;
     mnuTabs: TMenuItem;
     PrintDialog1: TPrintDialog;
     SortAscending: TAction;
@@ -182,6 +187,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormDropFiles(Sender: TObject; const FileNames: array of string);
     procedure HelpAboutExecute(Sender: TObject);
+    procedure actLowerCaseExecute(Sender: TObject);
     procedure MenuItem28Click(Sender: TObject);
     procedure MenuItem29Click(Sender: TObject);
     procedure mnuTabsClick(Sender: TObject);
@@ -194,6 +200,7 @@ type
     procedure SearchReplaceExecute(Sender: TObject);
     procedure SortAscendingExecute(Sender: TObject);
     procedure SortDescendingExecute(Sender: TObject);
+    procedure actUpperCaseExecute(Sender: TObject);
   private
     EditorFactory: TEditorFactory;
     MRU: TMRUMenuManager;
@@ -560,6 +567,58 @@ procedure TfMain.HelpAboutExecute(Sender: TObject);
 begin
   with TfAbout.Create(self) do
     Show;
+end;
+
+procedure TfMain.actUpperCaseExecute(Sender: TObject);
+var
+  Ed: TEditor;
+  i: integer;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  if Ed.SelAvail then
+    Ed.SelText:= UpperCase(Ed.SelText)
+  else
+    begin
+      ed.BeginUpdate(True);
+      try
+        for i := 0 to Ed.Lines.Count - 1 do
+        begin
+          Ed.SetLineText(i, UpperCase(Ed.Lines[i]));
+        end;
+
+      finally
+        ed.EndUpdate;
+      end;
+    end;
+end;
+
+procedure TfMain.actLowerCaseExecute(Sender: TObject);
+var
+  Ed: TEditor;
+  i: integer;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  if Ed.SelAvail then
+    Ed.SelText:= LowerCase(Ed.SelText)
+  else
+    begin
+      ed.BeginUpdate(True);
+      try
+        for i := 0 to Ed.Lines.Count - 1 do
+        begin
+          Ed.SetLineText(i, LowerCase(Ed.Lines[i]));
+        end;
+
+      finally
+        ed.EndUpdate;
+      end;
+    end;
 end;
 
 procedure TfMain.MenuItem28Click(Sender: TObject);

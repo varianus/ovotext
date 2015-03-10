@@ -163,10 +163,6 @@ msgctxt "TFABOUT.LVERSION.CAPTION"
 msgid "Version"
 msgstr ""
 
-#: tfeditor.caption
-msgid "fEditor"
-msgstr ""
-
 #: tfmain.actcompressspaces.caption
 msgid "Reduce multiple spaces"
 msgstr ""
@@ -187,6 +183,10 @@ msgstr ""
 msgid "Action1"
 msgstr ""
 
+#: tfmain.actlowercase.caption
+msgid "lowercase"
+msgstr ""
+
 #: tfmain.actprint.caption
 msgid "Print"
 msgstr ""
@@ -201,6 +201,10 @@ msgstr ""
 
 #: tfmain.acttrimtrailing.caption
 msgid "Trim Trailing spaces"
+msgstr ""
+
+#: tfmain.actuppercase.caption
+msgid "UPPERCASE"
 msgstr ""
 
 #: tfmain.caption
@@ -429,6 +433,10 @@ msgstr ""
 #: tfmain.menuitem58.caption
 msgctxt "TFMAIN.MENUITEM58.CAPTION"
 msgid "-"
+msgstr ""
+
+#: tfmain.menuitem59.caption
+msgid "Text Case"
 msgstr ""
 
 #: tfmain.menuitem7.caption

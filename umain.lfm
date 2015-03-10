@@ -5,7 +5,7 @@ object fMain: TfMain
   Width = 966
   AllowDropFiles = True
   Caption = 'ovoText'
-  ClientHeight = 667
+  ClientHeight = 668
   ClientWidth = 966
   Menu = mnuMain
   OnActivate = FormActivate
@@ -17,8 +17,8 @@ object fMain: TfMain
   LCLVersion = '1.5'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 21
-    Top = 646
+    Height = 23
+    Top = 645
     Width = 966
     Panels = <    
       item
@@ -349,6 +349,16 @@ object fMain: TfMain
     end
     object Action1: TAction
       Caption = 'Action1'
+    end
+    object actLowerCase: TAction
+      Category = 'Tools'
+      Caption = 'lowercase'
+      OnExecute = actLowerCaseExecute
+    end
+    object actUpperCase: TAction
+      Category = 'Tools'
+      Caption = 'UPPERCASE'
+      OnExecute = actUpperCaseExecute
     end
   end
   object mnuMain: TMainMenu
@@ -970,6 +980,15 @@ object fMain: TfMain
         end
         object MenuItem55: TMenuItem
           Action = SortDescending
+        end
+      end
+      object MenuItem59: TMenuItem
+        Caption = 'Text Case'
+        object MenuItem60: TMenuItem
+          Action = actLowerCase
+        end
+        object MenuItem61: TMenuItem
+          Action = actUpperCase
         end
       end
     end
