@@ -42,7 +42,7 @@ function isRoot:boolean;
 
 
 
-function RemoveSpacesInExcess(s: string): string;
+function RemoveSpacesInExcess(const s: string): string;
 
 implementation
 
@@ -56,18 +56,18 @@ begin
     Result[c] := '_';
 end;
 
-function RemoveSpacesInExcess(s: string): string;
+function RemoveSpacesInExcess(const s: string): string;
 var
   p: integer;
 begin
-  s := trim(s);
-  p := pos(#32#32, s);
+  Result := trim(s);
+  p := pos(#32#32, Result);
   while p > 0 do
   begin
-    s := StringReplace(s, #32#32, #32, [rfReplaceAll]);
-    p := pos(#32#32, s);
+    Result := StringReplace(Result, #32#32, #32, [rfReplaceAll]);
+    p := pos(#32#32, Result);
   end;
-  Result := s;
+
 end;
 
 procedure StrToStrings(S, Sep: string; const List: TStrings; const AllowEmptyString: boolean = True);

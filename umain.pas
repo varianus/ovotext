@@ -291,60 +291,36 @@ end;
 procedure TfMain.actTrimExecute(Sender: TObject);
 var
   Ed: TEditor;
-  i: integer;
 begin
+  if not EditorAvalaible then
+    exit;
 
   Ed := EditorFactory.CurrentEditor;
-  ed.BeginUpdate(True);
-  try
-    for i := 0 to Ed.Lines.Count - 1 do
-    begin
-      Ed.SetLineText(i, Trim(Ed.Lines[i]));
-    end;
-
-  finally
-    ed.EndUpdate;
-  end;
+  Ed.TextOperation(@Trim);
 
 end;
 
 procedure TfMain.actTrimLeadingExecute(Sender: TObject);
 var
   Ed: TEditor;
-  i: integer;
 begin
+  if not EditorAvalaible then
+    exit;
 
   Ed := EditorFactory.CurrentEditor;
-  ed.BeginUpdate(True);
-  try
-    for i := 0 to Ed.Lines.Count - 1 do
-    begin
-      Ed.SetLineText(i, TrimLeft(Ed.Lines[i]));
-    end;
-
-  finally
-    ed.EndUpdate;
-  end;
+  Ed.TextOperation(@TrimLeft);
 
 end;
 
 procedure TfMain.actTrimTrailingExecute(Sender: TObject);
 var
   Ed: TEditor;
-  i: integer;
 begin
+  if not EditorAvalaible then
+    exit;
 
   Ed := EditorFactory.CurrentEditor;
-  ed.BeginUpdate(True);
-  try
-    for i := 0 to Ed.Lines.Count - 1 do
-    begin
-      Ed.SetLineText(i, TrimRight(Ed.Lines[i]));
-    end;
-
-  finally
-    ed.EndUpdate;
-  end;
+  Ed.TextOperation(@TrimRight);
 
 end;
 
@@ -389,20 +365,12 @@ end;
 procedure TfMain.ActCompressSpacesExecute(Sender: TObject);
 var
   Ed: TEditor;
-  i: integer;
 begin
+  if not EditorAvalaible then
+    exit;
 
   Ed := EditorFactory.CurrentEditor;
-  ed.BeginUpdate(True);
-  try
-    for i := 0 to Ed.Lines.Count - 1 do
-    begin
-      Ed.SetLineText(i, RemoveSpacesInExcess(Ed.Lines[i]));
-    end;
-
-  finally
-    ed.EndUpdate;
-  end;
+  Ed.TextOperation(@RemoveSpacesInExcess);
 
 end;
 
@@ -572,53 +540,25 @@ end;
 procedure TfMain.actUpperCaseExecute(Sender: TObject);
 var
   Ed: TEditor;
-  i: integer;
 begin
   if not EditorAvalaible then
     exit;
 
   Ed := EditorFactory.CurrentEditor;
-  if Ed.SelAvail then
-    Ed.SelText:= UpperCase(Ed.SelText)
-  else
-    begin
-      ed.BeginUpdate(True);
-      try
-        for i := 0 to Ed.Lines.Count - 1 do
-        begin
-          Ed.SetLineText(i, UpperCase(Ed.Lines[i]));
-        end;
+  Ed.TextOperation(@UpperCase);
 
-      finally
-        ed.EndUpdate;
-      end;
-    end;
 end;
 
 procedure TfMain.actLowerCaseExecute(Sender: TObject);
 var
   Ed: TEditor;
-  i: integer;
 begin
   if not EditorAvalaible then
     exit;
 
   Ed := EditorFactory.CurrentEditor;
-  if Ed.SelAvail then
-    Ed.SelText:= LowerCase(Ed.SelText)
-  else
-    begin
-      ed.BeginUpdate(True);
-      try
-        for i := 0 to Ed.Lines.Count - 1 do
-        begin
-          Ed.SetLineText(i, LowerCase(Ed.Lines[i]));
-        end;
+  Ed.TextOperation(@LowerCase);
 
-      finally
-        ed.EndUpdate;
-      end;
-    end;
 end;
 
 procedure TfMain.MenuItem28Click(Sender: TObject);

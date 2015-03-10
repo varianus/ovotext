@@ -34,6 +34,8 @@ type
   TEditorTabSheet = class;
   TEditorFactory = class;
 
+  TTextOperation = function(const Param:string):string;
+
   { TEditorFactory }
 
   TOnBeforeClose = procedure(Editor: TEditor; var Cancel: boolean) of object;
@@ -58,6 +60,7 @@ type
     property Untitled: boolean read FUntitled write SetUntitled;
     procedure LoadFromFile(AFileName: TFileName);
     Procedure Sort(Ascending:boolean);
+    procedure TextOperation(Operation: TTextOperation);
     //
     function Save: boolean;
     function SaveAs(AFileName: TFileName): boolean;
@@ -346,6 +349,28 @@ begin
     QuickSort(L, Pivot - 1, CompareFn);
   if Pivot + 1 <= R then
     QuickSort(Pivot + 1, R, CompareFn);
+end;
+
+procedure TEditor.TextOperation(Operation: TTextOperation);
+var
+  i: integer;
+begin
+
+  if SelAvail then
+    SelText:= Operation(SelText)
+  else
+    begin
+      BeginUpdate(True);
+      try
+        for i := 0 to Lines.Count - 1 do
+        begin
+          SetLineText(i, Operation(Lines[i]));
+        end;
+
+      finally
+        EndUpdate;
+      end;
+    end;
 end;
 
 
