@@ -37,7 +37,6 @@ object fMain: TfMain
   end
   object ToolBar1: TToolBar
     Left = 0
-    Height = 24
     Top = 0
     Width = 966
     BorderWidth = 3
@@ -137,7 +136,7 @@ object fMain: TfMain
   object lbMessage: TStaticText
     Left = 0
     Height = 24
-    Top = 24
+    Top = 32
     Width = 966
     Align = alTop
     Alignment = taCenter
@@ -359,6 +358,26 @@ object fMain: TfMain
       Category = 'Tools'
       Caption = 'UPPERCASE'
       OnExecute = actUpperCaseExecute
+    end
+    object ExportHtmlToFile: TAction
+      Category = 'Edit'
+      Caption = 'As Html To File'
+      Enabled = False
+    end
+    object ExportRTFToFile: TAction
+      Category = 'Edit'
+      Caption = 'As Rtf To File'
+      Enabled = False
+    end
+    object ExportHtmlToClipBoard: TAction
+      Category = 'Edit'
+      Caption = 'As Html To Clipboard'
+      OnExecute = ExportHtmlToClipBoardExecute
+    end
+    object ExportRTFToClipBoard: TAction
+      Category = 'Edit'
+      Caption = 'As Rtf To Clipboard'
+      OnExecute = ExportRTFToClipBoardExecute
     end
   end
   object mnuMain: TMainMenu
@@ -957,6 +976,21 @@ object fMain: TfMain
       end
       object MenuItem47: TMenuItem
         Caption = '-'
+      end
+      object MenuItem62: TMenuItem
+        Caption = 'Export'
+        object MenuItem63: TMenuItem
+          Action = ExportRTFToClipBoard
+        end
+        object MenuItem64: TMenuItem
+          Action = ExportHtmlToClipBoard
+        end
+        object MenuItem66: TMenuItem
+          Action = ExportRTFToFile
+        end
+        object MenuItem65: TMenuItem
+          Action = ExportHtmlToFile
+        end
       end
       object MenuItem39: TMenuItem
         Caption = 'Spaces operation'

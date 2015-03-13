@@ -38,8 +38,12 @@ type
     actFullNameToClipBoard: TAction;
     actGoTo: TAction;
     Action1: TAction;
+    ExportHtmlToClipBoard: TAction;
+    ExportHtmlToFile: TAction;
     actUpperCase: TAction;
     actLowerCase: TAction;
+    ExportRTFToClipBoard: TAction;
+    ExportRTFToFile: TAction;
     MenuItem53: TMenuItem;
     MenuItem54: TMenuItem;
     MenuItem55: TMenuItem;
@@ -49,6 +53,11 @@ type
     MenuItem59: TMenuItem;
     MenuItem60: TMenuItem;
     MenuItem61: TMenuItem;
+    MenuItem62: TMenuItem;
+    MenuItem63: TMenuItem;
+    MenuItem64: TMenuItem;
+    MenuItem65: TMenuItem;
+    MenuItem66: TMenuItem;
     mnuTabs: TMenuItem;
     PrintDialog1: TPrintDialog;
     SortAscending: TAction;
@@ -171,6 +180,8 @@ type
     procedure AppPropertiesActivate(Sender: TObject);
     procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
     procedure EditRedoExecute(Sender: TObject);
+    procedure ExportHtmlToClipBoardExecute(Sender: TObject);
+    procedure ExportRTFToClipBoardExecute(Sender: TObject);
     procedure FileCloseAllExecute(Sender: TObject);
     procedure FileCloseExecute(Sender: TObject);
     procedure FileExitExecute(Sender: TObject);
@@ -254,6 +265,33 @@ procedure TfMain.EditRedoExecute(Sender: TObject);
 begin
   if EditorAvalaible then
     EditorFactory.CurrentEditor.Redo;
+end;
+
+procedure TfMain.ExportHtmlToClipBoardExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  Ed :=  EditorFactory.CurrentEditor;
+
+  dmMain.HTMLExporter.Highlighter := Ed.Highlighter;
+  dmMain.HTMLExporter.ExportAsText:= true;
+  dmMain.HTMLExporter.CreateHTMLFragment := true;
+  dmMain.HTMLExporter.ExportAll(Ed.Lines);
+  dmMain.HTMLExporter.CopyToClipboard;
+
+
+end;
+procedure TfMain.ExportRTFToClipBoardExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  Ed :=  EditorFactory.CurrentEditor;
+
+  dmMain.RFTExporter.Highlighter := Ed.Highlighter;
+  dmMain.RFTExporter.ExportAll(Ed.Lines);
+  dmMain.RFTExporter.CopyToClipboard;
+
+
 end;
 
 procedure TfMain.AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);

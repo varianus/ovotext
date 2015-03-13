@@ -198,6 +198,7 @@
         <ComponentName Value="dmMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
+        <UnitName Value="udmmain"/>
       </Unit3>
       <Unit4>
         <Filename Value="stringcostants.pas"/>
@@ -206,10 +207,12 @@
       <Unit5>
         <Filename Value="supportfuncs.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="SupportFuncs"/>
       </Unit5>
       <Unit6>
         <Filename Value="ueditor.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="ueditor"/>
       </Unit6>
       <Unit7>
         <Filename Value="config.pas"/>

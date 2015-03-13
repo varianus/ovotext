@@ -263,6 +263,22 @@ msgstr ""
 msgid "Undo"
 msgstr ""
 
+#: tfmain.exporthtmltoclipboard.caption
+msgid "As Html To Clipboard"
+msgstr ""
+
+#: tfmain.exporthtmltofile.caption
+msgid "As Html To File"
+msgstr ""
+
+#: tfmain.exportrtftoclipboard.caption
+msgid "As Rtf To Clipboard"
+msgstr ""
+
+#: tfmain.exportrtftofile.caption
+msgid "As Rtf To File"
+msgstr ""
+
 #: tfmain.fileclose.caption
 msgid "Close"
 msgstr ""
@@ -437,6 +453,10 @@ msgstr ""
 
 #: tfmain.menuitem59.caption
 msgid "Text Case"
+msgstr ""
+
+#: tfmain.menuitem62.caption
+msgid "Export"
 msgstr ""
 
 #: tfmain.menuitem7.caption

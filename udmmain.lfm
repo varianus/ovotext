@@ -6,21 +6,9 @@ object dmMain: TdmMain
   HorizontalOffset = 695
   VerticalOffset = 311
   Width = 725
-  object SynExporterHTML: TSynExporterHTML
-    Color = clWindow
-    DefaultFilter = 'Documento HTML (*.htm,*.html)|*.htm;*.html'
-    Font.Color = clBlack
-    Font.Height = -13
-    Font.Name = 'Courier New'
-    HTMLFontSize = fs03
-    Title = 'Untitled'
-    UseBackground = False
-    left = 37
-    top = 8
-  end
   object imgBookMark: TImageList
-    left = 144
-    top = 16
+    left = 56
+    top = 24
     Bitmap = {
       4C690A0000001000000010000000962F0D00962F0D00FFF4EAFFFFCFC0FFF0AE
       98FFEAA28AFFF3B39EFFFFD7C8FFFFF9F0FF962F0D00962F0D00000000000000

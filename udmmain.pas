@@ -26,7 +26,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Dialogs,
   SupportFuncs, SynEditHighlighter, SynExportHTML, fgl, Graphics, config,
-  Stringcostants,
+  Stringcostants, SynExportRTF,
   // included with Lazarus
   SynHighlighterPas,
   SynHighlighterCpp, SynHighlighterJava, SynHighlighterPerl, SynHighlighterHTML,
@@ -113,18 +113,23 @@ type
 
   TdmMain = class(TDataModule)
     imgBookMark: TImageList;
-    SynExporterHTML: TSynExporterHTML;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
     fHighlighters: THighLighterList;
+    fRTFExporter : TSynExporterRTF;
+    fHTMLExporter : TSynExporterHTML;
     procedure FontAttribToAttribute(Attribute: TSynHighlighterAttributes;
       Attrib: TFontAttributes);
+    function GetSynExporterHTML: TSynExporterHTML;
+    function GetSynExporterRTF: TSynExporterRTF;
     procedure LoadHighlighters;
     procedure InitializeHighlighter(Highlighter: TSynCustomHighlighter);
     procedure SetAttribute(AttrName: string;
       Attribute: TSynHighlighterAttributes; DefaultAttrib: TFontAttributes);
   public
+    Property RFTExporter: TSynExporterRTF read GetSynExporterRTF;
+    Property HTMLExporter: TSynExporterHTML read GetSynExporterHTML;
     function getHighLighter(Extension: string): TSynCustomHighlighter;
     function GetFiters: string;
 
@@ -185,6 +190,20 @@ begin
   Attribute.Background:=Attrib.Background;
   Attribute.Style:=Attrib.Styles;
 
+end;
+
+function TdmMain.GetSynExporterHTML: TSynExporterHTML;
+begin
+  if not Assigned(fHTMLExporter) then
+    fHTMLExporter:= TSynExporterHTML.Create(Self);
+  result := fHTMLExporter;
+end;
+
+function TdmMain.GetSynExporterRTF: TSynExporterRTF;
+begin
+  if not Assigned(fRTFExporter) then
+    fRTFExporter:= TSynExporterRTF.Create(Self);
+  result := fRTFExporter;
 end;
 
 procedure TdmMain.SetAttribute(AttrName:string; Attribute: TSynHighlighterAttributes; DefaultAttrib: TFontAttributes);
