@@ -550,8 +550,6 @@ begin
     end;
   {$ENDIF}
 
-
-
 end;
 
 procedure TfMain.FormDestroy(Sender: TObject);
@@ -836,7 +834,7 @@ begin
     Exclude(SynOption, ssoReplace);
     Exclude(SynOption, ssoReplaceAll);
   end;
-  ReplaceText := Dialog.FindText;
+  ReplaceText := Dialog.ReplaceText;
 end;
 
 function TfMain.AskFileName(Editor: TEditor): boolean;
