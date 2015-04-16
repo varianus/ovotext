@@ -468,6 +468,10 @@ msgctxt "TFMAIN.MENUITEM8.CAPTION"
 msgid "Find"
 msgstr ""
 
+#: tfmain.mnulanguage.caption
+msgid "Language"
+msgstr ""
+
 #: tfmain.mnuopenrecent.caption
 msgid "Open Recent ..."
 msgstr ""
