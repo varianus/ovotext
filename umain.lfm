@@ -1,7 +1,7 @@
 object fMain: TfMain
-  Left = 579
+  Left = 553
   Height = 688
-  Top = 217
+  Top = 163
   Width = 966
   AllowDropFiles = True
   Caption = 'ovoText'
@@ -1193,6 +1193,9 @@ object fMain: TfMain
       object MenuItem36: TMenuItem
         Action = actFont
       end
+    end
+    object mnuLanguage: TMenuItem
+      Caption = 'Language'
     end
     object MenuItem52: TMenuItem
       Caption = 'Navigation'

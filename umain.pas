@@ -58,6 +58,7 @@ type
     MenuItem64: TMenuItem;
     MenuItem65: TMenuItem;
     MenuItem66: TMenuItem;
+    mnuLanguage: TMenuItem;
     mnuTabs: TMenuItem;
     PrintDialog1: TPrintDialog;
     SortAscending: TAction;
@@ -224,6 +225,7 @@ type
     function EditorAvalaible: boolean; inline;
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
     procedure ExecFind(Dialog: TFindDialog);
+    procedure mnuLangClick(Sender: TObject);
     procedure PrepareReplace(Dialog: TReplaceDialog);
 
     procedure PrepareSearch(Dialog: TFindDialog);
@@ -508,6 +510,7 @@ end;
 procedure TfMain.FormCreate(Sender: TObject);
 var
   i: integer;
+  mnuLang: TMenuItem;
 
 begin
   MRU := TMRUMenuManager.Create(Self);
@@ -550,7 +553,39 @@ begin
     end;
   {$ENDIF}
 
+  for i := 0 to HIGHLIGHTERCOUNT -1 do
+    begin
+      mnuLang := TMenuItem.Create(Self);
+      mnuLang.Caption:= ARHighlighter[i].HLClass.GetLanguageName;
+      mnuLang.Tag:= i;
+      mnuLang.OnClick:=@mnuLangClick;
+      mnuLanguage.Add(mnuLang);
+    end;
+
 end;
+
+procedure TfMain.mnuLangClick(Sender: TObject);
+var
+  idx : integer;
+  Ed: TEditor;
+
+begin
+  idx := TMenuItem(Sender).Tag;
+
+  if not Assigned(ARHighlighter[idx].HL) then
+    begin
+      ARHighlighter[idx].HL := ARHighlighter[idx].HLClass.Create(Self);
+      dmMain.InitializeHighlighter(ARHighlighter[idx].HL);
+    end;
+
+   if not EditorAvalaible then
+      exit;
+
+   Ed := EditorFactory.CurrentEditor;
+   Ed.Highlighter := ARHighlighter[idx].HL;
+
+end;
+
 
 procedure TfMain.FormDestroy(Sender: TObject);
 begin

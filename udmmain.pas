@@ -57,7 +57,54 @@ type
 const
   HIGHLIGHTERCOUNT = 46;
   ARHighlighter: array [0..HIGHLIGHTERCOUNT - 1] of RHighlighter = (
-    (HLClass: TSynPasSyn; Filter: 'Pascal Files (*.pas,*.dpr,*.dpk,*.inc)|*.pas;*.dpr;*.dpk;*.inc'; HL: nil),
+  (HLClass: TSynAWKSyn; Filter: 'AWK Script (*.awk)|*.awk'; HL: nil),
+  (HLClass: TSynBaanSyn; Filter: 'Baan 4GL Files (*.cln)|*.cln'; HL: nil),
+  (HLClass: TSynCppSyn; Filter: 'C++ Files (*.c,*.cpp,*.h,*.hpp,*.hh)|*.c;*.cpp;*.h;*.hpp;*.hh'; HL: nil),
+  (HLClass: TSynCACSyn; Filter: 'CA-Clipper Files (*.prg,*.ch,*.inc)|*.prg;*.ch;*.inc'; HL: nil),
+  (HLClass: TSynCssSyn; Filter: 'Cascading Stylesheets (*.css)|*.css'; HL: nil),
+  (HLClass: TSynCobolSyn; Filter: 'COBOL Files (*.cbl;*.cob)|*.cbl;*.cob'; HL: nil),
+  (HLClass: TSynIdlSyn; Filter: 'CORBA IDL files (*.idl)|*.idl'; HL: nil),
+  (HLClass: TSynCSSyn; Filter: 'C# Files (*.cs)|*.cs'; HL: nil),
+  (HLClass: TSynDiffSyn; Filter: 'Diff Files (*.diff)|*.diff'; HL: nil),
+  (HLClass: TSynEiffelSyn; Filter: 'Eiffel (*.e;*.ace)|*.e;*.ace'; HL: nil),
+  (HLClass: TSynFortranSyn; Filter: 'Fortran Files (*.for)|*.for'; HL: nil),
+  (HLClass: TSynFoxproSyn; Filter: 'Foxpro Files (*.prg)|*.prg'; HL: nil),
+  (HLClass: TSynDmlSyn; Filter: 'GEMBASE Files (*.dml,*.gem)|*.DML;*.GEM'; HL: nil),
+  (HLClass: TSynGWScriptSyn; Filter: 'GW-TEL Script Files (*.gws)|*.gws'; HL: nil),
+  (HLClass: TSynHaskellSyn; Filter: 'Haskell Files (*.hs;*.lhs)|*.hs;*.lhs'; HL: nil),
+  (HLClass: TSynHP48Syn; Filter: 'HP48 Files (*.s,*.sou,*.a,*.hp)|*.s;*.sou;*.a;*.hp'; HL: nil),
+  (HLClass: TSynHTMLSyn; Filter: 'HTML Document (*.htm,*.html)|*.htm;*.html'; HL: nil),
+  (HLClass: TSynIniSyn; Filter: 'INI Files (*.ini)|*.ini'; HL: nil),
+  (HLClass: TSynInnoSyn; Filter: 'Inno Setup Scripts (*.iss)|*.iss'; HL: nil),
+  (HLClass: TSynJavaSyn; Filter: 'Java Files (*.java)|*.java'; HL: nil),
+  (HLClass: TSynJScriptSyn; Filter: 'Javascript Files (*.js)|*.js'; HL: nil),
+  (HLClass: TSynLFMSyn; Filter: 'Lazarus Form Files (*.lfm)|*.lfm'; HL: nil),
+  (HLClass: TSynLDRSyn; Filter: 'LEGO LDraw Files (*.ldr)|*.ldr'; HL: nil),
+  (HLClass: TSynLuaSyn; Filter: 'Lua Script File (*.Lua)|*.Lua'; HL: nil),
+  (HLClass: TSynModelicaSyn; Filter: 'Modelica Files (*.mo)|*.mo'; HL: nil),
+  (HLClass: TSynM3Syn; Filter: 'Modula-3 Files (*.m3)|*.m3'; HL: nil),
+  (HLClass: TSynVBScriptSyn; Filter: 'VBScript Files (*.vbs)|*.vbs'; HL: nil),
+  (HLClass: TSynBatSyn; Filter: 'MS-DOS Batch Files (*.bat;*.cmd)|*.bat;*.cmd'; HL: nil),
+  (HLClass: TSynPasSyn; Filter: 'Pascal Files (*.pas,*.dpr,*.dpk,*.inc)|*.pas;*.dpr;*.dpk;*.inc'; HL: nil),
+  (HLClass: TSynPerlSyn; Filter: 'Perl Files (*.pl,*.pm,*.cgi)|*.pl;*.pm;*.cgi'; HL: nil),
+  (HLClass: TSynPHPSyn; Filter: 'PHP Files (*.php,*.php3,*.phtml,*.inc)|*.php;*.php3;*.phtml;*.inc'; HL: nil),
+  (HLClass: TSynPoSyn; Filter: 'Po Files (*.po)|*.po'; HL: nil),
+  (HLClass: TSynProgressSyn; Filter: 'Progress Files (*.w,*.p,*.i)|*.w;*.p;*.i'; HL: nil),
+  (HLClass: TSynPrologSyn; Filter: 'Prolog Files (*.pl;*.pro;*.prl)|*.pl;*.pro;*.prl';HL: nil),
+  (HLClass: TSynPythonSyn; Filter: 'Python Files (*.py)|*.py'; HL: nil),
+  (HLClass: TSynRCSyn; Filter: 'Resource Files (*.rc)|*.rc'; HL: nil),
+  (HLClass: TSynRubySyn; Filter: 'Ruby Files (*.rb;*.rbw)|*.rb;*.rbw'; HL: nil),
+  (HLClass: TSynSQLSyn; Filter: 'SQL Files (*.sql)|*.sql'; HL: nil),
+  (HLClass: TSynSMLSyn; Filter: 'Standard ML Files (*.sml)|*.sml'; HL: nil),
+  (HLClass: TSynTclTkSyn; Filter: 'Tcl/Tk Files (*.tcl)|*.tcl'; HL: nil),
+  (HLClass: TSynTeXSyn; Filter: 'TeX Files (*.tex)|*.tex'; HL: nil),
+  (HLClass: TSynUNIXShellScriptSyn; Filter: 'UNIX Shell Scripts (*.sh)|*.sh'; HL: nil),
+  (HLClass: TSynVBSyn; Filter: 'Visual Basic Files (*.bas)|*.bas'; HL: nil),
+  (HLClass: TSynVrml97Syn; Filter:'Vrml97/X3D World (*.wrl;*.wrml;*.vrl;*.vrml;*.x3d)|*.wrl;*.wrml;*.vrl;*.vrml;*.x3d'; HL: nil),
+  (HLClass: TSynAsmSyn; Filter: 'x86 Assembly Files (*.asm)|*.ASM'; HL: nil),
+  (HLClass: TSynXMLSyn; Filter: 'XML Document (*.xml,*.xsd,*.xsl,*.xslt,*.dtd)|*.xml;*.xsd;*.xsl;*.xslt;*.dtd';    HL: nil)
+
+  {  (HLClass: TSynPasSyn; Filter: 'Pascal Files (*.pas,*.dpr,*.dpk,*.inc)|*.pas;*.dpr;*.dpk;*.inc'; HL: nil),
     (HLClass: TSynCppSyn; Filter: 'C++ Files (*.c,*.cpp,*.h,*.hpp,*.hh)|*.c;*.cpp;*.h;*.hpp;*.hh'; HL: nil),
     (HLClass: TSynJavaSyn; Filter: 'Java Files (*.java)|*.java'; HL: nil),
     (HLClass: TSynPerlSyn; Filter: 'Perl Files (*.pl,*.pm,*.cgi)|*.pl;*.pm;*.cgi'; HL: nil),
@@ -102,7 +149,7 @@ const
     (HLClass: TSynLuaSyn; Filter: 'Lua Script File (*.Lua)|*.Lua'; HL: nil),
     (HLClass: TSynFortranSyn; Filter: 'Fortran Files (*.for)|*.for'; HL: nil),
     (HLClass: TSynPrologSyn; Filter: 'Prolog Files (*.pl;*.pro;*.prl)|*.pl;*.pro;*.prl';HL: nil),
-    (HLClass: TSynRCSyn; Filter: 'Resource Files (*.rc)|*.rc'; HL: nil)
+    (HLClass: TSynRCSyn; Filter: 'Resource Files (*.rc)|*.rc'; HL: nil)   }
     );
 
 type
@@ -124,10 +171,11 @@ type
     function GetSynExporterHTML: TSynExporterHTML;
     function GetSynExporterRTF: TSynExporterRTF;
     procedure LoadHighlighters;
-    procedure InitializeHighlighter(Highlighter: TSynCustomHighlighter);
     procedure SetAttribute(AttrName: string;
       Attribute: TSynHighlighterAttributes; DefaultAttrib: TFontAttributes);
   public
+    procedure InitializeHighlighter(Highlighter: TSynCustomHighlighter);
+
     Property RFTExporter: TSynExporterRTF read GetSynExporterRTF;
     Property HTMLExporter: TSynExporterHTML read GetSynExporterHTML;
     function getHighLighter(Extension: string): TSynCustomHighlighter;
