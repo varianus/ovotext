@@ -38,6 +38,7 @@ type
     actFullNameToClipBoard: TAction;
     actGoTo: TAction;
     Action1: TAction;
+    actTabToSpace: TAction;
     ExportHtmlToClipBoard: TAction;
     ExportHtmlToFile: TAction;
     actUpperCase: TAction;
@@ -58,6 +59,7 @@ type
     MenuItem64: TMenuItem;
     MenuItem65: TMenuItem;
     MenuItem66: TMenuItem;
+    MenuItem67: TMenuItem;
     mnuLanguage: TMenuItem;
     mnuTabs: TMenuItem;
     PrintDialog1: TPrintDialog;
@@ -175,6 +177,7 @@ type
     procedure actGoToExecute(Sender: TObject);
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
     procedure actPrintExecute(Sender: TObject);
+    procedure actTabToSpaceExecute(Sender: TObject);
     procedure actTrimExecute(Sender: TObject);
     procedure actTrimLeadingExecute(Sender: TObject);
     procedure actTrimTrailingExecute(Sender: TObject);
@@ -326,6 +329,17 @@ begin
   if PrintDialog1.Execute then
      prn.Print;
 
+end;
+
+procedure TfMain.actTabToSpaceExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  Ed.TextOperation(@TabsToSpace);
 end;
 
 procedure TfMain.actTrimExecute(Sender: TObject);

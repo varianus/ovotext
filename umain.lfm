@@ -379,6 +379,11 @@ object fMain: TfMain
       Caption = 'As Rtf To Clipboard'
       OnExecute = ExportRTFToClipBoardExecute
     end
+    object actTabToSpace: TAction
+      Category = 'Tools'
+      Caption = 'Tab to Spaces'
+      OnExecute = actTabToSpaceExecute
+    end
   end
   object mnuMain: TMainMenu
     Images = imgList
@@ -1005,6 +1010,9 @@ object fMain: TfMain
         end
         object MenuItem42: TMenuItem
           Action = ActCompressSpaces
+        end
+        object MenuItem67: TMenuItem
+          Action = actTabToSpace
         end
       end
       object MenuItem53: TMenuItem
