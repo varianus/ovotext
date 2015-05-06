@@ -46,6 +46,7 @@ type
     FFileName: TFilename;
     FSheet: TEditorTabSheet;
     FUntitled: boolean;
+    fCaretPos, fSel: TPoint;
     procedure CreateDefaultGutterParts;
     procedure QuickSort(L, R: Integer; CompareFn: TStringsSortCompare);
     procedure SetFileName(AValue: TFileName);
@@ -61,6 +62,8 @@ type
     procedure LoadFromFile(AFileName: TFileName);
     Procedure Sort(Ascending:boolean);
     procedure TextOperation(Operation: TTextOperation);
+    procedure PushPos;
+    procedure PopPos;
     //
     function Save: boolean;
     function SaveAs(AFileName: TFileName): boolean;
@@ -254,7 +257,12 @@ begin
                        dlgText:= RSReloadsimple;
 
                      if MessageDlg(RSReload, Format(dlgText, [FileName]), mtConfirmation, [mbyes, mbno], 0) = mrYes then
-                       ed.LoadFromFile(FileName)
+                       begin
+                         ed.PushPos;
+                         ed.LoadFromFile(FileName);
+                         ed.Modified:=false;
+                         ed.PopPos;
+                       end
                      else
                        ed.Modified:=true;
 
@@ -379,6 +387,16 @@ begin
         EndUpdate;
       end;
     end;
+end;
+
+procedure TEditor.PushPos;
+begin
+  fCaretPos := CaretXY;
+end;
+
+procedure TEditor.PopPos;
+begin
+  CaretXY := fCaretPos;
 end;
 
 
