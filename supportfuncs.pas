@@ -29,20 +29,23 @@ uses
   ,BaseUnix
   {$ENDIF}
   ;
+Const
+// TODO: read it from config file
+ NUMBEROFSPACEFORTAB = 4;
+
 //Remove invalid char from highlighters name and attributes
 Function CleanupName(aName:string):string;
 
 //Split a delimited string in a Stringlist
 procedure StrToStrings(S, Sep: string; const List: TStrings; const AllowEmptyString: boolean = True);
 
+
 {$IFDEF UNIX}
 function isRoot:boolean;
 {$ENDIF}
 
-
-
-
 function RemoveSpacesInExcess(const s: string): string;
+Function TabsToSpace(Const S: string):string;
 
 implementation
 
@@ -68,6 +71,11 @@ begin
     p := pos(#32#32, Result);
   end;
 
+end;
+
+function TabsToSpace(const S: string): string;
+begin
+  Result := StringReplace(s, #9, StringOfChar(#32,NUMBEROFSPACEFORTAB), [rfReplaceAll]);
 end;
 
 procedure StrToStrings(S, Sep: string; const List: TStrings; const AllowEmptyString: boolean = True);

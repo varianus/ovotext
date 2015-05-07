@@ -1,7 +1,7 @@
 object fMain: TfMain
-  Left = 579
+  Left = 553
   Height = 688
-  Top = 217
+  Top = 163
   Width = 966
   AllowDropFiles = True
   Caption = 'ovoText'
@@ -378,6 +378,11 @@ object fMain: TfMain
       Category = 'Edit'
       Caption = 'As Rtf To Clipboard'
       OnExecute = ExportRTFToClipBoardExecute
+    end
+    object actTabToSpace: TAction
+      Category = 'Tools'
+      Caption = 'Tab to Spaces'
+      OnExecute = actTabToSpaceExecute
     end
   end
   object mnuMain: TMainMenu
@@ -1006,6 +1011,9 @@ object fMain: TfMain
         object MenuItem42: TMenuItem
           Action = ActCompressSpaces
         end
+        object MenuItem67: TMenuItem
+          Action = actTabToSpace
+        end
       end
       object MenuItem53: TMenuItem
         Caption = 'Sort'
@@ -1193,6 +1201,9 @@ object fMain: TfMain
       object MenuItem36: TMenuItem
         Action = actFont
       end
+    end
+    object mnuLanguage: TMenuItem
+      Caption = 'Language'
     end
     object MenuItem52: TMenuItem
       Caption = 'Navigation'

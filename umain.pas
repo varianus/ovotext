@@ -38,6 +38,7 @@ type
     actFullNameToClipBoard: TAction;
     actGoTo: TAction;
     Action1: TAction;
+    actTabToSpace: TAction;
     ExportHtmlToClipBoard: TAction;
     ExportHtmlToFile: TAction;
     actUpperCase: TAction;
@@ -58,6 +59,8 @@ type
     MenuItem64: TMenuItem;
     MenuItem65: TMenuItem;
     MenuItem66: TMenuItem;
+    MenuItem67: TMenuItem;
+    mnuLanguage: TMenuItem;
     mnuTabs: TMenuItem;
     PrintDialog1: TPrintDialog;
     SortAscending: TAction;
@@ -174,6 +177,7 @@ type
     procedure actGoToExecute(Sender: TObject);
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
     procedure actPrintExecute(Sender: TObject);
+    procedure actTabToSpaceExecute(Sender: TObject);
     procedure actTrimExecute(Sender: TObject);
     procedure actTrimLeadingExecute(Sender: TObject);
     procedure actTrimTrailingExecute(Sender: TObject);
@@ -224,6 +228,7 @@ type
     function EditorAvalaible: boolean; inline;
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
     procedure ExecFind(Dialog: TFindDialog);
+    procedure mnuLangClick(Sender: TObject);
     procedure PrepareReplace(Dialog: TReplaceDialog);
 
     procedure PrepareSearch(Dialog: TFindDialog);
@@ -324,6 +329,17 @@ begin
   if PrintDialog1.Execute then
      prn.Print;
 
+end;
+
+procedure TfMain.actTabToSpaceExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  Ed.TextOperation(@TabsToSpace);
 end;
 
 procedure TfMain.actTrimExecute(Sender: TObject);
@@ -508,6 +524,7 @@ end;
 procedure TfMain.FormCreate(Sender: TObject);
 var
   i: integer;
+  mnuLang: TMenuItem;
 
 begin
   MRU := TMRUMenuManager.Create(Self);
@@ -550,9 +567,39 @@ begin
     end;
   {$ENDIF}
 
-
+  for i := 0 to HIGHLIGHTERCOUNT -1 do
+    begin
+      mnuLang := TMenuItem.Create(Self);
+      mnuLang.Caption:= ARHighlighter[i].HLClass.GetLanguageName;
+      mnuLang.Tag:= i;
+      mnuLang.OnClick:=@mnuLangClick;
+      mnuLanguage.Add(mnuLang);
+    end;
 
 end;
+
+procedure TfMain.mnuLangClick(Sender: TObject);
+var
+  idx : integer;
+  Ed: TEditor;
+
+begin
+  idx := TMenuItem(Sender).Tag;
+
+  if not Assigned(ARHighlighter[idx].HL) then
+    begin
+      ARHighlighter[idx].HL := ARHighlighter[idx].HLClass.Create(Self);
+      dmMain.InitializeHighlighter(ARHighlighter[idx].HL);
+    end;
+
+   if not EditorAvalaible then
+      exit;
+
+   Ed := EditorFactory.CurrentEditor;
+   Ed.Highlighter := ARHighlighter[idx].HL;
+
+end;
+
 
 procedure TfMain.FormDestroy(Sender: TObject);
 begin
@@ -836,7 +883,7 @@ begin
     Exclude(SynOption, ssoReplace);
     Exclude(SynOption, ssoReplaceAll);
   end;
-  ReplaceText := Dialog.FindText;
+  ReplaceText := Dialog.ReplaceText;
 end;
 
 function TfMain.AskFileName(Editor: TEditor): boolean;

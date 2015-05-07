@@ -191,6 +191,10 @@ msgstr ""
 msgid "Print"
 msgstr ""
 
+#: tfmain.acttabtospace.caption
+msgid "Tab to Spaces"
+msgstr ""
+
 #: tfmain.acttrim.caption
 msgid "Trim"
 msgstr ""
@@ -466,6 +470,10 @@ msgstr ""
 #: tfmain.menuitem8.caption
 msgctxt "TFMAIN.MENUITEM8.CAPTION"
 msgid "Find"
+msgstr ""
+
+#: tfmain.mnulanguage.caption
+msgid "Language"
 msgstr ""
 
 #: tfmain.mnuopenrecent.caption
