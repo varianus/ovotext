@@ -144,8 +144,8 @@ function GetConfigDir: string;
 var
   Path: string;
 begin
-  Path := GetAppConfigDirUTF8(False);
-  ForceDirectoriesUTF8(Path);
+  Path := GetAppConfigDir(False);
+  ForceDirectories(Path);
   Result := IncludeTrailingPathDelimiter(Path);
 
 end;
@@ -205,7 +205,7 @@ begin
 {$ENDIF}
     );
   fConfigDir := GetConfigDir;
-  fConfigHolder := TXMLConfigStorage.Create(FConfigFile, FileExistsUTF8(FConfigFile));
+  fConfigHolder := TXMLConfigStorage.Create(FConfigFile, FileExists(FConfigFile));
   ReadConfig;
   FXMLConfigExtended := TXMLConfigExtended.Create(nil);
   fXMLConfigExtended.Filename:= IncludeTrailingPathDelimiter(ResourcesPath) + 'color-schema.xml';
