@@ -245,7 +245,7 @@ var
 
 implementation
 
-uses lclproc, Stringcostants, uabout;
+uses lclproc, Stringcostants, uabout, SynExportHTML;
 
 {$R *.lfm}
 
@@ -280,7 +280,7 @@ begin
 
   dmMain.HTMLExporter.Highlighter := Ed.Highlighter;
   dmMain.HTMLExporter.ExportAsText:= true;
-  dmMain.HTMLExporter.CreateHTMLFragment := true;
+  dmMain.HTMLExporter.Options :=  [heoFragmentOnly];
   dmMain.HTMLExporter.ExportAll(Ed.Lines);
   dmMain.HTMLExporter.CopyToClipboard;
 
@@ -510,7 +510,8 @@ end;
 
 procedure TfMain.FormActivate(Sender: TObject);
 begin
-  EditorFactory.CurrentEditor.SetFocus;
+  if Assigned(EditorFactory) and assigned(EditorFactory.CurrentEditor) then
+     EditorFactory.CurrentEditor.SetFocus;
 end;
 
 procedure TfMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -525,6 +526,9 @@ procedure TfMain.FormCreate(Sender: TObject);
 var
   i: integer;
   mnuLang: TMenuItem;
+  CurrLetter: string;
+  SaveLetter: string;
+  CurrMenu: TMenuItem;
 
 begin
   MRU := TMRUMenuManager.Create(Self);
@@ -552,8 +556,8 @@ begin
   for i := 1 to Paramcount do
   begin
     // dirty hack to skip parameter as --debug=....
-    if copy(ParamStrUTF8(i),1,2) <> '--' then
-       EditorFactory.AddEditor(ParamStrUTF8(i));
+    if copy(ParamStr(i),1,2) <> '--' then
+       EditorFactory.AddEditor(ParamStr(i));
   end;
 
   prn := TSynEditPrint.Create(Self);
@@ -567,13 +571,23 @@ begin
     end;
   {$ENDIF}
 
+  SaveLetter:='';
   for i := 0 to HIGHLIGHTERCOUNT -1 do
     begin
       mnuLang := TMenuItem.Create(Self);
       mnuLang.Caption:= ARHighlighter[i].HLClass.GetLanguageName;
       mnuLang.Tag:= i;
       mnuLang.OnClick:=@mnuLangClick;
-      mnuLanguage.Add(mnuLang);
+      CurrLetter := UpperCase(Copy(mnuLang.Caption, 1, 1));
+      if SaveLetter <> CurrLetter then
+        begin
+          SaveLetter:= CurrLetter;
+          CurrMenu := TMenuItem.Create(Self);
+          CurrMenu.Caption := CurrLetter;
+          mnuLanguage.Add(CurrMenu);
+        end;
+
+      CurrMenu.Add(mnuLang);
     end;
 
 end;
