@@ -44,7 +44,7 @@ uses
   SynHighlighterM3, SynHighlighterLDraw, SynHighlighterVBScript,
   SynHighlighterSml, SynHighlighterIDL, SynHighlighterCobol, SynHighlighterGWS,
   SynHighlighterAsm, SynHighlighterLua, SynHighlighterFortran,
-  SynHighlighterProlog, SynHighlighterRC;
+  SynHighlighterProlog, SynHighlighterRC, SynHighlighterR;
 
 type
 
@@ -55,7 +55,7 @@ type
   end;
 
 const
-  HIGHLIGHTERCOUNT = 46;
+  HIGHLIGHTERCOUNT = 47;
   ARHighlighter: array [0..HIGHLIGHTERCOUNT - 1] of RHighlighter = (
   (HLClass: TSynAWKSyn; Filter: 'AWK Script (*.awk)|*.awk'; HL: nil),
   (HLClass: TSynBaanSyn; Filter: 'Baan 4GL Files (*.cln)|*.cln'; HL: nil),
@@ -92,6 +92,7 @@ const
   (HLClass: TSynProgressSyn; Filter: 'Progress Files (*.w,*.p,*.i)|*.w;*.p;*.i'; HL: nil),
   (HLClass: TSynPrologSyn; Filter: 'Prolog Files (*.pl;*.pro;*.prl)|*.pl;*.pro;*.prl';HL: nil),
   (HLClass: TSynPythonSyn; Filter: 'Python Files (*.py)|*.py'; HL: nil),
+  (HLClass: TSynRSyn; Filter: 'R Files (*.r)|*.r';    HL: nil),
   (HLClass: TSynRCSyn; Filter: 'Resource Files (*.rc)|*.rc'; HL: nil),
   (HLClass: TSynRubySyn; Filter: 'Ruby Files (*.rb;*.rbw)|*.rb;*.rbw'; HL: nil),
   (HLClass: TSynSQLSyn; Filter: 'SQL Files (*.sql)|*.sql'; HL: nil),
@@ -103,6 +104,7 @@ const
   (HLClass: TSynVrml97Syn; Filter:'Vrml97/X3D World (*.wrl;*.wrml;*.vrl;*.vrml;*.x3d)|*.wrl;*.wrml;*.vrl;*.vrml;*.x3d'; HL: nil),
   (HLClass: TSynAsmSyn; Filter: 'x86 Assembly Files (*.asm)|*.ASM'; HL: nil),
   (HLClass: TSynXMLSyn; Filter: 'XML Document (*.xml,*.xsd,*.xsl,*.xslt,*.dtd)|*.xml;*.xsd;*.xsl;*.xslt;*.dtd';    HL: nil)
+
 
   {  (HLClass: TSynPasSyn; Filter: 'Pascal Files (*.pas,*.dpr,*.dpk,*.inc)|*.pas;*.dpr;*.dpk;*.inc'; HL: nil),
     (HLClass: TSynCppSyn; Filter: 'C++ Files (*.c,*.cpp,*.h,*.hpp,*.hh)|*.c;*.cpp;*.h;*.hpp;*.hh'; HL: nil),
