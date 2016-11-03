@@ -4692,7 +4692,7 @@ begin
     i := -1;
 
   if i <> -1 then
-    Result := TtkTokenKind(FKeywords.Objects[i])
+    Result := TtkTokenKind(PtrInt(FKeywords.Objects[i]))
 
   // Check if it is a system identifier (__*__)
   else if (fStringLen >= 5) and
@@ -5482,7 +5482,7 @@ begin
     s:=format('%s',[ExternalKeyFileName]);
     if FileExists(s) then begin
                     L.LoadFromFile(s);
-                    for f := 1 to L.COUNT do GlobalKeywords.AddObject(L[f-1], TObject(Ord(KeyType)));
+                    for f := 1 to L.COUNT do GlobalKeywords.AddObject(L[f-1], TObject(UIntPtr(Ord(KeyType))));
                     end;
     L.free;
     if  not  AddWords then FKeywords.Assign (GlobalKeywords)
@@ -5502,7 +5502,7 @@ end;
 
 function TSynRSyn.GetRange: Pointer;
 begin
-  Result := Pointer(fRange);
+  Result := Pointer(ord(fRange));
 end;
 
 function TSynRSyn.GetTokenID: TtkTokenKind;
@@ -5566,7 +5566,7 @@ end;
 
 procedure TSynRSyn.SetRange(Value: Pointer);
 begin
-  fRange := TRangeState(Value);
+  fRange := TRangeState(UIntPtr(Value));
 end;
 
 function TSynRSyn.IsFilterStored: Boolean;
