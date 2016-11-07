@@ -14,11 +14,12 @@ object fMain: TfMain
   OnDestroy = FormDestroy
   OnDropFiles = FormDropFiles
   ShowHint = True
+  LCLVersion = '1.7'
   Visible = True
   object StatusBar1: TStatusBar
     Left = 0
     Height = 23
-    Top = 645
+    Top = 625
     Width = 966
     Panels = <    
       item

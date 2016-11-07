@@ -1,7 +1,8 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
-#: stringcostants.rsadministratirights
+#: stringcostants.rsadministrativerights
+msgctxt "stringcostants.rsadministrativerights"
 msgid "Warning, you are using the root account, you may harm your system!"
 msgstr ""
 
@@ -211,10 +212,6 @@ msgstr ""
 msgid "UPPERCASE"
 msgstr ""
 
-#: tfmain.caption
-msgid "ovoText"
-msgstr ""
-
 #: tfmain.editcopy.caption
 msgid "&Copy"
 msgstr ""
@@ -367,31 +364,6 @@ msgstr ""
 msgid "File"
 msgstr ""
 
-#: tfmain.menuitem11.caption
-msgctxt "tfmain.menuitem11.caption"
-msgid "-"
-msgstr ""
-
-#: tfmain.menuitem15.caption
-msgctxt "TFMAIN.MENUITEM15.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tfmain.menuitem25.caption
-msgctxt "TFMAIN.MENUITEM25.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tfmain.menuitem26.caption
-msgctxt "TFMAIN.MENUITEM26.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tfmain.menuitem27.caption
-msgctxt "TFMAIN.MENUITEM27.CAPTION"
-msgid "-"
-msgstr ""
-
 #: tfmain.menuitem28.caption
 msgid "Clean recent file list"
 msgstr ""
@@ -404,37 +376,12 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: tfmain.menuitem34.caption
-msgctxt "TFMAIN.MENUITEM34.CAPTION"
-msgid "-"
-msgstr ""
-
 #: tfmain.menuitem35.caption
 msgid "Settings"
 msgstr ""
 
-#: tfmain.menuitem37.caption
-msgctxt "TFMAIN.MENUITEM37.CAPTION"
-msgid "-"
-msgstr ""
-
 #: tfmain.menuitem39.caption
-msgid "Spaces operation"
-msgstr ""
-
-#: tfmain.menuitem41.caption
-msgctxt "TFMAIN.MENUITEM41.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tfmain.menuitem47.caption
-msgctxt "TFMAIN.MENUITEM47.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tfmain.menuitem48.caption
-msgctxt "TFMAIN.MENUITEM48.CAPTION"
-msgid "-"
+msgid "Spaces operations"
 msgstr ""
 
 #: tfmain.menuitem52.caption
@@ -443,16 +390,6 @@ msgstr ""
 
 #: tfmain.menuitem53.caption
 msgid "Sort"
-msgstr ""
-
-#: tfmain.menuitem56.caption
-msgctxt "tfmain.menuitem56.caption"
-msgid "-"
-msgstr ""
-
-#: tfmain.menuitem58.caption
-msgctxt "TFMAIN.MENUITEM58.CAPTION"
-msgid "-"
 msgstr ""
 
 #: tfmain.menuitem59.caption
