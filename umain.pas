@@ -26,8 +26,8 @@ interface
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls,
-  SynEditTypes, SynHighlighterPas, mrumanager, PrintersDlgs, Config,
-  SupportFuncs, udmmain, uDglGoTo, SynEditPrint;
+  SynEditTypes, SynHighlighterPas, PrintersDlgs, Config,
+  SupportFuncs, udmmain, uDglGoTo, SynEditPrint, simplemrumanager;
 
 type
 
@@ -239,6 +239,8 @@ type
   public
     { public declarations }
   end;
+
+
 
 var
   fMain: TfMain;
@@ -618,6 +620,7 @@ end;
 procedure TfMain.FormDestroy(Sender: TObject);
 begin
   ConfigObj.WriteStrings('Recent', 'File', MRU.Recent);
+  Mru.free;
   FreeAndNil(EditorFactory);
 end;
 

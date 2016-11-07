@@ -188,7 +188,6 @@ object fMain: TfMain
     object EditPaste: TEditPaste
       Category = 'Edit'
       Caption = '&Paste'
-      Enabled = False
       Hint = 'Paste'
       ImageIndex = 24
       ShortCut = 16470
