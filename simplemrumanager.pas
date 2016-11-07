@@ -1,4 +1,5 @@
 { MRU (Most Recent Used) menu item manager
+  Stripped down version of mrumanager (included in package lazmrumenu) by Marco Caselli
 
   Copyright (C) 2011 Michael Van Canneyt (michael@freepascal.org)
                      Modifications by Werner Pamler
