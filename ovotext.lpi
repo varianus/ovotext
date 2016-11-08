@@ -154,7 +154,7 @@
         <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="5">
+    <RequiredPackages Count="4">
       <Item1>
         <PackageName Value="Printer4Lazarus"/>
       </Item1>
@@ -162,17 +162,14 @@
         <PackageName Value="FCL"/>
       </Item2>
       <Item3>
-        <PackageName Value="lazmrumenu"/>
-      </Item3>
-      <Item4>
         <PackageName Value="SynEdit"/>
         <MinVersion Major="1" Valid="True"/>
-      </Item4>
-      <Item5>
+      </Item3>
+      <Item4>
         <PackageName Value="LCL"/>
-      </Item5>
+      </Item4>
     </RequiredPackages>
-    <Units Count="11">
+    <Units Count="12">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -183,7 +180,6 @@
         <ComponentName Value="fMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="umain"/>
       </Unit1>
       <Unit2>
         <Filename Value="uabout.pas"/>
@@ -198,11 +194,11 @@
         <ComponentName Value="dmMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <UnitName Value="udmmain"/>
       </Unit3>
       <Unit4>
         <Filename Value="stringcostants.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="Stringcostants"/>
       </Unit4>
       <Unit5>
         <Filename Value="supportfuncs.pas"/>
@@ -212,15 +208,16 @@
       <Unit6>
         <Filename Value="ueditor.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="ueditor"/>
       </Unit6>
       <Unit7>
         <Filename Value="config.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="Config"/>
       </Unit7>
       <Unit8>
         <Filename Value="ucheckfilechange.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="uCheckFileChange"/>
       </Unit8>
       <Unit9>
         <Filename Value="udglgoto.pas"/>
@@ -228,11 +225,16 @@
         <ComponentName Value="dlgGoTo"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uDglGoTo"/>
       </Unit9>
       <Unit10>
         <Filename Value="printing\syneditprintextprocs.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit10>
+      <Unit11>
+        <Filename Value="simplemrumanager.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit11>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
