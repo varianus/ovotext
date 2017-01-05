@@ -46,6 +46,7 @@ function isRoot:boolean;
 
 function RemoveSpacesInExcess(const s: string): string;
 Function TabsToSpace(Const S: string):string;
+function FormatXML(Const S: string): string;
 
 implementation
 
@@ -103,6 +104,137 @@ begin
     List.EndUpdate;
   end;
 end;
+
+function FormatXML(Const S: string): string;
+const
+  nIndentDepth = 3;
+  bHighlightCloseTag = false;
+var
+  bDoIndent: boolean;
+  szCheckTag: string;
+  bTagBuilding: boolean;
+  szCurrentTag: string;
+  cNextChar: char;
+  bQuoteActive: boolean;
+  cChar: char;
+  bCheckIndent: boolean;
+  bTagActive: boolean;
+  nStringLoop: Integer;
+  nIndent: Integer;
+  procedure OutputIndent;
+  var
+    nIndentLoop: Integer;
+  begin
+    if result <> '' then
+      result := result + sLineBreak;
+    if nIndent < 0 then
+    begin
+      nIndent := 0; // fix negative indents due to bad   XML
+      // result := result + '[NEGINDENT]';
+    end;
+    for nIndentLoop := 0 to nIndent do
+    begin
+      result := result + ' ';
+    end;
+  end;
+
+begin
+  bTagBuilding := false;
+  bQuoteActive := false;
+  bTagActive := false;
+  result := '';
+  nIndent := 0;
+  bCheckIndent := false;
+  szCurrentTag := '';
+  for nStringLoop := 1 to Length(S) do
+  begin
+    cChar := S[nStringLoop];
+    if nStringLoop < Length(S) then
+    begin
+      cNextChar := S[nStringLoop + 1];
+    end
+    else
+    begin
+      cNextChar := ' '; // safe char
+    end;
+    case cChar of //
+      '<':
+        begin
+          bDoIndent := false;
+          bTagActive := True;
+          if cNextChar = '/' then
+          begin
+            Dec(nIndent, nIndentDepth);
+            bTagBuilding := false;
+            bCheckIndent := false;
+            szCheckTag := Copy(S, nStringLoop + 2,
+              Length(szCurrentTag));
+            if szCheckTag <> szCurrentTag then
+              bDoIndent := True;
+          end
+          else
+          begin
+            bTagBuilding := True;
+            szCurrentTag := '';
+            bCheckIndent := True;
+            if not bHighlightCloseTag then
+              bDoIndent := True;
+          end;
+          if bHighlightCloseTag then
+            bDoIndent := True;
+          if bDoIndent then
+            OutputIndent;
+          result := result + '<';
+        end;
+      '>':
+        begin
+          bTagActive := false;
+          bTagBuilding := false;
+          result := result + '>';
+          if bCheckIndent then
+            Inc(nIndent, nIndentDepth);
+        end;
+      '"':
+        begin
+          result := result + cChar;
+          if bTagActive then
+            bQuoteActive := not bQuoteActive;
+        end;
+      '/':
+        begin
+          if (bTagActive) and (not bQuoteActive) then
+          begin
+            if bCheckIndent then
+            begin
+              if cNextChar = '>' then
+                Dec(nIndent, nIndentDepth);
+            end;
+          end;
+          result := result + '/';
+        end;
+      #13, #10, #9:
+        begin
+        end;
+
+    else
+      begin
+        if bTagBuilding then
+        begin
+          if cChar <> ' ' then
+          begin
+            szCurrentTag := szCurrentTag + cChar;
+          end
+          else
+          begin
+            bTagBuilding := false;
+          end;
+        end;
+        result := result + cChar;
+      end;
+    end; // case
+  end;
+end;
+
 {$IFDEF UNIX}
 function isRoot: boolean;
 begin

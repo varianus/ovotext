@@ -14,12 +14,11 @@ object fMain: TfMain
   OnDestroy = FormDestroy
   OnDropFiles = FormDropFiles
   ShowHint = True
-  LCLVersion = '1.7'
   Visible = True
   object StatusBar1: TStatusBar
     Left = 0
     Height = 23
-    Top = 625
+    Top = 645
     Width = 966
     Panels = <    
       item
@@ -412,6 +411,11 @@ object fMain: TfMain
       DisableIfNoHandler = False
       OnExecute = actTabToSpaceExecute
     end
+    object actXMLPrettyPrint: TAction
+      Category = 'XML'
+      Caption = 'Pretty Print'
+      OnExecute = actXMLPrettyPrintExecute
+    end
   end
   object mnuMain: TMainMenu
     Images = imgList
@@ -555,6 +559,12 @@ object fMain: TfMain
         end
         object MenuItem61: TMenuItem
           Action = actUpperCase
+        end
+      end
+      object MenuItem68: TMenuItem
+        Caption = 'XML'
+        object MenuItem69: TMenuItem
+          Action = actXMLPrettyPrint
         end
       end
     end

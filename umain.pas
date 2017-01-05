@@ -38,6 +38,7 @@ type
     actFullNameToClipBoard: TAction;
     actGoTo: TAction;
     Action1: TAction;
+    actXMLPrettyPrint: TAction;
     actTabToSpace: TAction;
     ExportHtmlToClipBoard: TAction;
     ExportHtmlToFile: TAction;
@@ -60,6 +61,8 @@ type
     MenuItem65: TMenuItem;
     MenuItem66: TMenuItem;
     MenuItem67: TMenuItem;
+    MenuItem68: TMenuItem;
+    MenuItem69: TMenuItem;
     mnuLanguage: TMenuItem;
     mnuTabs: TMenuItem;
     PrintDialog1: TPrintDialog;
@@ -181,6 +184,7 @@ type
     procedure actTrimExecute(Sender: TObject);
     procedure actTrimLeadingExecute(Sender: TObject);
     procedure actTrimTrailingExecute(Sender: TObject);
+    procedure actXMLPrettyPrintExecute(Sender: TObject);
     procedure AppPropertiesActivate(Sender: TObject);
     procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
     procedure EditRedoExecute(Sender: TObject);
@@ -378,6 +382,17 @@ begin
   Ed := EditorFactory.CurrentEditor;
   Ed.TextOperation(@TrimRight);
 
+end;
+
+procedure TfMain.actXMLPrettyPrintExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  Ed.TextOperation(@FormatXML, [tomFullText]);
 end;
 
 procedure TfMain.AppPropertiesActivate(Sender: TObject);

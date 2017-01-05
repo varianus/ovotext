@@ -34,6 +34,12 @@ type
   TEditorTabSheet = class;
   TEditorFactory = class;
 
+  TTextLevel = (tomSelection, tomLines, tomFullText);
+  TTextOperationLevel = set of TTextLevel;
+Const
+  DefaultOperationLevel = [tomSelection, tomLines];
+
+type
   TTextOperation = function(const Param:string):string;
 
   { TEditorFactory }
@@ -50,6 +56,7 @@ type
     procedure CreateDefaultGutterParts;
     procedure QuickSort(L, R: Integer; CompareFn: TStringsSortCompare);
     procedure SetFileName(AValue: TFileName);
+    procedure SetText(NewText: string);
     procedure SetUntitled(AValue: boolean);
   public
     constructor Create(AOwner: TComponent); override;
@@ -61,7 +68,7 @@ type
     property Untitled: boolean read FUntitled write SetUntitled;
     procedure LoadFromFile(AFileName: TFileName);
     Procedure Sort(Ascending:boolean);
-    procedure TextOperation(Operation: TTextOperation);
+    procedure TextOperation(Operation: TTextOperation; const Level: TTextOperationLevel = DefaultOperationLevel);
     procedure PushPos;
     procedure PopPos;
     //
@@ -162,6 +169,11 @@ end;
 procedure TEditor.SetLineText(Index: integer; NewText: string);
 begin
   TextBetweenPoints[Point(1, Index + 1), PhysicalToLogicalPos(Point(Length(Lines[Index]) + 1, Index + 1))] := NewText;
+end;
+
+procedure TEditor.SetText(NewText: string);
+begin
+  TextBetweenPoints[Point(1, 1),  PhysicalToLogicalPos(Point(Length(Lines[Lines.count-1]) + 1, Lines.count ))] := NewText;
 end;
 
 procedure TEditor.LoadFromFile(AFileName: TFileName);
@@ -359,34 +371,46 @@ begin
     QuickSort(Pivot + 1, R, CompareFn);
 end;
 
-procedure TEditor.TextOperation(Operation: TTextOperation);
+procedure TEditor.TextOperation(Operation: TTextOperation; const Level: TTextOperationLevel = DefaultOperationLevel);
 var
   i: integer;
   tmpst: TStringList;
 begin
 
-  if SelAvail then
+  if (tomSelection in Level) and  SelAvail then
     begin
       tmpst := TStringList.Create;
       tmpst.Text:=SelText;
       for i := 0 to tmpst.Count - 1 do
         tmpst[i] := Operation(tmpst[i]);
       SelText:= copy(tmpst.Text, 1, Length(tmpst.Text)-Length(LineEnding));
-
     end
   else
-    begin
-      BeginUpdate(True);
-      try
-        for i := 0 to Lines.Count - 1 do
-        begin
-          SetLineText(i, Operation(Lines[i]));
-        end;
+    if (tomLines in Level) then
+      begin
+        BeginUpdate(True);
+        try
+          for i := 0 to Lines.Count - 1 do
+          begin
+            SetLineText(i, Operation(Lines[i]));
+          end;
 
-      finally
-        EndUpdate;
-      end;
-    end;
+        finally
+          EndUpdate;
+        end;
+      end
+   else
+     begin
+       BeginUpdate(True);
+       try
+         for i := 0 to Lines.Count - 1 do
+          begin
+           SetText(Operation(Text));
+          end;
+       finally
+         EndUpdate;
+       end;
+     end;
 end;
 
 procedure TEditor.PushPos;

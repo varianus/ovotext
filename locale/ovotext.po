@@ -212,6 +212,10 @@ msgstr ""
 msgid "UPPERCASE"
 msgstr ""
 
+#: tfmain.actxmlprettyprint.caption
+msgid "Pretty Print"
+msgstr ""
+
 #: tfmain.editcopy.caption
 msgid "&Copy"
 msgstr ""
@@ -398,6 +402,10 @@ msgstr ""
 
 #: tfmain.menuitem62.caption
 msgid "Export"
+msgstr ""
+
+#: tfmain.menuitem68.caption
+msgid "XML"
 msgstr ""
 
 #: tfmain.menuitem7.caption
