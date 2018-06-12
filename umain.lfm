@@ -1,11 +1,11 @@
 object fMain: TfMain
   Left = 553
-  Height = 668
+  Height = 629
   Top = 163
   Width = 966
   AllowDropFiles = True
   Caption = 'ovoText'
-  ClientHeight = 668
+  ClientHeight = 629
   ClientWidth = 966
   Menu = mnuMain
   OnActivate = FormActivate
@@ -18,7 +18,7 @@ object fMain: TfMain
   object StatusBar1: TStatusBar
     Left = 0
     Height = 23
-    Top = 645
+    Top = 606
     Width = 966
     Panels = <    
       item
@@ -34,6 +34,7 @@ object fMain: TfMain
         Width = 100
       end>
     SimplePanel = False
+    SizeGrip = False
   end
   object ToolBar1: TToolBar
     Left = 0
@@ -50,17 +51,17 @@ object fMain: TfMain
       Action = FileNew
     end
     object ToolButton2: TToolButton
-      Left = 38
+      Left = 30
       Top = 2
       Action = FileOpen
     end
     object ToolButton3: TToolButton
-      Left = 62
+      Left = 54
       Top = 2
       Action = FileSave
     end
     object tbbClose: TToolButton
-      Left = 316
+      Left = 285
       Top = 2
       Action = FileClose
     end
@@ -68,68 +69,64 @@ object fMain: TfMain
       Left = 25
       Height = 18
       Top = 2
-      Width = 13
       Style = tbsDivider
     end
     object ToolButton6: TToolButton
-      Left = 86
+      Left = 78
       Top = 2
       Action = EditCut
     end
     object ToolButton7: TToolButton
-      Left = 120
+      Left = 107
       Top = 2
       Action = EditCopy
     end
     object ToolButton8: TToolButton
-      Left = 144
+      Left = 131
       Top = 2
       Action = EditPaste
     end
     object ToolButton9: TToolButton
-      Left = 181
+      Left = 160
       Top = 2
       Action = EditUndo
     end
     object ToolButton10: TToolButton
-      Left = 205
+      Left = 184
       Top = 2
       Action = EditRedo
     end
     object ToolButton11: TToolButton
-      Left = 110
+      Left = 102
       Height = 18
       Top = 2
-      Width = 10
       Style = tbsDivider
     end
     object ToolButton12: TToolButton
-      Left = 168
+      Left = 155
       Height = 18
       Top = 2
-      Width = 13
       Style = tbsDivider
     end
     object ToolButton13: TToolButton
-      Left = 229
+      Left = 208
       Top = 2
       Action = SearchFind
     end
     object ToolButton15: TToolButton
-      Left = 268
+      Left = 237
       Top = 2
       Action = SearchReplace
     end
     object tbbCloseAll: TToolButton
-      Left = 292
+      Left = 261
       Top = 2
       Action = FileCloseAll
     end
     object tbbSepClose: TToolButton
-      Left = 253
+      Left = 232
       Height = 18
       Top = 2
-      Width = 15
       Style = tbsDivider
     end
   end
@@ -209,7 +206,6 @@ object fMain: TfMain
     object SearchFind: TAction
       Category = 'Search'
       Caption = '&Search'
-      Enabled = False
       Hint = 'Find'
       ImageIndex = 8
       OnExecute = SearchFindExecute
@@ -218,7 +214,6 @@ object fMain: TfMain
     object SearchReplace: TAction
       Category = 'Search'
       Caption = '&Replace'
-      Enabled = False
       Hint = 'Search and Replace'
       ImageIndex = 14
       OnExecute = SearchReplaceExecute
@@ -367,9 +362,10 @@ object fMain: TfMain
       DisableIfNoHandler = False
       OnExecute = SortDescendingExecute
     end
-    object Action1: TAction
-      Caption = 'Action1'
+    object actLanguageNone: TAction
+      Caption = 'None'
       DisableIfNoHandler = False
+      OnExecute = actLanguageNoneExecute
     end
     object actLowerCase: TAction
       Category = 'Tools'
@@ -594,6 +590,9 @@ object fMain: TfMain
     end
     object mnuLanguage: TMenuItem
       Caption = 'Language'
+      object mnuNone: TMenuItem
+        Action = actLanguageNone
+      end
     end
     object MenuItem52: TMenuItem
       Caption = 'Navigation'

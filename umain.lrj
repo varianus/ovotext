@@ -1,4 +1,5 @@
 {"version":1,"strings":[
+{"hash":114601092,"name":"tfmain.caption","sourcebytes":[111,118,111,84,101,120,116],"value":"ovoText"},
 {"hash":63628709,"name":"tfmain.lbmessage.caption","sourcebytes":[108,98,77,101,115,115,97,103,101],"value":"lbMessage"},
 {"hash":315140,"name":"tfmain.fileexit.caption","sourcebytes":[69,120,105,116],"value":"Exit"},
 {"hash":146468846,"name":"tfmain.fileexit.hint","sourcebytes":[67,108,111,115,101,32,97,112,112,108,105,99,97,116,105,111,110],"value":"Close application"},
@@ -46,7 +47,7 @@
 {"hash":5738580,"name":"tfmain.actprint.caption","sourcebytes":[80,114,105,110,116],"value":"Print"},
 {"hash":254993271,"name":"tfmain.sortascending.caption","sourcebytes":[83,111,114,116,32,65,115,99,101,110,100,105,110,103],"value":"Sort Ascending"},
 {"hash":14703287,"name":"tfmain.sortdescending.caption","sourcebytes":[83,111,114,116,32,68,101,115,99,101,110,100,105,110,103],"value":"Sort Descending"},
-{"hash":128648785,"name":"tfmain.action1.caption","sourcebytes":[65,99,116,105,111,110,49],"value":"Action1"},
+{"hash":349765,"name":"tfmain.actlanguagenone.caption","sourcebytes":[78,111,110,101],"value":"None"},
 {"hash":231271413,"name":"tfmain.actlowercase.caption","sourcebytes":[108,111,119,101,114,99,97,115,101],"value":"lowercase"},
 {"hash":77999141,"name":"tfmain.actuppercase.caption","sourcebytes":[85,80,80,69,82,67,65,83,69],"value":"UPPERCASE"},
 {"hash":267368997,"name":"tfmain.exporthtmltofile.caption","sourcebytes":[65,115,32,72,116,109,108,32,84,111,32,70,105,108,101],"value":"As Html To File"},

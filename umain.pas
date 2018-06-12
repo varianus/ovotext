@@ -37,7 +37,7 @@ type
     actFont: TAction;
     actFullNameToClipBoard: TAction;
     actGoTo: TAction;
-    Action1: TAction;
+    actLanguageNone: TAction;
     actXMLPrettyPrint: TAction;
     actTabToSpace: TAction;
     ExportHtmlToClipBoard: TAction;
@@ -63,6 +63,7 @@ type
     MenuItem67: TMenuItem;
     MenuItem68: TMenuItem;
     MenuItem69: TMenuItem;
+    mnuNone: TMenuItem;
     mnuLanguage: TMenuItem;
     mnuTabs: TMenuItem;
     PrintDialog1: TPrintDialog;
@@ -179,6 +180,7 @@ type
     procedure actFullNameToClipBoardExecute(Sender: TObject);
     procedure actGoToExecute(Sender: TObject);
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
+    procedure actLanguageNoneExecute(Sender: TObject);
     procedure actPrintExecute(Sender: TObject);
     procedure actTabToSpaceExecute(Sender: TObject);
     procedure actTrimExecute(Sender: TObject);
@@ -323,6 +325,17 @@ begin
   actFullNameToClipBoard.Enabled:= Avail and not ed.Untitled;
   actGoTo.Enabled:= Avail and (ed.Lines.Count > 0);
   Handled := True;
+end;
+
+procedure TfMain.actLanguageNoneExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+   if not EditorAvalaible then
+      exit;
+
+   Ed := EditorFactory.CurrentEditor;
+   Ed.Highlighter := nil;
 end;
 
 procedure TfMain.actPrintExecute(Sender: TObject);
