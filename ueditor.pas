@@ -624,7 +624,7 @@ var
 begin
   if (PageCount = 0) or (HintInfo = nil) then
     Exit;
-  Tab := TabIndexAtClientPos(ScreenToClient(Mouse.CursorPos));
+  Tab := IndexOfTabAt(ScreenToClient(Mouse.CursorPos));
 
   if Tab < 0 then
     Exit;
