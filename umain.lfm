@@ -1,7 +1,7 @@
 object fMain: TfMain
-  Left = 553
+  Left = 525
   Height = 629
-  Top = 163
+  Top = 172
   Width = 966
   AllowDropFiles = True
   Caption = 'ovoText'
@@ -412,6 +412,11 @@ object fMain: TfMain
       Caption = 'Pretty Print'
       OnExecute = actXMLPrettyPrintExecute
     end
+    object actQuote: TAction
+      Category = 'Tools'
+      Caption = 'Quote'
+      OnExecute = actQuoteExecute
+    end
   end
   object mnuMain: TMainMenu
     Images = imgList
@@ -555,6 +560,12 @@ object fMain: TfMain
         end
         object MenuItem61: TMenuItem
           Action = actUpperCase
+        end
+      end
+      object MenuItem70: TMenuItem
+        Caption = 'Others'
+        object MenuItem71: TMenuItem
+          Action = actQuote
         end
       end
       object MenuItem68: TMenuItem

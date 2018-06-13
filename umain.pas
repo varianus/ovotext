@@ -26,7 +26,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls,
-  SynEditTypes, SynHighlighterPas, PrintersDlgs, Config,
+  SynEditTypes, SynHighlighterPas,   PrintersDlgs, Config,
   SupportFuncs, udmmain, uDglGoTo, SynEditPrint, simplemrumanager;
 
 type
@@ -37,6 +37,7 @@ type
     actFont: TAction;
     actFullNameToClipBoard: TAction;
     actGoTo: TAction;
+    actQuote: TAction;
     actLanguageNone: TAction;
     actXMLPrettyPrint: TAction;
     actTabToSpace: TAction;
@@ -63,6 +64,8 @@ type
     MenuItem67: TMenuItem;
     MenuItem68: TMenuItem;
     MenuItem69: TMenuItem;
+    MenuItem70: TMenuItem;
+    MenuItem71: TMenuItem;
     mnuNone: TMenuItem;
     mnuLanguage: TMenuItem;
     mnuTabs: TMenuItem;
@@ -182,6 +185,7 @@ type
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
     procedure actLanguageNoneExecute(Sender: TObject);
     procedure actPrintExecute(Sender: TObject);
+    procedure actQuoteExecute(Sender: TObject);
     procedure actTabToSpaceExecute(Sender: TObject);
     procedure actTrimExecute(Sender: TObject);
     procedure actTrimLeadingExecute(Sender: TObject);
@@ -207,6 +211,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormDropFiles(Sender: TObject; const FileNames: array of string);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure HelpAboutExecute(Sender: TObject);
     procedure actLowerCaseExecute(Sender: TObject);
     procedure MenuItem28Click(Sender: TObject);
@@ -348,6 +353,17 @@ begin
   if PrintDialog1.Execute then
      prn.Print;
 
+end;
+
+procedure TfMain.actQuoteExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  Ed.TextOperation(@QuotedStr, [tomLines]);
 end;
 
 procedure TfMain.actTabToSpaceExecute(Sender: TObject);
@@ -657,7 +673,16 @@ var
   i: integer;
 begin
   for i := Low(FileNames) to High(FileNames) do
+   begin
     EditorFactory.AddEditor(FileNames[i]);
+    MRU.AddToRecent(FileNames[i]);
+   end;
+
+end;
+
+procedure TfMain.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState
+  );
+begin
 
 end;
 
