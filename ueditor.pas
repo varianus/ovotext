@@ -26,6 +26,8 @@ interface
 uses
   Classes, SysUtils, Controls, Dialogs, ComCtrls, LCLProc,
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,SynGutterChanges,
+  SynMacroRecorder, SynPluginMultiCaret, SynPluginSyncroEdit,
+  SynEditMouseCmds,
   Stringcostants, Forms, Graphics, Config, udmmain, uCheckFileChange;
 
 type
@@ -53,13 +55,16 @@ type
     FSheet: TEditorTabSheet;
     FUntitled: boolean;
     fCaretPos, fSel: TPoint;
+    MultiCaret : TSynPluginMultiCaret;
     procedure CreateDefaultGutterParts;
     procedure QuickSort(L, R: Integer; CompareFn: TStringsSortCompare);
     procedure SetFileName(AValue: TFileName);
     procedure SetText(NewText: string);
     procedure SetUntitled(AValue: boolean);
+
   public
     constructor Create(AOwner: TComponent); override;
+    Destructor Destroy; override;
     property Sheet: TEditorTabSheet read FSheet;
     //-- Helper functions//
     procedure SetLineText(Index: integer; NewText: string);
@@ -97,6 +102,7 @@ type
     FonStatusChange: TStatusChangeEvent;
     fUntitledCounter: integer;
     FWatcher : TFileWatcher;
+    fMacroRec: TSynMacroRecorder;
     function GetCurrentEditor: TEditor;
     procedure SetOnBeforeClose(AValue: TOnBeforeClose);
     procedure SetOnNewEditor(AValue: TOnEditorEvent);
@@ -162,8 +168,21 @@ end;
 
 constructor TEditor.Create(AOwner: TComponent);
 begin
+
   inherited Create(AOwner);
+  Options := Options + [eoAltSetsColumnMode];
+
   CreateDefaultGutterParts;
+  multicaret:=TSynPluginMultiCaret.Create(self);
+  multicaret.EnableWithColumnSelection:=true;
+  multicaret.DefaultMode:=mcmMoveAllCarets;
+  multicaret.DefaultColumnSelectMode:=mcmCancelOnCaretMove;
+end;
+
+destructor TEditor.Destroy;
+begin
+  MultiCaret.Free;
+  inherited Destroy;
 end;
 
 procedure TEditor.SetLineText(Index: integer; NewText: string);
