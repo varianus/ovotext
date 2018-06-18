@@ -463,7 +463,7 @@ end;
 
 function TSynJSONSyn.GetRange: Pointer;
 begin
-  Result := Pointer(FRange);
+  Result := Pointer(PtrUInt(FRange));
 end;
 
 function TSynJSONSyn.GetTokenID: TtkTokenKind;
@@ -500,7 +500,7 @@ end;
 
 procedure TSynJSONSyn.SetRange(Value: Pointer);
 begin
-  FRange := TRangeState(Value);
+  FRange := TRangeState(UIntPtr(Value));
 end;
 
 procedure TSynJSONSyn.GetTokenEx(out TokenStart :PChar; out TokenLength :integer);
