@@ -40,7 +40,7 @@ uses
   SynHighlighterDml, SynHighlighterCAC, SynHighlighterModelica,
   SynHighlighterVrml97, SynHighlighterHP48, SynHighlighterAWK,
   SynHighlighterProgress, SynHighlighterEiffel, SynHighlighterBaan,
-  SynHighlighterDiff, SynHighlighterJScript,
+  SynHighlighterDiff, SynHighlighterJScript,  SynHighlighterJSon,
   SynHighlighterM3, SynHighlighterLDraw, SynHighlighterVBScript,
   SynHighlighterSml, SynHighlighterIDL, SynHighlighterCobol, SynHighlighterGWS,
   SynHighlighterAsm, SynHighlighterLua, SynHighlighterFortran,
@@ -55,7 +55,7 @@ type
   end;
 
 const
-  HIGHLIGHTERCOUNT = 47;
+  HIGHLIGHTERCOUNT = 48;
   ARHighlighter: array [0..HIGHLIGHTERCOUNT - 1] of RHighlighter = (
   (HLClass: TSynAWKSyn; Filter: SYNS_FilterAWK; HL: nil),
   (HLClass: TSynBaanSyn; Filter: SYNS_FilterBaan; HL: nil),
@@ -78,6 +78,7 @@ const
   (HLClass: TSynInnoSyn; Filter: SYNS_FilterInno; HL: nil),
   (HLClass: TSynJavaSyn; Filter: SYNS_FilterJava; HL: nil),
   (HLClass: TSynJScriptSyn; Filter: SYNS_FilterJScript; HL: nil),
+  (HLClass: TSynJSONSyn; Filter: SYNS_FilterJSON;    HL: nil),
   (HLClass: TSynLFMSyn; Filter: SYNS_FilterLFM; HL: nil),
   (HLClass: TSynLDRSyn; Filter: SYNS_FilterLDraw; HL: nil),
   (HLClass: TSynLuaSyn; Filter: SYNS_FilterLua; HL: nil),

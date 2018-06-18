@@ -6,6 +6,7 @@ object dmMain: TdmMain
   HorizontalOffset = 695
   VerticalOffset = 311
   Width = 725
+  PPI = 96
   object imgBookMark: TImageList
     left = 56
     top = 24
