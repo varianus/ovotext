@@ -224,7 +224,7 @@ var
   AttrName: string;
   DefaultAttrib: TFontAttributes;
 begin
-  DefaultAttrib:= ConfigObj.ReadFontAttributes('Default/Text', FontAttributes());
+  DefaultAttrib:= ConfigObj.ReadFontAttributes('Schema/Default/Text', FontAttributes());
 
   if Configobj.XMLConfigExtended.PathExists('Schema/'+CleanupName(Highlighter.GetLanguageName)) then
     begin
