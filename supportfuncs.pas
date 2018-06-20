@@ -110,23 +110,26 @@ const
   nIndentDepth = 3;
   bHighlightCloseTag = false;
 var
+  st: TMemoryStream;
   bDoIndent: boolean;
   szCheckTag: string;
   bTagBuilding: boolean;
   szCurrentTag: string;
-  cNextChar: char;
+  c, cNextChar: char;
   bQuoteActive: boolean;
   cChar: char;
   bCheckIndent: boolean;
   bTagActive: boolean;
   nStringLoop: Integer;
   nIndent: Integer;
+
   procedure OutputIndent;
   var
     nIndentLoop: Integer;
   begin
-    if result <> '' then
-      result := result + sLineBreak;
+    if st.Size > 0 then
+      st.Write(sLineBreak, Length(sLineBreak));
+
     if nIndent < 0 then
     begin
       nIndent := 0; // fix negative indents due to bad   XML
@@ -134,7 +137,8 @@ var
     end;
     for nIndentLoop := 0 to nIndent do
     begin
-      result := result + ' ';
+      c:=' ';
+      st.Write(c,SizeOf(char));
     end;
   end;
 
@@ -146,6 +150,8 @@ begin
   nIndent := 0;
   bCheckIndent := false;
   szCurrentTag := '';
+  St := TMemoryStream.Create;
+  st.SetSize(Length(S));
   for nStringLoop := 1 to Length(S) do
   begin
     cChar := S[nStringLoop];
@@ -184,19 +190,21 @@ begin
             bDoIndent := True;
           if bDoIndent then
             OutputIndent;
-          result := result + '<';
+          c := '<';
+          st.Write(c,SizeOf(char));
         end;
       '>':
         begin
           bTagActive := false;
           bTagBuilding := false;
-          result := result + '>';
+          c := '>';
+          st.Write(c,SizeOf(char));
           if bCheckIndent then
             Inc(nIndent, nIndentDepth);
         end;
       '"':
         begin
-          result := result + cChar;
+          st.Write(cChar,1);
           if bTagActive then
             bQuoteActive := not bQuoteActive;
         end;
@@ -210,7 +218,8 @@ begin
                 Dec(nIndent, nIndentDepth);
             end;
           end;
-          result := result + '/';
+          c:= '/';
+          st.Write(c,SizeOf(char));
         end;
       #13, #10, #9:
         begin
@@ -229,11 +238,16 @@ begin
             bTagBuilding := false;
           end;
         end;
-        result := result + cChar;
+        st.Write(cChar,SizeOf(char));
       end;
     end; // case
   end;
+
+  SetString(Result,st.Memory, st.Size);
+  st.free;
 end;
+
+
 
 {$IFDEF UNIX}
 function isRoot: boolean;

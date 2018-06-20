@@ -15,7 +15,7 @@ object fMain: TfMain
   OnDropFiles = FormDropFiles
   ShowHint = True
   Visible = True
-  object StatusBar1: TStatusBar
+  object StatusBar: TStatusBar
     Left = 0
     Height = 23
     Top = 606
@@ -411,6 +411,7 @@ object fMain: TfMain
       Category = 'XML'
       Caption = 'Pretty Print'
       OnExecute = actXMLPrettyPrintExecute
+      ShortCut = 57410
     end
     object actQuote: TAction
       Category = 'Tools'

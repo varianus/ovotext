@@ -160,7 +160,7 @@ type
     SearchFindNext1: TAction;
     SearchReplace: TAction;
     lbMessage: TStaticText;
-    StatusBar1: TStatusBar;
+    StatusBar: TStatusBar;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
     ToolButton10: TToolButton;
@@ -313,7 +313,7 @@ end;
 
 procedure TfMain.AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
 begin
-  StatusBar1.Panels[3].Text := HintInfo.HintStr;
+  StatusBar.Panels[3].Text := HintInfo.HintStr;
 end;
 
 procedure TfMain.ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
@@ -787,17 +787,17 @@ begin
   Editor := EditorFactory.CurrentEditor;
 
   if (scCaretX in Changes) or (scCaretY in Changes) then
-    StatusBar1.Panels[0].Text := Format(RSStatusBarPos, [Editor.CaretY, Editor.CaretX]);
+    StatusBar.Panels[0].Text := Format(RSStatusBarPos, [Editor.CaretY, Editor.CaretX]);
 
   if (scSelection in Changes) then
-    StatusBar1.Panels[1].Text :=
+    StatusBar.Panels[1].Text :=
       Format(RSStatusBarSel, [Editor.SelEnd - Editor.SelStart]);
 
   if (scInsertMode in Changes) then
     if Editor.InsertMode then
-      StatusBar1.Panels[2].Text := RSStatusBarInsMode
+      StatusBar.Panels[2].Text := RSStatusBarInsMode
     else
-      StatusBar1.Panels[2].Text := RSStatusBarOvrMode;
+      StatusBar.Panels[2].Text := RSStatusBarOvrMode;
 
   if (scModified in Changes) then
     if Editor.Modified then
