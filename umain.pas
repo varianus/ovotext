@@ -211,7 +211,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormDropFiles(Sender: TObject; const FileNames: array of string);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure HelpAboutExecute(Sender: TObject);
     procedure actLowerCaseExecute(Sender: TObject);
     procedure MenuItem28Click(Sender: TObject);
@@ -612,7 +611,7 @@ begin
   {$IFDEF UNIX}
   if isRoot then
     begin
-      lbMessage.Caption:= RSAdministrativeRight;
+      lbMessage.Caption:= RSAdministrativeRights;
       lbMessage.Visible:= true;
     end;
   {$ENDIF}
@@ -677,12 +676,6 @@ begin
     EditorFactory.AddEditor(FileNames[i]);
     MRU.AddToRecent(FileNames[i]);
    end;
-
-end;
-
-procedure TfMain.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState
-  );
-begin
 
 end;
 
