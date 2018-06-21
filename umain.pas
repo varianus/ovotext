@@ -624,7 +624,7 @@ begin
   {$IFDEF UNIX}
   if isRoot then
     begin
-      lbMessage.Caption:= RSAdministrativeRight;
+      lbMessage.Caption:= RSAdministrativeRights;
       lbMessage.Visible:= true;
     end;
   {$ENDIF}
