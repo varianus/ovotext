@@ -302,7 +302,7 @@ var
   i: integer;
   lvl: integer;
 begin
-  lvl := 1;
+  lvl := 0;
   sl := TStringList.Create;
   try
     sl.Text := aInput;
@@ -312,14 +312,16 @@ begin
         '{':
           begin
             sl[i] := getSpaces(lvl * 2) + sl[i];
-            if sl[i][2] <> '}' then
-              inc(lvl);
+            inc(lvl);
+            if (Length(sl[i]) > 1) and (sl[i][2] = '}') then
+              dec(lvl);
           end;
         '[':
           begin
             sl[i] := getSpaces(lvl * 2) + sl[i];
-            if sl[i][2] <> ']' then
-              inc(lvl);
+            inc(lvl);
+            if (Length(sl[i]) > 1) and (sl[i][2] = ']') then
+              dec(lvl);
           end;
         '}', ']':
           begin
