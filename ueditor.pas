@@ -56,6 +56,7 @@ type
     FUntitled: boolean;
     fCaretPos, fSel: TPoint;
     MultiCaret : TSynPluginMultiCaret;
+    SyncEdit : TSynPluginSyncroEdit;
     procedure CreateDefaultGutterParts;
     procedure QuickSort(L, R: Integer; CompareFn: TStringsSortCompare);
     procedure SetFileName(AValue: TFileName);
@@ -167,21 +168,33 @@ begin
 end;
 
 constructor TEditor.Create(AOwner: TComponent);
+var
+   bm : TPicture;
 begin
 
   inherited Create(AOwner);
   Options := Options + [eoAltSetsColumnMode];
 
   CreateDefaultGutterParts;
+
+  bm := TPicture.Create;
+ // bm.LoadFromFile('C:\Ex-D\lazarus\images\sourceeditor\tsynsyncroedit.png');
+
   multicaret:=TSynPluginMultiCaret.Create(self);
   multicaret.EnableWithColumnSelection:=true;
   multicaret.DefaultMode:=mcmMoveAllCarets;
   multicaret.DefaultColumnSelectMode:=mcmCancelOnCaretMove;
+
+  SyncEdit:=TSynPluginSyncroEdit.Create(self);
+  SyncEdit.Editor := self;
+  SyncEdit.GutterGlyph := BM.Bitmap ;
+  SyncEdit.CaseSensitive:=false;
 end;
 
 destructor TEditor.Destroy;
 begin
   MultiCaret.Free;
+  SyncEdit.Free;
   inherited Destroy;
 end;
 
