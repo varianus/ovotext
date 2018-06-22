@@ -422,7 +422,7 @@ begin
      begin
        BeginUpdate(True);
        try
-         for i := 0 to Lines.Count - 1 do
+      //   for i := 0 to Lines.Count - 1 do
           begin
            SetText(Operation(Text));
           end;
