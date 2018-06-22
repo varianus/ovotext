@@ -98,6 +98,7 @@ type
       override;
     function GetEol: Boolean; override;
     function GetRange: Pointer; override;
+    function GetToken: String; override;
     function GetTokenID: TtkTokenKind;
     function GetTokenAttribute: TSynHighlighterAttributes; override;
     function GetTokenKind: Integer; override;
@@ -512,6 +513,14 @@ end;
 function TSynJSONSyn.GetTokenPos: Integer;
 begin
   Result := fTokenPos;
+end;
+
+function TSynJSONSyn.GetToken: String;
+var
+  Len: LongInt;
+begin
+  Len := Run - fTokenPos;
+  SetString(Result, (FLine + fTokenPos), Len);
 end;
 
 
