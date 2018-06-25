@@ -114,6 +114,7 @@ type
 
 
   TdmMain = class(TDataModule)
+    imgIcons: TImageList;
     imgBookMark: TImageList;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);

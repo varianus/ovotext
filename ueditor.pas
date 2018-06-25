@@ -169,7 +169,7 @@ end;
 
 constructor TEditor.Create(AOwner: TComponent);
 var
-   bm : TPicture;
+   bm : TBitmap;
 begin
 
   inherited Create(AOwner);
@@ -177,18 +177,19 @@ begin
 
   CreateDefaultGutterParts;
 
-  bm := TPicture.Create;
- // bm.LoadFromFile('C:\Ex-D\lazarus\images\sourceeditor\tsynsyncroedit.png');
-
   multicaret:=TSynPluginMultiCaret.Create(self);
   multicaret.EnableWithColumnSelection:=true;
   multicaret.DefaultMode:=mcmMoveAllCarets;
   multicaret.DefaultColumnSelectMode:=mcmCancelOnCaretMove;
 
+  bm := TBitmap.Create;
+  dmMain.imgIcons.GetBitmap(0, bm);
   SyncEdit:=TSynPluginSyncroEdit.Create(self);
   SyncEdit.Editor := self;
-  SyncEdit.GutterGlyph := BM.Bitmap ;
+  SyncEdit.GutterGlyph.Assign(bm);
   SyncEdit.CaseSensitive:=false;
+
+  bm.Free;
 end;
 
 destructor TEditor.Destroy;
