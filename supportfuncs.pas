@@ -272,10 +272,11 @@ var
   insideString: boolean;
 begin
   i := 1;
+  result:='';
   insideString := false;
   while i <= length(aInput) do
   begin
-    if aInput[i] = '\' then
+    if (aInput[i] = '\') then
     begin
       result := result + aInput[i] + aInput[i + 1];
       inc(i, 2);
@@ -354,14 +355,17 @@ begin
     begin
       s := s + aInput[i];
       if aInput[i] = '\' then
-      begin
-        s := s + aInput[i + 1];
-        inc(i, 2);
-      end;
-      if aInput[i] = '"' then
-        insideString := false;
-      inc(i);
-    end
+        begin
+          s := s + aInput[i + 1];
+          inc(i, 2);
+        end
+      else
+        begin
+          if aInput[i] = '"' then
+            insideString := false;
+          inc(i);
+          end;
+      end
     else
     begin
       case aInput[i] of
