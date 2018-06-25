@@ -31,7 +31,7 @@ uses
 
 const
   // TODO: read it from config file
-  NUMBEROFSPACEFORTAB = 4;
+  NUMBEROFSPACEFORTAB = 2;
 
 //Remove invalid char from highlighters name and attributes
 function CleanupName(aName: string): string;
@@ -110,7 +110,6 @@ end;
 
 function FormatXML(const S: string): string;
 const
-  nIndentDepth = 3;
   bHighlightCloseTag = False;
 var
   st: TMemoryStream;
@@ -173,7 +172,7 @@ begin
         bTagActive := True;
         if cNextChar = '/' then
         begin
-          Dec(nIndent, nIndentDepth);
+          Dec(nIndent, NUMBEROFSPACEFORTAB);
           bTagBuilding := False;
           bCheckIndent := False;
           szCheckTag := Copy(S, nStringLoop + 2, Length(szCurrentTag));
@@ -202,7 +201,7 @@ begin
         c := '>';
         st.Write(c, SizeOf(char));
         if bCheckIndent then
-          Inc(nIndent, nIndentDepth);
+          Inc(nIndent, NUMBEROFSPACEFORTAB);
       end;
       '"':
       begin
@@ -217,7 +216,7 @@ begin
           if bCheckIndent then
           begin
             if cNextChar = '>' then
-              Dec(nIndent, nIndentDepth);
+              Dec(nIndent, NUMBEROFSPACEFORTAB);
           end;
         end;
         c := '/';
@@ -312,14 +311,14 @@ begin
       case sl[i][1] of
         '{':
           begin
-            sl[i] := getSpaces(lvl * 2) + sl[i];
+            sl[i] := getSpaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
             inc(lvl);
             if (Length(sl[i]) > 1) and (sl[i][2] = '}') then
               dec(lvl);
           end;
         '[':
           begin
-            sl[i] := getSpaces(lvl * 2) + sl[i];
+            sl[i] := getSpaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
             inc(lvl);
             if (Length(sl[i]) > 1) and (sl[i][2] = ']') then
               dec(lvl);
@@ -328,10 +327,10 @@ begin
           begin
             dec(lvl);
             lvl := max(lvl, 0);
-            sl[i] := getSpaces(lvl * 2) + sl[i];
+            sl[i] := getSpaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
           end
       else
-        sl[i] := getSpaces(lvl * 2) + sl[i];
+        sl[i] := getSpaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
       end;
     end;
     result := sl.Text;
