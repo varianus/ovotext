@@ -409,7 +409,7 @@ object fMain: TfMain
     end
     object actXMLPrettyPrint: TAction
       Category = 'XML'
-      Caption = 'Pretty Print XML'
+      Caption = 'Beautify  XML'
       OnExecute = actXMLPrettyPrintExecute
       ShortCut = 57410
     end
@@ -420,8 +420,13 @@ object fMain: TfMain
     end
     object actJSONPrettyPrint: TAction
       Category = 'XML'
-      Caption = 'Pretty Print JSON'
+      Caption = 'Beautify JSON'
       OnExecute = actJSONPrettyPrintExecute
+    end
+    object actXMLCompact: TAction
+      Category = 'XML'
+      Caption = 'Compact XML'
+      OnExecute = actXMLCompactExecute
     end
   end
   object mnuMain: TMainMenu
@@ -575,9 +580,12 @@ object fMain: TfMain
         end
       end
       object MenuItem68: TMenuItem
-        Caption = 'XML'
+        Caption = 'Beautify'
         object MenuItem69: TMenuItem
           Action = actXMLPrettyPrint
+        end
+        object MenuItem73: TMenuItem
+          Action = actXMLCompact
         end
         object MenuItem72: TMenuItem
           Action = actJSONPrettyPrint

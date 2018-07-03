@@ -24,7 +24,7 @@ unit SupportFuncs;
 interface
 
 uses
-  Classes, SysUtils
+  Classes, SysUtils, RegExpr
   {$IFDEF UNIX}
   , BaseUnix
   {$ENDIF}  ;
@@ -47,6 +47,7 @@ function isRoot: boolean;
 function RemoveSpacesInExcess(const s: string): string;
 function TabsToSpace(const S: string): string;
 function FormatXML(const S: string): string;
+function CompactXML(const S: string): string;
 function FormatJson(const S: string): string;
 
 
@@ -453,6 +454,11 @@ begin
   end;
 end;
 
+function CompactXML(const S: string): string;
+begin
+  Result := ReplaceRegExpr('>\s{0,}<',S,'><',true);
+end;
+
 function FormatJSON(const S: string): string;
 begin
   // Clean the input from previous formatting
@@ -465,9 +471,6 @@ begin
   result := Indent(result);
 end;
 
-
-
-
 {$IFDEF UNIX}
 function isRoot: boolean;
 begin
@@ -475,6 +478,5 @@ begin
 end;
 
 {$ENDIF}
-
 
 end.

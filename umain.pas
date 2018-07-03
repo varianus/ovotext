@@ -37,6 +37,7 @@ type
     actFont: TAction;
     actFullNameToClipBoard: TAction;
     actGoTo: TAction;
+    actXMLCompact: TAction;
     actJSONPrettyPrint: TAction;
     actQuote: TAction;
     actLanguageNone: TAction;
@@ -68,6 +69,7 @@ type
     MenuItem70: TMenuItem;
     MenuItem71: TMenuItem;
     MenuItem72: TMenuItem;
+    MenuItem73: TMenuItem;
     mnuNone: TMenuItem;
     mnuLanguage: TMenuItem;
     mnuTabs: TMenuItem;
@@ -193,6 +195,7 @@ type
     procedure actTrimExecute(Sender: TObject);
     procedure actTrimLeadingExecute(Sender: TObject);
     procedure actTrimTrailingExecute(Sender: TObject);
+    procedure actXMLCompactExecute(Sender: TObject);
     procedure actXMLPrettyPrintExecute(Sender: TObject);
     procedure AppPropertiesActivate(Sender: TObject);
     procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
@@ -423,6 +426,17 @@ begin
   Ed := EditorFactory.CurrentEditor;
   Ed.TextOperation(@TrimRight);
 
+end;
+
+procedure TfMain.actXMLCompactExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  Ed.TextOperation(@CompactXML, [tomFullText]);
 end;
 
 procedure TfMain.actXMLPrettyPrintExecute(Sender: TObject);
