@@ -21,14 +21,17 @@ unit ueditor;
 
 {$mode objfpc}{$H+}
 
+{$IFDEF WINDOWS}
+  {$DEFINE NEEDCLOSEBTN}
+{$ENDIF}
+
 interface
 
 uses
-  Classes, SysUtils, Controls, Dialogs, ComCtrls, LCLProc,
+  Classes, SysUtils, Controls, Dialogs, ComCtrls, LCLProc, LCLType,
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,SynGutterChanges,
   SynMacroRecorder, SynPluginMultiCaret, SynPluginSyncroEdit,
-  SynEditMouseCmds,
-  Stringcostants, Forms, Graphics, Config, udmmain, uCheckFileChange;
+  SynEditMouseCmds, Stringcostants, Forms, Graphics, Config, udmmain, uCheckFileChange;
 
 type
 
@@ -124,6 +127,10 @@ type
     function CloseAll: boolean;
     function SaveAll: boolean;
     procedure DoCheckFileChanges;
+    {$IFDEF NEEDCLOSEBTN}
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);  override;
+    procedure PaintWindow(DC: HDC); override;
+    {$ENDIF}
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   end;
@@ -150,7 +157,8 @@ begin
     begin
       FUntitled := False;
       Highlighter := dmMain.getHighLighter(ExtractFileExt(fFileName));
-      FSheet.Caption := ExtractFileName(fFileName);
+                                                   // reserve spaces for emulated close button
+      FSheet.Caption := ExtractFileName(fFileName) {$IFDEF NEEDCLOSEBTN}+'     '{$ENDIF};
     end
   else
     FUntitled:=true;
@@ -570,7 +578,7 @@ begin
   Result.Parent := Sheet;
   if FileName = EmptyStr then
     begin
-      Sheet.Caption := Format(RSNewFile, [fUntitledCounter]);
+      Sheet.Caption := Format(RSNewFile, [fUntitledCounter]) {$IFDEF NEEDCLOSEBTN}+'     '{$ENDIF};
       Result.FUntitled := True;
       Inc(fUntitledCounter);
       Text:=EmptyStr;
@@ -649,6 +657,40 @@ procedure TEditorFactory.DoCheckFileChanges;
 begin
   FWatcher.CheckFiles;
 end;
+
+{$IFDEF NEEDCLOSEBTN}
+procedure TEditorFactory.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var r:TRect;
+    i, h:integer;
+begin
+  if Button=mbLeft then begin
+    i:=indexoftabat(Point(X,Y));
+    r:=TabRect(i);
+    h:=(r.Bottom -r.Top);
+    if (X>r.right -h) and (Y>r.bottom -h) then
+      self.RemovePage(i);
+  end;
+end;
+
+procedure TEditorFactory.PaintWindow(DC: HDC);
+var r:TRect;
+    points: array[0..1] of TPoint;
+    i, h, h2: Integer;
+    c: Tcanvas;
+begin
+  inherited PaintWindow(DC);
+  c := TCanvas.Create;
+  c.Handle :=  dc;
+
+  for i:=0 to PageCount-1 do begin
+    r:= TabRect(i);
+    h:= (r.Bottom - r.Bottom-r.Top - 16) div 2;
+    h2:=16 +h ;
+    Images.Draw(c, r.Right-h2, r.Top+h, 31);
+  end;//for
+  c.free;
+end;
+{$ENDIF}
 
 procedure TEditorFactory.ShowHintEvent(Sender: TObject; HintInfo: PHintInfo);
 var
