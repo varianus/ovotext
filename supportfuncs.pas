@@ -131,16 +131,16 @@ var
     nIndentLoop: integer;
   begin
     if st.Size > 0 then
-      st.Write(sLineBreak, Length(sLineBreak));
+      st.Write(string(sLineBreak)[1], Length(sLineBreak));
 
     if nIndent < 0 then
     begin
       nIndent := 0; // fix negative indents due to bad   XML
       // result := result + '[NEGINDENT]';
     end;
+    c := ' ';
     for nIndentLoop := 0 to nIndent do
     begin
-      c := ' ';
       st.Write(c, SizeOf(char));
     end;
   end;
@@ -154,7 +154,6 @@ begin
   bCheckIndent := False;
   szCurrentTag := '';
   St := TMemoryStream.Create;
-  st.SetSize(Length(S));
   for nStringLoop := 1 to Length(S) do
   begin
     cChar := S[nStringLoop];
@@ -188,8 +187,6 @@ begin
           if not bHighlightCloseTag then
             bDoIndent := True;
         end;
-        if bHighlightCloseTag then
-          bDoIndent := True;
         if bDoIndent then
           OutputIndent;
         c := '<';
