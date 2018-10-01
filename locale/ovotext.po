@@ -93,7 +93,7 @@ msgid ""
 msgstr ""
 
 #: tdlggoto.buttonpanel1.okbutton.caption
-msgctxt "TDLGGOTO.BUTTONPANEL1.OKBUTTON.CAPTION"
+msgctxt "tdlggoto.buttonpanel1.okbutton.caption"
 msgid "Go to"
 msgstr ""
 
@@ -160,7 +160,7 @@ msgid "https://github.com/varianus/ovotext"
 msgstr ""
 
 #: tfabout.lversion.caption
-msgctxt "TFABOUT.LVERSION.CAPTION"
+msgctxt "tfabout.lversion.caption"
 msgid "Version"
 msgstr ""
 
@@ -180,8 +180,12 @@ msgstr ""
 msgid "Go To ..."
 msgstr ""
 
-#: tfmain.action1.caption
-msgid "Action1"
+#: tfmain.actjsonprettyprint.caption
+msgid "Beautify JSON"
+msgstr ""
+
+#: tfmain.actlanguagenone.caption
+msgid "None"
 msgstr ""
 
 #: tfmain.actlowercase.caption
@@ -190,6 +194,10 @@ msgstr ""
 
 #: tfmain.actprint.caption
 msgid "Print"
+msgstr ""
+
+#: tfmain.actquote.caption
+msgid "Quote"
 msgstr ""
 
 #: tfmain.acttabtospace.caption
@@ -212,8 +220,16 @@ msgstr ""
 msgid "UPPERCASE"
 msgstr ""
 
+#: tfmain.actxmlcompact.caption
+msgid "Compact XML"
+msgstr ""
+
 #: tfmain.actxmlprettyprint.caption
-msgid "Pretty Print"
+msgid "Beautify  XML"
+msgstr ""
+
+#: tfmain.caption
+msgid "ovoText"
 msgstr ""
 
 #: tfmain.editcopy.caption
@@ -405,11 +421,15 @@ msgid "Export"
 msgstr ""
 
 #: tfmain.menuitem68.caption
-msgid "XML"
+msgid "Beautify"
 msgstr ""
 
 #: tfmain.menuitem7.caption
 msgid "Edit"
+msgstr ""
+
+#: tfmain.menuitem70.caption
+msgid "Others"
 msgstr ""
 
 #: tfmain.menuitem8.caption
