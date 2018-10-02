@@ -314,9 +314,9 @@ end;
 
 function TConfig.ReadFontAttributes(AttibuteName: string; const Default: TFontAttributes): TFontAttributes;
 begin
-  Result.Foreground := ReadColor('Schema/' + AttibuteName, 'Foreground', Default.Foreground);
-  Result.Background := ReadColor('Schema/' + AttibuteName, 'Background', Default.Background);
-  Result.Styles := ReadFontStyle('Schema/' + AttibuteName, 'Style', Default.Styles);
+  Result.Foreground := ReadColor(AttibuteName, 'Foreground', Default.Foreground);
+  Result.Background := ReadColor(AttibuteName, 'Background', Default.Background);
+  Result.Styles := ReadFontStyle(AttibuteName, 'Style', Default.Styles);
 
 end;
 

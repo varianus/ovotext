@@ -224,31 +224,24 @@ procedure TdmMain.InitializeHighlighter(Highlighter: TSynCustomHighlighter);
 var
   i: integer;
   AttrName: string;
+  AttrPath: string;
   DefaultAttrib: TFontAttributes;
+const
+  DefaultPath = 'Schema/DefaultLang/';
+
 begin
   DefaultAttrib:= ConfigObj.ReadFontAttributes('Schema/Default/Text', FontAttributes());
+  AttrPath:='Schema/'+CleanupName(Highlighter.GetLanguageName)+'/' ;
 
-  if Configobj.XMLConfigExtended.PathExists('Schema/'+CleanupName(Highlighter.GetLanguageName)) then
+  for i := 0 to Highlighter.AttrCount - 1 do
     begin
-      for i := 0 to Highlighter.AttrCount - 1 do
-        begin
-          AttrName:=CleanupName(Highlighter.GetLanguageName)+'/'+CleanupName(Highlighter.Attribute[i].Name)+'/';
-          SetAttribute(AttrName, Highlighter.Attribute[i], DefaultAttrib);
-        end;
-    end
-  else
-    begin
-      for i := 0 to Highlighter.AttrCount - 1 do
-          FontAttribToAttribute(Highlighter.Attribute[i], DefaultAttrib);
-
-      SetAttribute('Schema/DefaultLang/String/', Highlighter.StringAttribute, DefaultAttrib);
-      SetAttribute('Schema/DefaultLang/Comment/', Highlighter.CommentAttribute, DefaultAttrib);
-      SetAttribute('Schema/DefaultLang/Identifier/', Highlighter.IdentifierAttribute, DefaultAttrib);
-      SetAttribute('Schema/DefaultLang/Keyword/', Highlighter.KeywordAttribute, DefaultAttrib);
-      SetAttribute('Schema/DefaultLang/Symbol/', Highlighter.SymbolAttribute, DefaultAttrib);
-      SetAttribute('Schema/DefaultLang/Whitespace/', Highlighter.WhitespaceAttribute, DefaultAttrib);
-
+      AttrName:=CleanupName(Highlighter.Attribute[i].Name)+'/';
+      if Configobj.XMLConfigExtended.PathExists(AttrPath+AttrName) then
+        SetAttribute(AttrPath+AttrName, Highlighter.Attribute[i], DefaultAttrib)
+      else
+        SetAttribute(DefaultPath+AttrName, Highlighter.Attribute[i], DefaultAttrib)
     end;
+
     ConfigObj.XMLConfigExtended.CloseKey;
 
 end;

@@ -339,7 +339,7 @@ var
   DefaultAttr : TFontAttributes;
 begin
   Gutter.Parts.Clear;
-  DefaultAttr := ConfigObj.ReadFontAttributes('Default/Gutter/', FontAttributes());
+  DefaultAttr := ConfigObj.ReadFontAttributes('Schema/Default/Gutter/', FontAttributes());
   Gutter.Color:= DefaultAttr.Background;
 
   with TSynGutterMarks.Create(Gutter.Parts) do
@@ -352,7 +352,7 @@ begin
   with TSynGutterLineNumber.Create(Gutter.Parts) do
     begin
        Name := 'SynGutterLineNumber1';
-       SpecialAttr := ConfigObj.ReadFontAttributes('Default/LineNumber/', DefaultAttr);
+       SpecialAttr := ConfigObj.ReadFontAttributes('Schema/Default/LineNumber/', DefaultAttr);
        MarkupInfo.Background := SpecialAttr.Background;
        MarkupInfo.Foreground:= SpecialAttr.Foreground;
        MarkupInfo.Style := SpecialAttr.Styles;
@@ -360,7 +360,7 @@ begin
   with TSynGutterSeparator.Create(Gutter.Parts) do
     begin
        Name := 'SynGutterSeparator1';
-       SpecialAttr := ConfigObj.ReadFontAttributes('Default/LineNumber/', DefaultAttr);
+       SpecialAttr := ConfigObj.ReadFontAttributes('Schema/Default/LineNumber/', DefaultAttr);
        MarkupInfo.Background := SpecialAttr.Background;
        MarkupInfo.Foreground:= SpecialAttr.Foreground;
        LineWidth:=1;
@@ -556,7 +556,7 @@ begin
 
   Result := TEditor.Create(Sheet);
   Result.Font.Assign(ConfigObj.Font);
-  DefaultAttr := ConfigObj.ReadFontAttributes('Default/Text/', FontAttributes());
+  DefaultAttr := ConfigObj.ReadFontAttributes('Schema/Default/Text/', FontAttributes());
 
   Result.FSheet := Sheet;
 
