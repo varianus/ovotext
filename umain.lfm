@@ -14,6 +14,7 @@ object fMain: TfMain
   OnDestroy = FormDestroy
   OnDropFiles = FormDropFiles
   ShowHint = True
+  LCLVersion = '2.1.0.0'
   Visible = True
   object StatusBar: TStatusBar
     Left = 0
@@ -67,7 +68,7 @@ object fMain: TfMain
     end
     object ToolButton5: TToolButton
       Left = 25
-      Height = 18
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
@@ -98,13 +99,13 @@ object fMain: TfMain
     end
     object ToolButton11: TToolButton
       Left = 102
-      Height = 18
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
     object ToolButton12: TToolButton
       Left = 155
-      Height = 18
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
@@ -125,7 +126,7 @@ object fMain: TfMain
     end
     object tbbSepClose: TToolButton
       Left = 232
-      Height = 18
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
@@ -149,8 +150,8 @@ object fMain: TfMain
   object ActionList: TActionList
     Images = imgList
     OnUpdate = ActionListUpdate
-    Left = 248
-    Top = 72
+    left = 248
+    top = 72
     object FileExit: TAction
       Category = 'Apps'
       Caption = 'Exit'
@@ -431,8 +432,8 @@ object fMain: TfMain
   end
   object mnuMain: TMainMenu
     Images = imgList
-    Left = 72
-    Top = 72
+    left = 72
+    top = 72
     object MenuItem1: TMenuItem
       Caption = 'File'
       object MenuItem20: TMenuItem
@@ -643,8 +644,8 @@ object fMain: TfMain
     end
   end
   object imgList: TImageList
-    Left = 320
-    Top = 72
+    left = 320
+    top = 72
     Bitmap = {
       4C69200000001000000010000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -1678,21 +1679,19 @@ object fMain: TfMain
     ShowMenuGlyphs = sbgSystem
     OnActivate = AppPropertiesActivate
     OnShowHint = AppPropertiesShowHint
-    Left = 504
-    Top = 72
+    left = 504
+    top = 72
   end
   object FindDialog: TFindDialog
     OnClose = FindDialogClose
-    Width = 483
-    Height = 136
     OnFind = FindDialogFind
-    Left = 504
-    Top = 166
+    left = 504
+    top = 166
   end
   object pumEdit: TPopupMenu
     Images = imgList
-    Left = 72
-    Top = 144
+    left = 72
+    top = 144
     object MenuItem32: TMenuItem
       Action = EditUndo
     end
@@ -1722,32 +1721,28 @@ object fMain: TfMain
     end
   end
   object SaveDialog: TSaveDialog
-    Left = 688
-    Top = 168
+    left = 688
+    top = 168
   end
   object FontDialog: TFontDialog
-    Width = 483
-    Height = 339
     Title = 'Select a Font'
     MinFontSize = 0
     MaxFontSize = 0
     Options = [fdForceFontExist, fdWysiwyg, fdApplyButton]
     OnApplyClicked = FontDialogApplyClicked
-    Left = 426
-    Top = 166
+    left = 426
+    top = 166
   end
   object ReplaceDialog: TReplaceDialog
     OnClose = FindDialogClose
-    Width = 480
-    Height = 184
     Options = [frDown, frReplace, frReplaceAll, frEntireScope, frHidePromptOnReplace]
     OnFind = ReplaceDialogFind
     OnReplace = ReplaceDialogReplace
-    Left = 592
-    Top = 168
+    left = 592
+    top = 168
   end
   object PrintDialog1: TPrintDialog
-    Left = 256
-    Top = 170
+    left = 256
+    top = 170
   end
 end

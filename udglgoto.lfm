@@ -8,7 +8,7 @@ object dlgGoTo: TdlgGoTo
   ClientHeight = 149
   ClientWidth = 250
   OnShow = FormShow
-  LCLVersion = '1.5'
+  LCLVersion = '2.1.0.0'
   object seLine: TSpinEdit
     Left = 139
     Height = 23
