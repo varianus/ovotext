@@ -26,7 +26,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls,
-  SynEditTypes, SynHighlighterPas,   PrintersDlgs, Config,
+  SynEditTypes, SynHighlighterPas, PrintersDlgs, Config,
   SupportFuncs, udmmain, uDglGoTo, SynEditPrint, simplemrumanager;
 
 type
@@ -70,6 +70,7 @@ type
     MenuItem71: TMenuItem;
     MenuItem72: TMenuItem;
     MenuItem73: TMenuItem;
+    mnuThemes: TMenuItem;
     mnuNone: TMenuItem;
     mnuLanguage: TMenuItem;
     mnuTabs: TMenuItem;
@@ -294,26 +295,25 @@ procedure TfMain.ExportHtmlToClipBoardExecute(Sender: TObject);
 var
   Ed: TEditor;
 begin
-  Ed :=  EditorFactory.CurrentEditor;
+  Ed := EditorFactory.CurrentEditor;
 
   dmMain.HTMLExporter.Highlighter := Ed.Highlighter;
-  dmMain.HTMLExporter.ExportAsText:= true;
-  dmMain.HTMLExporter.Options :=  [heoFragmentOnly];
+  dmMain.HTMLExporter.ExportAsText := True;
+  dmMain.HTMLExporter.Options := [heoFragmentOnly];
   dmMain.HTMLExporter.ExportAll(Ed.Lines);
   dmMain.HTMLExporter.CopyToClipboard;
 
-
 end;
+
 procedure TfMain.ExportRTFToClipBoardExecute(Sender: TObject);
 var
   Ed: TEditor;
 begin
-  Ed :=  EditorFactory.CurrentEditor;
+  Ed := EditorFactory.CurrentEditor;
 
   dmMain.RFTExporter.Highlighter := Ed.Highlighter;
   dmMain.RFTExporter.ExportAll(Ed.Lines);
   dmMain.RFTExporter.CopyToClipboard;
-
 
 end;
 
@@ -328,12 +328,12 @@ var
   ed: TEditor;
 begin
   Avail := EditorAvalaible;
-  Ed :=  EditorFactory.CurrentEditor;
+  Ed := EditorFactory.CurrentEditor;
   EditRedo.Enabled := Avail and Ed.CanRedo;
   EditUndo.Enabled := Avail and Ed.CanUndo;
   FileSave.Enabled := Avail and Ed.Modified;
-  actFullNameToClipBoard.Enabled:= Avail and not ed.Untitled;
-  actGoTo.Enabled:= Avail and (ed.Lines.Count > 0);
+  actFullNameToClipBoard.Enabled := Avail and not ed.Untitled;
+  actGoTo.Enabled := Avail and (ed.Lines.Count > 0);
   Handled := True;
 end;
 
@@ -347,15 +347,16 @@ begin
   Ed := EditorFactory.CurrentEditor;
   Ed.TextOperation(@FormatJSON, [tomFullText]);
 end;
+
 procedure TfMain.actLanguageNoneExecute(Sender: TObject);
 var
   Ed: TEditor;
 begin
-   if not EditorAvalaible then
-      exit;
+  if not EditorAvalaible then
+    exit;
 
-   Ed := EditorFactory.CurrentEditor;
-   Ed.Highlighter := nil;
+  Ed := EditorFactory.CurrentEditor;
+  Ed.Highlighter := nil;
 end;
 
 procedure TfMain.actPrintExecute(Sender: TObject);
@@ -364,9 +365,9 @@ var
 begin
 
   Ed := EditorFactory.CurrentEditor;
-  prn.SynEdit:= Ed;
+  prn.SynEdit := Ed;
   if PrintDialog1.Execute then
-     prn.Print;
+    prn.Print;
 
 end;
 
@@ -452,7 +453,7 @@ end;
 
 procedure TfMain.AppPropertiesActivate(Sender: TObject);
 begin
- EditorFactory.DoCheckFileChanges;
+  EditorFactory.DoCheckFileChanges;
 end;
 
 procedure TfMain.actFontExecute(Sender: TObject);
@@ -474,17 +475,17 @@ var
   Ed: TEditor;
 begin
   Ed := EditorFactory.CurrentEditor;
-  Clipboard.AsText:=Ed.FileName;
+  Clipboard.AsText := Ed.FileName;
 end;
 
 procedure TfMain.actGoToExecute(Sender: TObject);
 begin
   with TdlgGoTo.Create(Self) do
-    begin
-      Editor := EditorFactory.CurrentEditor;
-      ShowModal;
-      Free;
-    end;
+  begin
+    Editor := EditorFactory.CurrentEditor;
+    ShowModal;
+    Free;
+  end;
 
 end;
 
@@ -526,11 +527,11 @@ end;
 
 procedure TfMain.FileSaveAsAccept(Sender: TObject);
 var
-  Editor : TEditor;
+  Editor: TEditor;
 begin
   Editor := EditorFactory.CurrentEditor;
 
-// if AskFileName(Editor) then
+  // if AskFileName(Editor) then
 
   Editor.SaveAs(FileSaveAs.Dialog.FileName);
   MRU.AddToRecent(FileSaveAs.Dialog.FileName);
@@ -539,15 +540,15 @@ end;
 
 procedure TfMain.FileSaveExecute(Sender: TObject);
 var
-  Editor : TEditor;
+  Editor: TEditor;
 begin
   Editor := EditorFactory.CurrentEditor;
   if Editor.Untitled then
-     if not AskFileName(Editor) then
-          begin
-            Exit;
-          end;
- Editor.Save;
+    if not AskFileName(Editor) then
+    begin
+      Exit;
+    end;
+  Editor.Save;
 
 end;
 
@@ -583,7 +584,7 @@ end;
 procedure TfMain.FormActivate(Sender: TObject);
 begin
   if Assigned(EditorFactory) and assigned(EditorFactory.CurrentEditor) then
-     EditorFactory.CurrentEditor.SetFocus;
+    EditorFactory.CurrentEditor.SetFocus;
 end;
 
 procedure TfMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -598,6 +599,7 @@ procedure TfMain.FormCreate(Sender: TObject);
 var
   i: integer;
   mnuLang: TMenuItem;
+  mnuTheme: TmenuItem;
   CurrLetter: string;
   SaveLetter: string;
   CurrMenu: TMenuItem;
@@ -623,66 +625,68 @@ begin
   tbbSepClose.Align := alRight;
   tbbClose.Align := alRight;
   // Parameters
-  FileOpen.Dialog.Filter :=  dmMain.GetFiters;
+  FileOpen.Dialog.Filter := configobj.GetFiters;
 
   for i := 1 to Paramcount do
   begin
     // dirty hack to skip parameter as --debug=....
-    if copy(ParamStr(i),1,2) <> '--' then
-       EditorFactory.AddEditor(ParamStr(i));
+    if copy(ParamStr(i), 1, 2) <> '--' then
+      EditorFactory.AddEditor(ParamStr(i));
   end;
 
   prn := TSynEditPrint.Create(Self);
-  prn.Colors:= true;
+  prn.Colors := True;
 
   {$IFDEF UNIX}
   if isRoot then
-    begin
-      lbMessage.Caption:= RSAdministrativeRights;
-      lbMessage.Visible:= true;
-    end;
+  begin
+    lbMessage.Caption := RSAdministrativeRights;
+    lbMessage.Visible := True;
+  end;
   {$ENDIF}
 
-  SaveLetter:='';
-  for i := 0 to HIGHLIGHTERCOUNT -1 do
+  SaveLetter := '';
+  for i := 0 to HIGHLIGHTERCOUNT - 1 do
+  begin
+    mnuLang := TMenuItem.Create(Self);
+    mnuLang.Caption := ARHighlighter[i].HLClass.GetLanguageName;
+    mnuLang.Tag := i;
+    mnuLang.OnClick := @mnuLangClick;
+    CurrLetter := UpperCase(Copy(mnuLang.Caption, 1, 1));
+    if SaveLetter <> CurrLetter then
     begin
-      mnuLang := TMenuItem.Create(Self);
-      mnuLang.Caption:= ARHighlighter[i].HLClass.GetLanguageName;
-      mnuLang.Tag:= i;
-      mnuLang.OnClick:=@mnuLangClick;
-      CurrLetter := UpperCase(Copy(mnuLang.Caption, 1, 1));
-      if SaveLetter <> CurrLetter then
-        begin
-          SaveLetter:= CurrLetter;
-          CurrMenu := TMenuItem.Create(Self);
-          CurrMenu.Caption := CurrLetter;
-          mnuLanguage.Add(CurrMenu);
-        end;
-
-      CurrMenu.Add(mnuLang);
+      SaveLetter := CurrLetter;
+      CurrMenu := TMenuItem.Create(Self);
+      CurrMenu.Caption := CurrLetter;
+      mnuLanguage.Add(CurrMenu);
     end;
+
+    CurrMenu.Add(mnuLang);
+  end;
+
+  for i := 0 to ConfigObj.ThemeList.Count - 1 do
+  begin
+    mnuTheme := TMenuItem.Create(Self);
+    mnuTheme.Caption := ConfigObj.ThemeList.Keys[i];
+    mnuTheme.Tag := i;
+    mnuThemes.Add(mnuTheme);
+  end;
 
 end;
 
 procedure TfMain.mnuLangClick(Sender: TObject);
 var
-  idx : integer;
+  idx: integer;
   Ed: TEditor;
 
 begin
   idx := TMenuItem(Sender).Tag;
 
-  if not Assigned(ARHighlighter[idx].HL) then
-    begin
-      ARHighlighter[idx].HL := ARHighlighter[idx].HLClass.Create(Self);
-      dmMain.InitializeHighlighter(ARHighlighter[idx].HL);
-    end;
+  if not EditorAvalaible then
+    exit;
 
-   if not EditorAvalaible then
-      exit;
-
-   Ed := EditorFactory.CurrentEditor;
-   Ed.Highlighter := ARHighlighter[idx].HL;
+  Ed := EditorFactory.CurrentEditor;
+  Ed.Highlighter := ConfigObj.getHighLighter(Idx);
 
 end;
 
@@ -690,7 +694,7 @@ end;
 procedure TfMain.FormDestroy(Sender: TObject);
 begin
   ConfigObj.WriteStrings('Recent', 'File', MRU.Recent);
-  Mru.free;
+  Mru.Free;
   FreeAndNil(EditorFactory);
 end;
 
@@ -699,10 +703,10 @@ var
   i: integer;
 begin
   for i := Low(FileNames) to High(FileNames) do
-   begin
+  begin
     EditorFactory.AddEditor(FileNames[i]);
     MRU.AddToRecent(FileNames[i]);
-   end;
+  end;
 
 end;
 
@@ -754,7 +758,7 @@ end;
 
 procedure TfMain.ShowTabs(Sender: TObject);
 begin
-  EditorFactory.ActivePageIndex:= (Sender as TMenuItem).Tag;
+  EditorFactory.ActivePageIndex := (Sender as TMenuItem).Tag;
 end;
 
 procedure TfMain.mnuTabsClick(Sender: TObject);
@@ -765,13 +769,13 @@ begin
   mnuTabs.Clear;
 
   for i := 0 to EditorFactory.PageCount - 1 do
-    begin
-      mnuitem := TMenuItem.Create(mnuTabs);
-      mnuitem.Caption:=EditorFactory.Pages[i].Caption;
-      mnuitem.Tag:=i;
-      mnuitem.OnClick := @ShowTabs;
-      mnuTabs.Add(mnuitem);
-    end;
+  begin
+    mnuitem := TMenuItem.Create(mnuTabs);
+    mnuitem.Caption := EditorFactory.Pages[i].Caption;
+    mnuitem.Tag := i;
+    mnuitem.OnClick := @ShowTabs;
+    mnuTabs.Add(mnuitem);
+  end;
 
 end;
 
@@ -883,6 +887,7 @@ var
 begin
   if (FindText = EmptyStr) then
     Exit;
+
   Ed := EditorFactory.CurrentEditor;
   if Assigned(Ed) then
   begin
@@ -916,7 +921,8 @@ begin
   Ed := EditorFactory.CurrentEditor;
   ed.BeginUpdate(True);
   try
-    Ed.Sort(true);
+    Ed.Sort(True);
+
   finally
     Ed.EndUpdate;
   end;

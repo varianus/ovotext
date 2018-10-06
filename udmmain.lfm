@@ -1,6 +1,4 @@
 object dmMain: TdmMain
-  OnCreate = DataModuleCreate
-  OnDestroy = DataModuleDestroy
   OldCreateOrder = False
   Height = 313
   HorizontalOffset = 695

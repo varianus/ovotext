@@ -24,7 +24,7 @@ unit SupportFuncs;
 interface
 
 uses
-  Classes, SysUtils, RegExpr
+  Classes, SysUtils, RegExpr, LazUTF8, LazFileUtils
   {$IFDEF UNIX}
   , BaseUnix
   {$ENDIF}  ;
@@ -49,6 +49,7 @@ function TabsToSpace(const S: string): string;
 function FormatXML(const S: string): string;
 function CompactXML(const S: string): string;
 function FormatJson(const S: string): string;
+function BuildFileList(const Path: string; const Attr: integer; const List: TStrings; Recurring: boolean): boolean;
 
 
 implementation
@@ -475,5 +476,193 @@ begin
 end;
 
 {$ENDIF}
+
+// Derived from "Like" by Michael Winter
+function StrMatches(const Substr, S: string; const Index: SizeInt = 1): boolean;
+var
+  StringPtr:  PChar;
+  PatternPtr: PChar;
+  StringRes:  PChar;
+  PatternRes: PChar;
+begin
+  Result := SubStr = '*';
+
+  if Result or (S = '') then
+    Exit;
+
+  StringPtr  := PChar(@S[Index]);
+  PatternPtr := PChar(SubStr);
+  StringRes  := nil;
+  PatternRes := nil;
+
+  repeat
+    repeat
+      case PatternPtr^ of
+        #0:
+          begin
+          Result := StringPtr^ = #0;
+          if Result or (StringRes = nil) or (PatternRes = nil) then
+            Exit;
+
+          StringPtr  := StringRes;
+          PatternPtr := PatternRes;
+          Break;
+          end;
+        '*':
+          begin
+          Inc(PatternPtr);
+          PatternRes := PatternPtr;
+          Break;
+          end;
+        '?':
+          begin
+          if StringPtr^ = #0 then
+            Exit;
+          Inc(StringPtr);
+          Inc(PatternPtr);
+          end;
+        else
+          begin
+          if StringPtr^ = #0 then
+            Exit;
+          if StringPtr^ <> PatternPtr^ then
+            begin
+            if (StringRes = nil) or (PatternRes = nil) then
+              Exit;
+            StringPtr  := StringRes;
+            PatternPtr := PatternRes;
+            Break;
+            end
+          else
+            begin
+            Inc(StringPtr);
+            Inc(PatternPtr);
+            end;
+          end;
+        end;
+    until False;
+
+    repeat
+      case PatternPtr^ of
+        #0:
+          begin
+          Result := True;
+          Exit;
+          end;
+        '*':
+          begin
+          Inc(PatternPtr);
+          PatternRes := PatternPtr;
+          end;
+        '?':
+          begin
+          if StringPtr^ = #0 then
+            Exit;
+          Inc(StringPtr);
+          Inc(PatternPtr);
+          end;
+        else
+          begin
+          repeat
+            if StringPtr^ = #0 then
+              Exit;
+            if StringPtr^ = PatternPtr^ then
+              Break;
+            Inc(StringPtr);
+          until False;
+          Inc(StringPtr);
+          StringRes := StringPtr;
+          Inc(PatternPtr);
+          Break;
+          end;
+        end;
+    until False;
+  until False;
+end;
+
+
+function IsFileNameMatch(FileName: string; const Mask: string; const CaseSensitive: boolean): boolean;
+begin
+  Result := True;
+  {$IFDEF MSWINDOWS}
+  if (Mask = '') or (Mask = '*') or (Mask = '*.*') then
+    Exit;
+  if Pos('.', FileName) = 0 then
+    FileName := FileName + '.';  // file names w/o extension match '*.'
+  {$ENDIF MSWINDOWS}
+  {$IFDEF UNIX}
+  if (Mask = '') or (Mask = '*') then
+    Exit;
+  {$ENDIF UNIX}
+  if CaseSensitive then
+    Result := StrMatches(Mask, FileName)
+  else
+    Result := StrMatches(AnsiUpperCase(Mask), AnsiUpperCase(FileName));
+end;
+
+function BuildFileList(const Path: string; const Attr: integer; const List: TStrings; Recurring: boolean): boolean;
+var
+  SearchRec: TSearchRec;
+  IndexMask: integer;
+  MaskList:  TStringList;
+  Masks, Directory: string;
+begin
+  Assert(List <> nil);
+  MaskList := TStringList.Create;
+    try
+    {* extract the Directory *}
+    Directory := ExtractFileDir(Path);
+
+    {* files can be searched in the current directory *}
+    if Directory <> '' then
+      begin
+      Directory := IncludeTrailingPathDelimiter(Directory);
+      {* extract the FileMasks portion out of Path *}
+      Masks     := copy(Path, Length(Directory) + 1, Length(Path));
+      end
+    else
+      Masks := Path;
+
+    {* put the Masks into TStringlist *}
+    StrToStrings(Masks, ';', MaskList, False);
+
+    {* search all files in the directory *}
+    Result := FindFirstUTF8(Directory + AllFilesMask, faAnyFile, SearchRec) = 0;
+
+    List.BeginUpdate;
+      try
+      while Result do
+        begin
+        {* if the filename matches any mask then it is added to the list *}
+        if Recurring and ((searchrec.Attr and faDirectory) <> 0) and (SearchRec.Name <> '.') and
+          (SearchRec.Name <> '..') then
+          BuildFileList(IncludeTrailingPathDelimiter(Directory + SearchRec.Name) + masks,
+            Attr, list, Recurring);
+
+        for IndexMask := 0 to MaskList.Count - 1 do
+          if (SearchRec.Name <> '.') and (SearchRec.Name <> '..') and
+            ((SearchRec.Attr and Attr) = (SearchRec.Attr and faAnyFile)) and
+            IsFileNameMatch(SearchRec.Name, MaskList.Strings[IndexMask], False) then
+            begin
+              List.Add(SysToUTF8(Directory + SearchRec.Name));
+            Break;
+            end;
+
+        case FindNextUTF8(SearchRec) of
+          0: ;
+          2: //ERROR_NO_MORE_FILES:
+            Break;
+          else
+            Result := False;
+          end;
+        end;
+      finally
+      FindCloseUTF8(SearchRec);
+      List.EndUpdate;
+      end;
+    finally
+    MaskList.Free;
+    end;
+end;
 
 end.

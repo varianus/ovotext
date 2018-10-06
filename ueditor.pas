@@ -156,7 +156,7 @@ begin
   if FFileName <> EmptyStr then
     begin
       FUntitled := False;
-      Highlighter := dmMain.getHighLighter(ExtractFileExt(fFileName));
+      Highlighter := ConfigObj.getHighLighter(ExtractFileExt(fFileName));
                                                    // reserve spaces for emulated close button
       FSheet.Caption := ExtractFileName(fFileName) {$IFDEF NEEDCLOSEBTN}+'     '{$ENDIF};
     end

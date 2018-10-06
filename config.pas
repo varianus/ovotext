@@ -24,12 +24,96 @@ unit Config;
 interface
 
 uses
-  Classes, SysUtils, Graphics, XMLPropStorage, XMLConf, DOM;
+  Classes, SysUtils, Graphics, XMLPropStorage, XMLConf,
+  LResources, FGL, DOM, SupportFuncs, Stringcostants,
+  SynEditHighlighter, SynEditStrConst, SynEditStrConstExtra,
+  // included with Lazarus
+  SynHighlighterPas,
+  SynHighlighterCpp, SynHighlighterJava, SynHighlighterPerl, SynHighlighterHTML,
+  SynHighlighterXML, SynHighlighterLFM, synhighlighterunixshellscript,
+  SynHighlighterCss, SynHighlighterPHP, SynHighlighterTeX, SynHighlighterSQL,
+  SynHighlighterPython, SynHighlighterVB, SynHighlighterBat, SynHighlighterIni,
+  SynHighlighterPo,
+  // from other people
+  SynHighlighterTclTk, SynHighlighterRuby, SynHighlighterCS,
+  SynHighlighterHaskell, SynHighlighterFoxpro, SynHighlighterInno,
+  SynHighlighterDml, SynHighlighterCAC, SynHighlighterModelica,
+  SynHighlighterVrml97, SynHighlighterHP48, SynHighlighterAWK,
+  SynHighlighterProgress, SynHighlighterEiffel, SynHighlighterBaan,
+  SynHighlighterDiff, SynHighlighterJScript, SynHighlighterJSon,
+  SynHighlighterM3, SynHighlighterLDraw, SynHighlighterVBScript,
+  SynHighlighterSml, SynHighlighterIDL, SynHighlighterCobol, SynHighlighterGWS,
+  SynHighlighterAsm, SynHighlighterLua, SynHighlighterFortran,
+  SynHighlighterProlog, SynHighlighterRC, SynHighlighterR;
 
 type
+  RHighlighter = record
+    HLClass: TSynCustomHighlighterClass;
+    Filter: string;
+    HL: TSynCustomHighlighter;
+  end;
+
+const
+  HIGHLIGHTERCOUNT = 48;
+  ARHighlighter: array [0..HIGHLIGHTERCOUNT - 1] of RHighlighter = (
+    (HLClass: TSynAWKSyn; Filter: SYNS_FilterAWK; HL: nil),
+    (HLClass: TSynBaanSyn; Filter: SYNS_FilterBaan; HL: nil),
+    (HLClass: TSynCppSyn; Filter: SYNS_FilterCPP; HL: nil),
+    (HLClass: TSynCACSyn; Filter: SYNS_FilterCAClipper; HL: nil),
+    (HLClass: TSynCssSyn; Filter: SYNS_FilterCSS; HL: nil),
+    (HLClass: TSynCobolSyn; Filter: SYNS_FilterCOBOL; HL: nil),
+    (HLClass: TSynIdlSyn; Filter: SYNS_FilterCORBAIDL; HL: nil),
+    (HLClass: TSynCSSyn; Filter: SYNS_FilterCS; HL: nil),
+    (HLClass: TSynDiffSyn; Filter: SYNS_FilterDiff; HL: nil),
+    (HLClass: TSynEiffelSyn; Filter: SYNS_FilterEiffel; HL: nil),
+    (HLClass: TSynFortranSyn; Filter: SYNS_FilterFortran; HL: nil),
+    (HLClass: TSynFoxproSyn; Filter: SYNS_FilterFoxpro; HL: nil),
+    (HLClass: TSynDmlSyn; Filter: SYNS_FilterGembase; HL: nil),
+    (HLClass: TSynGWScriptSyn; Filter: SYNS_FilterGWS; HL: nil),
+    (HLClass: TSynHaskellSyn; Filter: SYNS_FilterHaskell; HL: nil),
+    (HLClass: TSynHP48Syn; Filter: SYNS_FilterHP48; HL: nil),
+    (HLClass: TSynHTMLSyn; Filter: SYNS_FilterHTML; HL: nil),
+    (HLClass: TSynIniSyn; Filter: SYNS_FilterINI; HL: nil),
+    (HLClass: TSynInnoSyn; Filter: SYNS_FilterInno; HL: nil),
+    (HLClass: TSynJavaSyn; Filter: SYNS_FilterJava; HL: nil),
+    (HLClass: TSynJScriptSyn; Filter: SYNS_FilterJScript; HL: nil),
+    (HLClass: TSynJSONSyn; Filter: SYNS_FilterJSON; HL: nil),
+    (HLClass: TSynLFMSyn; Filter: SYNS_FilterLFM; HL: nil),
+    (HLClass: TSynLDRSyn; Filter: SYNS_FilterLDraw; HL: nil),
+    (HLClass: TSynLuaSyn; Filter: SYNS_FilterLua; HL: nil),
+    (HLClass: TSynModelicaSyn; Filter: SYNS_FilterModelica; HL: nil),
+    (HLClass: TSynM3Syn; Filter: SYNS_FilterModula3; HL: nil),
+    (HLClass: TSynVBScriptSyn; Filter: SYNS_FilterVBScript; HL: nil),
+    (HLClass: TSynBatSyn; Filter: SYNS_FilterBatch; HL: nil),
+    (HLClass: TSynPasSyn; Filter: SYNS_FilterPascal; HL: nil),
+    (HLClass: TSynPerlSyn; Filter: SYNS_FilterPerl; HL: nil),
+    (HLClass: TSynPHPSyn; Filter: SYNS_FilterPHP; HL: nil),
+    (HLClass: TSynPoSyn; Filter: SYNS_FilterPo; HL: nil),
+    (HLClass: TSynProgressSyn; Filter: SYNS_FilterProgress; HL: nil),
+    (HLClass: TSynPrologSyn; Filter: SYNS_FilterProlog; HL: nil),
+    (HLClass: TSynPythonSyn; Filter: SYNS_FilterPython; HL: nil),
+    (HLClass: TSynRSyn; Filter: SYNS_FilterR; HL: nil),
+    (HLClass: TSynRCSyn; Filter: SYNS_FilterRC; HL: nil),
+    (HLClass: TSynRubySyn; Filter: SYNS_FilterRuby; HL: nil),
+    (HLClass: TSynSQLSyn; Filter: SYNS_FilterSQL; HL: nil),
+    (HLClass: TSynSMLSyn; Filter: SYNS_FilterSML; HL: nil),
+    (HLClass: TSynTclTkSyn; Filter: SYNS_FilterTclTk; HL: nil),
+    (HLClass: TSynTeXSyn; Filter: SYNS_FilterTclTk; HL: nil),
+    (HLClass: TSynUNIXShellScriptSyn; Filter: SYNS_FilterUNIXShellScript; HL: nil),
+    (HLClass: TSynVBSyn; Filter: SYNS_FilterVisualBASIC; HL: nil),
+    (HLClass: TSynVrml97Syn; Filter: SYNS_FilterVrml97; HL: nil),
+    (HLClass: TSynAsmSyn; Filter: SYNS_FilterX86Asm; HL: nil),
+    (HLClass: TSynXMLSyn; Filter: SYNS_FilterXML; HL: nil));
+
+type
+
+  THighLighterList = specialize TFPGMap<string, integer>;
+  TThemesList = specialize TFPGMap<string, string>;
+
   { TConfig }
   RAppSettings = record
     CloseWithLastTab: boolean;
+    ColorSchema: string;
   end;
 
   { RFontAttributes }
@@ -42,7 +126,7 @@ type
 
   { TXMLConfigExtended }
 
-  TXMLConfigExtended = class (TXMLConfig)
+  TXMLConfigExtended = class(TXMLConfig)
   public
     function PathExists(APath: string): boolean;
   end;
@@ -50,17 +134,27 @@ type
 
   TConfig = class
   private
+    fHighlighters: THighLighterList;
     FAppSettings: RAppSettings;
     FConfigFile: string;
     fConfigDir: string;
+    FDirty: boolean;
     FFont: TFont;
     ResourcesPath: string;
-    fXMLConfigExtended : TXMLConfigExtended;
+    fXMLConfigExtended: TXMLConfigExtended;
     fConfigHolder: TXMLConfigStorage;
     fColorSchema: TXMLConfigStorage;
+    fThemesList: TThemesList;
     function GetBackGroundColor: TColor;
+    procedure SetDirty(AValue: boolean);
     procedure SetFont(AValue: TFont);
     procedure WriteColor(const Section, Ident: string; const Value: TColor);
+    procedure InitializeHighlighter(Highlighter: TSynCustomHighlighter);
+    procedure FontAttribToAttribute(Attribute: TSynHighlighterAttributes; Attrib: TFontAttributes);
+    procedure LoadHighlighters;
+    procedure LoadThemes;
+    procedure SetAttribute(AttrName: string; Attribute: TSynHighlighterAttributes; DefaultAttrib: TFontAttributes);
+
   public
     constructor Create;
     procedure ReadConfig;
@@ -72,12 +166,18 @@ type
     function ReadColor(const Section, Ident: string; const Default: TColor): TColor;
     function ReadFontStyle(const Section, Ident: string; const default: TFontStyles): TFontstyles;
     function ReadFontAttributes(AttibuteName: string; const Default: TFontAttributes): TFontAttributes;
+    function getHighLighter(Extension: string): TSynCustomHighlighter; overload;
+    function getHighLighter(Index: integer): TSynCustomHighlighter; overload;
     destructor Destroy; override;
+    function GetFiters: string;
+
     // -- //
+    property ThemeList: TThemesList read fThemesList;
+    property Dirty: boolean read FDirty write SetDirty;
     property ConfigDir: string read fConfigDir;
     property ConfigFile: string read FConfigFile;
     property Font: TFont read FFont write SetFont;
-    property XMLConfigExtended : TXMLConfigExtended read fXMLConfigExtended;
+    property XMLConfigExtended: TXMLConfigExtended read fXMLConfigExtended;
     property AppSettings: RAppSettings read FAppSettings write FAppSettings;
     property BackGroundColor: TColor read GetBackGroundColor;
   end;
@@ -119,26 +219,33 @@ const
   SectionGeneral = 'General';
 
 
-  function NextToken(const S: string; var SeekPos: Integer;
-    const TokenDelim: Char): string;
-  var
-    TokStart: Integer;
-  begin
-    repeat
-      if SeekPos > Length(s) then begin Result := ''; Exit end;
-      if S[SeekPos] = TokenDelim then Inc(SeekPos) else Break;
-    until false;
-    TokStart := SeekPos; { TokStart := first character not in TokenDelims }
+function NextToken(const S: string; var SeekPos: integer; const TokenDelim: char): string;
+var
+  TokStart: integer;
+begin
+  repeat
+    if SeekPos > Length(s) then
+    begin
+      Result := '';
+      Exit;
+    end;
+    if S[SeekPos] = TokenDelim then
+      Inc(SeekPos)
+    else
+      Break;
+  until False;
+  TokStart := SeekPos; { TokStart := first character not in TokenDelims }
 
-    while (SeekPos <= Length(s)) and not(S[SeekPos] = TokenDelim) do Inc(SeekPos);
+  while (SeekPos <= Length(s)) and not (S[SeekPos] = TokenDelim) do
+    Inc(SeekPos);
 
-    { Calculate result := s[TokStart, ... , SeekPos-1] }
-    result := Copy(s, TokStart, SeekPos-TokStart);
+  { Calculate result := s[TokStart, ... , SeekPos-1] }
+  Result := Copy(s, TokStart, SeekPos - TokStart);
 
     { We don't have to do Inc(seekPos) below. But it's obvious that searching
       for next token can skip SeekPos, since we know S[SeekPos] is TokenDelim. }
-    Inc(SeekPos);
-  end;
+  Inc(SeekPos);
+end;
 
 function GetConfigDir: string;
 var
@@ -167,32 +274,33 @@ end;
 
 function TXMLConfigExtended.PathExists(APath: string): boolean;
   { Find a children element, nil if not found. }
-  function FindElementChildren(Element: TDOMElement;
-    const ElementName: string): TDOMElement;
+  function FindElementChildren(Element: TDOMElement; const ElementName: string): TDOMElement;
   var
     Node: TDOMNode;
   begin
     Node := Element.FindNode(ElementName);
     if (Node <> nil) and (Node.NodeType = ELEMENT_NODE) then
-      Result := Node as TDOMElement else
+      Result := Node as TDOMElement
+    else
       Result := nil;
   end;
 
 var
-  SeekPos: Integer;
+  SeekPos: integer;
   PathComponent: string;
   fElement: TDOMElement;
 begin
-  fElement := Doc.DocumentElement ;
+  fElement := Doc.DocumentElement;
   SeekPos := 1;
   while fElement <> nil do
   begin
     PathComponent := NextToken(APath, SeekPos, '/');
-    if PathComponent = '' then break;
+    if PathComponent = '' then
+      break;
     fElement := FindElementChildren(fElement, PathComponent);
   end;
 
-  Result :=  Assigned(fElement);
+  Result := Assigned(fElement);
 end;
 
 
@@ -207,11 +315,155 @@ begin
   fConfigDir := GetConfigDir;
   fConfigHolder := TXMLConfigStorage.Create(FConfigFile, FileExists(FConfigFile));
   ReadConfig;
+
+  fHighlighters := THighlighterList.Create;
+  fThemesList := TThemesList.Create;
+  LoadHighlighters;
+  LoadThemes;
+
   FXMLConfigExtended := TXMLConfigExtended.Create(nil);
-  fXMLConfigExtended.Filename:= IncludeTrailingPathDelimiter(ResourcesPath) + 'color-schema.xml';
+  fXMLConfigExtended.Filename := IncludeTrailingPathDelimiter(ResourcesPath) + 'schema-Default.xml';
   fColorSchema := TXMLConfigStorage.Create(FXMLConfigExtended);
 
 end;
+
+
+procedure TConfig.FontAttribToAttribute(Attribute: TSynHighlighterAttributes; Attrib: TFontAttributes);
+begin
+  Attribute.Foreground := Attrib.Foreground;
+  Attribute.Background := Attrib.Background;
+  Attribute.Style := Attrib.Styles;
+
+end;
+
+procedure TConfig.SetAttribute(AttrName: string; Attribute: TSynHighlighterAttributes; DefaultAttrib: TFontAttributes);
+var
+  tmpAttribs: TFontAttributes;
+begin
+  if not Assigned(Attribute) then
+    exit;
+  tmpAttribs := ReadFontAttributes(AttrName, DefaultAttrib);
+  FontAttribToAttribute(Attribute, tmpAttribs);
+end;
+
+procedure TConfig.InitializeHighlighter(Highlighter: TSynCustomHighlighter);
+var
+  i: integer;
+  AttrName: string;
+  AttrPath: string;
+  DefaultAttrib: TFontAttributes;
+const
+  DefaultPath = 'Schema/DefaultLang/';
+
+begin
+  DefaultAttrib := ReadFontAttributes('Schema/Default/Text', FontAttributes());
+  AttrPath := 'Schema/' + CleanupName(Highlighter.GetLanguageName) + '/';
+
+  for i := 0 to Highlighter.AttrCount - 1 do
+  begin
+    AttrName := CleanupName(Highlighter.Attribute[i].Name) + '/';
+    if XMLConfigExtended.PathExists(AttrPath + AttrName) then
+      SetAttribute(AttrPath + AttrName, Highlighter.Attribute[i], DefaultAttrib)
+    else
+      SetAttribute(DefaultPath + AttrName, Highlighter.Attribute[i], DefaultAttrib);
+  end;
+
+  XMLConfigExtended.CloseKey;
+
+end;
+
+function TConfig.getHighLighter(Extension: string): TSynCustomHighlighter;
+var
+  tmp: integer;
+  idx: integer;
+
+begin
+  tmp := fHighlighters.IndexOf(Extension);
+  if tmp > -1 then
+  begin
+    idx := fHighlighters.Data[tmp];
+    Result := getHighLighter(idx);
+  end
+  else
+    Result := nil;
+
+end;
+
+function TConfig.getHighLighter(Index: integer): TSynCustomHighlighter;
+begin
+  if not Assigned(ARHighlighter[Index].HL) then
+  begin
+    ARHighlighter[Index].HL := ARHighlighter[Index].HLClass.Create(nil);
+    InitializeHighlighter(ARHighlighter[Index].HL);
+  end;
+  Result := ARHighlighter[Index].HL;
+end;
+
+function TConfig.GetFiters: string;
+var
+  i: integer;
+begin
+  Result := RSAllFile + ' (' + GetAllFilesMask + ')|' + GetAllFilesMask;
+  for i := 0 to HIGHLIGHTERCOUNT - 1 do
+    Result := Result + '|' + ARHighlighter[i].Filter;
+
+end;
+
+
+procedure TConfig.LoadHighlighters;
+var
+  i, j: integer;
+  filter: string;
+  stList: TStringList;
+begin
+
+  fHighlighters.Clear;
+  for i := 0 to HIGHLIGHTERCOUNT - 1 do
+  begin
+    Filter := LowerCase(ARHighlighter[i].Filter);
+    j := Pos('|', Filter);
+    if j > 0 then
+    begin
+      Delete(Filter, 1, j);
+      stList := TStringList.Create;
+      StrToStrings(filter, ';', stList, False);
+      for j := 0 to stList.Count - 1 do
+        fHighlighters.Add(ExtractFileExt(stList[j]), i);
+      stList.Free;
+    end;
+  end;
+
+end;
+
+procedure TConfig.LoadThemes;
+var
+  FileList: TStringList;
+  I: integer;
+  Doc: TXMLConfigExtended;
+  SchemaName: string;
+
+begin
+  fThemesList.Clear;
+  FileList := TStringList.Create;
+
+  BuildFileList(GetResourcesPath + 'schema-*.xml', faAnyFile, FileList, False);
+  BuildFileList(ConfigDir + 'schema-*.xml', faAnyFile, FileList, False);
+
+  for I := 0 to Pred(FileList.Count) do
+  begin
+    try
+      Doc := TXMLConfigExtended.Create(nil);
+      doc.Filename := FileList[i];
+      SchemaName := doc.GetValue('Schema/Name', '');
+      if SchemaName <> '' then
+        fThemesList.Add(SchemaName, FileList[i]);
+    except
+    end;
+    FreeAndNil(doc);
+  end;
+
+end;
+
 
 destructor TConfig.Destroy;
 begin
@@ -220,14 +472,20 @@ begin
   fConfigHolder.Free;
   fColorSchema.Free;
   FFont.Free;
-  FXMLConfigExtended.free;
+  FXMLConfigExtended.Free;
+  fHighlighters.Free;
+  fThemesList.Free;
   inherited Destroy;
 end;
 
 procedure TConfig.SaveConfig;
 begin
+  if not FDirty then
+    Exit;
+
   fConfigHolder.SetValue(SectionUnix + '/' + IdentResourcesPath, ResourcesPath);
   fConfigHolder.SetValue('Application/CloseWithLastTab', FAppSettings.CloseWithLastTab);
+  fConfigHolder.SetValue('Application/ColorSchema/Name', FAppSettings.ColorSchema);
 
   fConfigHolder.SetValue('Editor/Font/Name', FFont.Name);
   fConfigHolder.SetValue('Editor/Font/Height', FFont.Height);
@@ -249,6 +507,9 @@ begin
   FAppSettings.CloseWithLastTab :=
     fConfigHolder.GetValue('Application/CloseWithLastTab', False);
 
+  FAppSettings.ColorSchema :=
+    fConfigHolder.GetValue('Application/ColorSchema/Name', '');
+
   fontName := fConfigHolder.GetValue('Editor/Font/Name', EmptyStr);
   if fontName = EmptyStr then
   begin
@@ -260,6 +521,8 @@ begin
     FFont.Name := fontName;
     FFont.Height := fConfigHolder.GetValue('Editor/Font/Height', 0);
   end;
+
+  FDirty := False;
 
 end;
 
@@ -279,9 +542,17 @@ begin
   Result := ReadColor('Default/Text', 'Background', clWindow);
 end;
 
+procedure TConfig.SetDirty(AValue: boolean);
+begin
+  if FDirty = AValue then
+    Exit;
+  FDirty := AValue;
+end;
+
 procedure TConfig.SetFont(AValue: TFont);
 begin
   FFont.Assign(AValue);
+  FDirty := True;
 end;
 
 function TConfig.ReadColor(const Section, Ident: string; const Default: TColor): TColor;
@@ -372,7 +643,5 @@ finalization
     FConfigObj.SaveConfig;
     FConfigObj.Free;
   end;
-
-
 
 end.

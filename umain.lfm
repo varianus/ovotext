@@ -1,11 +1,11 @@
 object fMain: TfMain
   Left = 525
-  Height = 629
+  Height = 396
   Top = 172
   Width = 966
   AllowDropFiles = True
   Caption = 'ovoText'
-  ClientHeight = 629
+  ClientHeight = 396
   ClientWidth = 966
   Menu = mnuMain
   OnActivate = FormActivate
@@ -18,8 +18,8 @@ object fMain: TfMain
   Visible = True
   object StatusBar: TStatusBar
     Left = 0
-    Height = 23
-    Top = 606
+    Height = 21
+    Top = 375
     Width = 966
     Panels = <    
       item
@@ -615,6 +615,9 @@ object fMain: TfMain
       Caption = 'Settings'
       object MenuItem36: TMenuItem
         Action = actFont
+      end
+      object mnuThemes: TMenuItem
+        Caption = 'Themes'
       end
     end
     object mnuLanguage: TMenuItem

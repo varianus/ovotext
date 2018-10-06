@@ -449,6 +449,10 @@ msgstr ""
 msgid "Tabs"
 msgstr ""
 
+#: tfmain.mnuthemes.caption
+msgid "Themes"
+msgstr ""
+
 #: tfmain.searchfind.caption
 msgid "&Search"
 msgstr ""
