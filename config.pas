@@ -129,6 +129,7 @@ type
   TXMLConfigExtended = class(TXMLConfig)
   public
     function PathExists(APath: string): boolean;
+    function Loaded: boolean;
   end;
 
 
@@ -303,6 +304,11 @@ begin
   Result := Assigned(fElement);
 end;
 
+function TXMLConfigExtended.Loaded: boolean;
+begin
+  Result := Filename <> '';
+end;
+
 
 constructor TConfig.Create;
 begin
@@ -322,7 +328,17 @@ begin
   LoadThemes;
 
   FXMLConfigExtended := TXMLConfigExtended.Create(nil);
-  fXMLConfigExtended.Filename := IncludeTrailingPathDelimiter(ResourcesPath) + 'schema-Default.xml';
+
+  if (FAppSettings.ColorSchema <> '') then
+    if FileExists(FAppSettings.ColorSchema) then
+      fXMLConfigExtended.Filename := FAppSettings.ColorSchema
+    else
+      FAppSettings.ColorSchema := '';
+
+  if (FAppSettings.ColorSchema = '') then
+    if FileExists(IncludeTrailingPathDelimiter(ResourcesPath) + 'schema-Default.xml') then
+      fXMLConfigExtended.Filename := IncludeTrailingPathDelimiter(ResourcesPath) + 'schema-Default.xml';
+
   fColorSchema := TXMLConfigStorage.Create(FXMLConfigExtended);
 
 end;
@@ -356,6 +372,9 @@ const
   DefaultPath = 'Schema/DefaultLang/';
 
 begin
+  if not XMLConfigExtended.Loaded then
+    exit;
+
   DefaultAttrib := ReadFontAttributes('Schema/Default/Text', FontAttributes());
   AttrPath := 'Schema/' + CleanupName(Highlighter.GetLanguageName) + '/';
 
