@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CONFIG>
-  <Schema Name="son_of_obsidian_theme">
+  <Schema Name="son of obsidian">
     <Default>
       <Text Background="$002A2822" Foreground="$00F3F2F1"/>
       <Gutter Background="$002A2822" Foreground="$0063C793"/>
       <LineNumber Background="$002A2822" Foreground="$0063C793"/>
     </Default>
-    <ObjectPascal>
+    <DefaultLang>
       <Assembler Background="$002A2822" Foreground="$0063C793"/>
       <Comment Style="fsBold" Background="$002A2822" Foreground="$007B7466"/>
       <Directive Style="fsBold" Background="$002A2822" Foreground="$00BD82A0"/>
@@ -14,39 +14,20 @@
       <Reserved_word Style="fsBold" Background="$002A2822" Foreground="$0063C793"/>
       <String Background="$002A2822" Foreground="$000076EC"/>
       <Symbol Background="$002A2822" Foreground="$00F3F2F1"/>
-    </ObjectPascal>
-    <C__>
-      <Assembler Background="$002A2822" Foreground="$0063C793"/>
-      <Comment Style="fsBold" Background="$002A2822" Foreground="$007B7466"/>
-      <Number Background="$002A2822" Foreground="$0022CDFF"/>
-      <Preprocessor Style="fsBold" Background="$002A2822" Foreground="$00BD82A0"/>
-      <Reserved_word Style="fsBold" Background="$002A2822" Foreground="$0063C793"/>
       <Space Background="$002A2822" Foreground="$00F3F2F1"/>
-      <String Background="$002A2822" Foreground="$000076EC"/>
-      <Symbol Background="$002A2822" Foreground="$00F3F2F1"/>
+   </DefaultLang>
+    <C__>
+      <Preprocessor Style="fsBold" Background="$002A2822" Foreground="$00BD82A0"/>
     </C__>
     <Java>
-      <Comment Style="fsBold" Background="$002A2822" Foreground="$007B7466"/>
       <Documentation Style="fsBold" Background="$002A2822" Foreground="$00F3F2F1"/>
-      <Number Background="$002A2822" Foreground="$0022CDFF"/>
-      <Reserved_word Style="fsBold" Background="$002A2822" Foreground="$0063C793"/>
-      <Space Background="$002A2822" Foreground="$00F3F2F1"/>
-      <String Background="$002A2822" Foreground="$000076EC"/>
-      <Symbol Background="$002A2822" Foreground="$00F3F2F1"/>
     </Java>
     <Perl>
-      <Comment Style="fsBold" Background="$002A2822" Foreground="$007B7466"/>
-      <Number Background="$002A2822" Foreground="$0022CDFF"/>
       <Pragma Style="fsBold" Background="$002A2822" Foreground="$00BD82A0"/>
-      <Reserved_word Style="fsBold" Background="$002A2822" Foreground="$0063C793"/>
-      <Space Background="$002A2822" Foreground="$00F3F2F1"/>
-      <String Background="$002A2822" Foreground="$000076EC"/>
-      <Symbol Background="$002A2822" Foreground="$00F3F2F1"/>
       <Variable Style="fsBold" Background="clWhite" Foreground="clPurple"/>
     </Perl>
     <HTML_document>
       <Asp Background="clYellow" Foreground="clBlack"/>
-      <Comment Style="fsBold" Foreground="clBlue"/>
       <Escape_ampersand Style="fsBold" Foreground="clLime"/>
       <Identifier Style="fsBold"/>
       <Reserved_word Style="fsBold"/>
