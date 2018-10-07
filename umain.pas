@@ -246,6 +246,7 @@ type
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
     procedure ExecFind(Dialog: TFindDialog);
     procedure mnuLangClick(Sender: TObject);
+    procedure mnuThemeClick(Sender: TObject);
     procedure PrepareReplace(Dialog: TReplaceDialog);
 
     procedure PrepareSearch(Dialog: TFindDialog);
@@ -669,6 +670,7 @@ begin
     mnuTheme := TMenuItem.Create(Self);
     mnuTheme.Caption := ConfigObj.ThemeList.Keys[i];
     mnuTheme.Tag := i;
+    mnuTheme.OnClick:=@mnuThemeClick;
     mnuThemes.Add(mnuTheme);
   end;
 
@@ -690,6 +692,15 @@ begin
 
 end;
 
+procedure TfMain.mnuThemeClick(Sender: TObject);
+var
+  idx: integer;
+  Ed: TEditor;
+begin
+  idx := TMenuItem(Sender).Tag;
+  ConfigObj.SetTheme(idx);
+  EditorFactory.ReloadHighLighters;
+end;
 
 procedure TfMain.FormDestroy(Sender: TObject);
 begin

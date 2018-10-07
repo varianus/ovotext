@@ -171,6 +171,7 @@ type
     function getHighLighter(Index: integer): TSynCustomHighlighter; overload;
     destructor Destroy; override;
     function GetFiters: string;
+    Procedure SetTheme(Index: integer);
 
     // -- //
     property ThemeList: TThemesList read fThemesList;
@@ -425,6 +426,18 @@ begin
   Result := RSAllFile + ' (' + GetAllFilesMask + ')|' + GetAllFilesMask;
   for i := 0 to HIGHLIGHTERCOUNT - 1 do
     Result := Result + '|' + ARHighlighter[i].Filter;
+
+end;
+
+procedure TConfig.SetTheme(Index: integer);
+var
+  i: Integer;
+begin
+
+  XMLConfigExtended.Filename:=ThemeList.Data[Index];
+  for i := 0 to HIGHLIGHTERCOUNT - 1 do
+   if Assigned(ARHighlighter[i].HL) then
+     InitializeHighlighter(ARHighlighter[i].HL);
 
 end;
 
