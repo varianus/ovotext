@@ -674,12 +674,17 @@ end;
 
 procedure TEditorFactory.ReloadHighLighters;
 var
-  i: integer;
+  i, j: integer;
   fhg: TSynCustomHighlighter;
   DefaultAttr: TFontAttributes;
+  DefaultAttrGutter: TFontAttributes;
+  SpecialAttrGutter: TFontAttributes;
   ed: TEditor;
 begin
   DefaultAttr := ConfigObj.ReadFontAttributes('Schema/Default/Text/', FontAttributes());
+  DefaultAttrGutter := ConfigObj.ReadFontAttributes('Schema/Default/Gutter/', FontAttributes());
+  SpecialAttrGutter := ConfigObj.ReadFontAttributes('Schema/Default/LineNumber/', FontAttributes());
+
   for i := PageCount - 1 downto 0 do
   begin
     ed := TEditorTabSheet(Pages[i]).Editor;
@@ -691,6 +696,30 @@ begin
       fhg := ed.Highlighter;
       ed.Highlighter := nil;
       ed.Highlighter := fhg;
+      for j := 0 to ed.Gutter.Parts.Count -1 do
+      begin
+        if ed.gutter.Parts[j] is TSynGutterMarks then
+        begin
+          ed.gutter.Parts[j].MarkupInfo.BeginUpdate;
+          ed.gutter.Parts[j].MarkupInfo.Background := DefaultAttrGutter.Background;
+          ed.gutter.Parts[j].MarkupInfo.Foreground := DefaultAttrGutter.Foreground;
+          ed.gutter.Parts[j].MarkupInfo.Style := DefaultAttrGutter.Styles;
+          ed.gutter.Parts[j].MarkupInfo.EndUpdate;
+        end;
+
+        if (ed.gutter.Parts[j] is TSynGutterLineNumber) or
+           (ed.gutter.Parts[j] is TSynGutterSeparator) then
+        begin
+          ed.gutter.Parts[j].MarkupInfo.BeginUpdate;
+          ed.gutter.Parts[j].MarkupInfo.Background := SpecialAttrGutter.Background;
+          ed.gutter.Parts[j].MarkupInfo.Foreground := SpecialAttrGutter.Foreground;
+          ed.gutter.Parts[j].MarkupInfo.Style := SpecialAttrGutter.Styles;
+          ed.gutter.Parts[j].MarkupInfo.EndUpdate;
+        end;
+
+      end;
+      ed.InvalidateGutter;
+      ed.invalidate;
     end;
   end;
 
