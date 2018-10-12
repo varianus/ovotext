@@ -14,12 +14,11 @@ object fMain: TfMain
   OnDestroy = FormDestroy
   OnDropFiles = FormDropFiles
   ShowHint = True
-  LCLVersion = '2.1.0.0'
   Visible = True
   object StatusBar: TStatusBar
     Left = 0
-    Height = 21
-    Top = 375
+    Height = 23
+    Top = 373
     Width = 966
     Panels = <    
       item
@@ -68,7 +67,7 @@ object fMain: TfMain
     end
     object ToolButton5: TToolButton
       Left = 25
-      Height = 5
+      Height = 18
       Top = 2
       Style = tbsDivider
     end
@@ -99,13 +98,13 @@ object fMain: TfMain
     end
     object ToolButton11: TToolButton
       Left = 102
-      Height = 5
+      Height = 18
       Top = 2
       Style = tbsDivider
     end
     object ToolButton12: TToolButton
       Left = 155
-      Height = 5
+      Height = 18
       Top = 2
       Style = tbsDivider
     end
@@ -126,7 +125,7 @@ object fMain: TfMain
     end
     object tbbSepClose: TToolButton
       Left = 232
-      Height = 5
+      Height = 18
       Top = 2
       Style = tbsDivider
     end
@@ -150,8 +149,8 @@ object fMain: TfMain
   object ActionList: TActionList
     Images = imgList
     OnUpdate = ActionListUpdate
-    left = 248
-    top = 72
+    Left = 248
+    Top = 72
     object FileExit: TAction
       Category = 'Apps'
       Caption = 'Exit'
@@ -409,7 +408,7 @@ object fMain: TfMain
       OnExecute = actTabToSpaceExecute
     end
     object actXMLPrettyPrint: TAction
-      Category = 'XML'
+      Category = 'PrettyPrint'
       Caption = 'Beautify  XML'
       OnExecute = actXMLPrettyPrintExecute
       ShortCut = 57410
@@ -420,20 +419,25 @@ object fMain: TfMain
       OnExecute = actQuoteExecute
     end
     object actJSONPrettyPrint: TAction
-      Category = 'XML'
+      Category = 'PrettyPrint'
       Caption = 'Beautify JSON'
       OnExecute = actJSONPrettyPrintExecute
     end
     object actXMLCompact: TAction
-      Category = 'XML'
+      Category = 'PrettyPrint'
       Caption = 'Compact XML'
       OnExecute = actXMLCompactExecute
+    end
+    object actSQLPrettyPrint: TAction
+      Category = 'PrettyPrint'
+      Caption = 'SQL Pretty Print'
+      OnExecute = actSQLPrettyPrintExecute
     end
   end
   object mnuMain: TMainMenu
     Images = imgList
-    left = 72
-    top = 72
+    Left = 72
+    Top = 72
     object MenuItem1: TMenuItem
       Caption = 'File'
       object MenuItem20: TMenuItem
@@ -647,8 +651,8 @@ object fMain: TfMain
     end
   end
   object imgList: TImageList
-    left = 320
-    top = 72
+    Left = 320
+    Top = 72
     Bitmap = {
       4C69200000001000000010000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -1682,19 +1686,19 @@ object fMain: TfMain
     ShowMenuGlyphs = sbgSystem
     OnActivate = AppPropertiesActivate
     OnShowHint = AppPropertiesShowHint
-    left = 504
-    top = 72
+    Left = 504
+    Top = 72
   end
   object FindDialog: TFindDialog
     OnClose = FindDialogClose
     OnFind = FindDialogFind
-    left = 504
-    top = 166
+    Left = 504
+    Top = 166
   end
   object pumEdit: TPopupMenu
     Images = imgList
-    left = 72
-    top = 144
+    Left = 72
+    Top = 144
     object MenuItem32: TMenuItem
       Action = EditUndo
     end
@@ -1724,8 +1728,8 @@ object fMain: TfMain
     end
   end
   object SaveDialog: TSaveDialog
-    left = 688
-    top = 168
+    Left = 688
+    Top = 168
   end
   object FontDialog: TFontDialog
     Title = 'Select a Font'
@@ -1733,19 +1737,19 @@ object fMain: TfMain
     MaxFontSize = 0
     Options = [fdForceFontExist, fdWysiwyg, fdApplyButton]
     OnApplyClicked = FontDialogApplyClicked
-    left = 426
-    top = 166
+    Left = 426
+    Top = 166
   end
   object ReplaceDialog: TReplaceDialog
     OnClose = FindDialogClose
     Options = [frDown, frReplace, frReplaceAll, frEntireScope, frHidePromptOnReplace]
     OnFind = ReplaceDialogFind
     OnReplace = ReplaceDialogReplace
-    left = 592
-    top = 168
+    Left = 592
+    Top = 168
   end
   object PrintDialog1: TPrintDialog
-    left = 256
-    top = 170
+    Left = 256
+    Top = 170
   end
 end

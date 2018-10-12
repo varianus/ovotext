@@ -37,6 +37,7 @@ type
     actFont: TAction;
     actFullNameToClipBoard: TAction;
     actGoTo: TAction;
+    actSQLPrettyPrint: TAction;
     actXMLCompact: TAction;
     actJSONPrettyPrint: TAction;
     actQuote: TAction;
@@ -192,6 +193,7 @@ type
     procedure actLanguageNoneExecute(Sender: TObject);
     procedure actPrintExecute(Sender: TObject);
     procedure actQuoteExecute(Sender: TObject);
+    procedure actSQLPrettyPrintExecute(Sender: TObject);
     procedure actTabToSpaceExecute(Sender: TObject);
     procedure actTrimExecute(Sender: TObject);
     procedure actTrimLeadingExecute(Sender: TObject);
@@ -381,6 +383,17 @@ begin
 
   Ed := EditorFactory.CurrentEditor;
   Ed.TextOperation(@QuotedStr, [tomLines]);
+end;
+
+procedure TfMain.actSQLPrettyPrintExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  Ed.TextOperation(@FormatSQL, [tomFullText]);
 end;
 
 procedure TfMain.actTabToSpaceExecute(Sender: TObject);

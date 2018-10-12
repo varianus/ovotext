@@ -49,11 +49,33 @@ function TabsToSpace(const S: string): string;
 function FormatXML(const S: string): string;
 function CompactXML(const S: string): string;
 function FormatJson(const S: string): string;
+function FormatSQL(const S: string): string;
 function BuildFileList(const Path: string; const Attr: integer; const List: TStrings; Recurring: boolean): boolean;
 
 
 implementation
 uses math;
+
+const
+  Aligner = '§§';
+  CRLF = #13#10;
+  CR = #13;
+  LF = #10;
+  DOUBLEQUOTE = #34;
+  QUOTE = #39;
+  SQUARE_OPEN = #91;
+  SQUARE_CLOSE = #93;
+  ROUND_OPEN = #40;
+  ROUND_CLOSE = #41;
+  COMMA = #44;
+  SPACE = #32;
+  DOUBLESPACE = #32#32;
+  SQLKEYWORDMAX = 20;
+
+var
+  sqlKeyWord: array[1..SQLKEYWORDMAX] of string = (' INNER JOIN', ' LEFT JOIN', ' RIGHT JOIN',
+    ' WHERE', ' LEFT OUTER JOIN', ' GROUP BY', ' ORDER BY', ' HAVING', ' FROM', ' SELECT', ' AND',  'FOR',
+    ' OR', ' UPDATE', ' SET', ' DELETE', ' ALTER ', ' JOIN', ' DROP', ' VALUES');
 
 function CleanupName(aName: string): string;
 var
@@ -248,19 +270,17 @@ begin
 end;
 
 
+
+function Spaces(Num: integer): string;
+begin
+  Result := StringOfChar(' ', num);
+end;
+
+
 {
 Json formatting code taken and adapted from delphi-xe-json by Nils Achterholt
    https://bitbucket.org/Gloegg/delphi-xe-json
 }
-class function getSpaces(aQuantity: integer): string;
-begin
-  result := '';
-  while aQuantity > 0 do
-  begin
-    result := result + ' ';
-    dec(aQuantity);
-  end;
-end;
 
 function RemoveWhiteSpace(const aInput: string): string;
 const
@@ -310,14 +330,14 @@ begin
       case sl[i][1] of
         '{':
           begin
-            sl[i] := getSpaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
+            sl[i] := Spaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
             inc(lvl);
             if (Length(sl[i]) > 1) and (sl[i][2] = '}') then
               dec(lvl);
           end;
         '[':
           begin
-            sl[i] := getSpaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
+            sl[i] := Spaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
             inc(lvl);
             if (Length(sl[i]) > 1) and (sl[i][2] = ']') then
               dec(lvl);
@@ -326,10 +346,10 @@ begin
           begin
             dec(lvl);
             lvl := max(lvl, 0);
-            sl[i] := getSpaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
+            sl[i] := Spaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
           end
       else
-        sl[i] := getSpaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
+        sl[i] := Spaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
       end;
     end;
     result := sl.Text;
@@ -664,5 +684,164 @@ begin
     MaskList.Free;
     end;
 end;
+
+function CharReplace(var S: string; const Search, Replace: char): integer;
+var
+  P: PChar;
+begin
+  Result := 0;
+  if Search <> Replace then
+  begin
+    UniqueString(S);
+    P := PChar(S);
+    while P^ <> #0 do
+    begin
+      if P^ = Search then
+      begin
+        P^ := Replace;
+        Inc(Result);
+      end;
+      Inc(P);
+    end;
+  end;
+end;
+
+function Match(OpenChar, CloseChar: char; Text: string): longint;
+var
+  Last, First: longint;
+begin
+  First := 1;
+  Last := Pos(CloseChar, Text);
+  if Last = 0 then
+    Last := Length(Text);
+  repeat
+    repeat
+      Inc(First);
+    until (First = last) or (Text[First] = openchar);
+
+    if First < last then
+      repeat
+        Inc(Last);
+      until (last >= Length(Text)) or (Text[Last] = closeChar);
+  until First = last;
+  Result := Last;
+end;
+
+function FormatSQL(const S: string): string;
+var
+  strSQL: string;
+  blnkeyWord: boolean;
+  intKeyWord: integer;
+  lngChar: longint;
+  lngEnd: longint;
+  strOut: string;
+  maxKeyword: integer;
+  cntSpaces: integer;
+  After: string;
+  Before: string;
+  SL: TStringList;
+  idx: integer;
+begin
+  strout := '';
+  maxKeyword := 0;
+  if S <> '' then
+  begin
+    strSQL := S;
+    strSQL := ' ' + strSQL;
+    CharReplace(strSQL, CR, SPACE);
+    CharReplace(strSQL, LF, SPACE);
+    strSQL := RemoveSpacesInExcess(strSQL);
+
+    lngChar := 1;
+    while lngChar <= Length(strSQL) do
+    begin
+      blnkeyWord := False;
+      for intKeyWord := 1 to SQLKEYWORDMAX do
+        if UpperCase(Copy(strSQL, lngChar, Length(sqlKeyWord[intKeyWord]) + 1)) = (sqlKeyWord[intKeyWord] + SPACE) then
+        begin
+          blnkeyWord := True;
+          Maxkeyword := max(Length(sqlKeyWord[intKeyWord]), maxKeyword);
+          Break;
+        end;
+
+      if blnkeyWord then
+      begin
+        after := Aligner;
+        before := CRLF;
+        cntSpaces := 0;
+        strOut := strOut + Before + trim(LowerCase(sqlKeyWord[intKeyWord])) + After + Spaces(cntSpaces);
+        lngChar := lngChar + Length(sqlKeyWord[intKeyWord]);
+      end
+      else
+      if (strSQL[lngChar] = CR) or (strSQL[lngChar] = LF) then
+        lngChar := lngChar + 1
+      else
+        case strSQL[lngChar] of
+          QUOTE, DOUBLEQUOTE:
+          begin
+            lngEnd :=
+              pos(strSQL[lngChar], Copy(strSQL, lngChar + 1, Length(strsql)));
+            strOut := strOut + Copy(strSQL, lngChar, lngEnd + 1);
+            lngChar := lngChar + lngEnd + 1;
+          end;
+          SQUARE_OPEN:
+          begin
+            lngEnd :=
+              Match(SQUARE_OPEN, SQUARE_CLOSE, Copy(strSQL, lngChar + 1, Length(strsql)));
+            strOut := strOut + Copy(strSQL, lngChar, lngEnd + 1);
+            lngChar := lngChar + lngEnd + 1;
+          end;
+          ROUND_OPEN:
+          begin
+            lngEnd :=
+              Match(ROUND_OPEN, ROUND_CLOSE, Copy(strSQL, lngChar + 1, Length(strsql)));
+            strOut := strOut + Copy(strSQL, lngChar, lngEnd + 1);
+            lngChar := lngChar + lngEnd + 1;
+          end;
+          SPACE:
+          begin
+            strout := strout + SPACE;
+            Inc(lngChar);
+          end;
+          COMMA:
+          begin
+            Strout := Strout + CRLF + Aligner + strSQL[lngChar];
+            Inc(lngChar);
+            if strSQL[lngChar] = Space then
+              Inc(lngChar);
+          end;
+          else
+          begin
+            //if strSQL[lngChar] = '!' then
+            //  strSQL[lngChar] := '|';
+            strOut := strOut + UpperCase(strSQL[lngChar]);
+            Inc(lngChar);
+          end;
+        end;
+    end;
+  end;
+
+  SL := TStringList.Create;
+  try
+    SL.Text := strOut;
+    for idx := 0 to SL.Count - 1 do
+    begin
+      lngChar := pos(Aligner, SL[idx]);
+      if lngChar = 0 then
+        Continue;
+      cntSpaces := (maxKeyword - lngChar);
+      Before := Trim(copy(SL[IDX], 1, lngChar - 1));
+      After := sl[idx];
+      Delete(After, 1, lngChar + 1);
+      SL[idx] := spaces(cntSpaces) + Before + ' ' + After;
+    end;
+    Result := SL.Text;
+
+  finally
+    SL.Free;
+  end;
+
+end;
+
 
 end.
