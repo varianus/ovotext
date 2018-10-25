@@ -345,40 +345,34 @@ procedure TEditor.CreateDefaultGutterParts;
 var
   SpecialAttr: TFontAttributes;
   DefaultAttr: TFontAttributes;
+  j: integer;
 begin
-  Gutter.Parts.Clear;
-  DefaultAttr := ConfigObj.ReadFontAttributes('Schema/Default/Gutter/', FontAttributes());
+  DefaultAttr := ConfigObj.ReadFontAttributes('Schema/Default/Gutter/', FontAttributes(clWindowText, clWindow));
+  SpecialAttr := ConfigObj.ReadFontAttributes('Schema/Default/LineNumber/', FontAttributes(clWindowText, clWindow));
   Gutter.Color := DefaultAttr.Background;
 
-  with TSynGutterMarks.Create(Gutter.Parts) do
+  for j := 0 to Gutter.Parts.Count -1 do
   begin
-    Name := 'SynGutterMarks1';
-    MarkupInfo.Background := DefaultAttr.Background;
-    MarkupInfo.Foreground := DefaultAttr.Foreground;
-    MarkupInfo.Style := DefaultAttr.Styles;
+    if gutter.Parts[j] is TSynGutterMarks then
+    begin
+      gutter.Parts[j].MarkupInfo.BeginUpdate;
+      gutter.Parts[j].MarkupInfo.Background := DefaultAttr.Background;
+      gutter.Parts[j].MarkupInfo.Foreground := DefaultAttr.Foreground;
+      gutter.Parts[j].MarkupInfo.Style := DefaultAttr.Styles;
+      gutter.Parts[j].MarkupInfo.EndUpdate;
+    end;
+
+    if (gutter.Parts[j] is TSynGutterLineNumber) or
+       (gutter.Parts[j] is TSynGutterSeparator) then
+    begin
+     gutter.Parts[j].MarkupInfo.BeginUpdate;
+     gutter.Parts[j].MarkupInfo.Background := SpecialAttr.Background;
+     gutter.Parts[j].MarkupInfo.Foreground := SpecialAttr.Foreground;
+     gutter.Parts[j].MarkupInfo.Style := SpecialAttr.Styles;
+     gutter.Parts[j].MarkupInfo.EndUpdate;
+    end;
   end;
-  with TSynGutterLineNumber.Create(Gutter.Parts) do
-  begin
-    Name := 'SynGutterLineNumber1';
-    SpecialAttr := ConfigObj.ReadFontAttributes('Schema/Default/LineNumber/', DefaultAttr);
-    MarkupInfo.Background := SpecialAttr.Background;
-    MarkupInfo.Foreground := SpecialAttr.Foreground;
-    MarkupInfo.Style := SpecialAttr.Styles;
-  end;
-  with TSynGutterSeparator.Create(Gutter.Parts) do
-  begin
-    Name := 'SynGutterSeparator1';
-    SpecialAttr := ConfigObj.ReadFontAttributes('Schema/Default/LineNumber/', DefaultAttr);
-    MarkupInfo.Background := SpecialAttr.Background;
-    MarkupInfo.Foreground := SpecialAttr.Foreground;
-    LineWidth := 1;
-    Width := 2;
-  end;
-  with TSynGutterChanges.Create(Gutter.Parts) do
-  begin
-    Name := 'SynGutterChanges';
-    Visible := False;
-  end;
+
 
 end;
 
@@ -693,9 +687,11 @@ begin
       ed.Font.Color := DefaultAttr.Foreground;
       ed.Font.Style := DefaultAttr.Styles;
       ed.Color := DefaultAttr.Background;
+      ed.Gutter.Color := DefaultAttr.Background;;
       fhg := ed.Highlighter;
       ed.Highlighter := nil;
       ed.Highlighter := fhg;
+
       for j := 0 to ed.Gutter.Parts.Count -1 do
       begin
         if ed.gutter.Parts[j] is TSynGutterMarks then
