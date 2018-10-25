@@ -185,7 +185,7 @@ type
   end;
 
 
-function FontAttributes(const Foreground: TColor = clNone; BackGround: Tcolor = clNone; const Styles: TFontStyles = []): TFontAttributes; inline;
+function FontAttributes(const Foreground: TColor = clWindowText; BackGround: Tcolor = clWindow; const Styles: TFontStyles = []): TFontAttributes; inline;
 
 function ConfigObj: TConfig;
 
@@ -259,7 +259,7 @@ begin
 
 end;
 
-function FontAttributes(const Foreground: TColor = clNone; BackGround: Tcolor = clNone; const Styles: TFontStyles = []): TFontAttributes; inline;
+function FontAttributes(const Foreground: TColor = clWindowText; BackGround: Tcolor = clWindow; const Styles: TFontStyles = []): TFontAttributes; inline;
 begin
   Result.Foreground := Foreground;
   Result.Background := Background;
