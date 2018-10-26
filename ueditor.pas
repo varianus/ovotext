@@ -347,8 +347,8 @@ var
   DefaultAttr: TFontAttributes;
   j: integer;
 begin
-  DefaultAttr := ConfigObj.ReadFontAttributes('Schema/Default/Gutter/', FontAttributes(clWindowText, clWindow));
-  SpecialAttr := ConfigObj.ReadFontAttributes('Schema/Default/LineNumber/', FontAttributes(clWindowText, clWindow));
+  DefaultAttr := ConfigObj.ReadFontAttributes('Schema/Default/Gutter/', FontAttributes());
+  SpecialAttr := ConfigObj.ReadFontAttributes('Schema/Default/LineNumber/', FontAttributes());
   Gutter.Color := DefaultAttr.Background;
 
   for j := 0 to Gutter.Parts.Count -1 do
@@ -372,7 +372,6 @@ begin
      gutter.Parts[j].MarkupInfo.EndUpdate;
     end;
   end;
-
 
 end;
 
