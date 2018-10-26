@@ -351,7 +351,7 @@ begin
   SpecialAttr := ConfigObj.ReadFontAttributes('Schema/Default/LineNumber/', FontAttributes());
   Gutter.Color := DefaultAttr.Background;
 
-  for j := 0 to Gutter.Parts.Count -1 do
+  for j := 0 to Gutter.Parts.Count - 1 do
   begin
     if gutter.Parts[j] is TSynGutterMarks then
     begin
@@ -363,13 +363,13 @@ begin
     end;
 
     if (gutter.Parts[j] is TSynGutterLineNumber) or
-       (gutter.Parts[j] is TSynGutterSeparator) then
+      (gutter.Parts[j] is TSynGutterSeparator) then
     begin
-     gutter.Parts[j].MarkupInfo.BeginUpdate;
-     gutter.Parts[j].MarkupInfo.Background := SpecialAttr.Background;
-     gutter.Parts[j].MarkupInfo.Foreground := SpecialAttr.Foreground;
-     gutter.Parts[j].MarkupInfo.Style := SpecialAttr.Styles;
-     gutter.Parts[j].MarkupInfo.EndUpdate;
+      gutter.Parts[j].MarkupInfo.BeginUpdate;
+      gutter.Parts[j].MarkupInfo.Background := SpecialAttr.Background;
+      gutter.Parts[j].MarkupInfo.Foreground := SpecialAttr.Foreground;
+      gutter.Parts[j].MarkupInfo.Style := SpecialAttr.Styles;
+      gutter.Parts[j].MarkupInfo.EndUpdate;
     end;
   end;
 
@@ -681,38 +681,39 @@ begin
   for i := PageCount - 1 downto 0 do
   begin
     ed := TEditorTabSheet(Pages[i]).Editor;
+    ed.Font.Color := DefaultAttr.Foreground;
+    ed.Font.Style := DefaultAttr.Styles;
+    ed.Color := DefaultAttr.Background;
+    ed.Gutter.Color := DefaultAttrGutter.Background;
+
     if assigned(Ed.Highlighter) then
     begin
-      ed.Font.Color := DefaultAttr.Foreground;
-      ed.Font.Style := DefaultAttr.Styles;
-      ed.Color := DefaultAttr.Background;
-      ed.Gutter.Color := DefaultAttr.Background;;
       fhg := ed.Highlighter;
       ed.Highlighter := nil;
       ed.Highlighter := fhg;
+    end;
 
-      for j := 0 to ed.Gutter.Parts.Count -1 do
+    for j := 0 to ed.Gutter.Parts.Count - 1 do
+    begin
+      if ed.gutter.Parts[j] is TSynGutterMarks then
       begin
-        if ed.gutter.Parts[j] is TSynGutterMarks then
-        begin
-          ed.gutter.Parts[j].MarkupInfo.BeginUpdate;
-          ed.gutter.Parts[j].MarkupInfo.Background := DefaultAttrGutter.Background;
-          ed.gutter.Parts[j].MarkupInfo.Foreground := DefaultAttrGutter.Foreground;
-          ed.gutter.Parts[j].MarkupInfo.Style := DefaultAttrGutter.Styles;
-          ed.gutter.Parts[j].MarkupInfo.EndUpdate;
-        end;
-
-        if (ed.gutter.Parts[j] is TSynGutterLineNumber) or
-           (ed.gutter.Parts[j] is TSynGutterSeparator) then
-        begin
-          ed.gutter.Parts[j].MarkupInfo.BeginUpdate;
-          ed.gutter.Parts[j].MarkupInfo.Background := SpecialAttrGutter.Background;
-          ed.gutter.Parts[j].MarkupInfo.Foreground := SpecialAttrGutter.Foreground;
-          ed.gutter.Parts[j].MarkupInfo.Style := SpecialAttrGutter.Styles;
-          ed.gutter.Parts[j].MarkupInfo.EndUpdate;
-        end;
-
+        ed.gutter.Parts[j].MarkupInfo.BeginUpdate;
+        ed.gutter.Parts[j].MarkupInfo.Background := DefaultAttrGutter.Background;
+        ed.gutter.Parts[j].MarkupInfo.Foreground := DefaultAttrGutter.Foreground;
+        ed.gutter.Parts[j].MarkupInfo.Style := DefaultAttrGutter.Styles;
+        ed.gutter.Parts[j].MarkupInfo.EndUpdate;
       end;
+
+      if (ed.gutter.Parts[j] is TSynGutterLineNumber) or
+        (ed.gutter.Parts[j] is TSynGutterSeparator) then
+      begin
+        ed.gutter.Parts[j].MarkupInfo.BeginUpdate;
+        ed.gutter.Parts[j].MarkupInfo.Background := SpecialAttrGutter.Background;
+        ed.gutter.Parts[j].MarkupInfo.Foreground := SpecialAttrGutter.Foreground;
+        ed.gutter.Parts[j].MarkupInfo.Style := SpecialAttrGutter.Styles;
+        ed.gutter.Parts[j].MarkupInfo.EndUpdate;
+      end;
+
       ed.InvalidateGutter;
       ed.invalidate;
     end;
