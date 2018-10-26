@@ -108,13 +108,17 @@ const
 type
 
   THighLighterList = specialize TFPGMap<string, integer>;
-  TThemesList = specialize TFPGMap<string, string>;
+  TStringDictionary = specialize TFPGMap<string, string>;
+
+
 
   { TConfig }
   RAppSettings = record
     CloseWithLastTab: boolean;
     ColorSchema: string;
   end;
+
+
 
   { RFontAttributes }
 
@@ -145,8 +149,11 @@ type
     fXMLConfigExtended: TXMLConfigExtended;
     fConfigHolder: TXMLConfigStorage;
     fColorSchema: TXMLConfigStorage;
-    fThemesList: TThemesList;
+    fThemesList: TStringDictionary;
+    fAttributeAliases : TStringDictionary;
+
     function GetBackGroundColor: TColor;
+    procedure LoadAliases;
     procedure SetDirty(AValue: boolean);
     procedure SetFont(AValue: TFont);
     procedure WriteColor(const Section, Ident: string; const Value: TColor);
@@ -174,7 +181,7 @@ type
     Procedure SetTheme(Index: integer);
 
     // -- //
-    property ThemeList: TThemesList read fThemesList;
+    property ThemeList: TStringDictionary read fThemesList;
     property Dirty: boolean read FDirty write SetDirty;
     property ConfigDir: string read fConfigDir;
     property ConfigFile: string read FConfigFile;
@@ -324,9 +331,12 @@ begin
   ReadConfig;
 
   fHighlighters := THighlighterList.Create;
-  fThemesList := TThemesList.Create;
+  fThemesList := TStringDictionary.Create;
   LoadHighlighters;
   LoadThemes;
+
+  fAttributeAliases := TStringDictionary.Create;
+  LoadAliases;
 
   FXMLConfigExtended := TXMLConfigExtended.Create(nil);
 
@@ -368,6 +378,7 @@ var
   i: integer;
   AttrName: string;
   AttrPath: string;
+  AttributeAlias :string;
   DefaultAttrib: TFontAttributes;
 const
   DefaultPath = 'Schema/DefaultLang/';
@@ -376,7 +387,7 @@ begin
   if not XMLConfigExtended.Loaded then
     exit;
 
-  DefaultAttrib := ReadFontAttributes('Schema/Default/Text', FontAttributes());
+  DefaultAttrib := ReadFontAttributes('Schema/Default/Text/', FontAttributes());
   AttrPath := 'Schema/' + CleanupName(Highlighter.GetLanguageName) + '/';
 
   for i := 0 to Highlighter.AttrCount - 1 do
@@ -385,7 +396,13 @@ begin
     if XMLConfigExtended.PathExists(AttrPath + AttrName) then
       SetAttribute(AttrPath + AttrName, Highlighter.Attribute[i], DefaultAttrib)
     else
-      SetAttribute(DefaultPath + AttrName, Highlighter.Attribute[i], DefaultAttrib);
+      begin
+      if fAttributeAliases.TryGetData(Highlighter.Attribute[i].Name, AttributeAlias) and
+        (AttributeAlias <> '') then
+        SetAttribute(DefaultPath + AttributeAlias, Highlighter.Attribute[i], DefaultAttrib)
+      else
+        SetAttribute(DefaultPath + AttrName, Highlighter.Attribute[i], DefaultAttrib);
+      end
   end;
 
   XMLConfigExtended.CloseKey;
@@ -496,6 +513,41 @@ begin
 
 end;
 
+Procedure TConfig.LoadAliases;
+begin
+  //Default
+  fAttributeAliases.Add('Assembler','');
+  fAttributeAliases.Add('Comment','');
+  fAttributeAliases.Add('Directive','');
+  fAttributeAliases.Add('Number','');
+  fAttributeAliases.Add('Reserved_word','');
+  fAttributeAliases.Add('String','');
+  fAttributeAliases.Add('Symbol','');
+  fAttributeAliases.Add('Text','');
+  fAttributeAliases.Add('Special','');
+  fAttributeAliases.Add('Error','');
+  fAttributeAliases.Add('Space','');
+  fAttributeAliases.Add('Identifier','');
+  //Alias
+  fAttributeAliases.Add('Key','Reserved_word');
+  fAttributeAliases.Add('Attribute_Value','String');
+  fAttributeAliases.Add('Attribute_Name','Text');
+  fAttributeAliases.Add('CDATA_Section','Assembler');
+  fAttributeAliases.Add('DOCTYPE_Section','Directive');
+  fAttributeAliases.Add('Element_Name','Text');
+  fAttributeAliases.Add('Entity_Reference','Reserved_word');
+  fAttributeAliases.Add('Namespace_Attribute_Name','Text');
+  fAttributeAliases.Add('Namespace_Attribute_Value','String');
+  fAttributeAliases.Add('Processing_Instruction','Assembler');
+  fAttributeAliases.Add('ASP','Assembler');
+  fAttributeAliases.Add('Escape_ampersand','Special');
+  fAttributeAliases.Add('Unknown_word','Error');
+  fAttributeAliases.Add('Value','Text');
+  fAttributeAliases.Add('Preprocessor','Directive');
+  fAttributeAliases.Add('Pragma','Directive');
+  fAttributeAliases.Add('Variable','Identifier');
+  fAttributeAliases.Add('Documentation','Space');
+end;
 
 destructor TConfig.Destroy;
 begin
