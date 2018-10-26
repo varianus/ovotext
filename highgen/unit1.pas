@@ -248,7 +248,8 @@ begin
   inOut('Lazarus/ColorSchemes/LangHTML_document/Scheme'+schemaName+'/Escape_ampersand/','Schema/DefaultLang/Special/');
   inOut('Lazarus/ColorSchemes/LangHTML_document/Scheme'+schemaName+'/Unknown_word/','Schema/DefaultLang/Error/');
   inOut('Lazarus/ColorSchemes/LangC__/Scheme'+schemaName+'/Space/','Schema/DefaultLang/Space/');
-  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Symbol/','Schema/DefaultLang/Identifier/');
+  inOut('Lazarus/ColorSchemes/Globals/Scheme'+schemaName+'/ahaDefault/','Schema/DefaultLang/Identifier/');
+
 
 
   st.clear;
