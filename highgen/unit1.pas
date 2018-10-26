@@ -1,12 +1,12 @@
 unit Unit1;
 
-{$mode objfpc}{$H+}
+{$mode delphi}{$H+}
 
 interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  SynEditHighlighter, SynEdit,
+  SynEditHighlighter, SynEdit, generics.Collections,
   // included with Lazarus
   SynHighlighterPas,
   SynHighlighterCpp, SynHighlighterJava, SynHighlighterPerl, SynHighlighterHTML,
@@ -150,23 +150,76 @@ var
   HlName:string;
   HLAttr:string;
   hl :TSynCustomHighlighter;
+  dict: TDictionary<String,String>;
+  vl:string;
+
+  procedure WriteColor(const Ident: string; const Value: TColor);
+  var
+    tmp: string;
+  begin
+
+    if not ColorToIdent(Value, tmp) then
+      tmp := '$' + IntToHex(Value, 8);
+    cfg.setValue(Ident, tmp);
+  end;
+
 
   procedure InOut(inPath: string; OutPath: string);
   var
     tm: string;
+    tmi:integer;
   begin
+    tmi := doc.GetValue(inPath + 'Foreground', -1);
+    if tmi <> -1 then
+      WriteColor(OutPath+ 'Foreground', tmi);
+
+    tmi := doc.GetValue(inPath + 'Background', -1);
+    if tmi <> -1 then
+      WriteColor(OutPath+ 'Background', tmi);
+
     tm := doc.GetValue(inPath + 'Style', '');
     if tm <> EmptyStr then
       cfg.SetValue(OutPath + 'Style', tm);
-    tm := doc.GetValue(inPath + 'Background', '');
-    if tm <> EmptyStr then
-      cfg.SetValue(OutPath+ 'Background', tm);
-    tm := doc.GetValue(inPath + 'Foreground', '');
-    if tm <> EmptyStr then
-      cfg.SetValue(OutPath+ 'Foreground', tm);
+
   end;
 
+
+
 begin
+  dict:= TDictionary<String,String>.Create;
+  //Default
+  dict.Add('Assembler','');
+  dict.Add('Comment','');
+  dict.Add('Directive','');
+  dict.Add('Number','');
+  dict.Add('Reserved_word','');
+  dict.Add('String','');
+  dict.Add('Symbol','');
+  dict.Add('Text','');
+  dict.Add('Special','');
+  dict.Add('Error','');
+  dict.Add('Space','');
+  dict.Add('Identifier','');
+  //Alias
+  dict.Add('Key','Reserved_word');
+  dict.Add('Attribute_Value','String');
+  dict.Add('Attribute_Name','Text');
+  dict.Add('CDATA_Section','Assembler');
+  dict.Add('DOCTYPE_Section','Directive');
+  dict.Add('Element_Name','Text');
+  dict.Add('Entity_Reference','Reserved_word');
+  dict.Add('Namespace_Attribute_Name','Text');
+  dict.Add('Namespace_Attribute_Value','String');
+  dict.Add('Processing_Instruction','Assembler');
+  dict.Add('ASP','Assembler');
+  dict.Add('Escape_ampersand','Special');
+  dict.Add('Unknown_word','Error');
+  dict.Add('Value','Text');
+  dict.Add('Preprocessor','Directive');
+  dict.Add('Pragma','Directive');
+  dict.Add('Variable','Identifier');
+  dict.Add('Documentation','Space');
+
   st := TStringList.Create;
   if not (OpenDialog1.Execute and SaveDialog1.Execute) then
      exit;
@@ -184,6 +237,19 @@ begin
   InOut(tmps, 'Schema/Default/Gutter/');
   tmps := 'Lazarus/ColorSchemes/Globals/Scheme' + schemaName + '/ahaLineNumber/';
   InOut(tmps, 'Schema/Default/LineNumber/');
+  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Assembler/','Schema/DefaultLang/Assembler/');
+  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Comment/','Schema/DefaultLang/Comment/');
+  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Directive/','Schema/DefaultLang/Directive/');
+  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Number/','Schema/DefaultLang/Number/');
+  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Reserved_word/','Schema/DefaultLang/Reserved_word/');
+  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/String/','Schema/DefaultLang/String/');
+  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Symbol/','Schema/DefaultLang/Symbol/');
+  inOut('Lazarus/ColorSchemes/Globals/Scheme'+schemaName+'/ahaDefault/','Schema/DefaultLang/Text/');
+  inOut('Lazarus/ColorSchemes/LangHTML_document/Scheme'+schemaName+'/Escape_ampersand/','Schema/DefaultLang/Special/');
+  inOut('Lazarus/ColorSchemes/LangHTML_document/Scheme'+schemaName+'/Unknown_word/','Schema/DefaultLang/Error/');
+  inOut('Lazarus/ColorSchemes/LangC__/Scheme'+schemaName+'/Space/','Schema/DefaultLang/Space/');
+  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Symbol/','Schema/DefaultLang/Identifier/');
+
 
   st.clear;
   for i := 0 to HIGHLIGHTERCOUNT -1 do
@@ -195,17 +261,12 @@ begin
         begin
           HLAttr:= hl.Attribute[j].Name;
           CleanupName(HLAttr);
-          inOut('Lazarus/ColorSchemes/Lang'+HlName+'/Scheme'+schemaName+'/'+HLattr+'/','Schema/'+hlname+'/'+HLAttr+'/');
+          if not Dict.TrygetValue(HLAttr,vl) then
+             inOut('Lazarus/ColorSchemes/Lang'+HlName+'/Scheme'+schemaName+'/'+HLattr+'/','Schema/'+hlname+'/'+HLAttr+'/');
+
         end;
       hl.Free;
     end;
-
-  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Comment/','Schema/DefaultLang/Comment/');
-  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/String/','Schema/DefaultLang/String/');
-  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Reserved_word/','Schema/DefaultLang/Keyword/');
-  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Symbol/','Schema/DefaultLang/Symbol/');
-  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Whitespace/','Schema/DefaultLang/Whitespace/');
-  inOut('Lazarus/ColorSchemes/LangObjectPascal/Scheme'+schemaName+'/Identifier/','Schema/DefaultLang/Identifier/');
 
   cfg.WriteToDisk;
   cfg.Free;

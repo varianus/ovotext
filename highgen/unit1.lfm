@@ -6,7 +6,7 @@ object Form1: TForm1
   Caption = 'Color schema tools'
   ClientHeight = 347
   ClientWidth = 503
-  LCLVersion = '1.5'
+  LCLVersion = '2.1.0.0'
   object bConvert: TButton
     Left = 24
     Height = 57
@@ -36,15 +36,15 @@ object Form1: TForm1
   end
   object OpenDialog1: TOpenDialog
     Filter = 'Color*.xml|Color*.xml'
-    left = 24
-    top = 200
+    Left = 24
+    Top = 200
   end
   object SaveDialog1: TSaveDialog
-    left = 120
-    top = 208
+    Left = 120
+    Top = 208
   end
   object SelectDirectoryDialog1: TSelectDirectoryDialog
-    left = 254
-    top = 131
+    Left = 240
+    Top = 208
   end
 end
