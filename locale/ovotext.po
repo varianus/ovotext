@@ -200,6 +200,10 @@ msgstr ""
 msgid "Quote"
 msgstr ""
 
+#: tfmain.actsqlprettyprint.caption
+msgid "SQL Pretty Print"
+msgstr ""
+
 #: tfmain.acttabtospace.caption
 msgid "Tab to Spaces"
 msgstr ""
