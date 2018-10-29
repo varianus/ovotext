@@ -494,7 +494,7 @@ begin
   fThemesList.Clear;
   FileList := TStringList.Create;
 
-  BuildFileList(GetResourcesPath + 'schema-*.xml', faAnyFile, FileList, False);
+  BuildFileList(ResourcesPath + 'schema-*.xml', faAnyFile, FileList, False);
   BuildFileList(ConfigDir + 'schema-*.xml', faAnyFile, FileList, False);
 
   for I := 0 to Pred(FileList.Count) do
@@ -578,15 +578,8 @@ procedure TConfig.ReadConfig;
 var
   fontName: string;
 begin
+  ResourcesPath := fConfigHolder.GetValue(SectionUnix + '/' + IdentResourcesPath, GetResourcesPath);
 
-{$ifdef WINDOWS}
-  ResourcesPath := fConfigHolder.GetValue(SectionUnix + '/' + IdentResourcesPath,
-    ExtractFilePath(ExtractFilePath(ParamStr(0))));
-{$else}
-  {$ifndef DARWIN}
-  ResourcesPath := fConfigHolder.GetValue(SectionUnix + '/' + IdentResourcesPath, DefaultDirectory);
-  {$endif}
-{$endif}
   FAppSettings.CloseWithLastTab :=
     fConfigHolder.GetValue('Application/CloseWithLastTab', False);
 
