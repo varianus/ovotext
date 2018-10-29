@@ -533,7 +533,7 @@ begin
   fAttributeAliases.Add('Attribute_Name','Text');
   fAttributeAliases.Add('CDATA_Section','Assembler');
   fAttributeAliases.Add('DOCTYPE_Section','Directive');
-  fAttributeAliases.Add('Element_Name','Text');
+  fAttributeAliases.Add('Element_Name','Reserved_word');
   fAttributeAliases.Add('Entity_Reference','Reserved_word');
   fAttributeAliases.Add('Namespace_Attribute_Name','Text');
   fAttributeAliases.Add('Namespace_Attribute_Value','String');
