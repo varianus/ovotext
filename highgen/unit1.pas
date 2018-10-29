@@ -163,18 +163,32 @@ var
     cfg.setValue(Ident, tmp);
   end;
 
+  function ReadColor(const Section, Ident: string; const Default: TColor): TColor;
+  var
+    tmpString: string;
+  begin
+    try
+      tmpString := doc.GetValue(Section + Ident, IntToHex(Default, 8));
+      if not IdentToColor(tmpString, Result) then
+        if not TryStrToInt(tmpString, Result) then
+          Result := Default;
+
+    except
+      Result := Default;
+    end;
+  end;
 
   procedure InOut(inPath: string; OutPath: string);
   var
     tm: string;
     tmi:integer;
   begin
-    tmi := doc.GetValue(inPath + 'Foreground', -1);
-    if tmi <> -1 then
+    tmi := ReadColor(inPath,'Foreground', clnone);
+    if tmi <> clnone then
       WriteColor(OutPath+ 'Foreground', tmi);
 
-    tmi := doc.GetValue(inPath + 'Background', -1);
-    if tmi <> -1 then
+    tmi := ReadColor(inPath, 'Background', clnone);
+    if tmi <> clnone then
       WriteColor(OutPath+ 'Background', tmi);
 
     tm := doc.GetValue(inPath + 'Style', '');
@@ -182,8 +196,6 @@ var
       cfg.SetValue(OutPath + 'Style', tm);
 
   end;
-
-
 
 begin
   dict:= TDictionary<String,String>.Create;
