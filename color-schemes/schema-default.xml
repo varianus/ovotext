@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CONFIG>
+  <Schema Name="Default">
+    <Default>
+      <Text Background="clWhite" Foreground="clBlack"/>
+      <Gutter Background="clBtnFace"/>
+    </Default>
+    <DefaultLang>
+      <Assembler Foreground="clGreen"/>
+      <Comment Style="fsBold" Foreground="clBlue"/>
+      <Directive Style="fsBold" Foreground="clRed"/>
+      <Number Foreground="clNavy"/>
+      <Reserved_word Style="fsBold"/>
+      <String Foreground="clBlue"/>
+      <Symbol Foreground="clRed"/>
+      <Text Background="clWhite" Foreground="clBlack"/>
+      <Special Style="fsBold" Foreground="clLime"/>
+      <Error Style="fsBold" Foreground="clRed"/>
+      <Space Foreground="clWindow"/>
+      <Identifier Background="clWhite" Foreground="clBlack"/>
+    </DefaultLang>
+    <HTML_document>
+      <Asp Background="clYellow" Foreground="clBlack"/>
+    </HTML_document>
+    <SQL>
+      <Data_type Style="fsBold"/>
+      <Default_packages Style="fsBold"/>
+      <Exception Style="fsItalic"/>
+      <Function Style="fsBold"/>
+      <Reserved_word__PL_SQL_ Style="fsBold"/>
+      <SQL_Plus_command Style="fsBold"/>
+    </SQL>
+    <Python>
+      <Float Foreground="clBlue"/>
+      <Hexadecimal Foreground="clBlue"/>
+      <Non_reserved_keyword Style="fsBold" Foreground="clNavy"/>
+      <Octal Foreground="clBlue"/>
+      <SyntaxError Foreground="clRed"/>
+      <System_functions_and_variables Style="fsBold"/>
+    </Python>
+    <INI_file>
+      <Section Style="fsBold"/>
+    </INI_file>
+    <po_language_files>
+      <Flags Foreground="clTeal"/>
+      <Previous_value Style="fsItalic" Foreground="clOlive"/>
+    </po_language_files>
+    <Diff_File>
+      <Diff_Added_line Foreground="clGreen"/>
+      <Diff_Changed_Line Foreground="clPurple"/>
+      <Diff_Chunk_Line_Counts Style="fsBold" Foreground="clPurple"/>
+      <Diff_Chunk_Marker Style="fsBold"/>
+      <Diff_Chunk_New_Line_Count Style="fsBold" Foreground="clGreen"/>
+      <Diff_Chunk_Original_Line_Count Style="fsBold" Foreground="clRed"/>
+      <Diff_New_File Style="fsBold" Background="clGreen"/>
+      <Diff_Original_File Style="fsBold" Background="clRed"/>
+      <Diff_Removed_Line Foreground="clRed"/>
+    </Diff_File>
+  </Schema>
+</CONFIG>
