@@ -392,16 +392,15 @@ begin
 
   for i := 0 to Highlighter.AttrCount - 1 do
   begin
-    AttrName := CleanupName(Highlighter.Attribute[i].Name) + '/';
-    if XMLConfigExtended.PathExists(AttrPath + AttrName) then
-      SetAttribute(AttrPath + AttrName, Highlighter.Attribute[i], DefaultAttrib)
+    AttrName := CleanupName(Highlighter.Attribute[i].Name);
+    if XMLConfigExtended.PathExists(AttrPath + AttrName + '/') then
+      SetAttribute(AttrPath + AttrName + '/', Highlighter.Attribute[i], DefaultAttrib)
     else
       begin
-      if fAttributeAliases.TryGetData(Highlighter.Attribute[i].Name, AttributeAlias) and
-        (AttributeAlias <> '') then
-        SetAttribute(DefaultPath + AttributeAlias, Highlighter.Attribute[i], DefaultAttrib)
+      if fAttributeAliases.TryGetData(AttrName, AttributeAlias) then
+        SetAttribute(DefaultPath + AttributeAlias+ '/', Highlighter.Attribute[i], DefaultAttrib)
       else
-        SetAttribute(DefaultPath + AttrName, Highlighter.Attribute[i], DefaultAttrib);
+        SetAttribute(DefaultPath + AttrName + '/', Highlighter.Attribute[i], DefaultAttrib);
       end
   end;
 
