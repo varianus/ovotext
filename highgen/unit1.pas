@@ -24,7 +24,7 @@ uses
   SynHighlighterM3, SynHighlighterLDraw, SynHighlighterVBScript,
   SynHighlighterSml, SynHighlighterIDL, SynHighlighterCobol, SynHighlighterGWS,
   SynHighlighterAsm, SynHighlighterLua, SynHighlighterFortran,
-  SynHighlighterProlog, SynHighlighterRC,
+  SynHighlighterProlog, SynHighlighterRC, SupportFuncs,
   XMLPropStorage, typinfo;
 
 type
@@ -94,15 +94,19 @@ type
 
   TForm1 = class(TForm)
     bConvert: TButton;
+    bConvert1: TButton;
     bTemplate: TButton;
     bCreateSamples: TButton;
     OpenDialog1: TOpenDialog;
     SaveDialog1: TSaveDialog;
-    SelectDirectoryDialog1: TSelectDirectoryDialog;
+    SelectDirectoryDialogOut: TSelectDirectoryDialog;
+    SelectDirectoryDialogIn: TSelectDirectoryDialog;
+    procedure bConvert1Click(Sender: TObject);
     procedure bConvertClick(Sender: TObject);
     procedure bCreateSamplesClick(Sender: TObject);
     procedure bTemplateClick(Sender: TObject);
   private
+    procedure ConvertFile(InFile, OutFile: TFileName);
     { private declarations }
   public
     { public declarations }
@@ -138,8 +142,39 @@ begin
     aName[c] := '_';
 end;
 
-
 procedure TForm1.bConvertClick(Sender: TObject);
+begin
+  if not (OpenDialog1.Execute and SaveDialog1.Execute) then
+     exit;
+
+  ConvertFile(OpenDialog1.filename, SaveDialog1.filename);
+
+end;
+
+procedure TForm1.bConvert1Click(Sender: TObject);
+var
+  St: TStringList;
+  i: Integer;
+  Outfile: string;
+begin
+
+ if not (SelectDirectoryDialogIn.Execute and SelectDirectoryDialogOut.Execute) then
+   exit;
+
+ st := TStringList.Create;
+
+ BuildFileList(IncludeTrailingPathDelimiter(SelectDirectoryDialogIn.FileName)+'color*.xml', faAnyFile, St, false);
+
+ for i:= 0 to pred(st.count) do
+   begin
+     outfile := 'schema-'+ copy(ExtractFileName(st[i]),6,MaxInt);
+     ConvertFile(st[i], IncludeTrailingPathDelimiter(SelectDirectoryDialogOut.FileName)+OutFile);
+
+   end;
+
+end;
+
+procedure TForm1.ConvertFile(InFile, OutFile: TFileName);
 var
   doc: TXMLConfigStorage;
   cfg: TXMLConfigStorage;
@@ -233,11 +268,9 @@ begin
   dict.Add('Documentation','Space');
 
   st := TStringList.Create;
-  if not (OpenDialog1.Execute and SaveDialog1.Execute) then
-     exit;
 
-  doc := TXMLConfigStorage.Create(OpenDialog1.filename, True);
-  cfg := TXMLConfigStorage.Create(SaveDialog1.filename, False);
+  doc := TXMLConfigStorage.Create(Infile, True);
+  cfg := TXMLConfigStorage.Create(OutFile, False);
 
   doc.GetValue('Lazarus/ColorSchemes/Names/', st);
   schemaName := st[0];
@@ -285,6 +318,7 @@ begin
   cfg.Free;
   doc.Free;
   st.Free;
+  dict.free;
 
 end;
 
@@ -297,7 +331,7 @@ var
   st: TStringList;
 
 begin
-  if not (SelectDirectoryDialog1.Execute) then
+  if not (SelectDirectoryDialogOut.Execute) then
      exit;
 
   st := TStringList.Create;
@@ -312,7 +346,7 @@ begin
     if j < 1 then
        j := Length(tmps);
     tmps := Copy(tmps, 1, j);
-    st.SaveToFile(IncludeTrailingPathDelimiter(SelectDirectoryDialog1.FileName)+HlName+tmps);
+    st.SaveToFile(IncludeTrailingPathDelimiter(SelectDirectoryDialogOut.FileName)+HlName+tmps);
     hl.Free;
   end;
 
