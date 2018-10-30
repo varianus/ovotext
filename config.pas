@@ -515,18 +515,18 @@ end;
 Procedure TConfig.LoadAliases;
 begin
   //Default
-  fAttributeAliases.Add('Assembler','');
-  fAttributeAliases.Add('Comment','');
-  fAttributeAliases.Add('Directive','');
-  fAttributeAliases.Add('Number','');
-  fAttributeAliases.Add('Reserved_word','');
-  fAttributeAliases.Add('String','');
-  fAttributeAliases.Add('Symbol','');
-  fAttributeAliases.Add('Text','');
-  fAttributeAliases.Add('Special','');
-  fAttributeAliases.Add('Error','');
-  fAttributeAliases.Add('Space','');
-  fAttributeAliases.Add('Identifier','');
+  //fAttributeAliases.Add('Assembler','');
+  //fAttributeAliases.Add('Comment','');
+  //fAttributeAliases.Add('Directive','');
+  //fAttributeAliases.Add('Number','');
+  //fAttributeAliases.Add('Reserved_word','');
+  //fAttributeAliases.Add('String','');
+  //fAttributeAliases.Add('Symbol','');
+  //fAttributeAliases.Add('Text','');
+  //fAttributeAliases.Add('Special','');
+  //fAttributeAliases.Add('Error','');
+  //fAttributeAliases.Add('Space','');
+  //fAttributeAliases.Add('Identifier','');
   //Alias
   fAttributeAliases.Add('Key','Reserved_word');
   fAttributeAliases.Add('Attribute_Value','String');
