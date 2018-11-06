@@ -118,8 +118,6 @@ type
     ColorSchema: string;
   end;
 
-
-
   { RFontAttributes }
 
   TFontAttributes = record
@@ -328,10 +326,11 @@ begin
     );
   fConfigDir := GetConfigDir;
   fConfigHolder := TXMLConfigStorage.Create(FConfigFile, FileExists(FConfigFile));
-  ReadConfig;
 
   fHighlighters := THighlighterList.Create;
   fThemesList := TStringDictionary.Create;
+  ReadConfig;
+
   LoadHighlighters;
   LoadThemes;
 
@@ -451,6 +450,8 @@ var
 begin
 
   XMLConfigExtended.Filename:=ThemeList.Data[Index];
+  FAppSettings.ColorSchema := XMLConfigExtended.Filename;
+  Dirty := TRUE;
   for i := 0 to HIGHLIGHTERCOUNT - 1 do
    if Assigned(ARHighlighter[i].HL) then
      InitializeHighlighter(ARHighlighter[i].HL);
@@ -572,6 +573,8 @@ begin
 
   fConfigHolder.SetValue('Editor/Font/Name', FFont.Name);
   fConfigHolder.SetValue('Editor/Font/Height', FFont.Height);
+  fConfigHolder.SetValue('Editor/Font/Height', FFont.Height);
+  FDirty := false;
 end;
 
 procedure TConfig.ReadConfig;
@@ -599,6 +602,8 @@ begin
   end;
 
   FDirty := False;
+
+
 
 end;
 

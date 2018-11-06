@@ -480,6 +480,7 @@ begin
     for i := 0 to EditorFactory.PageCount - 1 do
       TEditorTabSheet(EditorFactory.Pages[i]).Editor.Font.Assign(FontDialog.Font);
     ConfigObj.Font.Assign(FontDialog.Font);
+    ConfigObj.Dirty := true;
   end;
 
 end;
