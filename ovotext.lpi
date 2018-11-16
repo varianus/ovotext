@@ -41,6 +41,7 @@
           </SearchPaths>
           <CodeGeneration>
             <SmartLinkUnit Value="True"/>
+            <RelocatableUnit Value="True"/>
             <Optimizations>
               <OptimizationLevel Value="3"/>
             </Optimizations>
@@ -51,14 +52,13 @@
             </Debugging>
             <LinkSmart Value="True"/>
             <Options>
+              <PassLinkerOptions Value="True"/>
+              <LinkerOptions Value="-pie --as-needed"/>
               <Win32>
                 <GraphicApplication Value="True"/>
               </Win32>
             </Options>
           </Linking>
-          <Other>
-            <CustomOptions Value="-FcUTF8 -O4"/>
-          </Other>
         </CompilerOptions>
       </Item2>
       <Item3 Name="Debug64">
@@ -138,7 +138,7 @@
         </CompilerOptions>
       </Item4>
       <SharedMatrixOptions Count="1">
-        <Item1 ID="188379435715" Modes="Release" Value="-dEnableUTF8RTL"/>
+        <Item1 ID="188379435715" Modes="Release"/>
       </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
