@@ -335,6 +335,8 @@ begin
   EditRedo.Enabled := Avail and Ed.CanRedo;
   EditUndo.Enabled := Avail and Ed.CanUndo;
   FileSave.Enabled := Avail and Ed.Modified;
+  EditCopy.Enabled := Avail and ed.SelAvail;
+  EditCut.Enabled := Avail and ed.SelAvail;
   actFullNameToClipBoard.Enabled := Avail and not ed.Untitled;
   actGoTo.Enabled := Avail and (ed.Lines.Count > 0);
   Handled := True;
