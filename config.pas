@@ -413,7 +413,7 @@ var
   idx: integer;
 
 begin
-  tmp := fHighlighters.IndexOf(Extension);
+  tmp := fHighlighters.IndexOf(lowercase(Extension));
   if tmp > -1 then
   begin
     idx := fHighlighters.Data[tmp];
