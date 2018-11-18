@@ -53,7 +53,7 @@
             <LinkSmart Value="True"/>
             <Options>
               <PassLinkerOptions Value="True"/>
-              <LinkerOptions Value="-pie --as-needed"/>
+              <LinkerOptions Value=" --as-needed"/>
               <Win32>
                 <GraphicApplication Value="True"/>
               </Win32>
