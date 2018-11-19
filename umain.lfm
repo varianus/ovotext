@@ -72,7 +72,7 @@ object fMain: TfMain
       Style = tbsDivider
     end
     object ToolButton6: TToolButton
-      Left = 78
+      Left = 83
       Top = 2
       Action = EditCut
     end
@@ -168,7 +168,6 @@ object fMain: TfMain
     object EditCut: TEditCut
       Category = 'Edit'
       Caption = '&Cut'
-      Enabled = False
       Hint = 'Cut'
       ImageIndex = 23
       ShortCut = 16472
@@ -176,7 +175,6 @@ object fMain: TfMain
     object EditCopy: TEditCopy
       Category = 'Edit'
       Caption = '&Copy'
-      Enabled = False
       Hint = 'Copy'
       ImageIndex = 22
       ShortCut = 16451
@@ -411,7 +409,7 @@ object fMain: TfMain
       Category = 'PrettyPrint'
       Caption = 'Beautify  XML'
       OnExecute = actXMLPrettyPrintExecute
-      ShortCut = 57410
+      ShortCut = 57432
     end
     object actQuote: TAction
       Category = 'Tools'
@@ -422,6 +420,7 @@ object fMain: TfMain
       Category = 'PrettyPrint'
       Caption = 'Beautify JSON'
       OnExecute = actJSONPrettyPrintExecute
+      ShortCut = 57418
     end
     object actXMLCompact: TAction
       Category = 'PrettyPrint'
@@ -432,6 +431,7 @@ object fMain: TfMain
       Category = 'PrettyPrint'
       Caption = 'SQL Pretty Print'
       OnExecute = actSQLPrettyPrintExecute
+      ShortCut = 57427
     end
   end
   object mnuMain: TMainMenu
@@ -594,6 +594,9 @@ object fMain: TfMain
         end
         object MenuItem72: TMenuItem
           Action = actJSONPrettyPrint
+        end
+        object MenuItem74: TMenuItem
+          Action = actSQLPrettyPrint
         end
       end
     end
