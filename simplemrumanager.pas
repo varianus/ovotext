@@ -180,8 +180,7 @@ end;
 procedure TMRUMenuManager.AddToRecent(AFileName : String);
 
 Var
-  I,J : Integer;
-  B : Boolean;
+  J : Integer;
 
 begin
   AFileName:=ExpandFileName(AFileName);

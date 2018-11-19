@@ -110,7 +110,6 @@ type
     FPrinterInfo: TSynEditPrinterInfo;
     FPages: TList;
     FCanvas: TCanvas;
-    FTextMetrics: TTextMetric;
     FCharWidth: Integer;
     FMaxLeftChar: Integer;
     FETODist: PIntArray;
@@ -694,7 +693,6 @@ function TSynEditPrint.GetPageCount: Integer;
  then a UpdatePages is called with a temporary canvas}
 var
   TmpCanvas: TPrinterCanvas;
-  DC: HDC;
 begin
   Result := 0;
   if FPagesCounted then

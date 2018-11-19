@@ -711,7 +711,6 @@ end;
 procedure TfMain.mnuThemeClick(Sender: TObject);
 var
   idx: integer;
-  Ed: TEditor;
 begin
   idx := TMenuItem(Sender).Tag;
   ConfigObj.SetTheme(idx);
