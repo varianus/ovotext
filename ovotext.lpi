@@ -235,6 +235,7 @@
       <Unit10>
         <Filename Value="printing\syneditprintextprocs.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="SynEditPrintExtProcs"/>
       </Unit10>
       <Unit11>
         <Filename Value="simplemrumanager.pas"/>
@@ -277,6 +278,11 @@
         </Win32>
       </Options>
     </Linking>
+    <Other>
+      <CompilerMessages>
+        <IgnoredMessages idx6058="True" idx5024="True"/>
+      </CompilerMessages>
+    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions Count="3">
