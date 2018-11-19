@@ -57,7 +57,7 @@ implementation
 uses math;
 
 const
-  Aligner = '§§';
+  Aligner = #31;
   CRLF = #13#10;
   CR = #13;
   LF = #10;
@@ -68,13 +68,13 @@ const
   ROUND_OPEN = #40;
   ROUND_CLOSE = #41;
   COMMA = #44;
+  SEMICOLON = #59;
   SPACE = #32;
-  DOUBLESPACE = #32#32;
-  SQLKEYWORDMAX = 20;
+  SQLKEYWORDMAX = 21;
 
 var
   sqlKeyWord: array[1..SQLKEYWORDMAX] of string = (' INNER JOIN', ' LEFT JOIN', ' RIGHT JOIN',
-    ' WHERE', ' LEFT OUTER JOIN', ' GROUP BY', ' ORDER BY', ' HAVING', ' FROM', ' SELECT', ' AND',  'FOR',
+    ' WHERE', ' LEFT OUTER JOIN', ' GROUP BY', ' ORDER BY', ' HAVING', ' FROM', ' SELECT', ' AND',  'FOR', ' INSERT INTO',
     ' OR', ' UPDATE', ' SET', ' DELETE', ' ALTER ', ' JOIN', ' DROP', ' VALUES');
 
 function CleanupName(aName: string): string;
@@ -740,14 +740,42 @@ var
   After: string;
   Before: string;
   SL: TStringList;
-  idx: integer;
+
+  procedure EmitStatement;
+    var
+      idRow: integer;
+      AlignerPos:integer;
+    begin
+      SL := TStringList.Create;
+      try
+        SL.Text := strOut;
+        for idRow := 0 to SL.Count - 1 do
+        begin
+          AlignerPos := pos(Aligner, SL[idRow]);
+          if AlignerPos = 0 then
+            Continue;
+          cntSpaces := (maxKeyword - AlignerPos);
+          Before := Trim(copy(SL[idRow], 1, AlignerPos - 1));
+          After := sl[idRow];
+          Delete(After, 1, AlignerPos);
+          SL[idRow] := spaces(cntSpaces) + Before + ' ' + After;
+        end;
+        Result := Result + SL.Text;
+        maxKeyword := 0;
+        strOut := '';
+      finally
+       SL.Free;
+      end;
+    end;
+
 begin
   strout := '';
   maxKeyword := 0;
+  Result:='';
   if S <> '' then
   begin
     strSQL := S;
-    strSQL := ' ' + strSQL;
+    strSQL := ' ' + strSQL +' ';
     CharReplace(strSQL, CR, SPACE);
     CharReplace(strSQL, LF, SPACE);
     strSQL := RemoveSpacesInExcess(strSQL);
@@ -757,7 +785,7 @@ begin
     begin
       blnkeyWord := False;
       for intKeyWord := 1 to SQLKEYWORDMAX do
-        if UpperCase(Copy(strSQL, lngChar, Length(sqlKeyWord[intKeyWord]) + 1)) = (sqlKeyWord[intKeyWord] + SPACE) then
+        if UpperCase(Copy(strSQL, lngChar, Length(sqlKeyWord[intKeyWord]) )) = (sqlKeyWord[intKeyWord]) then
         begin
           blnkeyWord := True;
           Maxkeyword := max(Length(sqlKeyWord[intKeyWord]), maxKeyword);
@@ -795,7 +823,9 @@ begin
           begin
             lngEnd :=
               Match(ROUND_OPEN, ROUND_CLOSE, Copy(strSQL, lngChar + 1, Length(strsql)));
+
             strOut := strOut + Copy(strSQL, lngChar, lngEnd + 1);
+           // Strout := strOut + ROUND_OPEN+ FormatSQL(Copy(strSQL, lngChar+1, lngEnd -1 )) + ROUND_CLOSE;
             lngChar := lngChar + lngEnd + 1;
           end;
           SPACE:
@@ -810,6 +840,12 @@ begin
             if strSQL[lngChar] = Space then
               Inc(lngChar);
           end;
+          SEMICOLON:
+          begin
+            Strout := Strout + strSQL[lngChar] + CRLF;
+            EmitStatement;
+            strSQL[lngChar]:= SPACE;
+          end;
           else
           begin
             //if strSQL[lngChar] = '!' then
@@ -819,26 +855,8 @@ begin
           end;
         end;
     end;
-  end;
-
-  SL := TStringList.Create;
-  try
-    SL.Text := strOut;
-    for idx := 0 to SL.Count - 1 do
-    begin
-      lngChar := pos(Aligner, SL[idx]);
-      if lngChar = 0 then
-        Continue;
-      cntSpaces := (maxKeyword - lngChar);
-      Before := Trim(copy(SL[IDX], 1, lngChar - 1));
-      After := sl[idx];
-      Delete(After, 1, lngChar + 1);
-      SL[idx] := spaces(cntSpaces) + Before + ' ' + After;
-    end;
-    Result := SL.Text;
-
-  finally
-    SL.Free;
+    if strOut <> '' then
+      EmitStatement;
   end;
 
 end;
