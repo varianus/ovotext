@@ -17,8 +17,8 @@ object fMain: TfMain
   Visible = True
   object StatusBar: TStatusBar
     Left = 0
-    Height = 21
-    Top = 375
+    Height = 23
+    Top = 373
     Width = 966
     Panels = <    
       item
@@ -72,7 +72,7 @@ object fMain: TfMain
       Style = tbsDivider
     end
     object ToolButton6: TToolButton
-      Left = 83
+      Left = 78
       Top = 2
       Action = EditCut
     end
@@ -1712,10 +1712,10 @@ object fMain: TfMain
       Caption = '-'
     end
     object MenuItem21: TMenuItem
-      Action = EditCut
+      Action = EditCopy
     end
     object MenuItem22: TMenuItem
-      Action = EditCopy
+      Action = EditCut
     end
     object MenuItem23: TMenuItem
       Action = EditPaste
