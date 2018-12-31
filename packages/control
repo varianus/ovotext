@@ -1,0 +1,16 @@
+Package: ovotext
+Version: :VERSION
+Section: editors
+Priority: optional
+Architecture: :ARCHITECTURE
+Depends: libatk1.0-0, libc6, libcairo2, libgdk-pixbuf2.0-0, libglib2.0-0, libgtk2.0-0, libpango-1.0-0, libpangocairo-1.0-0, libx11-6
+Installed-Size: :INSTALLEDSIZE
+Maintainer: marco caselli <marcocas@gmail.com>
+Description: ovotext is a simple text editor written in Lazarus/FreePascal.
+ .
+ Some features:
+ .
+  * Tabbed editor.
+  * Syntax highligthing for a lot of programming languages and file formats.
+  * Undo/Redo support.
+  * Print with syntax highligthing.
