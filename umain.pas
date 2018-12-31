@@ -376,8 +376,8 @@ begin
   FileSave.Enabled := Avail and Ed.Modified;
   EditCopy.Enabled := Avail and ed.SelAvail;
   EditCut.Enabled := Avail and ed.SelAvail;
-  ExportHtmlToClipBoard.Enabled := := Avail and ed.SelAvail;
-  ExportRTFToClipBoard.Enabled := := Avail and ed.SelAvail;
+  ExportHtmlToClipBoard.Enabled := Avail and ed.SelAvail;
+  ExportRTFToClipBoard.Enabled := Avail and ed.SelAvail;
   actFullNameToClipBoard.Enabled := Avail and not ed.Untitled;
   ExportHtmlToFile.Enabled:= Avail;
   ExportRTFToFile.Enabled:= Avail;
