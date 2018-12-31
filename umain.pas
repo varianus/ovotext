@@ -26,12 +26,14 @@ interface
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls,
-  SynEditTypes, SynHighlighterPas, PrintersDlgs, Config,
-  SupportFuncs, udmmain, uDglGoTo, SynEditPrint, simplemrumanager;
+  ExtDlgs, SynEditTypes, SynHighlighterPas, PrintersDlgs, Config, SupportFuncs,
+  udmmain, uDglGoTo, SynEditPrint, simplemrumanager;
 
 type
 
   { TfMain }
+
+  TSaveMode = (smText, smRTF, smHTML);
 
   TfMain = class(TForm)
     actFont: TAction;
@@ -60,8 +62,6 @@ type
     MenuItem60: TMenuItem;
     MenuItem61: TMenuItem;
     MenuItem62: TMenuItem;
-    MenuItem63: TMenuItem;
-    MenuItem64: TMenuItem;
     MenuItem65: TMenuItem;
     MenuItem66: TMenuItem;
     MenuItem67: TMenuItem;
@@ -71,6 +71,9 @@ type
     MenuItem71: TMenuItem;
     MenuItem72: TMenuItem;
     MenuItem73: TMenuItem;
+    MenuItem74: TMenuItem;
+    MenuItem75: TMenuItem;
+    MenuItem76: TMenuItem;
     mnuThemes: TMenuItem;
     mnuNone: TMenuItem;
     mnuLanguage: TMenuItem;
@@ -204,7 +207,9 @@ type
     procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
     procedure EditRedoExecute(Sender: TObject);
     procedure ExportHtmlToClipBoardExecute(Sender: TObject);
+    procedure ExportHtmlToFileExecute(Sender: TObject);
     procedure ExportRTFToClipBoardExecute(Sender: TObject);
+    procedure ExportRTFToFileExecute(Sender: TObject);
     procedure FileCloseAllExecute(Sender: TObject);
     procedure FileCloseExecute(Sender: TObject);
     procedure FileExitExecute(Sender: TObject);
@@ -256,6 +261,7 @@ type
     procedure RecentFileEvent(Sender: TObject; const AFileName: string);
     procedure NewEditor(Editor: TEditor);
     procedure ShowTabs(Sender: TObject);
+    Procedure SetupSaveDialog(SaveMode: TSaveMode);
   public
     { public declarations }
   end;
@@ -303,21 +309,54 @@ begin
   dmMain.HTMLExporter.Highlighter := Ed.Highlighter;
   dmMain.HTMLExporter.ExportAsText := True;
   dmMain.HTMLExporter.Options := [heoFragmentOnly];
-  dmMain.HTMLExporter.ExportAll(Ed.Lines);
+  dmMain.HTMLExporter.ExportRange(ed.Lines, ed.BlockBegin, ed.BlockEnd);
   dmMain.HTMLExporter.CopyToClipboard;
 
+end;
+
+procedure TfMain.ExportHtmlToFileExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  Ed := EditorFactory.CurrentEditor;
+  SetupSaveDialog(smHTML);
+  if SaveDialog.Execute then
+    begin
+      dmMain.HTMLExporter.Highlighter := Ed.Highlighter;
+      dmMain.HTMLExporter.ExportAsText := True;
+      dmMain.HTMLExporter.Options := [heoDoctype, heoCharset];
+      dmMain.HTMLExporter.ExportAll(ed.Lines);
+      dmMain.HTMLExporter.SaveToFile(SaveDialog.FileName);
+    end;
 end;
 
 procedure TfMain.ExportRTFToClipBoardExecute(Sender: TObject);
 var
   Ed: TEditor;
+  S:TmemoryStream;
 begin
   Ed := EditorFactory.CurrentEditor;
 
+  dmMain.RFTExporter.UseBackground:=true;
   dmMain.RFTExporter.Highlighter := Ed.Highlighter;
-  dmMain.RFTExporter.ExportAll(Ed.Lines);
+  dmMain.RFTExporter.ExportAsText:=false;
+  dmMain.RFTExporter.ExportRange(Ed.Lines, Ed.BlockBegin, Ed.BlockEnd);
   dmMain.RFTExporter.CopyToClipboard;
 
+end;
+
+procedure TfMain.ExportRTFToFileExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  Ed := EditorFactory.CurrentEditor;
+  SetupSaveDialog(smRTF);
+  if SaveDialog.Execute then
+    begin
+      dmMain.RFTExporter.Highlighter := Ed.Highlighter;
+      dmMain.RFTExporter.ExportAll(ed.Lines);
+      dmMain.RFTExporter.SaveToFile(SaveDialog.FileName);
+    end;
 end;
 
 procedure TfMain.AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
@@ -337,7 +376,11 @@ begin
   FileSave.Enabled := Avail and Ed.Modified;
   EditCopy.Enabled := Avail and ed.SelAvail;
   EditCut.Enabled := Avail and ed.SelAvail;
+  ExportHtmlToClipBoard.Enabled := := Avail and ed.SelAvail;
+  ExportRTFToClipBoard.Enabled := := Avail and ed.SelAvail;
   actFullNameToClipBoard.Enabled := Avail and not ed.Untitled;
+  ExportHtmlToFile.Enabled:= Avail;
+  ExportRTFToFile.Enabled:= Avail;
   actGoTo.Enabled := Avail and (ed.Lines.Count > 0);
   Handled := True;
 end;
@@ -785,6 +828,26 @@ end;
 procedure TfMain.ShowTabs(Sender: TObject);
 begin
   EditorFactory.ActivePageIndex := (Sender as TMenuItem).Tag;
+end;
+
+procedure TfMain.SetupSaveDialog(SaveMode: TSaveMode);
+begin
+  case SaveMode of
+    smText:begin
+             SaveDialog.DefaultExt:='.txt';
+             SaveDialog.Filter:= ConfigObj.GetFiters;
+           end;
+    smRTF: begin
+             SaveDialog.DefaultExt:='.rtf';
+             SaveDialog.Filter:= 'RTF Files (*.rtf)|*.rtf';
+             SaveDialog.Title:='Export as RTF File';
+           end;
+    smHTML:begin
+             SaveDialog.DefaultExt:='.html';
+             SaveDialog.Filter:= 'HTML Files (*.htm*)|*.htm*';
+             SaveDialog.Title:='Export as HTML File';
+           end;
+  end;
 end;
 
 procedure TfMain.mnuTabsClick(Sender: TObject);

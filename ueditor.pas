@@ -73,9 +73,6 @@ type
     destructor Destroy; override;
     property Sheet: TEditorTabSheet read FSheet;
     //-- Helper functions//
-    procedure DoCopyToClipboard(Sender: TObject; var AText: String;
-    var AMode: TSynSelectionMode; ALogStartPos: TPoint;
-    var AnAction: TSynCopyPasteAction);
     procedure SetLineText(Index: integer; NewText: string);
     // -- File handling//
      property FileName: TFileName read FFileName write SetFileName;
@@ -207,8 +204,6 @@ begin
   SyncEdit.GutterGlyph.Assign(bm);
   SyncEdit.CaseSensitive := False;
 
-  OnCutCopy := @DoCopyToClipboard;
-
   bm.Free;
 end;
 
@@ -219,23 +214,6 @@ begin
   inherited Destroy;
 end;
 
-procedure TEditor.DoCopyToClipboard(Sender: TObject; var AText: String;
-    var AMode: TSynSelectionMode; ALogStartPos: TPoint;
-    var AnAction: TSynCopyPasteAction);
-var
-  S:TmemoryStream;
-begin
-
-  Clipboard.Clear;
-  Clipboard.AsText := Atext;
-  dmMain.RFTExporter.Highlighter := Highlighter;
-  dmMain.RFTExporter.ExportRange(Lines, BlockBegin, BlockEnd);
-  s:= TMemoryStream.Create;
-  dmMain.RFTExporter.SaveToStream(S);
-  Clipboard.AddFormat(RegisterClipboardFormat('Rich Text Format'), s);
-  s.free;
-  AnAction := scaAbort;
-end;
 
 procedure TEditor.SetLineText(Index: integer; NewText: string);
 begin

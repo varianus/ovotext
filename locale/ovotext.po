@@ -289,19 +289,19 @@ msgid "Undo"
 msgstr ""
 
 #: tfmain.exporthtmltoclipboard.caption
-msgid "As Html To Clipboard"
+msgid "Copy as HTML"
 msgstr ""
 
 #: tfmain.exporthtmltofile.caption
-msgid "As Html To File"
+msgid "Save as HTML"
 msgstr ""
 
 #: tfmain.exportrtftoclipboard.caption
-msgid "As Rtf To Clipboard"
+msgid "Copy as RTF"
 msgstr ""
 
 #: tfmain.exportrtftofile.caption
-msgid "As Rtf To File"
+msgid "Save as RTF"
 msgstr ""
 
 #: tfmain.fileclose.caption
