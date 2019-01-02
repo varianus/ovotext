@@ -703,8 +703,16 @@ begin
   if not EditorAvalaible then
     exit;
 
-  Ed := EditorFactory.CurrentEditor;
-  Ed.Highlighter := ConfigObj.getHighLighter(Idx);
+  try
+    // Reloading highlighter for some files, for example big and complex XML files,
+    // could be slow, better to give feedback to user
+    Screen.Cursor := crHourGlass;
+    Ed := EditorFactory.CurrentEditor;
+    Ed.Highlighter := ConfigObj.getHighLighter(Idx);
+
+  finally
+    Screen.Cursor :=  crDefault;
+  end;
 
 end;
 
@@ -713,8 +721,13 @@ var
   idx: integer;
 begin
   idx := TMenuItem(Sender).Tag;
-  ConfigObj.SetTheme(idx);
-  EditorFactory.ReloadHighLighters;
+  try
+    Screen.Cursor := crHourGlass;
+    ConfigObj.SetTheme(idx);
+    EditorFactory.ReloadHighLighters;
+  finally
+    Screen.Cursor :=  crDefault;
+  end;
 end;
 
 procedure TfMain.FormDestroy(Sender: TObject);
