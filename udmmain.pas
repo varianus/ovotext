@@ -31,21 +31,6 @@ uses
 
 type
 
-
-{Comment#Documentation|Rpl comment|SASM Comment|
-Symbol#Brackets|Round Bracket|Square Bracket|Symbol|
-Key#Key|Rpl key|SASM Key|SQL keyword|SQL*Plus command|TeX Command|
-Reserved word#Reserved word|Reserved word (PL/SQL)|Second reserved word|
-Directive#IDE Directive|Include|Preprocessor|Processing Instruction|
-Variable#Special variable|
-Attribute Name#Element Name|Namespace Attribute Name|
-Attribute Value#CDATA|DOCTYPE|Namespace Attribute Value|Val|
-Macro#Pragma|
-Text#Embedded text|
-Section#Asp|CDATA Section|DOCTYPE Section
-}
-
-
   TdmMain = class(TDataModule)
     imgIcons: TImageList;
     imgBookMark: TImageList;

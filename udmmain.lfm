@@ -4,10 +4,9 @@ object dmMain: TdmMain
   HorizontalOffset = 695
   VerticalOffset = 311
   Width = 725
-  PPI = 96
   object imgBookMark: TImageList
-    left = 56
-    top = 24
+    Left = 56
+    Top = 24
     Bitmap = {
       4C690A0000001000000010000000962F0D00962F0D00FFF4EAFFFFCFC0FFF0AE
       98FFEAA28AFFF3B39EFFFFD7C8FFFFF9F0FF962F0D00962F0D00000000000000
@@ -333,8 +332,8 @@ object dmMain: TdmMain
     }
   end
   object imgIcons: TImageList
-    left = 168
-    top = 24
+    Left = 168
+    Top = 24
     Bitmap = {
       4C69010000001000000010000000FFFFFF000000001C00000033000000360000
       0036000000360000003600000036000000360000003600000036000000200000

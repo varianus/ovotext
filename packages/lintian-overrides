@@ -1,0 +1,2 @@
+ovotext: hardening-no-relro usr/bin/ovotext
+ovotext: extended-description-contains-empty-paragraph

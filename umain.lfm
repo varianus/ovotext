@@ -14,11 +14,12 @@ object fMain: TfMain
   OnDestroy = FormDestroy
   OnDropFiles = FormDropFiles
   ShowHint = True
+  LCLVersion = '2.1.0.0'
   Visible = True
   object StatusBar: TStatusBar
     Left = 0
-    Height = 23
-    Top = 373
+    Height = 21
+    Top = 375
     Width = 966
     Panels = <    
       item
@@ -67,7 +68,7 @@ object fMain: TfMain
     end
     object ToolButton5: TToolButton
       Left = 25
-      Height = 18
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
@@ -98,13 +99,13 @@ object fMain: TfMain
     end
     object ToolButton11: TToolButton
       Left = 102
-      Height = 18
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
     object ToolButton12: TToolButton
       Left = 155
-      Height = 18
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
@@ -125,7 +126,7 @@ object fMain: TfMain
     end
     object tbbSepClose: TToolButton
       Left = 232
-      Height = 18
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
@@ -379,23 +380,25 @@ object fMain: TfMain
     end
     object ExportHtmlToFile: TAction
       Category = 'Edit'
-      Caption = 'As Html To File'
+      Caption = 'Save as HTML'
       DisableIfNoHandler = False
+      OnExecute = ExportHtmlToFileExecute
     end
     object ExportRTFToFile: TAction
       Category = 'Edit'
-      Caption = 'As Rtf To File'
+      Caption = 'Save as RTF'
       DisableIfNoHandler = False
+      OnExecute = ExportRTFToFileExecute
     end
     object ExportHtmlToClipBoard: TAction
       Category = 'Edit'
-      Caption = 'As Html To Clipboard'
+      Caption = 'Copy as HTML'
       DisableIfNoHandler = False
       OnExecute = ExportHtmlToClipBoardExecute
     end
     object ExportRTFToClipBoard: TAction
       Category = 'Edit'
-      Caption = 'As Rtf To Clipboard'
+      Caption = 'Copy as RTF'
       DisableIfNoHandler = False
       OnExecute = ExportRTFToClipBoardExecute
     end
@@ -481,6 +484,15 @@ object fMain: TfMain
       object MenuItem48: TMenuItem
         Caption = '-'
       end
+      object MenuItem62: TMenuItem
+        Caption = 'Export'
+        object MenuItem66: TMenuItem
+          Action = ExportRTFToFile
+        end
+        object MenuItem65: TMenuItem
+          Action = ExportHtmlToFile
+        end
+      end
       object MenuItem31: TMenuItem
         Action = FileClose
       end
@@ -512,6 +524,12 @@ object fMain: TfMain
       object MenuItem14: TMenuItem
         Action = EditPaste
       end
+      object MenuItem75: TMenuItem
+        Action = ExportRTFToClipBoard
+      end
+      object MenuItem76: TMenuItem
+        Action = ExportHtmlToClipBoard
+      end
       object MenuItem15: TMenuItem
         Caption = '-'
       end
@@ -526,21 +544,6 @@ object fMain: TfMain
       end
       object MenuItem47: TMenuItem
         Caption = '-'
-      end
-      object MenuItem62: TMenuItem
-        Caption = 'Export'
-        object MenuItem63: TMenuItem
-          Action = ExportRTFToClipBoard
-        end
-        object MenuItem64: TMenuItem
-          Action = ExportHtmlToClipBoard
-        end
-        object MenuItem66: TMenuItem
-          Action = ExportRTFToFile
-        end
-        object MenuItem65: TMenuItem
-          Action = ExportHtmlToFile
-        end
       end
       object MenuItem39: TMenuItem
         Caption = 'Spaces operations'
