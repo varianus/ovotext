@@ -92,24 +92,6 @@ msgid ""
 "\"%s\"\n"
 msgstr ""
 
-#: tdlggoto.buttonpanel1.okbutton.caption
-msgctxt "tdlggoto.buttonpanel1.okbutton.caption"
-msgid "Go to"
-msgstr ""
-
-#: tdlggoto.caption
-msgctxt "tdlggoto.caption"
-msgid "Go to"
-msgstr ""
-
-#: tdlggoto.label1.caption
-msgid "Line number"
-msgstr ""
-
-#: tdlggoto.label2.caption
-msgid "Column number"
-msgstr ""
-
 #: tfabout.blicense.caption
 msgid "&License"
 msgstr ""
@@ -441,8 +423,24 @@ msgctxt "TFMAIN.MENUITEM8.CAPTION"
 msgid "Find"
 msgstr ""
 
+#: tfmain.mnucr.caption
+msgid "Mac (CR)"
+msgstr ""
+
+#: tfmain.mnucrlf.caption
+msgid "Windows (CR+LF)"
+msgstr ""
+
 #: tfmain.mnulanguage.caption
 msgid "Language"
+msgstr ""
+
+#: tfmain.mnulf.caption
+msgid "Linux (LF)"
+msgstr ""
+
+#: tfmain.mnulineendings.caption
+msgid "Convert line endings"
 msgstr ""
 
 #: tfmain.mnuopenrecent.caption

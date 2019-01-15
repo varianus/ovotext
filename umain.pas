@@ -27,7 +27,7 @@ uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls,
   ExtDlgs, SynEditTypes, SynHighlighterPas, PrintersDlgs, Config, SupportFuncs,
-  udmmain, uDglGoTo, SynEditPrint, simplemrumanager;
+  udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynEditLines, SynEditTextBuffer;
 
 type
 
@@ -62,6 +62,8 @@ type
     MenuItem60: TMenuItem;
     MenuItem61: TMenuItem;
     MenuItem62: TMenuItem;
+    mnuLineEndings: TMenuItem;
+    mnuCRLF: TMenuItem;
     MenuItem65: TMenuItem;
     MenuItem66: TMenuItem;
     MenuItem67: TMenuItem;
@@ -74,6 +76,8 @@ type
     MenuItem74: TMenuItem;
     MenuItem75: TMenuItem;
     MenuItem76: TMenuItem;
+    mnuLF: TMenuItem;
+    mnuCR: TMenuItem;
     mnuThemes: TMenuItem;
     mnuNone: TMenuItem;
     mnuLanguage: TMenuItem;
@@ -229,6 +233,10 @@ type
     procedure actLowerCaseExecute(Sender: TObject);
     procedure MenuItem28Click(Sender: TObject);
     procedure MenuItem29Click(Sender: TObject);
+    procedure mnuLineEndingsClick(Sender: TObject);
+    procedure mnuCRClick(Sender: TObject);
+    procedure mnuCRLFClick(Sender: TObject);
+    procedure mnuLFClick(Sender: TObject);
     procedure mnuTabsClick(Sender: TObject);
     procedure ReplaceDialogFind(Sender: TObject);
     procedure ReplaceDialogReplace(Sender: TObject);
@@ -836,6 +844,61 @@ begin
   for i := 0 to MRU.Recent.Count - 1 do
     EditorFactory.AddEditor(MRU.Recent[i]);
 
+end;
+
+procedure TfMain.mnuLineEndingsClick(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  case TSynEditLines(ed.lines).FileLineEndType of
+    sfleCrLf: mnuCRLF.Checked := true;
+    sfleLf: mnuLF.Checked := true;
+    sfleCr: mnuCR.Checked := true;
+  end;
+  mnuCR.Enabled := not mnuCR.Checked;
+  mnuLF.Enabled := not mnuLF.Checked;
+  mnuCRLF.Enabled := not mnuCRLF.Checked;
+
+end;
+
+procedure TfMain.mnuCRClick(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  TSynEditLines(ed.lines).FileWriteLineEndType :=sfleCr;
+  Ed.Modified := true;
+end;
+
+procedure TfMain.mnuCRLFClick(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  TSynEditLines(ed.lines).FileWriteLineEndType:=sfleCrLf;
+  Ed.Modified := true;
+end;
+
+procedure TfMain.mnuLFClick(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  TSynEditLines(ed.lines).FileWriteLineEndType:=sfleLf;
+  Ed.Modified := true;
 end;
 
 procedure TfMain.ShowTabs(Sender: TObject);

@@ -14,12 +14,11 @@ object fMain: TfMain
   OnDestroy = FormDestroy
   OnDropFiles = FormDropFiles
   ShowHint = True
-  LCLVersion = '2.1.0.0'
   Visible = True
   object StatusBar: TStatusBar
     Left = 0
-    Height = 21
-    Top = 375
+    Height = 23
+    Top = 373
     Width = 966
     Panels = <    
       item
@@ -68,7 +67,7 @@ object fMain: TfMain
     end
     object ToolButton5: TToolButton
       Left = 25
-      Height = 5
+      Height = 18
       Top = 2
       Style = tbsDivider
     end
@@ -99,13 +98,13 @@ object fMain: TfMain
     end
     object ToolButton11: TToolButton
       Left = 102
-      Height = 5
+      Height = 18
       Top = 2
       Style = tbsDivider
     end
     object ToolButton12: TToolButton
       Left = 155
-      Height = 5
+      Height = 18
       Top = 2
       Style = tbsDivider
     end
@@ -126,7 +125,7 @@ object fMain: TfMain
     end
     object tbbSepClose: TToolButton
       Left = 232
-      Height = 5
+      Height = 18
       Top = 2
       Style = tbsDivider
     end
@@ -544,6 +543,25 @@ object fMain: TfMain
       end
       object MenuItem47: TMenuItem
         Caption = '-'
+      end
+      object mnuLineEndings: TMenuItem
+        Caption = 'Convert line endings'
+        OnClick = mnuLineEndingsClick
+        object mnuCRLF: TMenuItem
+          Caption = 'Windows (CR+LF)'
+          RadioItem = True
+          OnClick = mnuCRLFClick
+        end
+        object mnuLF: TMenuItem
+          Caption = 'Linux (LF)'
+          RadioItem = True
+          OnClick = mnuLFClick
+        end
+        object mnuCR: TMenuItem
+          Caption = 'Mac (CR)'
+          RadioItem = True
+          OnClick = mnuCRClick
+        end
       end
       object MenuItem39: TMenuItem
         Caption = 'Spaces operations'
