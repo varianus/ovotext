@@ -531,9 +531,9 @@ begin
 //
 //%q and %Q start delimited single- and double-quoted strings.
 //
-//%q/general single-quoted string/ » general single-quoted string
-//%Q!general double-quoted string! » general double-quoted string
-//%Q{Seconds/day: #{24*60*60}}     » Seconds/day: 86400
+//%q/general single-quoted string/ Â» general single-quoted string
+//%Q!general double-quoted string! Â» general double-quoted string
+//%Q{Seconds/day: #{24*60*60}}     Â» Seconds/day: 86400
 //
 //The character following the ``q'' or ``Q'' is the delimiter. If it is an
 //opening bracket, brace, parenthesis, or less-than sign, the string is read

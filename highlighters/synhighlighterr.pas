@@ -13,7 +13,7 @@ The Original Code is based on the odPySyn.pas file from the
 mwEdit component suite by Martin Waldenburg and other developers, the Initial
 Author of this file is Olivier Deckmyn.
 Portions created by M.Utku Karatas and Dennis Chuah.
-Unicode translation by Maël Hörz.
+Unicode translation by MaÃ«l HÃ¶rz.
 All Rights Reserved.
 
 
