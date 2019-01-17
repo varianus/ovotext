@@ -30,9 +30,9 @@ interface
 uses
   Classes, SysUtils, Controls, Dialogs, ComCtrls, LCLProc, LCLType,
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,
-  SynGutterChanges, SynMacroRecorder, SynPluginMultiCaret, SynPluginSyncroEdit,
-  SynEditMouseCmds, Stringcostants, Forms, Graphics, Config, udmmain,
-  uCheckFileChange, SynEditHighlighter, Clipbrd;
+  SynMacroRecorder, SynPluginMultiCaret, SynPluginSyncroEdit,
+  SynEditMouseCmds, SynEditLines, Stringcostants, Forms, Graphics, Config, udmmain,
+  uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding ;
 
 type
 
@@ -59,12 +59,17 @@ type
     FFileName: TFilename;
     FSheet: TEditorTabSheet;
     FUntitled: boolean;
-    fCaretPos, fSel: TPoint;
+    fCaretPos: TPoint;
     MultiCaret: TSynPluginMultiCaret;
     SyncEdit: TSynPluginSyncroEdit;
+    fEncodingName: String;
     procedure CreateDefaultGutterParts;
+    function GetEncodingName: string;
+    function GetLineEndingType: TSynLinesFileLineEndType;
     procedure QuickSort(L, R: integer; CompareFn: TStringsSortCompare);
+    procedure SetEncodingName(AValue: string);
     procedure SetFileName(AValue: TFileName);
+    procedure SetLineEndingType(AValue: TSynLinesFileLineEndType);
     procedure SetText(NewText: string);
     procedure SetUntitled(AValue: boolean);
 
@@ -75,14 +80,15 @@ type
     //-- Helper functions//
     procedure SetLineText(Index: integer; NewText: string);
     // -- File handling//
-     property FileName: TFileName read FFileName write SetFileName;
+    property FileName: TFileName read FFileName write SetFileName;
     property Untitled: boolean read FUntitled write SetUntitled;
+    property EncodingName:string read GetEncodingName write SetEncodingName;
+    property LineEndingType: TSynLinesFileLineEndType read GetLineEndingType write SetLineEndingType;
     procedure LoadFromFile(AFileName: TFileName);
     procedure Sort(Ascending: boolean);
     procedure TextOperation(Operation: TTextOperation; const Level: TTextOperationLevel = DefaultOperationLevel);
     procedure PushPos;
     procedure PopPos;
-
     function Save: boolean;
     function SaveAs(AFileName: TFileName): boolean;
   end;
@@ -172,6 +178,12 @@ begin
 
 end;
 
+procedure TEditor.SetLineEndingType(AValue: TSynLinesFileLineEndType);
+begin
+  TSynEditLines(lines).FileWriteLineEndType := AValue;
+  Modified := true;
+end;
+
 procedure TEditor.SetUntitled(AValue: boolean);
 begin
   if FUntitled = AValue then
@@ -226,9 +238,26 @@ begin
 end;
 
 procedure TEditor.LoadFromFile(AFileName: TFileName);
+var
+  fStream: TFileStream;
+  DetectString: RawByteString='';
+  Encoded: boolean;
 begin
   SetFileName(AFileName);
-  Lines.LoadFromFile(FFileName);
+  Lines.LoadFromFile(AFileName);
+  fEncodingName := GuessEncoding(Lines.Text);
+ /// Lines.Text:= ConvertEncodingToUTF8(Lines.Text, fEncodingName, Encoded);
+
+  {
+  fStream := TFileStream.Create(FFileName, fmOpenRead +  fmShareDenyNone);
+  try
+    SetLength(DetectString, fStream.Size);
+    fStream.Read(DetectString[1], fStream.Size);
+    fEncodingName := GuessEncoding(DetectString);
+    Lines.Text:= ConvertEncodingToUTF8(DetectString, fEncodingName, Encoded);
+  finally
+    FreeAndNil(fStream);
+  end;       }
 
 end;
 
@@ -376,6 +405,30 @@ begin
 
 end;
 
+function TEditor.GetEncodingName: string;
+begin
+   if fEncodingName = EncodingUCS2LE then
+     Result := 'UTF16LE'
+   else
+   if fEncodingName = EncodingUCS2BE then
+     Result := 'UTF16BE'
+   else
+     Result := fEncodingName;
+
+end;
+
+function TEditor.GetLineEndingType: TSynLinesFileLineEndType;
+begin
+  result := TSynEditLines(lines).FileLineEndType;
+  if Result = sfleSystem then
+    begin
+      if LineEnding = #13#10   then result := sfleCrLf
+      else if LineEnding = #13 then result := sfleCr
+      else if LineEnding = #10 then result := sfleLf;
+    end;
+
+end;
+
 procedure TEditor.QuickSort(L, R: integer; CompareFn: TStringsSortCompare);
 var
   Pivot, vL, vR: integer;
@@ -414,6 +467,12 @@ begin
     QuickSort(L, Pivot - 1, CompareFn);
   if Pivot + 1 <= R then
     QuickSort(Pivot + 1, R, CompareFn);
+end;
+
+procedure TEditor.SetEncodingName(AValue: string);
+begin
+  if FEncodingName = AValue then Exit;
+  FEncodingName := AValue;
 end;
 
 procedure TEditor.TextOperation(Operation: TTextOperation; const Level: TTextOperationLevel = DefaultOperationLevel);

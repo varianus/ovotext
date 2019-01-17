@@ -32,6 +32,12 @@ object fMain: TfMain
       end    
       item
         Width = 100
+      end    
+      item
+        Width = 100
+      end    
+      item
+        Width = 500
       end>
     SimplePanel = False
     SizeGrip = False

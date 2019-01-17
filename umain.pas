@@ -369,7 +369,7 @@ end;
 
 procedure TfMain.AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
 begin
-  StatusBar.Panels[3].Text := HintInfo.HintStr;
+  StatusBar.Panels[5].Text := HintInfo.HintStr;
 end;
 
 procedure TfMain.ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
@@ -873,8 +873,8 @@ begin
     exit;
 
   Ed := EditorFactory.CurrentEditor;
-  TSynEditLines(ed.lines).FileWriteLineEndType :=sfleCr;
-  Ed.Modified := true;
+  ed.LineEndingType := sfleCr;
+
 end;
 
 procedure TfMain.mnuCRLFClick(Sender: TObject);
@@ -885,8 +885,7 @@ begin
     exit;
 
   Ed := EditorFactory.CurrentEditor;
-  TSynEditLines(ed.lines).FileWriteLineEndType:=sfleCrLf;
-  Ed.Modified := true;
+  ed.LineEndingType := sfleCrLf;
 end;
 
 procedure TfMain.mnuLFClick(Sender: TObject);
@@ -897,8 +896,7 @@ begin
     exit;
 
   Ed := EditorFactory.CurrentEditor;
-  TSynEditLines(ed.lines).FileWriteLineEndType:=sfleLf;
-  Ed.Modified := true;
+  ed.LineEndingType := sfleLf;
 end;
 
 procedure TfMain.ShowTabs(Sender: TObject);
@@ -975,6 +973,7 @@ end;
 procedure TfMain.EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
 var
   Editor: TEditor;
+  s: string;
 
 begin
   if not EditorAvalaible then
@@ -1000,6 +999,16 @@ begin
       Editor.Sheet.ImageIndex := IDX_IMG_MODIFIED
     else
       Editor.Sheet.ImageIndex := IDX_IMG_STANDARD;
+
+  case Editor.LineEndingType of
+    sfleCrLf: StatusBar.Panels[3].Text := mnuCRLF.Caption;
+    sfleLf:   StatusBar.Panels[3].Text := mnuLF.Caption;
+    sfleCr:   StatusBar.Panels[3].Text := mnuCR.Caption;
+  else
+    StatusBar.Panels[3].Text:= '';
+  end;
+
+  StatusBar.Panels[4].Text := Editor.EncodingName;
 
 end;
 
