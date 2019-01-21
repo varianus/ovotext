@@ -32,7 +32,7 @@ uses
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,
   SynMacroRecorder, SynPluginMultiCaret, SynPluginSyncroEdit,
   SynEditMouseCmds, SynEditLines, Stringcostants, Forms, Graphics, Config, udmmain,
-  uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding ;
+  uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils;
 
 type
 
@@ -46,8 +46,13 @@ type
 const
   DefaultOperationLevel = [tomSelection, tomLines];
 
+var
+  LineEndings : array[TSynLinesFileLineEndType] of string = (lineending,'',#13#10,#13,#10);
+
 type
   TTextOperation = function(const Param: string): string;
+
+
 
   { TEditorFactory }
 
@@ -62,12 +67,16 @@ type
     fCaretPos: TPoint;
     MultiCaret: TSynPluginMultiCaret;
     SyncEdit: TSynPluginSyncroEdit;
-    fEncodingName: String;
+    fOldDiskEncoding: string;
+    FDiskEncoding: String;
+    fDiskLineEndingType : TSynLinesFileLineEndType;
+    fOldDiskLineEndingType : TSynLinesFileLineEndType;
     procedure CreateDefaultGutterParts;
-    function GetEncodingName: string;
+    function GetDiskEncoding: string;
     function GetLineEndingType: TSynLinesFileLineEndType;
+    function GuessLineEndType(AString: string): TSynLinesFileLineEndType;
     procedure QuickSort(L, R: integer; CompareFn: TStringsSortCompare);
-    procedure SetEncodingName(AValue: string);
+    procedure SetDiskEncoding(AValue: string);
     procedure SetFileName(AValue: TFileName);
     procedure SetLineEndingType(AValue: TSynLinesFileLineEndType);
     procedure SetText(NewText: string);
@@ -82,7 +91,7 @@ type
     // -- File handling//
     property FileName: TFileName read FFileName write SetFileName;
     property Untitled: boolean read FUntitled write SetUntitled;
-    property EncodingName:string read GetEncodingName write SetEncodingName;
+    property DiskEncoding:string read GetDiskEncoding write SetDiskEncoding;
     property LineEndingType: TSynLinesFileLineEndType read GetLineEndingType write SetLineEndingType;
     procedure LoadFromFile(AFileName: TFileName);
     procedure Sort(Ascending: boolean);
@@ -180,7 +189,7 @@ end;
 
 procedure TEditor.SetLineEndingType(AValue: TSynLinesFileLineEndType);
 begin
-  TSynEditLines(lines).FileWriteLineEndType := AValue;
+  fDiskLineEndingType := AValue;
   Modified := true;
 end;
 
@@ -237,27 +246,52 @@ begin
   TextBetweenPoints[Point(1, 1), PhysicalToLogicalPos(Point(Length(Lines[Lines.Count - 1]) + 1, Lines.Count))] := NewText;
 end;
 
+function TEditor.GuessLineEndType(AString: string) : TSynLinesFileLineEndType;
+var
+  i: Integer;
+begin
+  result := sfleSystem;
+  i := 1;
+  while i <= length(AString) do begin
+    if AString[i] in [#10,#13] then begin
+      if AString[i]=#10 then result := sfleLf
+      else if (i < length(AString)) and (AString[i+1]=#10) then result := sfleCrLf
+      else result := sfleCr;
+      break;
+    end;
+    inc(i);
+  end;
+end;
+
 procedure TEditor.LoadFromFile(AFileName: TFileName);
 var
   fStream: TFileStream;
-  DetectString: RawByteString='';
-  Encoded: boolean;
+  s: RawByteString='';
+  wSize: integer;
+  b:boolean;
 begin
   SetFileName(AFileName);
-  Lines.LoadFromFile(AFileName);
-  fEncodingName := GuessEncoding(Lines.Text);
- /// Lines.Text:= ConvertEncodingToUTF8(Lines.Text, fEncodingName, Encoded);
-
-  {
-  fStream := TFileStream.Create(FFileName, fmOpenRead +  fmShareDenyNone);
+  fStream := TFileStream.Create(FFileName, fmOpenRead,fmShareDenyNone);
   try
-    SetLength(DetectString, fStream.Size);
-    fStream.Read(DetectString[1], fStream.Size);
-    fEncodingName := GuessEncoding(DetectString);
-    Lines.Text:= ConvertEncodingToUTF8(DetectString, fEncodingName, Encoded);
+    wSize := fStream.Size;
+    SetLength(s, wSize);
+    fStream.Read(s[1], wSize);
+    FDiskEncoding := NormalizeEncoding(GuessEncoding(s));
+
+    S := ConvertEncodingToUTF8(s,FDiskEncoding, b);
+
+    fDiskLineEndingType:=GuessLineEndType(S);
+    if fDiskLineEndingType = sfleSystem then
+      fDiskLineEndingType:=GuessLineEndType(LineEnding);
+    Lines.Text := S;
+
+    fOldDiskEncoding := FDiskEncoding;
+    fOldDiskLineEndingType := fDiskLineEndingType;
+
+
   finally
     FreeAndNil(fStream);
-  end;       }
+  end;
 
 end;
 
@@ -278,6 +312,9 @@ end;
 function TEditor.SaveAs(AFileName: TFileName): boolean;
 var
   Retry: boolean;
+  s: RawByteString='';
+  fStream: TFileStream;
+  b: boolean;
 begin
   repeat
     Retry := False;
@@ -285,7 +322,20 @@ begin
       if FFileName <> EmptyStr then
         TEditorFactory(Sheet.Owner).FWatcher.RemoveFile(FFileName);
       SetFileName(AFileName);
-      Lines.SaveToFile(AFileName);
+      s:= Lines.Text;
+
+      if fDiskLineEndingType <> GuessLineEndType(LineEnding) then
+        s:= ChangeLineEndings(s,LineEndings[fDiskLineEndingType]);
+
+      if FDiskEncoding <> EncodingUTF8 then
+        s:= ConvertEncodingFromUTF8(S, FDiskEncoding, b);
+
+      fStream:= TFileStream.Create(FFileName, fmOpenWrite+fmCreate , fmShareExclusive);
+      try
+        fStream.Write(S[1], Length(s));
+      finally
+        FreeAndNil(fStream);
+      end;
       TEditorFactory(Sheet.Owner).FWatcher.AddFile(FFileName, Self);
       Result := True;
       FUntitled := False;
@@ -405,28 +455,21 @@ begin
 
 end;
 
-function TEditor.GetEncodingName: string;
+function TEditor.GetDiskEncoding: string;
 begin
-   if fEncodingName = EncodingUCS2LE then
-     Result := 'UTF16LE'
-   else
-   if fEncodingName = EncodingUCS2BE then
-     Result := 'UTF16BE'
-   else
-     Result := fEncodingName;
+   //if FDiskEncoding = EncodingUCS2LE then
+   //  Result := 'UTF16LE'
+   //else
+   //if FDiskEncoding = EncodingUCS2BE then
+   //  Result := 'UTF16BE'
+   //else
+   Result := FDiskEncoding;
 
 end;
 
 function TEditor.GetLineEndingType: TSynLinesFileLineEndType;
 begin
-  result := TSynEditLines(lines).FileLineEndType;
-  if Result = sfleSystem then
-    begin
-      if LineEnding = #13#10   then result := sfleCrLf
-      else if LineEnding = #13 then result := sfleCr
-      else if LineEnding = #10 then result := sfleLf;
-    end;
-
+  result := fDiskLineEndingType;
 end;
 
 procedure TEditor.QuickSort(L, R: integer; CompareFn: TStringsSortCompare);
@@ -469,10 +512,10 @@ begin
     QuickSort(Pivot + 1, R, CompareFn);
 end;
 
-procedure TEditor.SetEncodingName(AValue: string);
+procedure TEditor.SetDiskEncoding(AValue: string);
 begin
-  if FEncodingName = AValue then Exit;
-  FEncodingName := AValue;
+  if FDiskEncoding = AValue then Exit;
+  FDiskEncoding := AValue;
 end;
 
 procedure TEditor.TextOperation(Operation: TTextOperation; const Level: TTextOperationLevel = DefaultOperationLevel);
@@ -800,7 +843,6 @@ end;
 procedure TEditorFactory.PaintWindow(DC: HDC);
 var
   r: TRect;
-  points: array[0..1] of TPoint;
   i, h, h2: integer;
   c: Tcanvas;
 begin
@@ -814,7 +856,7 @@ begin
     h := (r.Bottom - r.Bottom - r.Top - 16) div 2;
     h2 := 16 + h;
     Images.Draw(c, r.Right - h2, r.Top + h, 31);
-  end;//for
+  end;
   c.Free;
 end;
 

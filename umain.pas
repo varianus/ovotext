@@ -26,8 +26,8 @@ interface
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls,
-  ExtDlgs, SynEditTypes, SynHighlighterPas, PrintersDlgs, Config, SupportFuncs,
-  udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynEditLines, SynEditTextBuffer;
+  SynEditTypes, SynHighlighterPas, PrintersDlgs, Config, SupportFuncs,
+  udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynEditLines;
 
 type
 
@@ -1008,7 +1008,7 @@ begin
     StatusBar.Panels[3].Text:= '';
   end;
 
-  StatusBar.Panels[4].Text := Editor.EncodingName;
+  StatusBar.Panels[4].Text := Editor.DiskEncoding;
 
 end;
 
