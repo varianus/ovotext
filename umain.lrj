@@ -82,5 +82,7 @@
 {"hash":266201246,"name":"tfmain.menuitem52.caption","sourcebytes":[78,97,118,105,103,97,116,105,111,110],"value":"Navigation"},
 {"hash":370579,"name":"tfmain.mnutabs.caption","sourcebytes":[84,97,98,115],"value":"Tabs"},
 {"hash":322608,"name":"tfmain.menuitem3.caption","sourcebytes":[72,101,108,112],"value":"Help"},
-{"hash":267817060,"name":"tfmain.fontdialog.title","sourcebytes":[83,101,108,101,99,116,32,97,32,70,111,110,116],"value":"Select a Font"}
+{"hash":267817060,"name":"tfmain.fontdialog.title","sourcebytes":[83,101,108,101,99,116,32,97,32,70,111,110,116],"value":"Select a Font"},
+{"hash":168795332,"name":"tfmain.menuitem64.caption","sourcebytes":[77,101,110,117,73,116,101,109,54,52],"value":"MenuItem64"},
+{"hash":168795383,"name":"tfmain.menuitem77.caption","sourcebytes":[77,101,110,117,73,116,101,109,55,55],"value":"MenuItem77"}
 ]}

@@ -62,6 +62,9 @@ type
     MenuItem60: TMenuItem;
     MenuItem61: TMenuItem;
     MenuItem62: TMenuItem;
+    MenuItem63: TMenuItem;
+    MenuItem64: TMenuItem;
+    MenuItem77: TMenuItem;
     mnuLineEndings: TMenuItem;
     mnuCRLF: TMenuItem;
     MenuItem65: TMenuItem;
@@ -82,6 +85,7 @@ type
     mnuNone: TMenuItem;
     mnuLanguage: TMenuItem;
     mnuTabs: TMenuItem;
+    pumTabs: TPopupMenu;
     PrintDialog1: TPrintDialog;
     SortAscending: TAction;
     actPrint: TAction;
@@ -257,6 +261,8 @@ type
     prn: TSynEditPrint;
 
     function AskFileName(Editor: TEditor): boolean;
+    procedure ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
     function EditorAvalaible: boolean; inline;
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
     procedure ExecFind(Dialog: TFindDialog);
@@ -344,7 +350,6 @@ var
   S:TmemoryStream;
 begin
   Ed := EditorFactory.CurrentEditor;
-
   dmMain.RFTExporter.UseBackground:=true;
   dmMain.RFTExporter.Highlighter := Ed.Highlighter;
   dmMain.RFTExporter.ExportAsText:=false;
@@ -370,6 +375,20 @@ end;
 procedure TfMain.AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
 begin
   StatusBar.Panels[5].Text := HintInfo.HintStr;
+end;
+
+procedure TfMain.ContextPopup(Sender: TObject; MousePos: TPoint;var Handled: Boolean);
+begin
+  if not EditorAvalaible then
+    exit;
+
+  MousePos.Offset(0, EditorFactory.TabHeight);
+  if EditorFactory.TabRect(EditorFactory.ActivePageIndex).Contains(MousePos) then
+    begin
+      Handled:=true;
+      pumTabs.PopUp(MousePos.X,MousePos.Y);
+    end;
+
 end;
 
 procedure TfMain.ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
@@ -685,6 +704,7 @@ begin
   EditorFactory.OnStatusChange := @EditorStatusChange;
   EditorFactory.OnBeforeClose := @BeforeCloseEditor;
   EditorFactory.OnNewEditor := @NewEditor;
+  EditorFactory.OnContextPopup := @ContextPopup;
   EditorFactory.Images := imgList;
   EditorFactory.Parent := self;
   FileNew.Execute;

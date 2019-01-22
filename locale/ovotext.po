@@ -92,6 +92,24 @@ msgid ""
 "\"%s\"\n"
 msgstr ""
 
+#: tdlggoto.buttonpanel1.okbutton.caption
+msgctxt "tdlggoto.buttonpanel1.okbutton.caption"
+msgid "Go to"
+msgstr ""
+
+#: tdlggoto.caption
+msgctxt "tdlggoto.caption"
+msgid "Go to"
+msgstr ""
+
+#: tdlggoto.label1.caption
+msgid "Line number"
+msgstr ""
+
+#: tdlggoto.label2.caption
+msgid "Column number"
+msgstr ""
+
 #: tfabout.blicense.caption
 msgid "&License"
 msgstr ""
@@ -406,6 +424,10 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
+#: tfmain.menuitem64.caption
+msgid "MenuItem64"
+msgstr ""
+
 #: tfmain.menuitem68.caption
 msgid "Beautify"
 msgstr ""
@@ -416,6 +438,10 @@ msgstr ""
 
 #: tfmain.menuitem70.caption
 msgid "Others"
+msgstr ""
+
+#: tfmain.menuitem77.caption
+msgid "MenuItem77"
 msgstr ""
 
 #: tfmain.menuitem8.caption
