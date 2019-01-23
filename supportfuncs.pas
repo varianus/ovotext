@@ -24,7 +24,7 @@ unit SupportFuncs;
 interface
 
 uses
-  Classes, SysUtils, RegExpr, LazUTF8, LazFileUtils
+  Classes, SysUtils, RegExpr, LazFileUtils
   {$IFDEF UNIX}
   , BaseUnix
   {$ENDIF}  ;
@@ -664,11 +664,11 @@ begin
             ((SearchRec.Attr and Attr) = (SearchRec.Attr and faAnyFile)) and
             IsFileNameMatch(SearchRec.Name, MaskList.Strings[IndexMask], False) then
             begin
-              List.Add(SysToUTF8(Directory + SearchRec.Name));
+              List.Add(Directory + SearchRec.Name);
             Break;
             end;
 
-        case FindNextUTF8(SearchRec) of
+        case FindNext(SearchRec) of
           0: ;
           2: //ERROR_NO_MORE_FILES:
             Break;
@@ -677,7 +677,7 @@ begin
           end;
         end;
       finally
-      FindCloseUTF8(SearchRec);
+      FindClose(SearchRec);
       List.EndUpdate;
       end;
     finally
