@@ -26,7 +26,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls,
-  SynEditTypes, SynHighlighterPas, PrintersDlgs, Config, SupportFuncs,
+  SynEditTypes, SynHighlighterPas, PrintersDlgs, Config, SupportFuncs, LazUtils,
   udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynEditLines;
 
 type
@@ -39,6 +39,8 @@ type
     actFont: TAction;
     actFullNameToClipBoard: TAction;
     actGoTo: TAction;
+    actCloseAllExceptThis: TAction;
+    actPathToClipboard: TAction;
     actSQLPrettyPrint: TAction;
     actXMLCompact: TAction;
     actJSONPrettyPrint: TAction;
@@ -65,6 +67,8 @@ type
     MenuItem63: TMenuItem;
     MenuItem64: TMenuItem;
     MenuItem77: TMenuItem;
+    MenuItem78: TMenuItem;
+    N1: TMenuItem;
     mnuLineEndings: TMenuItem;
     mnuCRLF: TMenuItem;
     MenuItem65: TMenuItem;
@@ -195,6 +199,7 @@ type
     ToolButton7: TToolButton;
     ToolButton8: TToolButton;
     ToolButton9: TToolButton;
+    procedure actCloseAllExceptThisExecute(Sender: TObject);
     procedure ActCompressSpacesExecute(Sender: TObject);
     procedure actFontExecute(Sender: TObject);
     procedure actFullNameToClipBoardExecute(Sender: TObject);
@@ -202,6 +207,7 @@ type
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
     procedure actJSONPrettyPrintExecute(Sender: TObject);
     procedure actLanguageNoneExecute(Sender: TObject);
+    procedure actPathToClipboardExecute(Sender: TObject);
     procedure actPrintExecute(Sender: TObject);
     procedure actQuoteExecute(Sender: TObject);
     procedure actSQLPrettyPrintExecute(Sender: TObject);
@@ -347,7 +353,6 @@ end;
 procedure TfMain.ExportRTFToClipBoardExecute(Sender: TObject);
 var
   Ed: TEditor;
-  S:TmemoryStream;
 begin
   Ed := EditorFactory.CurrentEditor;
   dmMain.RFTExporter.UseBackground:=true;
@@ -387,6 +392,7 @@ begin
     begin
       Handled:=true;
       MousePos:=EditorFactory.ClientToScreen(MousePos);
+      pumTabs.PopupComponent:=EditorFactory.CurrentEditor;
       pumTabs.PopUp(MousePos.X,MousePos.Y);
     end;
 
@@ -433,6 +439,14 @@ begin
 
   Ed := EditorFactory.CurrentEditor;
   Ed.Highlighter := nil;
+end;
+
+procedure TfMain.actPathToClipboardExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  Ed := EditorFactory.CurrentEditor;
+  Clipboard.AsText := ExtractFilePath(Ed.FileName);
 end;
 
 procedure TfMain.actPrintExecute(Sender: TObject);
@@ -587,6 +601,11 @@ begin
   Ed := EditorFactory.CurrentEditor;
   Ed.TextOperation(@RemoveSpacesInExcess);
 
+end;
+
+procedure TfMain.actCloseAllExceptThisExecute(Sender: TObject);
+begin
+  EditorFactory.CloseAll(true);
 end;
 
 procedure TfMain.FileCloseAllExecute(Sender: TObject);
@@ -994,8 +1013,6 @@ end;
 procedure TfMain.EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
 var
   Editor: TEditor;
-  s: string;
-
 begin
   if not EditorAvalaible then
     exit;

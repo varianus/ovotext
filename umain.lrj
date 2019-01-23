@@ -60,6 +60,8 @@
 {"hash":84688526,"name":"tfmain.actjsonprettyprint.caption","sourcebytes":[66,101,97,117,116,105,102,121,32,74,83,79,78],"value":"Beautify JSON"},
 {"hash":132921724,"name":"tfmain.actxmlcompact.caption","sourcebytes":[67,111,109,112,97,99,116,32,88,77,76],"value":"Compact XML"},
 {"hash":237683204,"name":"tfmain.actsqlprettyprint.caption","sourcebytes":[83,81,76,32,80,114,101,116,116,121,32,80,114,105,110,116],"value":"SQL Pretty Print"},
+{"hash":23882804,"name":"tfmain.actpathtoclipboard.caption","sourcebytes":[70,105,108,101,32,80,97,116,104,32,116,111,32,99,108,105,112,98,111,97,114,100],"value":"File Path to clipboard"},
+{"hash":261909203,"name":"tfmain.actcloseallexceptthis.caption","sourcebytes":[67,108,111,115,101,32,97,108,108,32,101,120,99,101,112,116,32,116,104,105,115],"value":"Close all except this"},
 {"hash":315429,"name":"tfmain.menuitem1.caption","sourcebytes":[70,105,108,101],"value":"File"},
 {"hash":139726590,"name":"tfmain.mnuopenrecent.caption","sourcebytes":[79,112,101,110,32,82,101,99,101,110,116,32,46,46,46],"value":"Open Recent ..."},
 {"hash":198533332,"name":"tfmain.menuitem29.caption","sourcebytes":[82,101,111,112,101,110,32,97,108,108,32,114,101,99,101,110,116],"value":"Reopen all recent"},
@@ -82,7 +84,5 @@
 {"hash":266201246,"name":"tfmain.menuitem52.caption","sourcebytes":[78,97,118,105,103,97,116,105,111,110],"value":"Navigation"},
 {"hash":370579,"name":"tfmain.mnutabs.caption","sourcebytes":[84,97,98,115],"value":"Tabs"},
 {"hash":322608,"name":"tfmain.menuitem3.caption","sourcebytes":[72,101,108,112],"value":"Help"},
-{"hash":267817060,"name":"tfmain.fontdialog.title","sourcebytes":[83,101,108,101,99,116,32,97,32,70,111,110,116],"value":"Select a Font"},
-{"hash":168795332,"name":"tfmain.menuitem64.caption","sourcebytes":[77,101,110,117,73,116,101,109,54,52],"value":"MenuItem64"},
-{"hash":168795383,"name":"tfmain.menuitem77.caption","sourcebytes":[77,101,110,117,73,116,101,109,55,55],"value":"MenuItem77"}
+{"hash":267817060,"name":"tfmain.fontdialog.title","sourcebytes":[83,101,108,101,99,116,32,97,32,70,111,110,116],"value":"Select a Font"}
 ]}

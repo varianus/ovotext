@@ -17,8 +17,8 @@ object fMain: TfMain
   Visible = True
   object StatusBar: TStatusBar
     Left = 0
-    Height = 21
-    Top = 375
+    Height = 23
+    Top = 373
     Width = 966
     Panels = <    
       item
@@ -440,6 +440,16 @@ object fMain: TfMain
       Caption = 'SQL Pretty Print'
       OnExecute = actSQLPrettyPrintExecute
       ShortCut = 57427
+    end
+    object actPathToClipboard: TAction
+      Category = 'PopUp'
+      Caption = 'File Path to clipboard'
+      OnExecute = actPathToClipboardExecute
+    end
+    object actCloseAllExceptThis: TAction
+      Category = 'File'
+      Caption = 'Close all except this'
+      OnExecute = actCloseAllExceptThisExecute
     end
   end
   object mnuMain: TMainMenu
@@ -1789,10 +1799,16 @@ object fMain: TfMain
       Action = actFullNameToClipBoard
     end
     object MenuItem64: TMenuItem
-      Caption = 'MenuItem64'
+      Action = actPathToClipboard
+    end
+    object N1: TMenuItem
+      Caption = '-'
     end
     object MenuItem77: TMenuItem
-      Caption = 'MenuItem77'
+      Action = FileClose
+    end
+    object MenuItem78: TMenuItem
+      Action = actCloseAllExceptThis
     end
   end
 end
