@@ -24,8 +24,8 @@ unit Config;
 interface
 
 uses
-  Classes, SysUtils, Graphics, XMLPropStorage, XMLConf,
-  LResources, FGL, DOM, SupportFuncs, Stringcostants,
+  Classes, SysUtils, Graphics, XMLPropStorage, XMLConf,  dom,
+  LResources, FGL, SupportFuncs, Stringcostants,
   SynEditHighlighter, SynEditStrConst, SynEditStrConstExtra,
   // included with Lazarus
   SynHighlighterPas,
@@ -131,7 +131,7 @@ type
   TXMLConfigExtended = class(TXMLConfig)
   public
     function PathExists(APath: string): boolean;
-    function Loaded: boolean;
+    function isLoaded: boolean;
   end;
 
 
@@ -310,7 +310,7 @@ begin
   Result := Assigned(fElement);
 end;
 
-function TXMLConfigExtended.Loaded: boolean;
+function TXMLConfigExtended.isLoaded: boolean;
 begin
   Result := Filename <> '';
 end;
@@ -383,7 +383,7 @@ const
   DefaultPath = 'Schema/DefaultLang/';
 
 begin
-  if not XMLConfigExtended.Loaded then
+  if not XMLConfigExtended.isLoaded then
     exit;
 
   DefaultAttrib := ReadFontAttributes('Schema/Default/Text/', FontAttributes());
