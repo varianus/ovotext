@@ -63,6 +63,10 @@ resourcestring
                      'This file has been modified by another application.'+LineEnding+
                      'Do you want to reload it and lose changes?';
 
+  RSReloadFile     = '%s' +LineEnding+LineEnding+
+                     'This file has been modified.'+LineEnding+
+                     'Do you want to reload it and lose changes?';
+
   RSKeepDeleted = '%s' +LineEnding+LineEnding+
                      'This file has been deleted by another application.'+LineEnding+
                      'Do you want to keep it in the editor?';

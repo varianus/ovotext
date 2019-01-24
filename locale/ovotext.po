@@ -45,7 +45,16 @@ msgid "<new   %d>"
 msgstr ""
 
 #: stringcostants.rsreload
+msgctxt "stringcostants.rsreload"
 msgid "Reload"
+msgstr ""
+
+#: stringcostants.rsreloadfile
+msgid ""
+"%s\n"
+"\n"
+"This file has been modified.\n"
+"Do you want to reload it and lose changes?\n"
 msgstr ""
 
 #: stringcostants.rsreloadmodified
@@ -146,8 +155,16 @@ msgctxt "tfabout.lversion.caption"
 msgid "Version"
 msgstr ""
 
+#: tfmain.actcloseafter.caption
+msgid "Close all on the right"
+msgstr ""
+
 #: tfmain.actcloseallexceptthis.caption
 msgid "Close all except this"
+msgstr ""
+
+#: tfmain.actclosebefore.caption
+msgid "Close all on the left"
 msgstr ""
 
 #: tfmain.actcompressspaces.caption
@@ -334,6 +351,11 @@ msgstr ""
 
 #: tfmain.fileopen.hint
 msgid "Open"
+msgstr ""
+
+#: tfmain.filereload.caption
+msgctxt "tfmain.filereload.caption"
+msgid "Reload"
 msgstr ""
 
 #: tfmain.filesave.caption

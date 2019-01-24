@@ -40,6 +40,9 @@ type
     actFullNameToClipBoard: TAction;
     actGoTo: TAction;
     actCloseAllExceptThis: TAction;
+    actCloseBefore: TAction;
+    actCloseAfter: TAction;
+    FileReload: TAction;
     actPathToClipboard: TAction;
     actSQLPrettyPrint: TAction;
     actXMLCompact: TAction;
@@ -68,6 +71,12 @@ type
     MenuItem64: TMenuItem;
     MenuItem77: TMenuItem;
     MenuItem78: TMenuItem;
+    MenuItem79: TMenuItem;
+    MenuItem80: TMenuItem;
+    MenuItem81: TMenuItem;
+    MenuItem82: TMenuItem;
+    MenuItem83: TMenuItem;
+    N2: TMenuItem;
     N1: TMenuItem;
     mnuLineEndings: TMenuItem;
     mnuCRLF: TMenuItem;
@@ -199,7 +208,9 @@ type
     ToolButton7: TToolButton;
     ToolButton8: TToolButton;
     ToolButton9: TToolButton;
+    procedure actCloseAfterExecute(Sender: TObject);
     procedure actCloseAllExceptThisExecute(Sender: TObject);
+    procedure actCloseBeforeExecute(Sender: TObject);
     procedure ActCompressSpacesExecute(Sender: TObject);
     procedure actFontExecute(Sender: TObject);
     procedure actFullNameToClipBoardExecute(Sender: TObject);
@@ -229,6 +240,7 @@ type
     procedure FileExitExecute(Sender: TObject);
     procedure FileNewExecute(Sender: TObject);
     procedure FileOpenAccept(Sender: TObject);
+    procedure FileReloadExecute(Sender: TObject);
     procedure FileSaveAsAccept(Sender: TObject);
     procedure FileSaveExecute(Sender: TObject);
     procedure FindDialogClose(Sender: TObject);
@@ -408,6 +420,7 @@ begin
   EditRedo.Enabled := Avail and Ed.CanRedo;
   EditUndo.Enabled := Avail and Ed.CanUndo;
   FileSave.Enabled := Avail and Ed.Modified;
+  FileReload.Enabled := Avail and not Ed.Untitled;
   EditCopy.Enabled := Avail and ed.SelAvail;
   EditCut.Enabled := Avail and ed.SelAvail;
   ExportHtmlToClipBoard.Enabled := Avail and ed.SelAvail;
@@ -416,6 +429,9 @@ begin
   ExportHtmlToFile.Enabled:= Avail;
   ExportRTFToFile.Enabled:= Avail;
   actGoTo.Enabled := Avail and (ed.Lines.Count > 0);
+  actCloseAfter.Enabled := EditorFactory.PageCount > EditorFactory.PageIndex;
+  actCloseBefore.Enabled := EditorFactory.PageIndex > 0;
+
   Handled := True;
 end;
 
@@ -608,6 +624,16 @@ begin
   EditorFactory.CloseAll(true);
 end;
 
+procedure TfMain.actCloseAfterExecute(Sender: TObject);
+begin
+  EditorFactory.CloseAfter
+end;
+
+procedure TfMain.actCloseBeforeExecute(Sender: TObject);
+begin
+  EditorFactory.CloseBefore;
+end;
+
 procedure TfMain.FileCloseAllExecute(Sender: TObject);
 begin
   EditorFactory.CloseAll;
@@ -629,6 +655,25 @@ begin
     EditorFactory.AddEditor(FileOpen.Dialog.Files[i]);
     MRU.AddToRecent(FileOpen.Dialog.Files[i]);
   end;
+
+end;
+
+procedure TfMain.FileReloadExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  Ed := EditorFactory.CurrentEditor;
+  if Ed.Untitled then
+    exit;
+
+  if Ed.Modified then
+    if MessageDlg(RSReload, Format(RSReloadFile, [ed.FileName]), mtConfirmation, [mbYes, mbNo], 0) = mrno then
+      exit;
+
+  ed.PushPos;
+  ed.LoadFromFile(ed.FileName);
+  ed.Modified := False;
+  ed.PopPos;
 
 end;
 

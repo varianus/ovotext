@@ -142,6 +142,8 @@ type
     function AddEditor(FileName: TFilename = ''): TEditor;
     function CloseEditor(Editor: TEditor; Force: boolean = False): boolean;
     function CloseAll(KeepCurrent:boolean=false): boolean;
+    function CloseAfter: boolean;
+    function CloseBefore: boolean;
     function SaveAll: boolean;
     procedure DoCheckFileChanges;
     procedure ReloadHighLighters;
@@ -746,6 +748,38 @@ begin
       if KeepCurrent and (I = ActivePageIndex) then
         continue;
 
+      if not CloseEditor(TEditorTabSheet(Pages[i]).Editor) then
+      begin
+        Result := False;
+        break;
+      end;
+
+    end;
+end;
+
+function TEditorFactory.CloseBefore: boolean;
+var
+  i: integer;
+begin
+  Result := True;
+  for i := ActivePageIndex - 1 downto 0 do
+    begin
+      if not CloseEditor(TEditorTabSheet(Pages[i]).Editor) then
+      begin
+        Result := False;
+        break;
+      end;
+
+    end;
+end;
+
+function TEditorFactory.CloseAfter: boolean;
+var
+  i: integer;
+begin
+  Result := True;
+  for i := PageCount - 1 downto ActivePageIndex + 1 do
+    begin
       if not CloseEditor(TEditorTabSheet(Pages[i]).Editor) then
       begin
         Result := False;
