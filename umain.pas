@@ -240,6 +240,7 @@ type
     procedure FileExitExecute(Sender: TObject);
     procedure FileNewExecute(Sender: TObject);
     procedure FileOpenAccept(Sender: TObject);
+    procedure FileOpenBeforeExecute(Sender: TObject);
     procedure FileReloadExecute(Sender: TObject);
     procedure FileSaveAsAccept(Sender: TObject);
     procedure FileSaveExecute(Sender: TObject);
@@ -655,6 +656,16 @@ begin
     EditorFactory.AddEditor(FileOpen.Dialog.Files[i]);
     MRU.AddToRecent(FileOpen.Dialog.Files[i]);
   end;
+
+end;
+
+procedure TfMain.FileOpenBeforeExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  Ed := EditorFactory.CurrentEditor;
+  if EditorAvalaible and (not Ed.Untitled) then
+    FileOpen.Dialog.InitialDir := ExtractFilePath(Ed.FileName);
 
 end;
 

@@ -5,7 +5,7 @@ object fMain: TfMain
   Width = 815
   AllowDropFiles = True
   Caption = 'ovoText'
-  ClientHeight = 470
+  ClientHeight = 431
   ClientWidth = 815
   Menu = mnuMain
   OnActivate = FormActivate
@@ -14,6 +14,7 @@ object fMain: TfMain
   OnDestroy = FormDestroy
   OnDropFiles = FormDropFiles
   ShowHint = True
+  LCLVersion = '2.1.0.0'
   Visible = True
   object StatusBar: TStatusBar
     Left = 0
@@ -73,7 +74,7 @@ object fMain: TfMain
     end
     object ToolButton5: TToolButton
       Left = 25
-      Height = 18
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
@@ -104,13 +105,13 @@ object fMain: TfMain
     end
     object ToolButton11: TToolButton
       Left = 102
-      Height = 18
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
     object ToolButton12: TToolButton
       Left = 155
-      Height = 18
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
@@ -131,7 +132,7 @@ object fMain: TfMain
     end
     object tbbSepClose: TToolButton
       Left = 232
-      Height = 18
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
@@ -243,6 +244,7 @@ object fMain: TfMain
       Hint = 'Open'
       ImageIndex = 17
       ShortCut = 16463
+      BeforeExecute = FileOpenBeforeExecute
       OnAccept = FileOpenAccept
     end
     object FileSaveAs: TFileSaveAs
