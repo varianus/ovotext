@@ -399,9 +399,10 @@ procedure TfMain.ContextPopup(Sender: TObject; MousePos: TPoint;var Handled: Boo
 begin
   if not EditorAvalaible then
     exit;
+
   EditorFactory.ActivePageIndex := EditorFactory.IndexOfTabAt(MousePos);
-  MousePos.Offset(0, EditorFactory.TabHeight);
-  if EditorFactory.TabRect(EditorFactory.ActivePageIndex).Contains(MousePos) then
+
+  if EditorFactory.ActivePageIndex > -1 then
     begin
       Handled:=true;
       MousePos:=EditorFactory.ClientToScreen(MousePos);
