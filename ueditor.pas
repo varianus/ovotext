@@ -81,7 +81,6 @@ type
     procedure SetLineEndingType(AValue: TSynLinesFileLineEndType);
     procedure SetText(NewText: string);
     procedure SetUntitled(AValue: boolean);
-
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -212,6 +211,7 @@ begin
 
   inherited Create(AOwner);
   Options := Options + [eoAltSetsColumnMode];
+  MouseOptions := MouseOptions + [emCtrlWheelZoom, emRightMouseMovesCursor];
 
   CreateDefaultGutterParts;
 
