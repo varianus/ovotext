@@ -141,7 +141,7 @@ type
     procedure DoCloseTabClicked(APage: TCustomPage); override;
     function AddEditor(FileName: TFilename = ''): TEditor;
     function CloseEditor(Editor: TEditor; Force: boolean = False): boolean;
-    function CloseAll: boolean;
+    function CloseAll(KeepCurrent:boolean=false): boolean;
     function SaveAll: boolean;
     procedure DoCheckFileChanges;
     procedure ReloadHighLighters;
@@ -736,16 +736,22 @@ begin
 
 end;
 
-function TEditorFactory.CloseAll: boolean;
+function TEditorFactory.CloseAll(KeepCurrent:boolean=false): boolean;
 var
   i: integer;
 begin
   Result := True;
   for i := PageCount - 1 downto 0 do
-    if not CloseEditor(TEditorTabSheet(Pages[i]).Editor) then
     begin
-      Result := False;
-      break;
+      if KeepCurrent and (I = ActivePageIndex) then
+        continue;
+
+      if not CloseEditor(TEditorTabSheet(Pages[i]).Editor) then
+      begin
+        Result := False;
+        break;
+      end;
+
     end;
 end;
 
