@@ -101,6 +101,24 @@ msgid ""
 "\"%s\"\n"
 msgstr ""
 
+#: tdlggoto.buttonpanel1.okbutton.caption
+msgctxt "tdlggoto.buttonpanel1.okbutton.caption"
+msgid "Go to"
+msgstr ""
+
+#: tdlggoto.caption
+msgctxt "tdlggoto.caption"
+msgid "Go to"
+msgstr ""
+
+#: tdlggoto.label1.caption
+msgid "Line number"
+msgstr ""
+
+#: tdlggoto.label2.caption
+msgid "Column number"
+msgstr ""
+
 #: tfabout.blicense.caption
 msgid "&License"
 msgstr ""
