@@ -176,9 +176,9 @@ begin
   begin
     FUntitled := False;
     Highlighter := ConfigObj.getHighLighter(ExtractFileExt(fFileName));
-    // reserve spaces for emulated close button
     FSheet.Caption := ExtractFileName(fFileName)
 {$IFDEF NEEDCLOSEBTN}
+     // reserve spaces for emulated close button
       + '     '
 {$ENDIF}
     ;
@@ -688,6 +688,7 @@ begin
   begin
     Sheet.Caption := Format(RSNewFile, [fUntitledCounter])
 {$IFDEF NEEDCLOSEBTN}
+// reserve spaces for emulated close button
       + '     '
 {$ENDIF}
     ;
@@ -876,7 +877,7 @@ begin
     r := TabRect(i);
     h := (r.Bottom - r.Top);
     if (X > r.right - h) and (Y > r.bottom - h) then
-      self.RemovePage(i);
+       CloseEditor(TEditorTabSheet(Page[i]).Editor);
   end;
 end;
 

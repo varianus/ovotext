@@ -1355,7 +1355,7 @@ begin
   if not Editor.Modified then
     Cancel := False
   else
-    case MessageDlg(Format(RSSaveChanges, [ExtractFileName(Editor.Sheet.Caption)]), mtWarning,
+    case MessageDlg(Format(RSSaveChanges, [ExtractFileName(trim(Editor.Sheet.Caption))]), mtWarning,
         [mbYes, mbNo, mbCancel], 0) of
       mrYes:
       begin
