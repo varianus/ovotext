@@ -229,6 +229,7 @@ type
     procedure actXMLCompactExecute(Sender: TObject);
     procedure actXMLPrettyPrintExecute(Sender: TObject);
     procedure AppPropertiesActivate(Sender: TObject);
+    procedure AppPropertiesDropFiles(Sender: TObject; const FileNames: array of String);
     procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
     procedure EditRedoExecute(Sender: TObject);
     procedure ExportHtmlToClipBoardExecute(Sender: TObject);
@@ -573,6 +574,14 @@ end;
 procedure TfMain.AppPropertiesActivate(Sender: TObject);
 begin
   EditorFactory.DoCheckFileChanges;
+end;
+
+procedure TfMain.AppPropertiesDropFiles(Sender: TObject; const FileNames: array of String);
+var
+  i :Integer;
+begin
+  for i:= Low(FileNames) to High(FileNames) do
+    EditorFactory.AddEditor(FileNames[i])
 end;
 
 procedure TfMain.actFontExecute(Sender: TObject);
