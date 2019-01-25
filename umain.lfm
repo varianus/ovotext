@@ -9,10 +9,14 @@ object fMain: TfMain
   ClientWidth = 815
   Menu = mnuMain
   OnActivate = FormActivate
+  OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnDropFiles = FormDropFiles
+  OnResize = FormResize
+  OnShow = FormShow
+  OnWindowStateChange = FormWindowStateChange
   ShowHint = True
   LCLVersion = '2.1.0.0'
   Visible = True

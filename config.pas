@@ -181,6 +181,7 @@ type
     // -- //
     property ThemeList: TStringDictionary read fThemesList;
     property Dirty: boolean read FDirty write SetDirty;
+    property ConfigHolder: TXMLConfigStorage read  fConfigHolder;
     property ConfigDir: string read fConfigDir;
     property ConfigFile: string read FConfigFile;
     property Font: TFont read FFont write SetFont;

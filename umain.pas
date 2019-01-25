@@ -249,10 +249,14 @@ type
     procedure FindDialogFind(Sender: TObject);
     procedure FontDialogApplyClicked(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormDropFiles(Sender: TObject; const FileNames: array of string);
+    procedure FormResize(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormWindowStateChange(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
     procedure actLowerCaseExecute(Sender: TObject);
     procedure MenuItem28Click(Sender: TObject);
@@ -296,6 +300,8 @@ type
     procedure NewEditor(Editor: TEditor);
     procedure ShowTabs(Sender: TObject);
     Procedure SetupSaveDialog(SaveMode: TSaveMode);
+    procedure SaveConfig;
+    procedure ReadConfig;
   public
     { public declarations }
   end;
@@ -760,6 +766,11 @@ begin
     EditorFactory.CurrentEditor.SetFocus;
 end;
 
+procedure TfMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  SaveConfig;
+end;
+
 procedure TfMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 begin
   if Assigned(EditorFactory) and (EditorFactory.PageCount > 0) then
@@ -906,6 +917,21 @@ begin
 
 end;
 
+procedure TfMain.FormResize(Sender: TObject);
+begin
+  ConfigObj.Dirty := true;
+end;
+
+procedure TfMain.FormShow(Sender: TObject);
+begin
+  ReadConfig;
+end;
+
+procedure TfMain.FormWindowStateChange(Sender: TObject);
+begin
+  ConfigObj.Dirty := true;
+end;
+
 procedure TfMain.HelpAboutExecute(Sender: TObject);
 begin
   with TfAbout.Create(self) do
@@ -1028,6 +1054,55 @@ begin
              SaveDialog.Title:='Export as HTML File';
            end;
   end;
+end;
+
+procedure TfMain.SaveConfig;
+begin
+  with ConfigObj.ConfigHolder do begin
+    SetValue('MainForm/NormalLeft', Left);
+    SetValue('MainForm/NormalTop', Top);
+    SetValue('MainForm/NormalWidth', Width);
+    SetValue('MainForm/NormalHeight', Height);
+
+    SetValue('MainForm/RestoredLeft', RestoredLeft);
+    SetValue('MainForm/RestoredTop', RestoredTop);
+    SetValue('MainForm/RestoredWidth', RestoredWidth);
+    SetValue('MainForm/RestoredHeight', RestoredHeight);
+
+    SetValue('MainForm/WindowState', Integer(WindowState));
+  end;
+
+end;
+
+procedure TfMain.ReadConfig;
+var
+  LastWindowState: TWindowState;
+begin
+  with ConfigObj.ConfigHolder do
+  begin
+    LastWindowState := TWindowState(GetValue('MainForm/WindowState', Integer(WindowState)));
+
+    if LastWindowState = wsMaximized then
+    begin
+      WindowState := wsNormal;
+      BoundsRect := Bounds(
+        GetValue('MainForm/RestoredLeft', RestoredLeft),
+        GetValue('MainForm/RestoredTop', RestoredTop),
+        GetValue('MainForm/RestoredWidth', RestoredWidth),
+        GetValue('MainForm/RestoredHeight', RestoredHeight));
+      WindowState := wsMaximized;
+    end
+    else
+    begin
+      WindowState := wsNormal;
+      BoundsRect := Bounds(
+        GetValue('MainForm/NormalLeft', Left),
+        GetValue('MainForm/NormalTop', Top),
+        GetValue('MainForm/NormalWidth', Width),
+        GetValue('MainForm/NormalHeight', Height));
+    end;
+  end;
+
 end;
 
 procedure TfMain.mnuTabsClick(Sender: TObject);
