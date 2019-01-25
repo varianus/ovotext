@@ -960,7 +960,7 @@ begin
     exit;
 
   Ed := EditorFactory.CurrentEditor;
-  case TSynEditLines(ed.lines).FileLineEndType of
+  case Ed.LineEndingType of
     sfleCrLf: mnuCRLF.Checked := true;
     sfleLf: mnuLF.Checked := true;
     sfleCr: mnuCR.Checked := true;
