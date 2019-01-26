@@ -42,9 +42,9 @@ resourcestring
   RSReload = 'Reload';
   RSNewFile = '<new   %d>';
   RSStatusBarPos = 'Line: %d  Col:%d';
-  RSStatusBarSel = 'Sel: %d ';
-  RSStatusBarInsMode = 'INS ';
-  RSStatusBarOvrMode = 'OVR ';
+  RSStatusBarSel = 'Sel: %d';
+  RSStatusBarInsMode = 'INS';
+  RSStatusBarOvrMode = 'OVR';
   RSAdministrativeRights = 'Warning, you are using the root account, you may harm your system!';
   //-- Files
   RSSaveChanges = 'Save changes to'+LineEnding+

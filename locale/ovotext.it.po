@@ -1,36 +1,55 @@
+# varianus <marcocas@gmail.com>, 2019.
 msgid ""
-msgstr "Content-Type: text/plain; charset=UTF-8"
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2019-01-26 18:03+0100\n"
+"Last-Translator: varianus <marcocas@gmail.com>\n"
+"Language-Team: Marco Caselli\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: stringcostants.rsadministrativerights
 msgctxt "stringcostants.rsadministrativerights"
 msgid "Warning, you are using the root account, you may harm your system!"
-msgstr ""
+msgstr "Attenzione, si sta usando l'account root; si potrebbe danneggiare il sistema!"
 
 #: stringcostants.rsallfile
 msgid "All files"
-msgstr ""
+msgstr "Tutti i files"
 
 #: stringcostants.rsaskfilecreation
 msgid ""
 "\"%s\"\n"
 "does not exists. Do you want to create it?\n"
 msgstr ""
+"\"%s\"\n"
+"non esiste. Vuoi crearlo?\n"
 
 #: stringcostants.rscannotcreate
 msgid ""
 "Can not create\n"
 " \"%s\"\n"
 msgstr ""
+"Impossibile creare\n"
+" \"%s\"\n"
 
 #: stringcostants.rscannotsave
 msgid ""
 "Can not save changes to\n"
 " \"%s\"\n"
 msgstr ""
+"Impossibile salvare cambiamento a\n"
+" \"%s\"\n"
 
 #: stringcostants.rserror
 msgid "Error"
-msgstr ""
+msgstr "Errore"
 
 #: stringcostants.rskeepdeleted
 msgid ""
@@ -39,15 +58,19 @@ msgid ""
 "This file has been deleted by another application.\n"
 "Do you want to keep it in the editor?\n"
 msgstr ""
+"%s\n"
+"\n"
+"Questo file è stato cancellato da un'altra applicazione.\n"
+"Vuoi mantenerlo nell'editor?\n"
 
 #: stringcostants.rsnewfile
 msgid "<new   %d>"
-msgstr ""
+msgstr "<nuovo   %d>"
 
 #: stringcostants.rsreload
 msgctxt "stringcostants.rsreload"
 msgid "Reload"
-msgstr ""
+msgstr "Ricarica"
 
 #: stringcostants.rsreloadfile
 msgid ""
@@ -56,6 +79,10 @@ msgid ""
 "This file has been modified.\n"
 "Do you want to reload it and lose changes?\n"
 msgstr ""
+"%s\n"
+"\n"
+"Questo file è stato modificato.\n"
+"Vuoi ricaricarlo e perdere le modifiche?\n"
 
 #: stringcostants.rsreloadmodified
 msgid ""
@@ -64,6 +91,10 @@ msgid ""
 "This file has been modified by another application.\n"
 "Do you want to reload it and lose changes?\n"
 msgstr ""
+"%s\n"
+"\n"
+"Questo file è stato cancellato da un'altra applicazione.\n"
+"Vuoi mantenerlo nell'editor?\n"
 
 #: stringcostants.rsreloadsimple
 msgid ""
@@ -72,467 +103,486 @@ msgid ""
 "This file has been modified by another application.\n"
 "Do you want to reload it?\n"
 msgstr ""
+"%s\n"
+"\n"
+"Questo file è stato modifica da un'altra applicazione.\n"
+"Vuoi mantenerlo nell'editor?\n"
 
 #: stringcostants.rssavechanges
 msgid ""
 "Save changes to\n"
 " \"%s\"?\n"
 msgstr ""
+"Salva modifiche a\n"
+" \"%s\"?\n"
 
 #: stringcostants.rsstatusbarinsmode
-msgid "INS "
-msgstr ""
+msgid "INS"
+msgstr "INS"
 
 #: stringcostants.rsstatusbarovrmode
-msgid "OVR "
-msgstr ""
+msgid "OVR"
+msgstr "OVR"
 
 #: stringcostants.rsstatusbarpos
 msgid "Line: %d  Col:%d"
-msgstr ""
+msgstr "Riga: %d  Colonna:%d"
 
 #: stringcostants.rsstatusbarsel
-msgid "Sel: %d "
-msgstr ""
+msgid "Sel: %d"
+msgstr "Sel: %d"
 
 #: stringcostants.rstextnotfound
 msgid ""
 "Text not found:\n"
 "\"%s\"\n"
 msgstr ""
+"Testo non trovato\n"
+"\"%s\"\n"
 
 #: tdlggoto.buttonpanel1.okbutton.caption
 msgctxt "tdlggoto.buttonpanel1.okbutton.caption"
 msgid "Go to"
-msgstr ""
+msgstr "Vai a"
 
 #: tdlggoto.caption
 msgctxt "tdlggoto.caption"
 msgid "Go to"
-msgstr ""
+msgstr "Vai a"
 
 #: tdlggoto.label1.caption
 msgid "Line number"
-msgstr ""
+msgstr "Numero riga"
 
 #: tdlggoto.label2.caption
 msgid "Column number"
-msgstr ""
+msgstr "Numero colonna"
 
 #: tfabout.blicense.caption
 msgid "&License"
-msgstr ""
+msgstr "&Licenza"
 
 #: tfabout.caption
 msgid "About"
-msgstr ""
+msgstr "Informazioni su"
 
 #: tfabout.label1.caption
+msgctxt "tfabout.label1.caption"
 msgid "OvoText"
-msgstr ""
+msgstr "OvoText"
 
 #: tfabout.label2.caption
 msgctxt "tfabout.label2.caption"
 msgid "Version"
-msgstr ""
+msgstr "Versione"
 
 #: tfabout.label3.caption
 msgid "Author : Marco Caselli"
-msgstr ""
+msgstr "Autore : Marco Caselli"
 
 #: tfabout.label4.caption
 msgid "Another text editor"
-msgstr ""
+msgstr "Un altro editor di testo"
 
 #: tfabout.label5.caption
 msgid "Lazarus"
-msgstr ""
+msgstr "Lazarus"
 
 #: tfabout.label6.caption
 msgid "Home Page"
-msgstr ""
+msgstr "Sito Web"
 
 #: tfabout.label7.caption
 msgid "FPC"
-msgstr ""
+msgstr "FPC"
 
 #: tfabout.label8.caption
 msgid "Build Date"
-msgstr ""
+msgstr "Data Build"
 
 #: tfabout.label9.caption
 msgid "SVN rev:"
-msgstr ""
+msgstr "SVN rev:"
 
 #: tfabout.lhomepage.caption
 msgid "https://github.com/varianus/ovotext"
-msgstr ""
+msgstr "https://github.com/varianus/ovotext"
 
 #: tfabout.lversion.caption
 msgctxt "tfabout.lversion.caption"
 msgid "Version"
-msgstr ""
+msgstr "Versione"
 
 #: tfmain.actcloseafter.caption
 msgid "Close all on the right"
-msgstr ""
+msgstr "Chiudi tutti a destra"
 
 #: tfmain.actcloseallexceptthis.caption
 msgid "Close all except this"
-msgstr ""
+msgstr "Chiudi tutti tranne questo"
 
 #: tfmain.actclosebefore.caption
 msgid "Close all on the left"
-msgstr ""
+msgstr "Chiudi tutti a sinistra"
 
 #: tfmain.actcompressspaces.caption
 msgid "Reduce multiple spaces"
-msgstr ""
+msgstr "Rimuovi spazi multipli"
 
 #: tfmain.actfont.caption
 msgid "Select Font"
-msgstr ""
+msgstr "Seleziona Carattere"
 
 #: tfmain.actfullnametoclipboard.caption
 msgid "Full File name to clipboard"
-msgstr ""
+msgstr "Copia nome completo"
 
 #: tfmain.actgoto.caption
 msgid "Go To ..."
-msgstr ""
+msgstr "Vai a ..."
 
 #: tfmain.actjsonprettyprint.caption
 msgid "Beautify JSON"
-msgstr ""
+msgstr "Formatta JSON"
 
 #: tfmain.actlanguagenone.caption
 msgid "None"
-msgstr ""
+msgstr "Nessuno"
 
 #: tfmain.actlowercase.caption
 msgid "lowercase"
-msgstr ""
+msgstr "minuscolo"
 
 #: tfmain.actpathtoclipboard.caption
 msgid "File Path to clipboard"
-msgstr ""
+msgstr "Copia percorso file"
 
 #: tfmain.actprint.caption
 msgid "Print"
-msgstr ""
+msgstr "Stampa"
 
 #: tfmain.actquote.caption
 msgid "Quote"
-msgstr ""
+msgstr "Metti fra apici"
 
 #: tfmain.actsqlprettyprint.caption
-msgid "SQL Pretty Print"
-msgstr ""
+msgid "Beautify SQL"
+msgstr "Formatta SQL"
 
 #: tfmain.acttabtospace.caption
 msgid "Tab to Spaces"
-msgstr ""
+msgstr "Tabulazione in Spazi"
 
 #: tfmain.acttrim.caption
 msgid "Trim"
-msgstr ""
+msgstr "Rimuovi spazi agli estremi"
 
 #: tfmain.acttrimleading.caption
 msgid "Trim Leading spaces"
-msgstr ""
+msgstr "Rimuovi spazi iniziali"
 
 #: tfmain.acttrimtrailing.caption
 msgid "Trim Trailing spaces"
-msgstr ""
+msgstr "Rimuovi gli spazi finali"
 
 #: tfmain.actuppercase.caption
 msgid "UPPERCASE"
-msgstr ""
+msgstr "MAIUSCOLO"
 
 #: tfmain.actxmlcompact.caption
 msgid "Compact XML"
-msgstr ""
+msgstr "Compatta XML"
 
 #: tfmain.actxmlprettyprint.caption
 msgid "Beautify  XML"
-msgstr ""
+msgstr "Formatta XML"
 
 #: tfmain.caption
-msgid "ovoText"
-msgstr ""
+msgctxt "tfmain.caption"
+msgid "OvoText"
+msgstr "OvoText"
 
 #: tfmain.editcopy.caption
 msgid "&Copy"
-msgstr ""
+msgstr "&Copia"
 
 #: tfmain.editcopy.hint
 msgid "Copy"
-msgstr ""
+msgstr "Copia"
 
 #: tfmain.editcut.caption
 msgid "&Cut"
-msgstr ""
+msgstr "&Taglia"
 
 #: tfmain.editcut.hint
 msgid "Cut"
-msgstr ""
+msgstr "Taglia"
 
 #: tfmain.editdelete.caption
 msgid "&Delete"
-msgstr ""
+msgstr "&Elimina"
 
 #: tfmain.editdelete.hint
 msgid "Delete"
-msgstr ""
+msgstr "Elimina"
 
 #: tfmain.editpaste.caption
 msgid "&Paste"
-msgstr ""
+msgstr "&Incolla"
 
 #: tfmain.editpaste.hint
 msgid "Paste"
-msgstr ""
+msgstr "Incolla"
 
 #: tfmain.editredo.caption
 msgid "Redo"
-msgstr ""
+msgstr "Ripeti"
 
 #: tfmain.editselectall.caption
 msgid "Select &all"
-msgstr ""
+msgstr "Selezion&a tutto"
 
 #: tfmain.editselectall.hint
 msgid "Select all"
-msgstr ""
+msgstr "Seleziona tutto"
 
 #: tfmain.editundo.caption
 msgid "&Undo"
-msgstr ""
+msgstr "&Ripristina"
 
 #: tfmain.editundo.hint
 msgid "Undo"
-msgstr ""
+msgstr "Ripristina"
 
 #: tfmain.exporthtmltoclipboard.caption
 msgid "Copy as HTML"
-msgstr ""
+msgstr "Copia come HTML"
 
 #: tfmain.exporthtmltofile.caption
 msgid "Save as HTML"
-msgstr ""
+msgstr "Salva come HTML"
 
 #: tfmain.exportrtftoclipboard.caption
 msgid "Copy as RTF"
-msgstr ""
+msgstr "Copia come RTF"
 
 #: tfmain.exportrtftofile.caption
 msgid "Save as RTF"
-msgstr ""
+msgstr "Salva come RTF"
 
 #: tfmain.fileclose.caption
 msgid "Close"
-msgstr ""
+msgstr "Chiudi"
 
 #: tfmain.fileclose.hint
 msgid "Close current tab"
-msgstr ""
+msgstr "Chiudi questa scheda"
 
 #: tfmain.filecloseall.caption
 msgid "Close All"
-msgstr ""
+msgstr "Chiudi Tutto"
 
 #: tfmain.filecloseall.hint
 msgid "Close all tab"
-msgstr ""
+msgstr "Chiudi tutte le schede"
 
 #: tfmain.fileexit.caption
 msgid "Exit"
-msgstr ""
+msgstr "Esci"
 
 #: tfmain.fileexit.hint
 msgid "Close application"
-msgstr ""
+msgstr "Chiudi applicazione"
 
 #: tfmain.filenew.caption
 msgctxt "tfmain.filenew.caption"
 msgid "New"
-msgstr ""
+msgstr "Nuovo"
 
 #: tfmain.filenew.hint
 msgctxt "tfmain.filenew.hint"
 msgid "New"
-msgstr ""
+msgstr "Nuovo"
 
 #: tfmain.fileopen.caption
 msgid "&Open..."
-msgstr ""
+msgstr "&Apri..."
 
 #: tfmain.fileopen.hint
 msgid "Open"
-msgstr ""
+msgstr "Apri"
 
 #: tfmain.filereload.caption
 msgctxt "tfmain.filereload.caption"
 msgid "Reload"
-msgstr ""
+msgstr "Ricarica"
 
 #: tfmain.filesave.caption
 msgctxt "tfmain.filesave.caption"
 msgid "Save"
-msgstr ""
+msgstr "Salva"
 
 #: tfmain.filesave.hint
 msgctxt "tfmain.filesave.hint"
 msgid "Save"
-msgstr ""
+msgstr "Salva"
 
 #: tfmain.filesaveall.caption
 msgid "Save All"
-msgstr ""
+msgstr "Salva tutti"
 
 #: tfmain.filesaveas.caption
 msgid "Save as..."
-msgstr ""
+msgstr "Salva come..."
 
 #: tfmain.filesaveas.hint
 msgid "Save as "
-msgstr ""
+msgstr "Salva come "
 
 #: tfmain.fontdialog.title
 msgid "Select a Font"
-msgstr ""
+msgstr "Seleziona un font"
 
 #: tfmain.helpabout.caption
 msgid "About..."
-msgstr ""
+msgstr "Informazioni..."
 
 #: tfmain.helpabout.hint
 msgid "About ovotext"
-msgstr ""
+msgstr "Informazioni su ovotext"
 
 #: tfmain.lbmessage.caption
 msgid "lbMessage"
-msgstr ""
+msgstr "lbMessaggio"
 
 #: tfmain.menuitem1.caption
 msgid "File"
-msgstr ""
+msgstr "File"
 
 #: tfmain.menuitem28.caption
 msgid "Clean recent file list"
-msgstr ""
+msgstr "Pulisci lista file recenti"
 
 #: tfmain.menuitem29.caption
 msgid "Reopen all recent"
-msgstr ""
+msgstr "Riapri files recenti"
 
 #: tfmain.menuitem3.caption
 msgid "Help"
-msgstr ""
+msgstr "Aiuto"
 
 #: tfmain.menuitem35.caption
 msgid "Settings"
-msgstr ""
+msgstr "Impostazioni"
 
 #: tfmain.menuitem39.caption
 msgid "Spaces operations"
-msgstr ""
+msgstr "Operazioni sugli spazi"
 
 #: tfmain.menuitem52.caption
 msgid "Navigation"
-msgstr ""
+msgstr "Navigazione"
 
 #: tfmain.menuitem53.caption
 msgid "Sort"
-msgstr ""
+msgstr "Ordina"
 
 #: tfmain.menuitem59.caption
 msgid "Text Case"
-msgstr ""
+msgstr "Maiuscole/minuscole"
+
+#: tfmain.menuitem6.hint
+msgid "Save as"
+msgstr "Salva come"
 
 #: tfmain.menuitem62.caption
 msgid "Export"
-msgstr ""
+msgstr "Esporta"
 
 #: tfmain.menuitem68.caption
 msgid "Beautify"
-msgstr ""
+msgstr "Formatta"
 
 #: tfmain.menuitem7.caption
 msgid "Edit"
-msgstr ""
+msgstr "Modifica"
 
 #: tfmain.menuitem70.caption
 msgid "Others"
-msgstr ""
+msgstr "Altri"
 
 #: tfmain.menuitem8.caption
 msgctxt "TFMAIN.MENUITEM8.CAPTION"
 msgid "Find"
-msgstr ""
+msgstr "Trova"
 
 #: tfmain.mnucr.caption
 msgid "Mac (CR)"
-msgstr ""
+msgstr "Mac (CR)"
 
 #: tfmain.mnucrlf.caption
 msgid "Windows (CR+LF)"
-msgstr ""
+msgstr "Windows (CR LF)"
 
 #: tfmain.mnulanguage.caption
 msgid "Language"
-msgstr ""
+msgstr "Linguaggio"
 
 #: tfmain.mnulf.caption
 msgid "Linux (LF)"
-msgstr ""
+msgstr "Linux (LF)"
 
 #: tfmain.mnulineendings.caption
 msgid "Convert line endings"
-msgstr ""
+msgstr "Converti fine riga"
 
 #: tfmain.mnuopenrecent.caption
 msgid "Open Recent ..."
-msgstr ""
+msgstr "Apri recente ..."
 
 #: tfmain.mnutabs.caption
 msgid "Tabs"
-msgstr ""
+msgstr "Schede"
 
 #: tfmain.mnuthemes.caption
 msgid "Themes"
-msgstr ""
+msgstr "Temi"
 
 #: tfmain.searchfind.caption
 msgid "&Search"
-msgstr ""
+msgstr "&Cerca"
 
 #: tfmain.searchfind.hint
 msgctxt "tfmain.searchfind.hint"
 msgid "Find"
-msgstr ""
+msgstr "Trova"
 
 #: tfmain.searchfindnext1.caption
 msgid "Find next"
-msgstr ""
+msgstr "Trova successivo"
 
 #: tfmain.searchfindprevious.caption
 msgid "&Find Previous"
-msgstr ""
+msgstr "Trova &precedente"
 
 #: tfmain.searchreplace.caption
 msgid "&Replace"
-msgstr ""
+msgstr "&Sostituisci"
 
 #: tfmain.searchreplace.hint
 msgid "Search and Replace"
-msgstr ""
+msgstr "Cerca e Sostituisce"
 
 #: tfmain.sortascending.caption
 msgid "Sort Ascending"
-msgstr ""
+msgstr "Ordinamento Crescente"
 
 #: tfmain.sortdescending.caption
 msgid "Sort Descending"
-msgstr ""
+msgstr "Ordinamento Discendente"
 
+#~ msgid "ovoText"
+#~ msgstr "OvoText"
+
+#~ msgid "SQL Pretty Print"
+#~ msgstr "Formatta SQL"

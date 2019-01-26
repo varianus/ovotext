@@ -4,8 +4,8 @@ object fMain: TfMain
   Top = 172
   Width = 815
   AllowDropFiles = True
-  Caption = 'ovoText'
-  ClientHeight = 431
+  Caption = 'OvoText'
+  ClientHeight = 470
   ClientWidth = 815
   Menu = mnuMain
   OnActivate = FormActivate
@@ -18,12 +18,11 @@ object fMain: TfMain
   OnShow = FormShow
   OnWindowStateChange = FormWindowStateChange
   ShowHint = True
-  LCLVersion = '2.1.0.0'
   Visible = True
   object StatusBar: TStatusBar
     Left = 0
-    Height = 23
-    Top = 447
+    Height = 21
+    Top = 449
     Width = 815
     Panels = <    
       item
@@ -78,7 +77,7 @@ object fMain: TfMain
     end
     object ToolButton5: TToolButton
       Left = 25
-      Height = 5
+      Height = 18
       Top = 2
       Style = tbsDivider
     end
@@ -109,13 +108,13 @@ object fMain: TfMain
     end
     object ToolButton11: TToolButton
       Left = 102
-      Height = 5
+      Height = 18
       Top = 2
       Style = tbsDivider
     end
     object ToolButton12: TToolButton
       Left = 155
-      Height = 5
+      Height = 18
       Top = 2
       Style = tbsDivider
     end
@@ -136,7 +135,7 @@ object fMain: TfMain
     end
     object tbbSepClose: TToolButton
       Left = 232
-      Height = 5
+      Height = 18
       Top = 2
       Style = tbsDivider
     end
@@ -443,7 +442,7 @@ object fMain: TfMain
     end
     object actSQLPrettyPrint: TAction
       Category = 'PrettyPrint'
-      Caption = 'SQL Pretty Print'
+      Caption = 'Beautify SQL'
       OnExecute = actSQLPrettyPrintExecute
       ShortCut = 57427
     end
@@ -517,6 +516,7 @@ object fMain: TfMain
       end
       object MenuItem6: TMenuItem
         Action = FileSaveAs
+        Hint = 'Save as'
       end
       object MenuItem50: TMenuItem
         Action = FileSaveAll

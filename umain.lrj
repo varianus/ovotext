@@ -1,5 +1,5 @@
 {"version":1,"strings":[
-{"hash":114601092,"name":"tfmain.caption","sourcebytes":[111,118,111,84,101,120,116],"value":"ovoText"},
+{"hash":114601124,"name":"tfmain.caption","sourcebytes":[79,118,111,84,101,120,116],"value":"OvoText"},
 {"hash":63628709,"name":"tfmain.lbmessage.caption","sourcebytes":[108,98,77,101,115,115,97,103,101],"value":"lbMessage"},
 {"hash":315140,"name":"tfmain.fileexit.caption","sourcebytes":[69,120,105,116],"value":"Exit"},
 {"hash":146468846,"name":"tfmain.fileexit.hint","sourcebytes":[67,108,111,115,101,32,97,112,112,108,105,99,97,116,105,111,110],"value":"Close application"},
@@ -59,7 +59,7 @@
 {"hash":5818021,"name":"tfmain.actquote.caption","sourcebytes":[81,117,111,116,101],"value":"Quote"},
 {"hash":84688526,"name":"tfmain.actjsonprettyprint.caption","sourcebytes":[66,101,97,117,116,105,102,121,32,74,83,79,78],"value":"Beautify JSON"},
 {"hash":132921724,"name":"tfmain.actxmlcompact.caption","sourcebytes":[67,111,109,112,97,99,116,32,88,77,76],"value":"Compact XML"},
-{"hash":237683204,"name":"tfmain.actsqlprettyprint.caption","sourcebytes":[83,81,76,32,80,114,101,116,116,121,32,80,114,105,110,116],"value":"SQL Pretty Print"},
+{"hash":189846780,"name":"tfmain.actsqlprettyprint.caption","sourcebytes":[66,101,97,117,116,105,102,121,32,83,81,76],"value":"Beautify SQL"},
 {"hash":23882804,"name":"tfmain.actpathtoclipboard.caption","sourcebytes":[70,105,108,101,32,80,97,116,104,32,116,111,32,99,108,105,112,98,111,97,114,100],"value":"File Path to clipboard"},
 {"hash":261909203,"name":"tfmain.actcloseallexceptthis.caption","sourcebytes":[67,108,111,115,101,32,97,108,108,32,101,120,99,101,112,116,32,116,104,105,115],"value":"Close all except this"},
 {"hash":125174372,"name":"tfmain.actclosebefore.caption","sourcebytes":[67,108,111,115,101,32,97,108,108,32,111,110,32,116,104,101,32,108,101,102,116],"value":"Close all on the left"},
@@ -69,6 +69,7 @@
 {"hash":139726590,"name":"tfmain.mnuopenrecent.caption","sourcebytes":[79,112,101,110,32,82,101,99,101,110,116,32,46,46,46],"value":"Open Recent ..."},
 {"hash":198533332,"name":"tfmain.menuitem29.caption","sourcebytes":[82,101,111,112,101,110,32,97,108,108,32,114,101,99,101,110,116],"value":"Reopen all recent"},
 {"hash":103052612,"name":"tfmain.menuitem28.caption","sourcebytes":[67,108,101,97,110,32,114,101,99,101,110,116,32,102,105,108,101,32,108,105,115,116],"value":"Clean recent file list"},
+{"hash":160200403,"name":"tfmain.menuitem6.hint","sourcebytes":[83,97,118,101,32,97,115],"value":"Save as"},
 {"hash":80705172,"name":"tfmain.menuitem62.caption","sourcebytes":[69,120,112,111,114,116],"value":"Export"},
 {"hash":310020,"name":"tfmain.menuitem7.caption","sourcebytes":[69,100,105,116],"value":"Edit"},
 {"hash":188649027,"name":"tfmain.mnulineendings.caption","sourcebytes":[67,111,110,118,101,114,116,32,108,105,110,101,32,101,110,100,105,110,103,115],"value":"Convert line endings"},
