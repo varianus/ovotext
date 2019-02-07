@@ -27,13 +27,15 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, umain, uabout, udmmain, Stringcostants, SupportFuncs, config,
+  Forms, DefaultTranslator,
+  umain, uabout, udmmain, Stringcostants, SupportFuncs, config,
   uCheckFileChange, udglgoto, printer4lazarus, SynEditPrintExtProcs,
   simplemrumanager;
 
 {$R *.res}
 
 begin
+  Application.Scaled := True;
   Application.Initialize;
   Application.CreateForm(TdmMain, dmMain);
   Application.CreateForm(TfMain, fMain);
