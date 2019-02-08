@@ -853,6 +853,9 @@ begin
   begin
     mnuTheme := TMenuItem.Create(Self);
     mnuTheme.Caption := ConfigObj.ThemeList.Keys[i];
+    mnuTheme.RadioItem := true;
+    if ConfigObj.ThemeList.Data[i] = ConfigObj.XMLConfigExtended.Filename then
+      mnuTheme.Checked := true;
     mnuTheme.Tag := i;
     mnuTheme.OnClick:=@mnuThemeClick;
     mnuThemes.Add(mnuTheme);
@@ -889,6 +892,7 @@ var
   idx: integer;
 begin
   idx := TMenuItem(Sender).Tag;
+  TMenuItem(Sender).Checked := true;
   try
     Screen.Cursor := crHourGlass;
     ConfigObj.SetTheme(idx);
