@@ -30,7 +30,7 @@ interface
 uses
   Classes, SysUtils, Controls, Dialogs, ComCtrls, LCLProc, LCLType,
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,
-  SynMacroRecorder, SynPluginMultiCaret, SynPluginSyncroEdit,
+  SynMacroRecorder, SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds,
   SynEditMouseCmds, SynEditLines, Stringcostants, Forms, Graphics, Config, udmmain,
   uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils;
 
@@ -207,15 +207,29 @@ end;
 constructor TEditor.Create(AOwner: TComponent);
 var
   bm: TBitmap;
+
+  procedure DeleteKeyStrokes(keys:TSynEditKeyStrokes;Code: word; SS: TShiftState);
+  var
+   id : Integer;
+  begin
+      id := keys.FindKeycode(ord('N'),[ssCtrl]);
+      if id <> - 1 then
+        keys.Delete(id);
+  end;
+
 begin
 
   inherited Create(AOwner);
   Options := Options + [eoAltSetsColumnMode];
   MouseOptions := MouseOptions + [emCtrlWheelZoom, emRightMouseMovesCursor];
 
+  DeleteKeyStrokes(Keystrokes,ord('N'),[ssCtrl]);
+
   CreateDefaultGutterParts;
 
   multicaret := TSynPluginMultiCaret.Create(self);
+  DeleteKeyStrokes(MultiCaret.KeyStrokes,ord('N'),[ssCtrl]);
+
   multicaret.EnableWithColumnSelection := True;
   multicaret.DefaultMode := mcmMoveAllCarets;
   multicaret.DefaultColumnSelectMode := mcmCancelOnCaretMove;

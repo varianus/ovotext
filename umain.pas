@@ -26,7 +26,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls,
-  SynEditTypes, SynHighlighterPas, PrintersDlgs, Config, SupportFuncs, LazUtils,
+  SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils,
   udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynEditLines;
 
 type

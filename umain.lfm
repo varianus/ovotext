@@ -21,8 +21,8 @@ object fMain: TfMain
   Visible = True
   object StatusBar: TStatusBar
     Left = 0
-    Height = 21
-    Top = 449
+    Height = 23
+    Top = 447
     Width = 815
     Panels = <    
       item
@@ -225,6 +225,7 @@ object fMain: TfMain
       Hint = 'Search and Replace'
       ImageIndex = 14
       OnExecute = SearchReplaceExecute
+      ShortCut = 16466
     end
     object SearchFindPrevious: TAction
       Category = 'Search'
@@ -263,6 +264,7 @@ object fMain: TfMain
       Enabled = False
       ImageIndex = 7
       OnExecute = EditRedoExecute
+      ShortCut = 24666
     end
     object EditDelete: TEditDelete
       Category = 'Edit'
@@ -278,6 +280,7 @@ object fMain: TfMain
       Hint = 'New'
       ImageIndex = 6
       OnExecute = FileNewExecute
+      ShortCut = 16462
     end
     object FileClose: TAction
       Category = 'File'
@@ -303,6 +306,7 @@ object fMain: TfMain
       Hint = 'Save'
       ImageIndex = 19
       OnExecute = FileSaveExecute
+      ShortCut = 16467
     end
     object actFont: TAction
       Category = 'Settings'
