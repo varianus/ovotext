@@ -135,6 +135,8 @@ end;
 function FormatXML(const S: string): string;
 const
   bHighlightCloseTag = False;
+  CDATA =  '![CDATA[';
+  COMMENT = '!--';
 var
   st: TMemoryStream;
   bDoIndent: boolean;
@@ -145,6 +147,7 @@ var
   bQuoteActive: boolean;
   cChar: char;
   bCheckIndent: boolean;
+  bSkipping : boolean;
   bTagActive: boolean;
   nStringLoop: integer;
   nIndent: integer;
@@ -162,10 +165,72 @@ var
       // result := result + '[NEGINDENT]';
     end;
     c := ' ';
-    for nIndentLoop := 0 to nIndent do
+    for nIndentLoop := 0 to nIndent -1 do
     begin
       st.Write(c, SizeOf(char));
     end;
+  end;
+
+  procedure SkipCDATAorComment;
+  var
+    MaybeDone:boolean;
+  begin
+    inc(nStringLoop);
+    bSkipping := false;
+    if copy (s, nStringLoop, Length(CDATA)) = CDATA then
+      begin
+        MaybeDone := false;
+        while nStringLoop <= Length(S) do
+          begin
+            if s[nStringLoop]= ']' then
+              begin
+              if MaybeDone then
+                begin
+                  c:= ']';
+                  st.Write(c, SizeOf(char));
+                  szCurrentTag := CDATA;
+                  bSkipping := true;
+                  break;
+                end
+              else
+                 MaybeDone:= true;
+              end
+            else
+              MaybeDone:= false;
+            c:= s[nStringLoop];
+            st.Write(c, SizeOf(char));
+            inc(nStringLoop);
+          end;
+      end
+    else
+      begin
+        if copy (s, nStringLoop, Length(COMMENT)) = COMMENT then
+          begin
+            MaybeDone := false;
+            while nStringLoop <= Length(S) do
+              begin
+                if s[nStringLoop]= '-' then
+                  begin
+                  if MaybeDone then
+                    begin
+                      c:= '-';
+                      st.Write(c, SizeOf(char));
+                      szCurrentTag := COMMENT;
+                      bSkipping := true;
+                      break;
+                    end
+                  else
+                     MaybeDone:= true;
+                  end
+                else
+                  MaybeDone:= false;
+                c:= s[nStringLoop];
+                st.Write(c, SizeOf(char));
+                inc(nStringLoop);
+              end;
+          end
+      end;
+
   end;
 
 begin
@@ -174,10 +239,12 @@ begin
   bTagActive := False;
   Result := '';
   nIndent := 0;
+  bSkipping := false;
   bCheckIndent := False;
   szCurrentTag := '';
   St := TMemoryStream.Create;
-  for nStringLoop := 1 to Length(S) do
+  nStringLoop := 1;
+  while nStringLoop <= Length(S) do
   begin
     cChar := S[nStringLoop];
     if nStringLoop < Length(S) then
@@ -214,6 +281,8 @@ begin
           OutputIndent;
         c := '<';
         st.Write(c, SizeOf(char));
+        if cNextChar = '!' then
+          SkipCDATAorComment;
       end;
       '>':
       begin
@@ -223,6 +292,11 @@ begin
         st.Write(c, SizeOf(char));
         if bCheckIndent then
           Inc(nIndent, NUMBEROFSPACEFORTAB);
+        if bSkipping then
+          begin
+            Dec(nIndent, NUMBEROFSPACEFORTAB);
+            bSkipping := false;
+          end;
       end;
       '"':
       begin
@@ -263,6 +337,7 @@ begin
         st.Write(cChar, SizeOf(char));
       end;
     end; // case
+    inc(nStringLoop);
   end;
 
   SetString(Result, st.Memory, st.Size);
