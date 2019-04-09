@@ -24,25 +24,37 @@ msgid "All files"
 msgstr "Tutti i files"
 
 #: stringcostants.rsaskfilecreation
+#, fuzzy
+#| msgid ""
+#| "\"%s\"\n"
+#| "does not exists. Do you want to create it?\n"
 msgid ""
 "\"%s\"\n"
-"does not exists. Do you want to create it?\n"
+"does not exists. Do you want to create it?"
 msgstr ""
 "\"%s\"\n"
 "non esiste. Vuoi crearlo?\n"
 
 #: stringcostants.rscannotcreate
+#, fuzzy
+#| msgid ""
+#| "Can not create\n"
+#| " \"%s\"\n"
 msgid ""
 "Can not create\n"
-" \"%s\"\n"
+" \"%s\""
 msgstr ""
 "Impossibile creare\n"
 " \"%s\"\n"
 
 #: stringcostants.rscannotsave
+#, fuzzy
+#| msgid ""
+#| "Can not save changes to\n"
+#| " \"%s\"\n"
 msgid ""
 "Can not save changes to\n"
-" \"%s\"\n"
+" \"%s\""
 msgstr ""
 "Impossibile salvare cambiamento a\n"
 " \"%s\"\n"
@@ -52,11 +64,17 @@ msgid "Error"
 msgstr "Errore"
 
 #: stringcostants.rskeepdeleted
+#, fuzzy
+#| msgid ""
+#| "%s\n"
+#| "\n"
+#| "This file has been deleted by another application.\n"
+#| "Do you want to keep it in the editor?\n"
 msgid ""
 "%s\n"
 "\n"
 "This file has been deleted by another application.\n"
-"Do you want to keep it in the editor?\n"
+"Do you want to keep it in the editor?"
 msgstr ""
 "%s\n"
 "\n"
@@ -73,11 +91,17 @@ msgid "Reload"
 msgstr "Ricarica"
 
 #: stringcostants.rsreloadfile
+#, fuzzy
+#| msgid ""
+#| "%s\n"
+#| "\n"
+#| "This file has been modified.\n"
+#| "Do you want to reload it and lose changes?\n"
 msgid ""
 "%s\n"
 "\n"
 "This file has been modified.\n"
-"Do you want to reload it and lose changes?\n"
+"Do you want to reload it and lose changes?"
 msgstr ""
 "%s\n"
 "\n"
@@ -85,11 +109,17 @@ msgstr ""
 "Vuoi ricaricarlo e perdere le modifiche?\n"
 
 #: stringcostants.rsreloadmodified
+#, fuzzy
+#| msgid ""
+#| "%s\n"
+#| "\n"
+#| "This file has been modified by another application.\n"
+#| "Do you want to reload it and lose changes?\n"
 msgid ""
 "%s\n"
 "\n"
 "This file has been modified by another application.\n"
-"Do you want to reload it and lose changes?\n"
+"Do you want to reload it and lose changes?"
 msgstr ""
 "%s\n"
 "\n"
@@ -97,11 +127,17 @@ msgstr ""
 "Vuoi mantenerlo nell'editor?\n"
 
 #: stringcostants.rsreloadsimple
+#, fuzzy
+#| msgid ""
+#| "%s\n"
+#| "\n"
+#| "This file has been modified by another application.\n"
+#| "Do you want to reload it?\n"
 msgid ""
 "%s\n"
 "\n"
 "This file has been modified by another application.\n"
-"Do you want to reload it?\n"
+"Do you want to reload it?"
 msgstr ""
 "%s\n"
 "\n"
@@ -109,9 +145,13 @@ msgstr ""
 "Vuoi mantenerlo nell'editor?\n"
 
 #: stringcostants.rssavechanges
+#, fuzzy
+#| msgid ""
+#| "Save changes to\n"
+#| " \"%s\"?\n"
 msgid ""
 "Save changes to\n"
-" \"%s\"?\n"
+" \"%s\"?"
 msgstr ""
 "Salva modifiche a\n"
 " \"%s\"?\n"
@@ -133,30 +173,16 @@ msgid "Sel: %d"
 msgstr "Sel: %d"
 
 #: stringcostants.rstextnotfound
+#, fuzzy
+#| msgid ""
+#| "Text not found:\n"
+#| "\"%s\"\n"
 msgid ""
 "Text not found:\n"
-"\"%s\"\n"
+"\"%s\""
 msgstr ""
 "Testo non trovato\n"
 "\"%s\"\n"
-
-#: tdlggoto.buttonpanel1.okbutton.caption
-msgctxt "tdlggoto.buttonpanel1.okbutton.caption"
-msgid "Go to"
-msgstr "Vai a"
-
-#: tdlggoto.caption
-msgctxt "tdlggoto.caption"
-msgid "Go to"
-msgstr "Vai a"
-
-#: tdlggoto.label1.caption
-msgid "Line number"
-msgstr "Numero riga"
-
-#: tdlggoto.label2.caption
-msgid "Column number"
-msgstr "Numero colonna"
 
 #: tfabout.blicense.caption
 msgid "&License"
@@ -213,6 +239,46 @@ msgctxt "tfabout.lversion.caption"
 msgid "Version"
 msgstr "Versione"
 
+#: tfmacroeditor.btndelete.caption
+msgid "btnDelete"
+msgstr ""
+
+#: tfmacroeditor.btnedit.caption
+msgid "btnEdit"
+msgstr ""
+
+#: tfmacroeditor.btnplay.caption
+msgid "btnPlay"
+msgstr ""
+
+#: tfmacroeditor.btnrecord.caption
+msgid "btnRecord"
+msgstr ""
+
+#: tfmacroeditor.btnrecordstop.caption
+msgid "btnRecordStop"
+msgstr ""
+
+#: tfmacroeditor.btnrename.caption
+msgid "btnRename"
+msgstr ""
+
+#: tfmacroeditor.btnselect.caption
+msgid "btnSelect"
+msgstr ""
+
+#: tfmacroeditor.btnsetkeys.caption
+msgid "btnSetKeys"
+msgstr ""
+
+#: tfmacroeditor.caption
+msgid "Macro editor"
+msgstr ""
+
+#: tfmacroeditor.chkrepeat.caption
+msgid "chkRepeat"
+msgstr ""
+
 #: tfmain.actcloseafter.caption
 msgid "Close all on the right"
 msgstr "Chiudi tutti a destra"
@@ -228,6 +294,10 @@ msgstr "Chiudi tutti a sinistra"
 #: tfmain.actcompressspaces.caption
 msgid "Reduce multiple spaces"
 msgstr "Rimuovi spazi multipli"
+
+#: tfmain.actfindlongestline.caption
+msgid "Find Longest Line"
+msgstr ""
 
 #: tfmain.actfont.caption
 msgid "Select Font"
@@ -516,6 +586,15 @@ msgctxt "TFMAIN.MENUITEM8.CAPTION"
 msgid "Find"
 msgstr "Trova"
 
+#: tfmain.menuitem84.caption
+msgid "Tools"
+msgstr ""
+
+#: tfmain.menuitem87.caption
+msgctxt "tfmain.menuitem87.caption"
+msgid "Macro …"
+msgstr ""
+
 #: tfmain.mnucr.caption
 msgid "Mac (CR)"
 msgstr "Mac (CR)"
@@ -581,8 +660,3 @@ msgstr "Ordinamento Crescente"
 msgid "Sort Descending"
 msgstr "Ordinamento Discendente"
 
-#~ msgid "ovoText"
-#~ msgstr "OvoText"
-
-#~ msgid "SQL Pretty Print"
-#~ msgstr "Formatta SQL"

@@ -475,6 +475,11 @@ object fMain: TfMain
       ImageIndex = 18
       OnExecute = FileReloadExecute
     end
+    object actFindLongestLine: TAction
+      Category = 'Tools'
+      Caption = 'Find Longest Line'
+      OnExecute = actFindLongestLineExecute
+    end
   end
   object mnuMain: TMainMenu
     Images = imgList
@@ -709,6 +714,13 @@ object fMain: TfMain
         object MenuItem56: TMenuItem
           Caption = '-'
         end
+      end
+    end
+    object MenuItem84: TMenuItem
+      Caption = 'Tools'
+      object MenuItem87: TMenuItem
+        Caption = 'Macro …'
+        OnClick = MenuItem87Click
       end
     end
     object MenuItem3: TMenuItem

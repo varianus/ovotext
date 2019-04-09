@@ -13,19 +13,19 @@ msgstr ""
 #: stringcostants.rsaskfilecreation
 msgid ""
 "\"%s\"\n"
-"does not exists. Do you want to create it?\n"
+"does not exists. Do you want to create it?"
 msgstr ""
 
 #: stringcostants.rscannotcreate
 msgid ""
 "Can not create\n"
-" \"%s\"\n"
+" \"%s\""
 msgstr ""
 
 #: stringcostants.rscannotsave
 msgid ""
 "Can not save changes to\n"
-" \"%s\"\n"
+" \"%s\""
 msgstr ""
 
 #: stringcostants.rserror
@@ -37,7 +37,7 @@ msgid ""
 "%s\n"
 "\n"
 "This file has been deleted by another application.\n"
-"Do you want to keep it in the editor?\n"
+"Do you want to keep it in the editor?"
 msgstr ""
 
 #: stringcostants.rsnewfile
@@ -54,7 +54,7 @@ msgid ""
 "%s\n"
 "\n"
 "This file has been modified.\n"
-"Do you want to reload it and lose changes?\n"
+"Do you want to reload it and lose changes?"
 msgstr ""
 
 #: stringcostants.rsreloadmodified
@@ -62,7 +62,7 @@ msgid ""
 "%s\n"
 "\n"
 "This file has been modified by another application.\n"
-"Do you want to reload it and lose changes?\n"
+"Do you want to reload it and lose changes?"
 msgstr ""
 
 #: stringcostants.rsreloadsimple
@@ -70,13 +70,13 @@ msgid ""
 "%s\n"
 "\n"
 "This file has been modified by another application.\n"
-"Do you want to reload it?\n"
+"Do you want to reload it?"
 msgstr ""
 
 #: stringcostants.rssavechanges
 msgid ""
 "Save changes to\n"
-" \"%s\"?\n"
+" \"%s\"?"
 msgstr ""
 
 #: stringcostants.rsstatusbarinsmode
@@ -98,25 +98,7 @@ msgstr ""
 #: stringcostants.rstextnotfound
 msgid ""
 "Text not found:\n"
-"\"%s\"\n"
-msgstr ""
-
-#: tdlggoto.buttonpanel1.okbutton.caption
-msgctxt "tdlggoto.buttonpanel1.okbutton.caption"
-msgid "Go to"
-msgstr ""
-
-#: tdlggoto.caption
-msgctxt "tdlggoto.caption"
-msgid "Go to"
-msgstr ""
-
-#: tdlggoto.label1.caption
-msgid "Line number"
-msgstr ""
-
-#: tdlggoto.label2.caption
-msgid "Column number"
+"\"%s\""
 msgstr ""
 
 #: tfabout.blicense.caption
@@ -174,6 +156,46 @@ msgctxt "tfabout.lversion.caption"
 msgid "Version"
 msgstr ""
 
+#: tfmacroeditor.btndelete.caption
+msgid "btnDelete"
+msgstr ""
+
+#: tfmacroeditor.btnedit.caption
+msgid "btnEdit"
+msgstr ""
+
+#: tfmacroeditor.btnplay.caption
+msgid "btnPlay"
+msgstr ""
+
+#: tfmacroeditor.btnrecord.caption
+msgid "btnRecord"
+msgstr ""
+
+#: tfmacroeditor.btnrecordstop.caption
+msgid "btnRecordStop"
+msgstr ""
+
+#: tfmacroeditor.btnrename.caption
+msgid "btnRename"
+msgstr ""
+
+#: tfmacroeditor.btnselect.caption
+msgid "btnSelect"
+msgstr ""
+
+#: tfmacroeditor.btnsetkeys.caption
+msgid "btnSetKeys"
+msgstr ""
+
+#: tfmacroeditor.caption
+msgid "Macro editor"
+msgstr ""
+
+#: tfmacroeditor.chkrepeat.caption
+msgid "chkRepeat"
+msgstr ""
+
 #: tfmain.actcloseafter.caption
 msgid "Close all on the right"
 msgstr ""
@@ -188,6 +210,10 @@ msgstr ""
 
 #: tfmain.actcompressspaces.caption
 msgid "Reduce multiple spaces"
+msgstr ""
+
+#: tfmain.actfindlongestline.caption
+msgid "Find Longest Line"
 msgstr ""
 
 #: tfmain.actfont.caption
@@ -475,6 +501,15 @@ msgstr ""
 #: tfmain.menuitem8.caption
 msgctxt "TFMAIN.MENUITEM8.CAPTION"
 msgid "Find"
+msgstr ""
+
+#: tfmain.menuitem84.caption
+msgid "Tools"
+msgstr ""
+
+#: tfmain.menuitem87.caption
+msgctxt "tfmain.menuitem87.caption"
+msgid "Macro …"
 msgstr ""
 
 #: tfmain.mnucr.caption

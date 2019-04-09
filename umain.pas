@@ -27,7 +27,7 @@ uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls,
   SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils,
-  udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynEditLines;
+  udmmain, uDglGoTo, SynEditPrint, simplemrumanager, uMacroEditor, SynEditLines;
 
 type
 
@@ -42,6 +42,7 @@ type
     actCloseAllExceptThis: TAction;
     actCloseBefore: TAction;
     actCloseAfter: TAction;
+    actFindLongestLine: TAction;
     FileReload: TAction;
     actPathToClipboard: TAction;
     actSQLPrettyPrint: TAction;
@@ -76,6 +77,8 @@ type
     MenuItem81: TMenuItem;
     MenuItem82: TMenuItem;
     MenuItem83: TMenuItem;
+    MenuItem84: TMenuItem;
+    MenuItem87: TMenuItem;
     N2: TMenuItem;
     N1: TMenuItem;
     mnuLineEndings: TMenuItem;
@@ -212,6 +215,7 @@ type
     procedure actCloseAllExceptThisExecute(Sender: TObject);
     procedure actCloseBeforeExecute(Sender: TObject);
     procedure ActCompressSpacesExecute(Sender: TObject);
+    procedure actFindLongestLineExecute(Sender: TObject);
     procedure actFontExecute(Sender: TObject);
     procedure actFullNameToClipBoardExecute(Sender: TObject);
     procedure actGoToExecute(Sender: TObject);
@@ -261,6 +265,7 @@ type
     procedure actLowerCaseExecute(Sender: TObject);
     procedure MenuItem28Click(Sender: TObject);
     procedure MenuItem29Click(Sender: TObject);
+    procedure MenuItem87Click(Sender: TObject);
     procedure mnuLineEndingsClick(Sender: TObject);
     procedure mnuCRClick(Sender: TObject);
     procedure mnuCRLFClick(Sender: TObject);
@@ -636,6 +641,17 @@ begin
 
 end;
 
+procedure TfMain.actFindLongestLineExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  Ed.TextOperation(@RemoveSpacesInExcess);
+end;
+
 procedure TfMain.actCloseAllExceptThisExecute(Sender: TObject);
 begin
   EditorFactory.CloseAll(true);
@@ -980,6 +996,11 @@ begin
   for i := 0 to MRU.Recent.Count - 1 do
     EditorFactory.AddEditor(MRU.Recent[i]);
 
+end;
+
+procedure TfMain.MenuItem87Click(Sender: TObject);
+begin
+  ShowMacroEditor(EditorFactory);
 end;
 
 procedure TfMain.mnuLineEndingsClick(Sender: TObject);

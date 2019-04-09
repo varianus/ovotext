@@ -65,6 +65,7 @@
 {"hash":125174372,"name":"tfmain.actclosebefore.caption","sourcebytes":[67,108,111,115,101,32,97,108,108,32,111,110,32,116,104,101,32,108,101,102,116],"value":"Close all on the left"},
 {"hash":122316420,"name":"tfmain.actcloseafter.caption","sourcebytes":[67,108,111,115,101,32,97,108,108,32,111,110,32,116,104,101,32,114,105,103,104,116],"value":"Close all on the right"},
 {"hash":93074804,"name":"tfmain.filereload.caption","sourcebytes":[82,101,108,111,97,100],"value":"Reload"},
+{"hash":253650917,"name":"tfmain.actfindlongestline.caption","sourcebytes":[70,105,110,100,32,76,111,110,103,101,115,116,32,76,105,110,101],"value":"Find Longest Line"},
 {"hash":315429,"name":"tfmain.menuitem1.caption","sourcebytes":[70,105,108,101],"value":"File"},
 {"hash":139726590,"name":"tfmain.mnuopenrecent.caption","sourcebytes":[79,112,101,110,32,82,101,99,101,110,116,32,46,46,46],"value":"Open Recent ..."},
 {"hash":198533332,"name":"tfmain.menuitem29.caption","sourcebytes":[82,101,111,112,101,110,32,97,108,108,32,114,101,99,101,110,116],"value":"Reopen all recent"},
@@ -87,6 +88,8 @@
 {"hash":139375349,"name":"tfmain.mnulanguage.caption","sourcebytes":[76,97,110,103,117,97,103,101],"value":"Language"},
 {"hash":266201246,"name":"tfmain.menuitem52.caption","sourcebytes":[78,97,118,105,103,97,116,105,111,110],"value":"Navigation"},
 {"hash":370579,"name":"tfmain.mnutabs.caption","sourcebytes":[84,97,98,115],"value":"Tabs"},
+{"hash":5989939,"name":"tfmain.menuitem84.caption","sourcebytes":[84,111,111,108,115],"value":"Tools"},
+{"hash":177322454,"name":"tfmain.menuitem87.caption","sourcebytes":[77,97,99,114,111,32,226,128,166],"value":"Macro \u2026"},
 {"hash":322608,"name":"tfmain.menuitem3.caption","sourcebytes":[72,101,108,112],"value":"Help"},
 {"hash":267817060,"name":"tfmain.fontdialog.title","sourcebytes":[83,101,108,101,99,116,32,97,32,70,111,110,116],"value":"Select a Font"}
 ]}
