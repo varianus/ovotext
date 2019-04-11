@@ -1,20 +1,20 @@
 object FMacroEditor: TFMacroEditor
   Left = 350
-  Height = 387
+  Height = 405
   Top = 31
-  Width = 445
+  Width = 703
   Caption = 'Macro editor'
-  ClientHeight = 387
-  ClientWidth = 445
+  ClientHeight = 405
+  ClientWidth = 703
   object pnlButtons: TPanel
-    Left = 272
-    Height = 387
+    Left = 488
+    Height = 405
     Top = 0
-    Width = 173
+    Width = 215
     Align = alRight
     BevelOuter = bvNone
-    ClientHeight = 387
-    ClientWidth = 173
+    ClientHeight = 405
+    ClientWidth = 215
     Constraints.MinHeight = 250
     TabOrder = 0
     object btnSelect: TButton
@@ -26,7 +26,7 @@ object FMacroEditor: TFMacroEditor
       Left = 6
       Height = 25
       Top = 6
-      Width = 161
+      Width = 203
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BorderSpacing.Left = 6
@@ -45,7 +45,7 @@ object FMacroEditor: TFMacroEditor
       Left = 6
       Height = 25
       Top = 37
-      Width = 161
+      Width = 203
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BorderSpacing.Left = 6
@@ -62,9 +62,9 @@ object FMacroEditor: TFMacroEditor
       AnchorSideBottom.Control = PanelRepeat
       Left = 6
       Height = 25
-      Top = 208
-      Width = 161
-      Anchors = [akLeft, akRight]
+      Top = 238
+      Width = 203
+      Anchors = [akLeft, akRight, akBottom]
       AutoSize = True
       BorderSpacing.Left = 6
       BorderSpacing.Right = 6
@@ -82,8 +82,8 @@ object FMacroEditor: TFMacroEditor
       AnchorSideBottom.Control = btnRecordStop
       Left = 6
       Height = 25
-      Top = 331
-      Width = 161
+      Top = 349
+      Width = 203
       Anchors = [akLeft, akRight, akBottom]
       AutoSize = True
       BorderSpacing.Left = 6
@@ -103,8 +103,8 @@ object FMacroEditor: TFMacroEditor
       AnchorSideBottom.Side = asrBottom
       Left = 6
       Height = 25
-      Top = 362
-      Width = 161
+      Top = 380
+      Width = 203
       Anchors = [akLeft, akRight, akBottom]
       AutoSize = True
       BorderSpacing.Left = 6
@@ -123,7 +123,7 @@ object FMacroEditor: TFMacroEditor
       Left = 6
       Height = 25
       Top = 130
-      Width = 161
+      Width = 203
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BorderSpacing.Left = 6
@@ -142,7 +142,7 @@ object FMacroEditor: TFMacroEditor
       Left = 6
       Height = 25
       Top = 68
-      Width = 161
+      Width = 203
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BorderSpacing.Left = 6
@@ -161,7 +161,7 @@ object FMacroEditor: TFMacroEditor
       Left = 6
       Height = 25
       Top = 99
-      Width = 161
+      Width = 203
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BorderSpacing.Left = 6
@@ -178,34 +178,32 @@ object FMacroEditor: TFMacroEditor
       AnchorSideRight.Side = asrBottom
       AnchorSideBottom.Control = btnRecord
       Left = 6
-      Height = 54
-      Top = 238
-      Width = 161
-      Anchors = [akLeft, akRight]
-      AutoSize = True
+      Height = 80
+      Top = 266
+      Width = 203
+      Anchors = [akLeft, akRight, akBottom]
       BorderSpacing.Left = 6
       BorderSpacing.Top = 3
       BorderSpacing.Right = 6
       BorderSpacing.Bottom = 3
       BevelOuter = bvNone
       BorderStyle = bsSingle
-      ClientHeight = 50
-      ClientWidth = 157
+      ClientHeight = 76
+      ClientWidth = 199
       TabOrder = 8
       object edRepeat: TSpinEdit
-        AnchorSideLeft.Control = PanelRepeat
-        AnchorSideTop.Control = chkRepeat
-        AnchorSideTop.Side = asrBottom
-        AnchorSideRight.Control = PanelRepeat
-        AnchorSideRight.Side = asrBottom
-        Left = 3
+        AnchorSideLeft.Control = rbRepeatNTimes
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = rbRepeatNTimes
+        AnchorSideTop.Side = asrCenter
+        Left = 66
         Height = 23
-        Top = 24
-        Width = 151
-        Anchors = [akTop, akLeft, akRight]
-        BorderSpacing.Left = 3
+        Top = 32
+        Width = 58
+        AutoSize = False
+        BorderSpacing.Left = 9
         BorderSpacing.Top = 3
-        BorderSpacing.Right = 3
+        BorderSpacing.Right = 7
         BorderSpacing.Bottom = 3
         MaxValue = 999
         MinValue = 1
@@ -220,28 +218,63 @@ object FMacroEditor: TFMacroEditor
         AnchorSideBottom.Control = edRepeat
         Left = 3
         Height = 19
-        Top = 2
-        Width = 151
+        Top = 8
+        Width = 193
         Anchors = [akLeft, akRight]
         BorderSpacing.Left = 3
         BorderSpacing.Right = 3
         BorderSpacing.Bottom = 3
         Caption = 'chkRepeat'
+        OnChange = chkRepeatChange
         TabOrder = 1
+      end
+      object rbRepeatNTimes: TRadioButton
+        Left = 16
+        Height = 19
+        Top = 34
+        Width = 41
+        Anchors = []
+        AutoSize = False
+        Caption = 'run'
+        TabOrder = 2
+      end
+      object Label1: TLabel
+        AnchorSideLeft.Control = edRepeat
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = edRepeat
+        AnchorSideTop.Side = asrCenter
+        Left = 134
+        Height = 15
+        Top = 36
+        Width = 29
+        AutoSize = False
+        BorderSpacing.Left = 10
+        Caption = 'times'
+        ParentColor = False
+      end
+      object rbRepeatUntilEof: TRadioButton
+        AnchorSideLeft.Control = rbRepeatNTimes
+        Left = 16
+        Height = 19
+        Top = 56
+        Width = 100
+        Anchors = [akLeft]
+        Caption = 'until end of file'
+        TabOrder = 3
       end
     end
   end
   object lbMacroView: TListView
     Left = 0
-    Height = 387
+    Height = 405
     Top = 0
-    Width = 272
+    Width = 488
     Align = alClient
     Anchors = [akTop, akLeft, akBottom]
     AutoWidthLastColumn = True
     Columns = <    
       item
-        Width = 268
+        Width = 488
       end>
     RowSelect = True
     ShowColumnHeaders = False
@@ -252,6 +285,8 @@ object FMacroEditor: TFMacroEditor
   object SynMacroRec: TSynMacroRecorder
     RecordShortCut = 24658
     PlaybackShortCut = 24656
+    OnStateChange = SynMacroRecStateChange
+    OnUserCommand = SynMacroRecUserCommand
     Left = 120
     Top = 240
   end

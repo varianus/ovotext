@@ -223,6 +223,7 @@ begin
   Options := Options + [eoAltSetsColumnMode];
   MouseOptions := MouseOptions + [emCtrlWheelZoom, emRightMouseMovesCursor];
 
+
   DeleteKeyStrokes(Keystrokes,ord('N'),[ssCtrl]);
 
   CreateDefaultGutterParts;

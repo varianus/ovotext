@@ -196,6 +196,18 @@ msgstr ""
 msgid "chkRepeat"
 msgstr ""
 
+#: tfmacroeditor.label1.caption
+msgid "times"
+msgstr ""
+
+#: tfmacroeditor.rbrepeatntimes.caption
+msgid "run"
+msgstr ""
+
+#: tfmacroeditor.rbrepeatuntileof.caption
+msgid "until end of file"
+msgstr ""
+
 #: tfmain.actcloseafter.caption
 msgid "Close all on the right"
 msgstr ""
