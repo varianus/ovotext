@@ -165,15 +165,15 @@ msgid "btnEdit"
 msgstr ""
 
 #: tfmacroeditor.btnplay.caption
-msgid "btnPlay"
+msgid "Playback macro"
 msgstr ""
 
 #: tfmacroeditor.btnrecord.caption
-msgid "btnRecord"
+msgid "Record macro"
 msgstr ""
 
 #: tfmacroeditor.btnrecordstop.caption
-msgid "btnRecordStop"
+msgid "Stop recording"
 msgstr ""
 
 #: tfmacroeditor.btnrename.caption
@@ -193,7 +193,7 @@ msgid "Macro editor"
 msgstr ""
 
 #: tfmacroeditor.chkrepeat.caption
-msgid "chkRepeat"
+msgid "Repeat"
 msgstr ""
 
 #: tfmacroeditor.label1.caption

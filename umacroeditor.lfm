@@ -69,7 +69,7 @@ object FMacroEditor: TFMacroEditor
       BorderSpacing.Left = 6
       BorderSpacing.Right = 6
       BorderSpacing.Bottom = 3
-      Caption = 'btnPlay'
+      Caption = 'Playback macro'
       OnClick = btnPlayClick
       TabOrder = 5
     end
@@ -89,7 +89,7 @@ object FMacroEditor: TFMacroEditor
       BorderSpacing.Left = 6
       BorderSpacing.Right = 6
       BorderSpacing.Bottom = 6
-      Caption = 'btnRecord'
+      Caption = 'Record macro'
       OnClick = btnRecordClick
       TabOrder = 6
     end
@@ -109,7 +109,7 @@ object FMacroEditor: TFMacroEditor
       AutoSize = True
       BorderSpacing.Left = 6
       BorderSpacing.Right = 6
-      Caption = 'btnRecordStop'
+      Caption = 'Stop recording'
       OnClick = btnRecordStopClick
       TabOrder = 7
     end
@@ -224,7 +224,7 @@ object FMacroEditor: TFMacroEditor
         BorderSpacing.Left = 3
         BorderSpacing.Right = 3
         BorderSpacing.Bottom = 3
-        Caption = 'chkRepeat'
+        Caption = 'Repeat'
         OnChange = chkRepeatChange
         TabOrder = 1
       end

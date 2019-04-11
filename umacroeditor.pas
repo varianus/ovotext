@@ -75,10 +75,41 @@ begin
 end;
 
 procedure TFMacroEditor.btnPlayClick(Sender: TObject);
+var
+  CurrRow, i: integer;
+  ed : TEditor;
 begin
-  fFactory.CurrentEditor.SetFocus;
+  ed := fFactory.CurrentEditor;
+  if not Assigned(ed) then
+    exit;
+
+  ed.SetFocus;
   SynMacroRec.AsString := mc;
-  SynMacroRec.PlaybackMacro(fFactory.CurrentEditor);
+  if chkRepeat.Checked then
+     begin
+       if rbRepeatNTimes.Checked then
+        begin
+          for i := 0 to pred(edRepeat.Value) do
+            SynMacroRec.PlaybackMacro(Ed);
+        end;
+
+       if rbRepeatUntilEof.Checked then
+        begin
+          // Avoid macro infinite loop:
+          // if after playback i'm on the same line stop execution loop
+          CurrRow := ed.CaretY;
+          repeat
+            SynMacroRec.PlaybackMacro(Ed);
+
+          until (ed.CaretY = 1) or
+                (ed.CaretY = ed.Lines.Count ) or
+                (ed.CaretY = CurrRow);
+        end;
+
+     end
+
+  else
+    SynMacroRec.PlaybackMacro(fFactory.CurrentEditor);
 end;
 
 procedure TFMacroEditor.btnRecordStopClick(Sender: TObject);
