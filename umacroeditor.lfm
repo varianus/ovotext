@@ -6,6 +6,7 @@ object FMacroEditor: TFMacroEditor
   Caption = 'Macro editor'
   ClientHeight = 405
   ClientWidth = 703
+  LCLVersion = '2.1.0.0'
   object pnlButtons: TPanel
     Left = 488
     Height = 405
@@ -188,8 +189,8 @@ object FMacroEditor: TFMacroEditor
       BorderSpacing.Bottom = 3
       BevelOuter = bvNone
       BorderStyle = bsSingle
-      ClientHeight = 76
-      ClientWidth = 199
+      ClientHeight = 80
+      ClientWidth = 203
       TabOrder = 8
       object edRepeat: TSpinEdit
         AnchorSideLeft.Control = rbRepeatNTimes

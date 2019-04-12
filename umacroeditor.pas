@@ -153,7 +153,8 @@ var
   AEvent: TActionMacroEvent;
 begin
 
-  if not InExecute and (aaction.name <> '') then
+  // record only actions that do simple text manipulation
+  if not InExecute and (aaction.name <> '') and ((AAction.Tag and 1) = 1) then
     with SynMacroRec do
     begin
       AEvent:= TActionMacroEvent.Create;

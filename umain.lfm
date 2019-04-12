@@ -314,30 +314,35 @@ object fMain: TfMain
       OnExecute = actFontExecute
     end
     object actTrimLeading: TAction
+      Tag = 1
       Category = 'Tools'
       Caption = 'Trim Leading spaces'
       DisableIfNoHandler = False
       OnExecute = actTrimLeadingExecute
     end
     object actTrimTrailing: TAction
+      Tag = 1
       Category = 'Tools'
       Caption = 'Trim Trailing spaces'
       DisableIfNoHandler = False
       OnExecute = actTrimTrailingExecute
     end
     object actTrim: TAction
+      Tag = 1
       Category = 'Tools'
       Caption = 'Trim'
       DisableIfNoHandler = False
       OnExecute = actTrimExecute
     end
     object ActCompressSpaces: TAction
+      Tag = 1
       Category = 'Tools'
       Caption = 'Reduce multiple spaces'
       DisableIfNoHandler = False
       OnExecute = ActCompressSpacesExecute
     end
     object actFullNameToClipBoard: TAction
+      Tag = 1
       Category = 'Filename'
       Caption = 'Full File name to clipboard'
       DisableIfNoHandler = False
@@ -363,12 +368,14 @@ object fMain: TfMain
       OnExecute = actPrintExecute
     end
     object SortAscending: TAction
+      Tag = 1
       Category = 'Tools'
       Caption = 'Sort Ascending'
       DisableIfNoHandler = False
       OnExecute = SortAscendingExecute
     end
     object SortDescending: TAction
+      Tag = 1
       Category = 'Tools'
       Caption = 'Sort Descending'
       DisableIfNoHandler = False
@@ -380,12 +387,14 @@ object fMain: TfMain
       OnExecute = actLanguageNoneExecute
     end
     object actLowerCase: TAction
+      Tag = 1
       Category = 'Tools'
       Caption = 'lowercase'
       DisableIfNoHandler = False
       OnExecute = actLowerCaseExecute
     end
     object actUpperCase: TAction
+      Tag = 1
       Category = 'Tools'
       Caption = 'UPPERCASE'
       DisableIfNoHandler = False
@@ -404,46 +413,54 @@ object fMain: TfMain
       OnExecute = ExportRTFToFileExecute
     end
     object ExportHtmlToClipBoard: TAction
+      Tag = 1
       Category = 'Edit'
       Caption = 'Copy as HTML'
       DisableIfNoHandler = False
       OnExecute = ExportHtmlToClipBoardExecute
     end
     object ExportRTFToClipBoard: TAction
+      Tag = 1
       Category = 'Edit'
       Caption = 'Copy as RTF'
       DisableIfNoHandler = False
       OnExecute = ExportRTFToClipBoardExecute
     end
     object actTabToSpace: TAction
+      Tag = 1
       Category = 'Tools'
       Caption = 'Tab to Spaces'
       DisableIfNoHandler = False
       OnExecute = actTabToSpaceExecute
     end
     object actXMLPrettyPrint: TAction
+      Tag = 1
       Category = 'PrettyPrint'
       Caption = 'Beautify  XML'
       OnExecute = actXMLPrettyPrintExecute
       ShortCut = 57432
     end
     object actQuote: TAction
+      Tag = 1
       Category = 'Tools'
       Caption = 'Quote'
       OnExecute = actQuoteExecute
     end
     object actJSONPrettyPrint: TAction
+      Tag = 1
       Category = 'PrettyPrint'
       Caption = 'Beautify JSON'
       OnExecute = actJSONPrettyPrintExecute
       ShortCut = 57418
     end
     object actXMLCompact: TAction
+      Tag = 1
       Category = 'PrettyPrint'
       Caption = 'Compact XML'
       OnExecute = actXMLCompactExecute
     end
     object actSQLPrettyPrint: TAction
+      Tag = 1
       Category = 'PrettyPrint'
       Caption = 'Beautify SQL'
       OnExecute = actSQLPrettyPrintExecute
