@@ -6,7 +6,6 @@ object FMacroEditor: TFMacroEditor
   Caption = 'Macro editor'
   ClientHeight = 405
   ClientWidth = 703
-  LCLVersion = '2.1.0.0'
   object pnlButtons: TPanel
     Left = 488
     Height = 405
@@ -189,17 +188,17 @@ object FMacroEditor: TFMacroEditor
       BorderSpacing.Bottom = 3
       BevelOuter = bvNone
       BorderStyle = bsSingle
-      ClientHeight = 80
-      ClientWidth = 203
+      ClientHeight = 76
+      ClientWidth = 199
       TabOrder = 8
       object edRepeat: TSpinEdit
         AnchorSideLeft.Control = rbRepeatNTimes
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = rbRepeatNTimes
         AnchorSideTop.Side = asrCenter
-        Left = 66
+        Left = 65
         Height = 23
-        Top = 32
+        Top = 30
         Width = 58
         AutoSize = False
         BorderSpacing.Left = 9
@@ -219,7 +218,7 @@ object FMacroEditor: TFMacroEditor
         AnchorSideBottom.Control = edRepeat
         Left = 3
         Height = 19
-        Top = 8
+        Top = 7
         Width = 193
         Anchors = [akLeft, akRight]
         BorderSpacing.Left = 3
@@ -230,9 +229,9 @@ object FMacroEditor: TFMacroEditor
         TabOrder = 1
       end
       object rbRepeatNTimes: TRadioButton
-        Left = 16
+        Left = 15
         Height = 19
-        Top = 34
+        Top = 32
         Width = 41
         Anchors = []
         AutoSize = False
@@ -244,9 +243,9 @@ object FMacroEditor: TFMacroEditor
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = edRepeat
         AnchorSideTop.Side = asrCenter
-        Left = 134
+        Left = 133
         Height = 15
-        Top = 36
+        Top = 34
         Width = 29
         AutoSize = False
         BorderSpacing.Left = 10
@@ -255,9 +254,9 @@ object FMacroEditor: TFMacroEditor
       end
       object rbRepeatUntilEof: TRadioButton
         AnchorSideLeft.Control = rbRepeatNTimes
-        Left = 16
+        Left = 15
         Height = 19
-        Top = 56
+        Top = 53
         Width = 100
         Anchors = [akLeft]
         Caption = 'until end of file'

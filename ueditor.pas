@@ -58,10 +58,12 @@ type
 
   TOnBeforeClose = procedure(Editor: TEditor; var Cancel: boolean) of object;
   TOnEditorEvent = procedure(Editor: TEditor) of object;
+  TOnSearchReplaceEvent= procedure (Sender:TObject; const ASearch, AReplace: string; AOptions: TSynSearchOptions) of object;
 
   TEditor = class(TSynEdit)
   private
     FFileName: TFilename;
+    FOnSearchReplace: TOnSearchReplaceEvent;
     FSheet: TEditorTabSheet;
     FUntitled: boolean;
     fCaretPos: TPoint;
@@ -79,12 +81,14 @@ type
     procedure SetDiskEncoding(AValue: string);
     procedure SetFileName(AValue: TFileName);
     procedure SetLineEndingType(AValue: TSynLinesFileLineEndType);
+    procedure SetOnSearcReplace(AValue: TOnSearchReplaceEvent);
     procedure SetText(NewText: string);
     procedure SetUntitled(AValue: boolean);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     property Sheet: TEditorTabSheet read FSheet;
+    property OnSearchReplace: TOnSearchReplaceEvent read FOnSearchReplace write SetOnSearcReplace;
     //-- Helper functions//
     procedure SetLineText(Index: integer; NewText: string);
     // -- File handling//
@@ -113,6 +117,7 @@ type
     property Editor: TEditor read FEditor;
     //--//
   end;
+
 
 
   TEditorFactory = class(TPageControl)
@@ -192,6 +197,12 @@ procedure TEditor.SetLineEndingType(AValue: TSynLinesFileLineEndType);
 begin
   fDiskLineEndingType := AValue;
   Modified := true;
+end;
+
+procedure TEditor.SetOnSearcReplace(AValue: TOnSearchReplaceEvent);
+begin
+  if FOnSearchReplace = AValue then Exit;
+  FOnSearchReplace := AValue;
 end;
 
 procedure TEditor.SetUntitled(AValue: boolean);

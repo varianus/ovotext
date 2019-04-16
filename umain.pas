@@ -1154,18 +1154,24 @@ begin
 end;
 
 procedure TfMain.ReplaceDialogReplace(Sender: TObject);
+var
+  ed: TEditor;
 
 begin
   PrepareReplace(ReplaceDialog);
+  ed := EditorFactory.CurrentEditor;
 
-  if EditorFactory.CurrentEditor.SearchReplace(FindText, ReplaceText, SynOption) = 0 then
+  if Ed.SearchReplace(FindText, ReplaceText, SynOption) = 0 then
     ShowMessage(Format(RSTextNotfound, [FindText]))
   else
   if (ssoReplace in SynOption) and not (ssoReplaceAll in SynOption) then
   begin
     Exclude(SynOption, ssoReplace);
-    EditorFactory.CurrentEditor.SearchReplace(FindText, '', SynOption);
+    Ed.SearchReplace(FindText, '', SynOption);
   end;
+
+  if Assigned(ed.OnSearchReplace) then
+    ed.OnSearchReplace(Ed, FindText, ReplaceText, SynOption);
 
 end;
 

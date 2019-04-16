@@ -1,3 +1,22 @@
+{ Ovotext - simple text editor
+
+  Copyright (C) 2015 Marco Caselli <marcocas@gmail.com>
+
+  This source is free software; you can redistribute it and/or modify it under
+  the terms of the GNU General Public License as published by the Free
+  Software Foundation; either version 2 of the License, or (at your option)
+  any later version.
+
+  This code is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+  details.
+
+  A copy of the GNU General Public License is available on the World Wide Web
+  at <http://www.gnu.org/copyleft/gpl.html>. You can also obtain it by writing
+  to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+  MA 02111-1307, USA.
+}
 unit uMacroEditor;
 
 {$mode objfpc}{$H+}
@@ -6,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls, Spin, ComCtrls, ueditor, uActionMacro,
-  SynMacroRecorder, SynEditKeyCmds, ActnList, LCLProc;
+  uReplaceMacro, SynMacroRecorder, SynEditKeyCmds, ActnList, LCLProc, SynEditTypes;
 
 type
 
@@ -42,6 +61,7 @@ type
     mc: string;
     InExecute: Boolean;
     procedure pRecordActions(AAction: TBasicAction; var Handled: Boolean);
+    procedure pRecordSearchReplace(Sender: TObject; const ASearch, AReplace: string; AOptions: TSynSearchOptions);
   public
 
   end;
@@ -115,6 +135,7 @@ end;
 procedure TFMacroEditor.btnRecordStopClick(Sender: TObject);
 begin
   mc := SynMacroRec.AsString;
+  TEditor(SynMacroRec.CurrentEditor).OnSearchReplace := nil;
   SynMacroRec.Stop;
 end;
 
@@ -126,15 +147,33 @@ begin
 
 end;
 
+procedure TFMacroEditor.pRecordSearchReplace(Sender:TObject; const ASearch, AReplace: string; AOptions: TSynSearchOptions);
+var
+  AEvent: TReplaceMacroEvent;
+begin
+  with SynMacroRec do
+  begin
+    AEvent:= TReplaceMacroEvent.Create;
+    AEvent.Search:= ASearch;
+    AEvent.Replace := AReplace;
+    AEvent.ReplaceOptions := AOptions;
+    AddCustomEvent(TSynMacroEvent(AEvent));
+  end;
+end;
+
 procedure TFMacroEditor.SynMacroRecStateChange(Sender: TObject);
 begin
   if SynMacroRec.State = msRecording then
    begin
      fMain.ActionList.OnExecute:= @pRecordActions;
+     TEditor(SynMacroRec.CurrentEditor).OnSearchReplace := @pRecordSearchReplace;
    end
-   else if Assigned(fMain.ActionList.OnExecute) then
+   else
    begin
-     fMain.ActionList.OnExecute:= nil;
+     if Assigned(fMain.ActionList.OnExecute) then
+       fMain.ActionList.OnExecute:= nil;
+     if assigned(SynMacroRec.CurrentEditor) then
+     TEditor(SynMacroRec.CurrentEditor).OnSearchReplace := nil;
    end;
 end;
 
@@ -146,6 +185,11 @@ begin
      aEvent := TActionMacroEvent.Create;
      TActionMacroEvent(AEvent).ActionLists.Add(fMain.ActionList);
    end;
+  if aCmd = ecReplace then
+   begin
+     aEvent := TReplaceMacroEvent.Create;
+   end;
+
 end;
 
 procedure TFMacroEditor.pRecordActions(AAction: TBasicAction; var Handled: Boolean);
