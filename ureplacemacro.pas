@@ -107,9 +107,7 @@ begin
   aStream.Read(l, SizeOf(l));
   GetMem(cBuff, l);
   try
-  {$IFNDEF WINDOWS}
-    FillMemory(cBuff, l, 0);
-  {$ENDIF}
+    FillByte(cBuff, l, 0);
     aStream.Read(cBuff^, l);
     InitEventParameters(cBuff);
   finally
@@ -133,9 +131,7 @@ begin
   aStream.Write(l, sizeof(l));
   GetMem(cBuff, l);
   try
-  {$IFNDEF WINDOWS}
-    FillMemory(cBuff, l, 0);
-  {$ENDIF}
+    FillByte(cBuff, l, 0);
     StrPCopy(cBuff, AsString);
     aStream.Write(cBuff^, l);
   finally

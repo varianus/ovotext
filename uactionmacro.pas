@@ -139,7 +139,7 @@ unit uActionMacro;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   SynEdit, Menus, StdActns, ActnList, StdCtrls, ExtCtrls, LCLType,
   SynEditKeyCmds, SynMacroRecorder;
 
@@ -215,9 +215,7 @@ begin
   aStream.Read(l, SizeOf(l));
   GetMem(cBuff, l);
   try
-  {$IFNDEF WINDOWS}
-    FillMemory(cBuff, l, 0);
-  {$ENDIF}
+    FillByte(cBuff, l, 0);
     aStream.Read(cBuff^, l);
     fActionName := cBuff;
   finally
@@ -265,9 +263,7 @@ begin
   aStream.Write(l, sizeof(l));
   GetMem(cBuff, l);
   try
-  {$IFNDEF WINDOWS}
-    FillMemory(cBuff, l, 0);
-  {$ENDIF}
+    FillByte(cBuff, l, 0);
     StrPCopy(cBuff, fActionName);
     aStream.Write(cBuff^, l);
   finally
