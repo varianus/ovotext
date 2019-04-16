@@ -9,11 +9,14 @@ Some features:
 
 * Tabbed editor
 * Syntax highligthing for a lot of programming languages and file formats
+* Export formatted text to RTF or HTML file/clipboard
 * Undo/Redo support
+* Tools for text editing (change line endings, native XML/JSON/SQL beautifier, sort, change case and so on)
+* Support for various encoding (UTF-8, UCS2, ISO-8859-1, ecc.)
 * Print with syntax highligthing
 
 ### Development
-This application is built using Lazarus (version 1.5) and FreePascal compiler (version 3.1.1).
+This application is built using Lazarus (version 2.1) and FreePascal compiler (version 3.2.0).
 For syntax highlighting it uses:
 
 * Synedit components, included in Lazarus,
