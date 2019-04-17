@@ -178,7 +178,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="14">
+    <Units Count="15">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -257,6 +257,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMacroEditor"/>
       </Unit13>
+      <Unit14>
+        <Filename Value="umacrorecorder.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uMacroRecorder"/>
+      </Unit14>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

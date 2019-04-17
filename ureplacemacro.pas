@@ -67,8 +67,8 @@ end;
 function TReplaceMacroEvent.GetAsString: String;
 begin
 
-  Result := 'ecReplace ' + fSearch + #31 +
-                           fReplace+#31 +
+  Result := 'ecReplace ' + fSearch  + #09 +
+                           fReplace + #09 +
                            SetToString(PTypeInfo(TypeInfo(TSynSearchOptions)), LongInt(fReplaceOptions), true);
 end;
 
@@ -81,7 +81,7 @@ begin
   while cHead^ in [#6, ' '] do Inc(cHead);
   st := TStringList.Create;
   try
-    st.Delimiter := #31;
+    st.Delimiter := #09;
     st.DelimitedText := Copy(cHead, 1, Length(sStr));
     fSearch := st[0];
     fReplace := st[1];
