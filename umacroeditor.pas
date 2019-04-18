@@ -128,12 +128,15 @@ procedure TFMacroEditor.FormShow(Sender: TObject);
 var
   Macro: RMacro;
   Item: TListItem;
+  i: Integer;
 begin
   lbMacroView.Clear;
-  for macro in SynMacroRec.Macros do
+  for i := 0 to SynMacroRec.Macros.Count - 1 do
     begin
+      Macro := SynMacroRec.Macros[i];
       item := lbMacroView.Items.Add;
       item.Caption := Macro.Name;
+      item.Data := IntPtr(i);
       item.SubItems.Add(ShortCutToText(Macro.ShortCut));
     end;
 
