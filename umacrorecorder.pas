@@ -47,7 +47,7 @@ type
     InExecute: Boolean;
     SynMacroRec: TSynMacroRecorder;
 
-    Macros: TMacroList;
+    FMacros: TMacroList;
 
     function GetState: TSynMacroState;
     procedure pRecordActions(AAction: TBasicAction; var Handled: Boolean);
@@ -64,6 +64,7 @@ type
 
     Property State: TSynMacroState read GetState;
     property OnStateChange: TNotifyEvent read fOnStateChange write fOnStateChange;
+    Property Macros: TMacroList read FMacros;
 
     procedure Start;
     procedure Stop;
@@ -80,12 +81,12 @@ constructor TMacroRecorder.Create(Factory: TEditorFactory);
 begin
   inherited Create;
   fFactory := Factory;
-  Macros:= TMacroList.Create;
+  FMacros:= TMacroList.Create;
   SynMacroRec := TSynMacroRecorder.Create(nil);
   SynMacroRec.OnStateChange := SynMacroRecStateChange;
   SynMacroRec.OnUserCommand := SynMacroRecUserCommand;
   LoadMacros;
-  fRecordedMacro.Commands := Macros[0].Commands;
+  fRecordedMacro.Commands := FMacros[0].Commands;
 end;
 
 destructor TMacroRecorder.Destroy;
@@ -160,7 +161,7 @@ begin
   fRecordedMacro.Commands := SynMacroRec.AsString;
   TEditor(SynMacroRec.CurrentEditor).OnSearchReplace := nil;
   fRecordedMacro.Name := 'Record';
-  Macros.Add(fRecordedMacro);
+  FMacros.Add(fRecordedMacro);
   SynMacroRec.Stop;
   SaveMacros;
 end;
@@ -231,12 +232,12 @@ begin
     NewMacro.Name     := ConfigObj.ConfigHolder.GetValue('Macros/Macro'+IntToStr(i+1)+'/Name','');
     NewMacro.Commands := ConfigObj.ConfigHolder.GetValue('Macros/Macro'+IntToStr(i+1)+'/Commands','');
     NewMacro.ShortCut := ConfigObj.ConfigHolder.GetValue('Macros/Macro'+IntToStr(i+1)+'/Shortcut',0);
-      if Macros.Count>i then
-      Macros[i]:=NewMacro
+      if FMacros.Count>i then
+      FMacros[i]:=NewMacro
     else
-      Macros.Add(NewMacro);
+      FMacros.Add(NewMacro);
   end;
-  while Macros.Count>NewCount do Macros.Delete(Macros.Count-1);
+  while FMacros.Count>NewCount do FMacros.Delete(FMacros.Count-1);
 
 end;
 
@@ -244,12 +245,12 @@ procedure TMacroRecorder.SaveMacros;
 var
   i: Integer;
 begin
-  ConfigObj.ConfigHolder.SetDeleteValue('Macros/Count',Macros.Count, 0);
-  for i := 0 to macros.Count -1 do
+  ConfigObj.ConfigHolder.SetDeleteValue('Macros/Count',FMacros.Count, 0);
+  for i := 0 to FMacros.Count -1 do
     begin
-     ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Name',Macros[i].Name,'') ;
-     ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Commands',Macros[i].Commands,'') ;
-     ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Shortcut',Macros[i].ShortCut,0) ;
+     ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Name',FMacros[i].Name,'') ;
+     ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Commands',FMacros[i].Commands,'') ;
+     ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Shortcut',FMacros[i].ShortCut,0) ;
     end;
 
 end;

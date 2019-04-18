@@ -2,19 +2,20 @@ object FMacroEditor: TFMacroEditor
   Left = 350
   Height = 405
   Top = 31
-  Width = 703
+  Width = 485
   Caption = 'Macro editor'
   ClientHeight = 405
-  ClientWidth = 703
+  ClientWidth = 485
+  OnShow = FormShow
   object pnlButtons: TPanel
-    Left = 488
+    Left = 312
     Height = 405
     Top = 0
-    Width = 215
+    Width = 173
     Align = alRight
     BevelOuter = bvNone
     ClientHeight = 405
-    ClientWidth = 215
+    ClientWidth = 173
     Constraints.MinHeight = 250
     TabOrder = 0
     object btnSelect: TButton
@@ -26,7 +27,7 @@ object FMacroEditor: TFMacroEditor
       Left = 6
       Height = 25
       Top = 6
-      Width = 203
+      Width = 161
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BorderSpacing.Left = 6
@@ -45,7 +46,7 @@ object FMacroEditor: TFMacroEditor
       Left = 6
       Height = 25
       Top = 37
-      Width = 203
+      Width = 161
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BorderSpacing.Left = 6
@@ -62,8 +63,8 @@ object FMacroEditor: TFMacroEditor
       AnchorSideBottom.Control = PanelRepeat
       Left = 6
       Height = 25
-      Top = 238
-      Width = 203
+      Top = 188
+      Width = 161
       Anchors = [akLeft, akRight, akBottom]
       AutoSize = True
       BorderSpacing.Left = 6
@@ -83,7 +84,7 @@ object FMacroEditor: TFMacroEditor
       Left = 6
       Height = 25
       Top = 349
-      Width = 203
+      Width = 161
       Anchors = [akLeft, akRight, akBottom]
       AutoSize = True
       BorderSpacing.Left = 6
@@ -104,7 +105,7 @@ object FMacroEditor: TFMacroEditor
       Left = 6
       Height = 25
       Top = 380
-      Width = 203
+      Width = 161
       Anchors = [akLeft, akRight, akBottom]
       AutoSize = True
       BorderSpacing.Left = 6
@@ -123,7 +124,7 @@ object FMacroEditor: TFMacroEditor
       Left = 6
       Height = 25
       Top = 130
-      Width = 203
+      Width = 161
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BorderSpacing.Left = 6
@@ -142,7 +143,7 @@ object FMacroEditor: TFMacroEditor
       Left = 6
       Height = 25
       Top = 68
-      Width = 203
+      Width = 161
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BorderSpacing.Left = 6
@@ -161,7 +162,7 @@ object FMacroEditor: TFMacroEditor
       Left = 6
       Height = 25
       Top = 99
-      Width = 203
+      Width = 161
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BorderSpacing.Left = 6
@@ -176,11 +177,11 @@ object FMacroEditor: TFMacroEditor
       AnchorSideTop.Side = asrBottom
       AnchorSideRight.Control = pnlButtons
       AnchorSideRight.Side = asrBottom
-      AnchorSideBottom.Control = btnRecord
+      AnchorSideBottom.Control = Panel1
       Left = 6
       Height = 80
-      Top = 266
-      Width = 203
+      Top = 216
+      Width = 161
       Anchors = [akLeft, akRight, akBottom]
       BorderSpacing.Left = 6
       BorderSpacing.Top = 3
@@ -189,14 +190,14 @@ object FMacroEditor: TFMacroEditor
       BevelOuter = bvNone
       BorderStyle = bsSingle
       ClientHeight = 76
-      ClientWidth = 199
+      ClientWidth = 157
       TabOrder = 8
       object edRepeat: TSpinEdit
         AnchorSideLeft.Control = rbRepeatNTimes
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = rbRepeatNTimes
         AnchorSideTop.Side = asrCenter
-        Left = 65
+        Left = 58
         Height = 23
         Top = 30
         Width = 58
@@ -219,7 +220,7 @@ object FMacroEditor: TFMacroEditor
         Left = 3
         Height = 19
         Top = 7
-        Width = 193
+        Width = 151
         Anchors = [akLeft, akRight]
         BorderSpacing.Left = 3
         BorderSpacing.Right = 3
@@ -229,7 +230,7 @@ object FMacroEditor: TFMacroEditor
         TabOrder = 1
       end
       object rbRepeatNTimes: TRadioButton
-        Left = 15
+        Left = 8
         Height = 19
         Top = 32
         Width = 41
@@ -243,7 +244,7 @@ object FMacroEditor: TFMacroEditor
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = edRepeat
         AnchorSideTop.Side = asrCenter
-        Left = 133
+        Left = 126
         Height = 15
         Top = 34
         Width = 29
@@ -254,7 +255,7 @@ object FMacroEditor: TFMacroEditor
       end
       object rbRepeatUntilEof: TRadioButton
         AnchorSideLeft.Control = rbRepeatNTimes
-        Left = 15
+        Left = 8
         Height = 19
         Top = 53
         Width = 100
@@ -263,18 +264,31 @@ object FMacroEditor: TFMacroEditor
         TabOrder = 3
       end
     end
+    object Panel1: TPanel
+      AnchorSideBottom.Control = btnRecord
+      Left = 6
+      Height = 50
+      Top = 299
+      Width = 161
+      Anchors = [akLeft, akRight, akBottom]
+      BevelOuter = bvNone
+      TabOrder = 9
+    end
   end
   object lbMacroView: TListView
     Left = 0
     Height = 405
     Top = 0
-    Width = 488
+    Width = 312
     Align = alClient
     Anchors = [akTop, akLeft, akBottom]
     AutoWidthLastColumn = True
     Columns = <    
       item
-        Width = 488
+        Width = 200
+      end    
+      item
+        Width = 108
       end>
     RowSelect = True
     ShowColumnHeaders = False

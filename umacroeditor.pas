@@ -44,6 +44,7 @@ type
     edRepeat: TSpinEdit;
     Label1: TLabel;
     lbMacroView: TListView;
+    Panel1: TPanel;
     PanelRepeat: TPanel;
     pnlButtons: TPanel;
     rbRepeatNTimes: TRadioButton;
@@ -52,6 +53,7 @@ type
     procedure btnRecordClick(Sender: TObject);
     procedure btnRecordStopClick(Sender: TObject);
     procedure chkRepeatChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     fFactory: TEditorFactory;
     SynMacroRec: TMacroRecorder;
@@ -119,6 +121,21 @@ begin
   rbRepeatNTimes.Enabled :=  chkRepeat.Checked;
   rbRepeatUntilEof.Enabled :=  chkRepeat.Checked;
   edRepeat.Enabled := chkRepeat.Checked;
+
+end;
+
+procedure TFMacroEditor.FormShow(Sender: TObject);
+var
+  Macro: RMacro;
+  Item: TListItem;
+begin
+  lbMacroView.Clear;
+  for macro in SynMacroRec.Macros do
+    begin
+      item := lbMacroView.Items.Add;
+      item.Caption := Macro.Name;
+      item.SubItems.Add(ShortCutToText(Macro.ShortCut));
+    end;
 
 end;
 
