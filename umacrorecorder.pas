@@ -34,6 +34,7 @@ type
     Name: string;
     Commands: String;
     ShortCut: TShortCut;
+    Saved: boolean;
   end;
 
   TMacroList = class (TList<RMacro>);
@@ -160,7 +161,8 @@ begin
 
   fRecordedMacro.Commands := SynMacroRec.AsString;
   TEditor(SynMacroRec.CurrentEditor).OnSearchReplace := nil;
-  fRecordedMacro.Name := 'Record';
+  fRecordedMacro.Name := 'Unsaved';
+  fRecordedMacro.Saved := false;
   FMacros.Add(fRecordedMacro);
   SynMacroRec.Stop;
   SaveMacros;
@@ -228,11 +230,14 @@ var
   i: Integer;
 begin
   NewCount := ConfigObj.ConfigHolder.GetValue('Macros/Count',0);
+
   for i:=0 to NewCount-1 do begin
     NewMacro.Name     := ConfigObj.ConfigHolder.GetValue('Macros/Macro'+IntToStr(i+1)+'/Name','');
     NewMacro.Commands := ConfigObj.ConfigHolder.GetValue('Macros/Macro'+IntToStr(i+1)+'/Commands','');
     NewMacro.ShortCut := ConfigObj.ConfigHolder.GetValue('Macros/Macro'+IntToStr(i+1)+'/Shortcut',0);
-      if FMacros.Count>i then
+    NewMacro.Saved    := true;
+
+    if FMacros.Count>i then
       FMacros[i]:=NewMacro
     else
       FMacros.Add(NewMacro);
@@ -244,6 +249,7 @@ end;
 procedure TMacroRecorder.SaveMacros;
 var
   i: Integer;
+  tmpMacro: RMacro;
 begin
   ConfigObj.ConfigHolder.SetDeleteValue('Macros/Count',FMacros.Count, 0);
   for i := 0 to FMacros.Count -1 do
@@ -251,6 +257,9 @@ begin
      ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Name',FMacros[i].Name,'') ;
      ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Commands',FMacros[i].Commands,'') ;
      ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Shortcut',FMacros[i].ShortCut,0) ;
+     tmpMacro := FMacros[i];
+     tmpMacro.Saved := true;
+     FMacros[i] := tmpMacro;
     end;
 
 end;
