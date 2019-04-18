@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls, Spin, ComCtrls, ueditor, uActionMacro,
-  uReplaceMacro, SynMacroRecorder, SynEditKeyCmds, ActnList, LCLProc, SynEditTypes;
+  uReplaceMacro, SynMacroRecorder, SynEditKeyCmds, ActnList, LCLProc, SynEditTypes, uMacroRecorder;
 
 type
 
@@ -48,20 +48,13 @@ type
     pnlButtons: TPanel;
     rbRepeatNTimes: TRadioButton;
     rbRepeatUntilEof: TRadioButton;
-    SynMacroRec: TSynMacroRecorder;
     procedure btnPlayClick(Sender: TObject);
     procedure btnRecordClick(Sender: TObject);
     procedure btnRecordStopClick(Sender: TObject);
     procedure chkRepeatChange(Sender: TObject);
-    procedure SynMacroRecStateChange(Sender: TObject);
-    procedure SynMacroRecUserCommand(aSender: TCustomSynMacroRecorder; aCmd: TSynEditorCommand;
-      var aEvent: TSynMacroEvent);
   private
     fFactory: TEditorFactory;
-    mc: string;
-    InExecute: Boolean;
-    procedure pRecordActions(AAction: TBasicAction; var Handled: Boolean);
-    procedure pRecordSearchReplace(Sender: TObject; const ASearch, AReplace: string; AOptions: TSynSearchOptions);
+    SynMacroRec: TMacroRecorder;
   public
 
   end;
@@ -79,6 +72,7 @@ begin
   if not Assigned(FMacroEditor) then
    FMacroEditor := TFMacroEditor.Create(Nil);
   FMacroEditor.fFactory := Factory;
+  FMacroEditor.SynMacroRec:= TMacroRecorder.Create(Factory);
   FMacroEditor.Show;
 end;
 
@@ -89,9 +83,7 @@ end;
 
 procedure TFMacroEditor.btnRecordClick(Sender: TObject);
 begin
-  SynMacroRec.AddEditor(fFactory.CurrentEditor);
-  SynMacroRec.RecordMacro(fFactory.CurrentEditor);
-  fFactory.CurrentEditor.SetFocus;
+  SynMacroRec.Start;
 end;
 
 procedure TFMacroEditor.btnPlayClick(Sender: TObject);
@@ -104,38 +96,21 @@ begin
     exit;
 
   ed.SetFocus;
-  SynMacroRec.AsString := mc;
   if chkRepeat.Checked then
      begin
        if rbRepeatNTimes.Checked then
-        begin
-          for i := 0 to pred(edRepeat.Value) do
-            SynMacroRec.PlaybackMacro(Ed);
-        end;
+          SynMacroRec.Playback(True, edRepeat.Value) ;
 
        if rbRepeatUntilEof.Checked then
-        begin
-          // Avoid macro infinite loop:
-          // if after playback i'm on the same line stop execution loop
-          CurrRow := ed.CaretY;
-          repeat
-            SynMacroRec.PlaybackMacro(Ed);
-
-          until (ed.CaretY = 1) or
-                (ed.CaretY = ed.Lines.Count ) or
-                (ed.CaretY = CurrRow);
-        end;
-
+        SynMacroRec.Playback(True, -1) ;
      end
 
   else
-    SynMacroRec.PlaybackMacro(fFactory.CurrentEditor);
+    SynMacroRec.Playback();
 end;
 
 procedure TFMacroEditor.btnRecordStopClick(Sender: TObject);
 begin
-  mc := SynMacroRec.AsString;
-  TEditor(SynMacroRec.CurrentEditor).OnSearchReplace := nil;
   SynMacroRec.Stop;
 end;
 
@@ -147,73 +122,6 @@ begin
 
 end;
 
-procedure TFMacroEditor.pRecordSearchReplace(Sender:TObject; const ASearch, AReplace: string; AOptions: TSynSearchOptions);
-var
-  AEvent: TReplaceMacroEvent;
-begin
-  with SynMacroRec do
-  begin
-    AEvent:= TReplaceMacroEvent.Create;
-    AEvent.Search:= ASearch;
-    AEvent.Replace := AReplace;
-    AEvent.ReplaceOptions := AOptions;
-    AddCustomEvent(TSynMacroEvent(AEvent));
-  end;
-end;
-
-procedure TFMacroEditor.SynMacroRecStateChange(Sender: TObject);
-begin
-  if SynMacroRec.State = msRecording then
-   begin
-     fMain.ActionList.OnExecute:= @pRecordActions;
-     TEditor(SynMacroRec.CurrentEditor).OnSearchReplace := @pRecordSearchReplace;
-   end
-   else
-   begin
-     if Assigned(fMain.ActionList.OnExecute) then
-       fMain.ActionList.OnExecute:= nil;
-     if assigned(SynMacroRec.CurrentEditor) then
-     TEditor(SynMacroRec.CurrentEditor).OnSearchReplace := nil;
-   end;
-end;
-
-procedure TFMacroEditor.SynMacroRecUserCommand(aSender: TCustomSynMacroRecorder; aCmd: TSynEditorCommand;
-  var aEvent: TSynMacroEvent);
-begin
-  if aCmd = ecAction then
-   begin
-     aEvent := TActionMacroEvent.Create;
-     TActionMacroEvent(AEvent).ActionLists.Add(fMain.ActionList);
-   end;
-  if aCmd = ecReplace then
-   begin
-     aEvent := TReplaceMacroEvent.Create;
-   end;
-
-end;
-
-procedure TFMacroEditor.pRecordActions(AAction: TBasicAction; var Handled: Boolean);
-var
-  AEvent: TActionMacroEvent;
-begin
-
-  // record only actions that do simple text manipulation
-  if not InExecute and (aaction.name <> '') and ((AAction.Tag and 1) = 1) then
-    with SynMacroRec do
-    begin
-      AEvent:= TActionMacroEvent.Create;
-      AEvent.ActionName:= AAction.Name;
-      AEvent.ActionLists.Add(fMain.ActionList);
-      AddCustomEvent(TSynMacroEvent(AEvent));
-      InExecute:= True;
-      try
-        AAction.Execute;
-        Handled:= True;
-      finally
-        InExecute:= False;
-      end;
-    end;
-end;
 
 
 initialization

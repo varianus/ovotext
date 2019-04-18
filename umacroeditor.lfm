@@ -282,12 +282,4 @@ object FMacroEditor: TFMacroEditor
     TabOrder = 1
     ViewStyle = vsReport
   end
-  object SynMacroRec: TSynMacroRecorder
-    RecordShortCut = 24658
-    PlaybackShortCut = 24656
-    OnStateChange = SynMacroRecStateChange
-    OnUserCommand = SynMacroRecUserCommand
-    Left = 120
-    Top = 240
-  end
 end

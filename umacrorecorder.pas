@@ -19,41 +19,56 @@
 }
 unit uMacroRecorder;
 
-{$mode objfpc}{$H+}
+{$mode delphi}{$H+}
 
 interface
 
 uses
   Classes, SysUtils, ueditor, uActionMacro,
-  uReplaceMacro, SynMacroRecorder, SynEditKeyCmds, ActnList, LCLProc, SynEditTypes;
+  uReplaceMacro, SynMacroRecorder, SynEditKeyCmds, ActnList, LCLProc, SynEditTypes, Config, Generics.Collections;
 
 type
 
   { TMacroRecorder }
+  RMacro = record
+    Name: string;
+    Commands: String;
+    ShortCut: TShortCut;
+  end;
+
+  TMacroList = class (TList<RMacro>);
+
 
   TMacroRecorder = class
   private
     fFactory: TEditorFactory;
-    fRecordedMacro: string;
+    fOnStateChange: TNotifyEvent;
+    fRecordedMacro: RMacro;
     InExecute: Boolean;
     SynMacroRec: TSynMacroRecorder;
+
+    Macros: TMacroList;
 
     function GetState: TSynMacroState;
     procedure pRecordActions(AAction: TBasicAction; var Handled: Boolean);
     procedure pRecordSearchReplace(Sender: TObject; const ASearch, AReplace: string; AOptions: TSynSearchOptions);
 
-    procedure PlayBack(Multiple: boolean=false; Count:integer=1);
     procedure SynMacroRecStateChange(Sender: TObject);
     procedure SynMacroRecUserCommand(aSender: TCustomSynMacroRecorder; aCmd: TSynEditorCommand; var aEvent: TSynMacroEvent);
+  protected
+    Function LoadMacros: integer;
+    Procedure SaveMacros;
   public
     Constructor Create(Factory: TEditorFactory);
     Destructor Destroy; override;
+
     Property State: TSynMacroState read GetState;
+    property OnStateChange: TNotifyEvent read fOnStateChange write fOnStateChange;
 
     procedure Start;
     procedure Stop;
     procedure Pause;
-
+    procedure PlayBack(Multiple: boolean=false; Count:integer=1);
   end;
 
 implementation
@@ -64,8 +79,13 @@ uses
 constructor TMacroRecorder.Create(Factory: TEditorFactory);
 begin
   inherited Create;
-  fFactory := fFactory;
+  fFactory := Factory;
+  Macros:= TMacroList.Create;
   SynMacroRec := TSynMacroRecorder.Create(nil);
+  SynMacroRec.OnStateChange := SynMacroRecStateChange;
+  SynMacroRec.OnUserCommand := SynMacroRecUserCommand;
+  LoadMacros;
+  fRecordedMacro.Commands := Macros[0].Commands;
 end;
 
 destructor TMacroRecorder.Destroy;
@@ -105,7 +125,7 @@ begin
     exit;
 
   ed.SetFocus;
-  SynMacroRec.AsString := fRecordedMacro;
+  SynMacroRec.AsString := fRecordedMacro.Commands;
   if multiple then
      begin
        if count > 0 then
@@ -137,9 +157,12 @@ begin
   if not (SynMacroRec.State in [msRecording, msPaused]) then
     exit;
 
-  fRecordedMacro := SynMacroRec.AsString;
+  fRecordedMacro.Commands := SynMacroRec.AsString;
   TEditor(SynMacroRec.CurrentEditor).OnSearchReplace := nil;
+  fRecordedMacro.Name := 'Record';
+  Macros.Add(fRecordedMacro);
   SynMacroRec.Stop;
+  SaveMacros;
 end;
 
 procedure TMacroRecorder.Pause;
@@ -154,20 +177,24 @@ var
 begin
   with SynMacroRec do
   begin
-    AEvent:= TReplaceMacroEvent.Create;
-    AEvent.Search:= ASearch;
-    AEvent.Replace := AReplace;
+    AEvent                := TReplaceMacroEvent.Create;
+    AEvent.Search         := ASearch;
+    AEvent.Replace        := AReplace;
     AEvent.ReplaceOptions := AOptions;
     AddCustomEvent(TSynMacroEvent(AEvent));
+
   end;
 end;
 
 procedure TMacroRecorder.SynMacroRecStateChange(Sender: TObject);
 begin
+  if Assigned(fOnStateChange) then
+    fOnStateChange(Sender);
+
   if SynMacroRec.State = msRecording then
    begin
-     fMain.ActionList.OnExecute:= @pRecordActions;
-     TEditor(SynMacroRec.CurrentEditor).OnSearchReplace := @pRecordSearchReplace;
+     fMain.ActionList.OnExecute:= pRecordActions;
+     TEditor(SynMacroRec.CurrentEditor).OnSearchReplace := pRecordSearchReplace;
    end
    else
    begin
@@ -190,6 +217,40 @@ begin
    begin
      aEvent := TReplaceMacroEvent.Create;
    end;
+
+end;
+
+function TMacroRecorder.LoadMacros: integer;
+var
+  NewCount: LongInt;
+  NewMacro: RMacro;
+  i: Integer;
+begin
+  NewCount := ConfigObj.ConfigHolder.GetValue('Macros/Count',0);
+  for i:=0 to NewCount-1 do begin
+    NewMacro.Name     := ConfigObj.ConfigHolder.GetValue('Macros/Macro'+IntToStr(i+1)+'/Name','');
+    NewMacro.Commands := ConfigObj.ConfigHolder.GetValue('Macros/Macro'+IntToStr(i+1)+'/Commands','');
+    NewMacro.ShortCut := ConfigObj.ConfigHolder.GetValue('Macros/Macro'+IntToStr(i+1)+'/Shortcut',0);
+      if Macros.Count>i then
+      Macros[i]:=NewMacro
+    else
+      Macros.Add(NewMacro);
+  end;
+  while Macros.Count>NewCount do Macros.Delete(Macros.Count-1);
+
+end;
+
+procedure TMacroRecorder.SaveMacros;
+var
+  i: Integer;
+begin
+  ConfigObj.ConfigHolder.SetDeleteValue('Macros/Count',Macros.Count, 0);
+  for i := 0 to macros.Count -1 do
+    begin
+     ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Name',Macros[i].Name,'') ;
+     ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Commands',Macros[i].Commands,'') ;
+     ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Shortcut',Macros[i].ShortCut,0) ;
+    end;
 
 end;
 

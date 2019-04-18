@@ -134,7 +134,6 @@ type
     function isLoaded: boolean;
   end;
 
-
   TConfig = class
   private
     fHighlighters: THighLighterList;
