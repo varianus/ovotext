@@ -81,6 +81,22 @@ msgstr ""
 "Questo file è stato cancellato da un'altra applicazione.\n"
 "Vuoi mantenerlo nell'editor?\n"
 
+#: stringcostants.rsmacro
+msgid "Macro"
+msgstr ""
+
+#: stringcostants.rsmacrodefaultname
+msgid "Unsaved"
+msgstr ""
+
+#: stringcostants.rsmacrodelete
+msgid "Delete macro \"%s\" ?"
+msgstr ""
+
+#: stringcostants.rsmacronewname
+msgid "Select a new name for macro"
+msgstr ""
+
 #: stringcostants.rsnewfile
 msgid "<new   %d>"
 msgstr "<nuovo   %d>"
@@ -240,8 +256,10 @@ msgid "Version"
 msgstr "Versione"
 
 #: tfmacroeditor.btndelete.caption
-msgid "btnDelete"
-msgstr ""
+#, fuzzy
+msgctxt "tfmacroeditor.btndelete.caption"
+msgid "Delete"
+msgstr "Elimina"
 
 #: tfmacroeditor.btnedit.caption
 msgid "btnEdit"
@@ -260,7 +278,7 @@ msgid "Stop recording"
 msgstr ""
 
 #: tfmacroeditor.btnrename.caption
-msgid "btnRename"
+msgid "Rename"
 msgstr ""
 
 #: tfmacroeditor.btnselect.caption
@@ -405,6 +423,7 @@ msgid "&Delete"
 msgstr "&Elimina"
 
 #: tfmain.editdelete.hint
+msgctxt "tfmain.editdelete.hint"
 msgid "Delete"
 msgstr "Elimina"
 

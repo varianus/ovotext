@@ -24,27 +24,27 @@ unit uMacroRecorder;
 interface
 
 uses
-  Classes, SysUtils, ueditor, uActionMacro,
-  uReplaceMacro, SynMacroRecorder, SynEditKeyCmds, ActnList, LCLProc, SynEditTypes, Config, Generics.Collections;
+  Classes, SysUtils, ueditor, uActionMacro, uReplaceMacro, SynMacroRecorder, SynEditKeyCmds, ActnList, LCLProc,
+  SynEditTypes, Config, Stringcostants, Generics.Collections;
 
 type
 
   { TMacroRecorder }
-  RMacro = record
+  TMacro = Class
     Name: string;
     Commands: String;
     ShortCut: TShortCut;
     Saved: boolean;
   end;
 
-  TMacroList = class (TList<RMacro>);
+  TMacroList = class (TObjectList<TMacro>);
 
 
   TMacroRecorder = class
   private
     fFactory: TEditorFactory;
     fOnStateChange: TNotifyEvent;
-    fRecordedMacro: RMacro;
+    fRecordedMacro: TMacro;
     InExecute: Boolean;
     SynMacroRec: TSynMacroRecorder;
 
@@ -58,10 +58,10 @@ type
     procedure SynMacroRecUserCommand(aSender: TCustomSynMacroRecorder; aCmd: TSynEditorCommand; var aEvent: TSynMacroEvent);
   protected
     Function LoadMacros: integer;
-    Procedure SaveMacros;
   public
     Constructor Create(Factory: TEditorFactory);
     Destructor Destroy; override;
+    Procedure SaveMacros;
 
     Property State: TSynMacroState read GetState;
     property OnStateChange: TNotifyEvent read fOnStateChange write fOnStateChange;
@@ -70,7 +70,7 @@ type
     procedure Start;
     procedure Stop;
     procedure Pause;
-    procedure PlayBack(Multiple: boolean=false; Count:integer=1);
+    procedure PlayBack(Macro: TMacro; Multiple: boolean=false; Count:integer=1);
   end;
 
 implementation
@@ -87,7 +87,6 @@ begin
   SynMacroRec.OnStateChange := SynMacroRecStateChange;
   SynMacroRec.OnUserCommand := SynMacroRecUserCommand;
   LoadMacros;
-  fRecordedMacro.Commands := FMacros[0].Commands;
 end;
 
 destructor TMacroRecorder.Destroy;
@@ -114,7 +113,7 @@ begin
 
 end;
 
-procedure TMacroRecorder.PlayBack(Multiple: boolean=false; Count:integer=1);
+procedure TMacroRecorder.PlayBack(Macro:TMacro; Multiple: boolean=false; Count:integer=1);
 var
   CurrRow, i: integer;
   ed : TEditor;
@@ -127,7 +126,7 @@ begin
     exit;
 
   ed.SetFocus;
-  SynMacroRec.AsString := fRecordedMacro.Commands;
+  SynMacroRec.AsString := Macro.Commands;
   if multiple then
      begin
        if count > 0 then
@@ -158,10 +157,10 @@ procedure TMacroRecorder.Stop;
 begin
   if not (SynMacroRec.State in [msRecording, msPaused]) then
     exit;
-
+  fRecordedMacro := TMacro.Create;
   fRecordedMacro.Commands := SynMacroRec.AsString;
   TEditor(SynMacroRec.CurrentEditor).OnSearchReplace := nil;
-  fRecordedMacro.Name := 'Unsaved';
+  fRecordedMacro.Name := RSMacroDefaultName;
   fRecordedMacro.Saved := false;
   FMacros.Add(fRecordedMacro);
   SynMacroRec.Stop;
@@ -226,12 +225,14 @@ end;
 function TMacroRecorder.LoadMacros: integer;
 var
   NewCount: LongInt;
-  NewMacro: RMacro;
+  NewMacro: TMacro;
   i: Integer;
 begin
   NewCount := ConfigObj.ConfigHolder.GetValue('Macros/Count',0);
 
-  for i:=0 to NewCount-1 do begin
+  for i:=0 to NewCount-1 do
+    begin
+    NewMacro := TMacro.Create;
     NewMacro.Name     := ConfigObj.ConfigHolder.GetValue('Macros/Macro'+IntToStr(i+1)+'/Name','');
     NewMacro.Commands := ConfigObj.ConfigHolder.GetValue('Macros/Macro'+IntToStr(i+1)+'/Commands','');
     NewMacro.ShortCut := ConfigObj.ConfigHolder.GetValue('Macros/Macro'+IntToStr(i+1)+'/Shortcut',0);
@@ -249,7 +250,6 @@ end;
 procedure TMacroRecorder.SaveMacros;
 var
   i: Integer;
-  tmpMacro: RMacro;
 begin
   ConfigObj.ConfigHolder.SetDeleteValue('Macros/Count',FMacros.Count, 0);
   for i := 0 to FMacros.Count -1 do
@@ -257,9 +257,7 @@ begin
      ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Name',FMacros[i].Name,'') ;
      ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Commands',FMacros[i].Commands,'') ;
      ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Shortcut',FMacros[i].ShortCut,0) ;
-     tmpMacro := FMacros[i];
-     tmpMacro.Saved := true;
-     FMacros[i] := tmpMacro;
+     FMacros[i].Saved := true;
     end;
 
 end;

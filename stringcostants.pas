@@ -74,6 +74,14 @@ resourcestring
   //--
   RSTextNotFound = 'Text not found:'+LineEnding+'"%s"';
 
+  RSMacro        = 'Macro';
+  RSMacroDefaultName = 'Unsaved';
+  RSMacroNewName = 'Select a new name for macro';
+
+  RSMacroDelete  = 'Delete macro "%s" ?';
+
+
+
 implementation
 
 end.
