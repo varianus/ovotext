@@ -30,7 +30,7 @@ interface
 uses
   Classes, SysUtils, Controls, Dialogs, ComCtrls, LCLProc, LCLType,
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,
-  SynMacroRecorder, SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds,
+  SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds,
   SynEditMouseCmds, SynEditLines, Stringcostants, Forms, Graphics, Config, udmmain,
   uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils;
 
@@ -127,7 +127,6 @@ type
     FonStatusChange: TStatusChangeEvent;
     fUntitledCounter: integer;
     FWatcher: TFileWatcher;
-    fMacroRec: TSynMacroRecorder;
     function GetCurrentEditor: TEditor;
     procedure SetOnBeforeClose(AValue: TOnBeforeClose);
     procedure SetOnNewEditor(AValue: TOnEditorEvent);

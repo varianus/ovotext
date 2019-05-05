@@ -27,7 +27,7 @@ uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls,
   SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils,
-  udmmain, uDglGoTo, SynEditPrint, simplemrumanager, uMacroEditor, SynEditLines;
+  udmmain, uDglGoTo, SynEditPrint, simplemrumanager, uMacroRecorder, uMacroEditor, SynEditLines;
 
 type
 
@@ -43,6 +43,10 @@ type
     actCloseBefore: TAction;
     actCloseAfter: TAction;
     actFindLongestLine: TAction;
+    actMacroPlayBack: TAction;
+    actMacroStop: TAction;
+    actMacroPlaybackMulti: TAction;
+    actMacroRecord: TAction;
     FileReload: TAction;
     actPathToClipboard: TAction;
     actSQLPrettyPrint: TAction;
@@ -200,12 +204,17 @@ type
     ToolButton11: TToolButton;
     ToolButton12: TToolButton;
     ToolButton13: TToolButton;
+    ToolButton14: TToolButton;
     ToolButton15: TToolButton;
+    ToolButton16: TToolButton;
+    ToolButton17: TToolButton;
+    ToolButton18: TToolButton;
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     tbbClose: TToolButton;
     tbbCloseAll: TToolButton;
     tbbSepClose: TToolButton;
+    ToolButton4: TToolButton;
     ToolButton5: TToolButton;
     ToolButton6: TToolButton;
     ToolButton7: TToolButton;
@@ -222,6 +231,8 @@ type
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
     procedure actJSONPrettyPrintExecute(Sender: TObject);
     procedure actLanguageNoneExecute(Sender: TObject);
+    procedure actMacroPlayBackExecute(Sender: TObject);
+    procedure actMacroRecordExecute(Sender: TObject);
     procedure actPathToClipboardExecute(Sender: TObject);
     procedure actPrintExecute(Sender: TObject);
     procedure actQuoteExecute(Sender: TObject);
@@ -283,6 +294,7 @@ type
     procedure actUpperCaseExecute(Sender: TObject);
   private
     EditorFactory: TEditorFactory;
+    SynMacroRec : TMacroRecorder;
     MRU: TMRUMenuManager;
 
     FindText, ReplaceText: string;
@@ -469,6 +481,16 @@ begin
 
   Ed := EditorFactory.CurrentEditor;
   Ed.Highlighter := nil;
+end;
+
+procedure TfMain.actMacroPlayBackExecute(Sender: TObject);
+begin
+//  SynMacroRec.PlayBack();
+end;
+
+procedure TfMain.actMacroRecordExecute(Sender: TObject);
+begin
+  SynMacroRec.Start;
 end;
 
 procedure TfMain.actPathToClipboardExecute(Sender: TObject);
@@ -821,10 +843,13 @@ begin
   EditorFactory.Images := imgList;
   EditorFactory.Parent := self;
   FileNew.Execute;
-  // move close button to right
-  tbbCloseAll.Align := alRight;
-  tbbSepClose.Align := alRight;
-  tbbClose.Align := alRight;
+
+
+  //// move close button to right
+  //tbbCloseAll.Align := alRight;
+  //tbbSepClose.Align := alRight;
+  //tbbClose.Align := alRight;
+
   // Parameters
   FileOpen.Dialog.Filter := configobj.GetFiters;
 
@@ -876,6 +901,8 @@ begin
     mnuTheme.OnClick:=@mnuThemeClick;
     mnuThemes.Add(mnuTheme);
   end;
+
+  SynMacroRec := TMacroRecorder.Create(EditorFactory);
 
 end;
 
@@ -1000,7 +1027,7 @@ end;
 
 procedure TfMain.MenuItem87Click(Sender: TObject);
 begin
-  ShowMacroEditor(EditorFactory);
+  ShowMacroEditor(SynMacroRec);
 end;
 
 procedure TfMain.mnuLineEndingsClick(Sender: TObject);

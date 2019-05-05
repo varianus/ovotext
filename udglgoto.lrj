@@ -1,0 +1,6 @@
+{"version":1,"strings":[
+{"hash":5117871,"name":"tdlggoto.caption","sourcebytes":[71,111,32,116,111],"value":"Go to"},
+{"hash":118045874,"name":"tdlggoto.label1.caption","sourcebytes":[76,105,110,101,32,110,117,109,98,101,114],"value":"Line number"},
+{"hash":5117871,"name":"tdlggoto.buttonpanel1.okbutton.caption","sourcebytes":[71,111,32,116,111],"value":"Go to"},
+{"hash":221904002,"name":"tdlggoto.label2.caption","sourcebytes":[67,111,108,117,109,110,32,110,117,109,98,101,114],"value":"Column number"}
+]}

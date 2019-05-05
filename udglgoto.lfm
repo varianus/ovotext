@@ -38,7 +38,6 @@ object dlgGoTo: TdlgGoTo
     Width = 238
     OKButton.Name = 'OKButton'
     OKButton.Caption = 'Go to'
-    OKButton.DefaultCaption = False
     OKButton.OnClick = OKButtonClick
     HelpButton.Name = 'HelpButton'
     HelpButton.DefaultCaption = True

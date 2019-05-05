@@ -200,60 +200,23 @@ msgstr ""
 "Testo non trovato\n"
 "\"%s\"\n"
 
-#: tfabout.blicense.caption
-msgid "&License"
-msgstr "&Licenza"
+#: tdlggoto.buttonpanel1.okbutton.caption
+msgctxt "tdlggoto.buttonpanel1.okbutton.caption"
+msgid "Go to"
+msgstr ""
 
-#: tfabout.caption
-msgid "About"
-msgstr "Informazioni su"
+#: tdlggoto.caption
+msgctxt "tdlggoto.caption"
+msgid "Go to"
+msgstr ""
 
-#: tfabout.label1.caption
-msgctxt "tfabout.label1.caption"
-msgid "OvoText"
-msgstr "OvoText"
+#: tdlggoto.label1.caption
+msgid "Line number"
+msgstr ""
 
-#: tfabout.label2.caption
-msgctxt "tfabout.label2.caption"
-msgid "Version"
-msgstr "Versione"
-
-#: tfabout.label3.caption
-msgid "Author : Marco Caselli"
-msgstr "Autore : Marco Caselli"
-
-#: tfabout.label4.caption
-msgid "Another text editor"
-msgstr "Un altro editor di testo"
-
-#: tfabout.label5.caption
-msgid "Lazarus"
-msgstr "Lazarus"
-
-#: tfabout.label6.caption
-msgid "Home Page"
-msgstr "Sito Web"
-
-#: tfabout.label7.caption
-msgid "FPC"
-msgstr "FPC"
-
-#: tfabout.label8.caption
-msgid "Build Date"
-msgstr "Data Build"
-
-#: tfabout.label9.caption
-msgid "SVN rev:"
-msgstr "SVN rev:"
-
-#: tfabout.lhomepage.caption
-msgid "https://github.com/varianus/ovotext"
-msgstr "https://github.com/varianus/ovotext"
-
-#: tfabout.lversion.caption
-msgctxt "tfabout.lversion.caption"
-msgid "Version"
-msgstr "Versione"
+#: tdlggoto.label2.caption
+msgid "Column number"
+msgstr ""
 
 #: tfmacroeditor.btndelete.caption
 #, fuzzy
@@ -274,6 +237,7 @@ msgid "Record macro"
 msgstr ""
 
 #: tfmacroeditor.btnrecordstop.caption
+msgctxt "tfmacroeditor.btnrecordstop.caption"
 msgid "Stop recording"
 msgstr ""
 
@@ -352,6 +316,39 @@ msgstr "Nessuno"
 #: tfmain.actlowercase.caption
 msgid "lowercase"
 msgstr "minuscolo"
+
+#: tfmain.actmacroplayback.caption
+msgid "PlayBack"
+msgstr ""
+
+#: tfmain.actmacroplayback.hint
+msgid "playback recorded macro"
+msgstr ""
+
+#: tfmain.actmacroplaybackmulti.caption
+msgid "actMacroPlaybackMulti"
+msgstr ""
+
+#: tfmain.actmacroplaybackmulti.hint
+msgid "Playback macro multiple times"
+msgstr ""
+
+#: tfmain.actmacrorecord.caption
+msgid "Record"
+msgstr ""
+
+#: tfmain.actmacrorecord.hint
+msgid "Begin macro recording"
+msgstr ""
+
+#: tfmain.actmacrostop.caption
+msgid "Stop"
+msgstr ""
+
+#: tfmain.actmacrostop.hint
+msgctxt "tfmain.actmacrostop.hint"
+msgid "Stop recording"
+msgstr ""
 
 #: tfmain.actpathtoclipboard.caption
 msgid "File Path to clipboard"
@@ -690,4 +687,12 @@ msgstr "Ordinamento Crescente"
 #: tfmain.sortdescending.caption
 msgid "Sort Descending"
 msgstr "Ordinamento Discendente"
+
+#: tfmain.toolbutton11.caption
+msgid "ToolButton11"
+msgstr ""
+
+#: tfmain.toolbutton4.caption
+msgid "ToolButton4"
+msgstr ""
 

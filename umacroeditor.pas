@@ -58,14 +58,13 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
   private
-    fFactory: TEditorFactory;
     SynMacroRec: TMacroRecorder;
     procedure ReloadMacros;
   public
 
   end;
 
-Procedure ShowMacroEditor(Factory: TEditorFactory);
+Procedure ShowMacroEditor(Recorder: TMacroRecorder);
 
 implementation
 uses
@@ -73,13 +72,13 @@ uses
 var
   FMacroEditor: TFMacroEditor;
 
-procedure ShowMacroEditor(Factory: TEditorFactory);
+procedure ShowMacroEditor(Recorder: TMacroRecorder);
 begin
   if not Assigned(FMacroEditor) then
    FMacroEditor := TFMacroEditor.Create(Nil);
-  FMacroEditor.fFactory := Factory;
-  FMacroEditor.SynMacroRec:= TMacroRecorder.Create(Factory);
+  FMacroEditor.SynMacroRec:= Recorder;
   FMacroEditor.Show;
+
 end;
 
 
@@ -96,7 +95,7 @@ procedure TFMacroEditor.btnPlayClick(Sender: TObject);
 var
   ed : TEditor;
 begin
-  ed := fFactory.CurrentEditor;
+  ed := SynMacroRec.Factory.CurrentEditor;
   if not Assigned(ed) then
     exit;
 

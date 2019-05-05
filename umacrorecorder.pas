@@ -66,6 +66,7 @@ type
     Property State: TSynMacroState read GetState;
     property OnStateChange: TNotifyEvent read fOnStateChange write fOnStateChange;
     Property Macros: TMacroList read FMacros;
+    property Factory: TEditorFactory read ffactory;
 
     procedure Start;
     procedure Stop;
