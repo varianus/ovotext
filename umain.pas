@@ -27,7 +27,7 @@ uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls,
   SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils,
-  udmmain, uDglGoTo, SynEditPrint, simplemrumanager, uMacroRecorder, uMacroEditor, SynEditLines;
+  udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder, uMacroEditor, SynEditLines;
 
 type
 
@@ -457,6 +457,8 @@ begin
   actGoTo.Enabled := Avail and (ed.Lines.Count > 0);
   actCloseAfter.Enabled := EditorFactory.PageCount > EditorFactory.PageIndex;
   actCloseBefore.Enabled := EditorFactory.PageIndex > 0;
+  actMacroRecord.Enabled := SynMacroRec.State <> msRecording;
+  actMacroStop.Enabled := SynMacroRec.State = msRecording;
 
   Handled := True;
 end;
@@ -827,6 +829,7 @@ var
   CurrMenu: TMenuItem;
 
 begin
+
   MRU := TMRUMenuManager.Create(Self);
   MRU.MenuItem := mnuOpenRecent;
   MRU.OnRecentFile := @RecentFileEvent;
@@ -842,6 +845,9 @@ begin
   EditorFactory.OnContextPopup := @ContextPopup;
   EditorFactory.Images := imgList;
   EditorFactory.Parent := self;
+
+  SynMacroRec := TMacroRecorder.Create(EditorFactory);
+
   FileNew.Execute;
 
 
@@ -901,8 +907,6 @@ begin
     mnuTheme.OnClick:=@mnuThemeClick;
     mnuThemes.Add(mnuTheme);
   end;
-
-  SynMacroRec := TMacroRecorder.Create(EditorFactory);
 
 end;
 
