@@ -118,7 +118,7 @@ begin
   if not Assigned(lbMacroView.Selected) then
     exit;
 
-  if MessageDlg(RSMacro, RSMacroDelete, mtConfirmation, [mbYes,mbNo], 0) = mrYes then
+  if MessageDlg(RSMacro, format(RSMacroDelete, [lbMacroView.Selected.Caption]), mtConfirmation, [mbYes,mbNo], 0) = mrYes then
     begin
       SynMacroRec.Macros.Remove(TMacro(lbMacroView.Selected.Data));
     end;
