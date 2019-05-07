@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls, Spin, ComCtrls, ueditor, uActionMacro,
-  uReplaceMacro, SynEditKeyCmds, ActnList, LCLProc, uMacroRecorder, Stringcostants;
+  uReplaceMacro, SynEditKeyCmds, SynEdit, ActnList, LCLProc, uMacroRecorder, Stringcostants;
 
 type
 
@@ -42,21 +42,22 @@ type
     btnSetKeys: TButton;
     chkRepeat: TCheckBox;
     edRepeat: TSpinEdit;
-    Label1: TLabel;
     lbMacroView: TListView;
-    Panel1: TPanel;
+    pnlTop: TPanel;
     PanelRepeat: TPanel;
     pnlButtons: TPanel;
-    rbRepeatNTimes: TRadioButton;
-    rbRepeatUntilEof: TRadioButton;
+    cbRepeatUntilEof: TCheckBox;
+    SynEdit1: TSynEdit;
     procedure btnDeleteClick(Sender: TObject);
     procedure btnPlayClick(Sender: TObject);
     procedure btnRecordClick(Sender: TObject);
     procedure btnRecordStopClick(Sender: TObject);
     procedure btnRenameClick(Sender: TObject);
+    procedure cbRepeatUntilEofChange(Sender: TObject);
     procedure chkRepeatChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
+    procedure lbMacroViewSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
   private
     SynMacroRec: TMacroRecorder;
     procedure ReloadMacros;
@@ -68,7 +69,7 @@ Procedure ShowMacroEditor(Recorder: TMacroRecorder);
 
 implementation
 uses
-  umain;
+  Config;
 var
   FMacroEditor: TFMacroEditor;
 
@@ -102,11 +103,10 @@ begin
   ed.SetFocus;
   if chkRepeat.Checked then
      begin
-       if rbRepeatNTimes.Checked then
-          SynMacroRec.Playback(TMacro(lbMacroView.Selected.Data),  True, edRepeat.Value) ;
-
-       if rbRepeatUntilEof.Checked then
-        SynMacroRec.Playback(TMacro(lbMacroView.Selected.Data), True, -1) ;
+       if cbRepeatUntilEof.Checked then
+        SynMacroRec.Playback(TMacro(lbMacroView.Selected.Data), True, -1)
+       else
+        SynMacroRec.Playback(TMacro(lbMacroView.Selected.Data),  True, edRepeat.Value) ;
      end
 
   else
@@ -147,11 +147,15 @@ begin
 
 end;
 
+procedure TFMacroEditor.cbRepeatUntilEofChange(Sender: TObject);
+begin
+    edRepeat.Enabled := not cbRepeatUntilEof.Checked;
+end;
+
 procedure TFMacroEditor.chkRepeatChange(Sender: TObject);
 begin
-  rbRepeatNTimes.Enabled :=  chkRepeat.Checked;
-  rbRepeatUntilEof.Enabled :=  chkRepeat.Checked;
-  edRepeat.Enabled := chkRepeat.Checked;
+  cbRepeatUntilEof.Enabled :=  chkRepeat.Checked;
+  edRepeat.Enabled := chkRepeat.Checked and not cbRepeatUntilEof.Checked;
 
 end;
 
@@ -161,8 +165,25 @@ begin
 end;
 
 procedure TFMacroEditor.FormShow(Sender: TObject);
+var
+  DefaultAttr: TFontAttributes;
 begin
   ReloadMacros;
+  SynEdit1.Highlighter:= ConfigObj.getHighLighter('.pas');
+  SynEdit1.Font.Assign(ConfigObj.Font);
+  DefaultAttr := ConfigObj.ReadFontAttributes('Schema/Default/Text/', FontAttributes());
+
+  SynEdit1.Font.Color := DefaultAttr.Foreground;
+  SynEdit1.Font.Style := DefaultAttr.Styles;
+
+  SynEdit1.Color := DefaultAttr.Background;
+
+end;
+
+procedure TFMacroEditor.lbMacroViewSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
+begin
+ if Assigned(Item) then
+    SynEdit1.Lines.Text :=  TMacro(Item.Data).Commands;
 end;
 
 procedure TFMacroEditor.ReloadMacros;

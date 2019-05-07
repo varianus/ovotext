@@ -9,7 +9,5 @@
 {"hash":164595763,"name":"tfmacroeditor.btnsetkeys.caption","sourcebytes":[98,116,110,83,101,116,75,101,121,115],"value":"btnSetKeys"},
 {"hash":162708324,"name":"tfmacroeditor.btnedit.caption","sourcebytes":[98,116,110,69,100,105,116],"value":"btnEdit"},
 {"hash":93088644,"name":"tfmacroeditor.chkrepeat.caption","sourcebytes":[82,101,112,101,97,116],"value":"Repeat"},
-{"hash":31166,"name":"tfmacroeditor.rbrepeatntimes.caption","sourcebytes":[114,117,110],"value":"run"},
-{"hash":8061891,"name":"tfmacroeditor.label1.caption","sourcebytes":[116,105,109,101,115],"value":"times"},
-{"hash":194958469,"name":"tfmacroeditor.rbrepeatuntileof.caption","sourcebytes":[117,110,116,105,108,32,101,110,100,32,111,102,32,102,105,108,101],"value":"until end of file"}
+{"hash":194958469,"name":"tfmacroeditor.cbrepeatuntileof.caption","sourcebytes":[117,110,116,105,108,32,101,110,100,32,111,102,32,102,105,108,101],"value":"until end of file"}
 ]}

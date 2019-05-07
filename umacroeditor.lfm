@@ -1,302 +1,776 @@
 object FMacroEditor: TFMacroEditor
   Left = 350
-  Height = 426
+  Height = 506
   Top = 31
-  Width = 565
+  Width = 396
   Caption = 'Macro editor'
-  ClientHeight = 426
-  ClientWidth = 565
+  ClientHeight = 506
+  ClientWidth = 396
+  Constraints.MinHeight = 340
+  Constraints.MinWidth = 250
   OnClose = FormClose
   OnShow = FormShow
-  LCLVersion = '2.1.0.0'
-  object pnlButtons: TPanel
-    Left = 352
-    Height = 426
-    Top = 0
-    Width = 213
-    Align = alRight
-    BevelOuter = bvNone
-    ClientHeight = 426
-    ClientWidth = 213
-    Constraints.MinHeight = 250
-    TabOrder = 0
-    object btnSelect: TButton
-      AnchorSideLeft.Control = pnlButtons
-      AnchorSideTop.Control = pnlButtons
-      AnchorSideRight.Control = pnlButtons
-      AnchorSideRight.Side = asrBottom
-      AnchorSideBottom.Side = asrBottom
-      Left = 6
-      Height = 25
-      Top = 6
-      Width = 201
-      Anchors = [akTop, akLeft, akRight]
-      AutoSize = True
-      BorderSpacing.Left = 6
-      BorderSpacing.Top = 6
-      BorderSpacing.Right = 6
-      Caption = 'btnSelect'
-      TabOrder = 0
-    end
-    object btnRename: TButton
-      AnchorSideLeft.Control = pnlButtons
-      AnchorSideTop.Control = btnSelect
-      AnchorSideTop.Side = asrBottom
-      AnchorSideRight.Control = pnlButtons
-      AnchorSideRight.Side = asrBottom
-      AnchorSideBottom.Side = asrBottom
-      Left = 6
-      Height = 25
-      Top = 37
-      Width = 201
-      Anchors = [akTop, akLeft, akRight]
-      AutoSize = True
-      BorderSpacing.Left = 6
-      BorderSpacing.Top = 6
-      BorderSpacing.Right = 6
-      Caption = 'Rename'
-      OnClick = btnRenameClick
-      TabOrder = 1
-    end
-    object btnPlay: TButton
-      AnchorSideLeft.Control = pnlButtons
-      AnchorSideTop.Side = asrBottom
-      AnchorSideRight.Control = pnlButtons
-      AnchorSideRight.Side = asrBottom
-      AnchorSideBottom.Control = PanelRepeat
-      Left = 6
-      Height = 25
-      Top = 209
-      Width = 201
-      Anchors = [akLeft, akRight, akBottom]
-      AutoSize = True
-      BorderSpacing.Left = 6
-      BorderSpacing.Right = 6
-      BorderSpacing.Bottom = 3
-      Caption = 'Playback macro'
-      OnClick = btnPlayClick
-      TabOrder = 5
-    end
-    object btnRecord: TButton
-      AnchorSideLeft.Control = pnlButtons
-      AnchorSideTop.Control = btnRename
-      AnchorSideTop.Side = asrBottom
-      AnchorSideRight.Control = pnlButtons
-      AnchorSideRight.Side = asrBottom
-      AnchorSideBottom.Control = btnRecordStop
-      Left = 6
-      Height = 25
-      Top = 370
-      Width = 201
-      Anchors = [akLeft, akRight, akBottom]
-      AutoSize = True
-      BorderSpacing.Left = 6
-      BorderSpacing.Right = 6
-      BorderSpacing.Bottom = 6
-      Caption = 'Record macro'
-      OnClick = btnRecordClick
-      TabOrder = 6
-    end
-    object btnRecordStop: TButton
-      AnchorSideLeft.Control = pnlButtons
-      AnchorSideTop.Control = btnRename
-      AnchorSideTop.Side = asrBottom
-      AnchorSideRight.Control = pnlButtons
-      AnchorSideRight.Side = asrBottom
-      AnchorSideBottom.Control = pnlButtons
-      AnchorSideBottom.Side = asrBottom
-      Left = 6
-      Height = 25
-      Top = 401
-      Width = 201
-      Anchors = [akLeft, akRight, akBottom]
-      AutoSize = True
-      BorderSpacing.Left = 6
-      BorderSpacing.Right = 6
-      Caption = 'Stop recording'
-      OnClick = btnRecordStopClick
-      TabOrder = 7
-    end
-    object btnDelete: TButton
-      AnchorSideLeft.Control = pnlButtons
-      AnchorSideTop.Control = btnEdit
-      AnchorSideTop.Side = asrBottom
-      AnchorSideRight.Control = pnlButtons
-      AnchorSideRight.Side = asrBottom
-      AnchorSideBottom.Side = asrBottom
-      Left = 6
-      Height = 25
-      Top = 130
-      Width = 201
-      Anchors = [akTop, akLeft, akRight]
-      AutoSize = True
-      BorderSpacing.Left = 6
-      BorderSpacing.Top = 6
-      BorderSpacing.Right = 6
-      Caption = 'Delete'
-      OnClick = btnDeleteClick
-      TabOrder = 4
-    end
-    object btnSetKeys: TButton
-      AnchorSideLeft.Control = pnlButtons
-      AnchorSideTop.Control = btnRename
-      AnchorSideTop.Side = asrBottom
-      AnchorSideRight.Control = pnlButtons
-      AnchorSideRight.Side = asrBottom
-      AnchorSideBottom.Side = asrBottom
-      Left = 6
-      Height = 25
-      Top = 68
-      Width = 201
-      Anchors = [akTop, akLeft, akRight]
-      AutoSize = True
-      BorderSpacing.Left = 6
-      BorderSpacing.Top = 6
-      BorderSpacing.Right = 6
-      Caption = 'btnSetKeys'
-      TabOrder = 2
-    end
-    object btnEdit: TButton
-      AnchorSideLeft.Control = pnlButtons
-      AnchorSideTop.Control = btnSetKeys
-      AnchorSideTop.Side = asrBottom
-      AnchorSideRight.Control = pnlButtons
-      AnchorSideRight.Side = asrBottom
-      AnchorSideBottom.Side = asrBottom
-      Left = 6
-      Height = 25
-      Top = 99
-      Width = 201
-      Anchors = [akTop, akLeft, akRight]
-      AutoSize = True
-      BorderSpacing.Left = 6
-      BorderSpacing.Top = 6
-      BorderSpacing.Right = 6
-      Caption = 'btnEdit'
-      TabOrder = 3
-    end
-    object PanelRepeat: TPanel
-      AnchorSideLeft.Control = pnlButtons
-      AnchorSideTop.Control = btnPlay
-      AnchorSideTop.Side = asrBottom
-      AnchorSideRight.Control = pnlButtons
-      AnchorSideRight.Side = asrBottom
-      AnchorSideBottom.Control = Panel1
-      Left = 6
-      Height = 80
-      Top = 237
-      Width = 201
-      Anchors = [akLeft, akRight, akBottom]
-      BorderSpacing.Left = 6
-      BorderSpacing.Top = 3
-      BorderSpacing.Right = 6
-      BorderSpacing.Bottom = 3
-      BevelOuter = bvNone
-      BorderStyle = bsSingle
-      ClientHeight = 80
-      ClientWidth = 201
-      TabOrder = 8
-      object edRepeat: TSpinEdit
-        AnchorSideLeft.Control = rbRepeatNTimes
-        AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = rbRepeatNTimes
-        AnchorSideTop.Side = asrCenter
-        Left = 65
-        Height = 23
-        Top = 30
-        Width = 58
-        AutoSize = False
-        BorderSpacing.Left = 9
-        BorderSpacing.Top = 3
-        BorderSpacing.Right = 7
-        BorderSpacing.Bottom = 3
-        MaxValue = 999
-        MinValue = 1
-        TabOrder = 0
-        Value = 1
-      end
-      object chkRepeat: TCheckBox
-        AnchorSideLeft.Control = PanelRepeat
-        AnchorSideTop.Side = asrBottom
-        AnchorSideRight.Control = PanelRepeat
-        AnchorSideRight.Side = asrBottom
-        AnchorSideBottom.Control = edRepeat
-        Left = 3
-        Height = 19
-        Top = 7
-        Width = 191
-        Anchors = [akLeft, akRight]
-        BorderSpacing.Left = 3
-        BorderSpacing.Right = 3
-        BorderSpacing.Bottom = 3
-        Caption = 'Repeat'
-        OnChange = chkRepeatChange
-        TabOrder = 1
-      end
-      object rbRepeatNTimes: TRadioButton
-        Left = 15
-        Height = 19
-        Top = 32
-        Width = 41
-        Anchors = []
-        AutoSize = False
-        Caption = 'run'
-        TabOrder = 2
-      end
-      object Label1: TLabel
-        AnchorSideLeft.Control = edRepeat
-        AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = edRepeat
-        AnchorSideTop.Side = asrCenter
-        Left = 133
-        Height = 15
-        Top = 34
-        Width = 29
-        AutoSize = False
-        BorderSpacing.Left = 10
-        Caption = 'times'
-        ParentColor = False
-      end
-      object rbRepeatUntilEof: TRadioButton
-        AnchorSideLeft.Control = rbRepeatNTimes
-        Left = 15
-        Height = 19
-        Top = 53
-        Width = 100
-        Anchors = [akLeft]
-        Caption = 'until end of file'
-        TabOrder = 3
-      end
-    end
-    object Panel1: TPanel
-      AnchorSideBottom.Control = btnRecord
-      Left = 6
-      Height = 50
-      Top = 320
-      Width = 201
-      Anchors = [akLeft, akRight, akBottom]
-      BevelOuter = bvNone
-      TabOrder = 9
-    end
-  end
-  object lbMacroView: TListView
+  inline SynEdit1: TSynEdit
     Left = 0
-    Height = 426
-    Top = 0
-    Width = 352
+    Height = 164
+    Top = 342
+    Width = 396
     Align = alClient
-    Anchors = [akTop, akLeft, akBottom]
-    AutoWidthLastColumn = True
-    Columns = <    
+    Font.Height = -13
+    Font.Name = 'Courier New'
+    Font.Pitch = fpFixed
+    Font.Quality = fqNonAntialiased
+    ParentColor = False
+    ParentFont = False
+    TabOrder = 0
+    Gutter.Width = 23
+    Gutter.MouseActions = <>
+    RightGutter.Width = 0
+    RightGutter.MouseActions = <>
+    Keystrokes = <    
       item
-        Width = 200
+        Command = ecUp
+        ShortCut = 38
       end    
       item
-        Width = 148
+        Command = ecSelUp
+        ShortCut = 8230
+      end    
+      item
+        Command = ecScrollUp
+        ShortCut = 16422
+      end    
+      item
+        Command = ecDown
+        ShortCut = 40
+      end    
+      item
+        Command = ecSelDown
+        ShortCut = 8232
+      end    
+      item
+        Command = ecScrollDown
+        ShortCut = 16424
+      end    
+      item
+        Command = ecLeft
+        ShortCut = 37
+      end    
+      item
+        Command = ecSelLeft
+        ShortCut = 8229
+      end    
+      item
+        Command = ecWordLeft
+        ShortCut = 16421
+      end    
+      item
+        Command = ecSelWordLeft
+        ShortCut = 24613
+      end    
+      item
+        Command = ecRight
+        ShortCut = 39
+      end    
+      item
+        Command = ecSelRight
+        ShortCut = 8231
+      end    
+      item
+        Command = ecWordRight
+        ShortCut = 16423
+      end    
+      item
+        Command = ecSelWordRight
+        ShortCut = 24615
+      end    
+      item
+        Command = ecPageDown
+        ShortCut = 34
+      end    
+      item
+        Command = ecSelPageDown
+        ShortCut = 8226
+      end    
+      item
+        Command = ecPageBottom
+        ShortCut = 16418
+      end    
+      item
+        Command = ecSelPageBottom
+        ShortCut = 24610
+      end    
+      item
+        Command = ecPageUp
+        ShortCut = 33
+      end    
+      item
+        Command = ecSelPageUp
+        ShortCut = 8225
+      end    
+      item
+        Command = ecPageTop
+        ShortCut = 16417
+      end    
+      item
+        Command = ecSelPageTop
+        ShortCut = 24609
+      end    
+      item
+        Command = ecLineStart
+        ShortCut = 36
+      end    
+      item
+        Command = ecSelLineStart
+        ShortCut = 8228
+      end    
+      item
+        Command = ecEditorTop
+        ShortCut = 16420
+      end    
+      item
+        Command = ecSelEditorTop
+        ShortCut = 24612
+      end    
+      item
+        Command = ecLineEnd
+        ShortCut = 35
+      end    
+      item
+        Command = ecSelLineEnd
+        ShortCut = 8227
+      end    
+      item
+        Command = ecEditorBottom
+        ShortCut = 16419
+      end    
+      item
+        Command = ecSelEditorBottom
+        ShortCut = 24611
+      end    
+      item
+        Command = ecToggleMode
+        ShortCut = 45
+      end    
+      item
+        Command = ecCopy
+        ShortCut = 16429
+      end    
+      item
+        Command = ecPaste
+        ShortCut = 8237
+      end    
+      item
+        Command = ecDeleteChar
+        ShortCut = 46
+      end    
+      item
+        Command = ecCut
+        ShortCut = 8238
+      end    
+      item
+        Command = ecDeleteLastChar
+        ShortCut = 8
+      end    
+      item
+        Command = ecDeleteLastChar
+        ShortCut = 8200
+      end    
+      item
+        Command = ecDeleteLastWord
+        ShortCut = 16392
+      end    
+      item
+        Command = ecUndo
+        ShortCut = 32776
+      end    
+      item
+        Command = ecRedo
+        ShortCut = 40968
+      end    
+      item
+        Command = ecLineBreak
+        ShortCut = 13
+      end    
+      item
+        Command = ecSelectAll
+        ShortCut = 16449
+      end    
+      item
+        Command = ecCopy
+        ShortCut = 16451
+      end    
+      item
+        Command = ecBlockIndent
+        ShortCut = 24649
+      end    
+      item
+        Command = ecLineBreak
+        ShortCut = 16461
+      end    
+      item
+        Command = ecInsertLine
+        ShortCut = 16462
+      end    
+      item
+        Command = ecDeleteWord
+        ShortCut = 16468
+      end    
+      item
+        Command = ecBlockUnindent
+        ShortCut = 24661
+      end    
+      item
+        Command = ecPaste
+        ShortCut = 16470
+      end    
+      item
+        Command = ecCut
+        ShortCut = 16472
+      end    
+      item
+        Command = ecDeleteLine
+        ShortCut = 16473
+      end    
+      item
+        Command = ecDeleteEOL
+        ShortCut = 24665
+      end    
+      item
+        Command = ecUndo
+        ShortCut = 16474
+      end    
+      item
+        Command = ecRedo
+        ShortCut = 24666
+      end    
+      item
+        Command = ecGotoMarker0
+        ShortCut = 16432
+      end    
+      item
+        Command = ecGotoMarker1
+        ShortCut = 16433
+      end    
+      item
+        Command = ecGotoMarker2
+        ShortCut = 16434
+      end    
+      item
+        Command = ecGotoMarker3
+        ShortCut = 16435
+      end    
+      item
+        Command = ecGotoMarker4
+        ShortCut = 16436
+      end    
+      item
+        Command = ecGotoMarker5
+        ShortCut = 16437
+      end    
+      item
+        Command = ecGotoMarker6
+        ShortCut = 16438
+      end    
+      item
+        Command = ecGotoMarker7
+        ShortCut = 16439
+      end    
+      item
+        Command = ecGotoMarker8
+        ShortCut = 16440
+      end    
+      item
+        Command = ecGotoMarker9
+        ShortCut = 16441
+      end    
+      item
+        Command = ecSetMarker0
+        ShortCut = 24624
+      end    
+      item
+        Command = ecSetMarker1
+        ShortCut = 24625
+      end    
+      item
+        Command = ecSetMarker2
+        ShortCut = 24626
+      end    
+      item
+        Command = ecSetMarker3
+        ShortCut = 24627
+      end    
+      item
+        Command = ecSetMarker4
+        ShortCut = 24628
+      end    
+      item
+        Command = ecSetMarker5
+        ShortCut = 24629
+      end    
+      item
+        Command = ecSetMarker6
+        ShortCut = 24630
+      end    
+      item
+        Command = ecSetMarker7
+        ShortCut = 24631
+      end    
+      item
+        Command = ecSetMarker8
+        ShortCut = 24632
+      end    
+      item
+        Command = ecSetMarker9
+        ShortCut = 24633
+      end    
+      item
+        Command = EcFoldLevel1
+        ShortCut = 41009
+      end    
+      item
+        Command = EcFoldLevel2
+        ShortCut = 41010
+      end    
+      item
+        Command = EcFoldLevel3
+        ShortCut = 41011
+      end    
+      item
+        Command = EcFoldLevel4
+        ShortCut = 41012
+      end    
+      item
+        Command = EcFoldLevel5
+        ShortCut = 41013
+      end    
+      item
+        Command = EcFoldLevel6
+        ShortCut = 41014
+      end    
+      item
+        Command = EcFoldLevel7
+        ShortCut = 41015
+      end    
+      item
+        Command = EcFoldLevel8
+        ShortCut = 41016
+      end    
+      item
+        Command = EcFoldLevel9
+        ShortCut = 41017
+      end    
+      item
+        Command = EcFoldLevel0
+        ShortCut = 41008
+      end    
+      item
+        Command = EcFoldCurrent
+        ShortCut = 41005
+      end    
+      item
+        Command = EcUnFoldCurrent
+        ShortCut = 41003
+      end    
+      item
+        Command = EcToggleMarkupWord
+        ShortCut = 32845
+      end    
+      item
+        Command = ecNormalSelect
+        ShortCut = 24654
+      end    
+      item
+        Command = ecColumnSelect
+        ShortCut = 24643
+      end    
+      item
+        Command = ecLineSelect
+        ShortCut = 24652
+      end    
+      item
+        Command = ecTab
+        ShortCut = 9
+      end    
+      item
+        Command = ecShiftTab
+        ShortCut = 8201
+      end    
+      item
+        Command = ecMatchBracket
+        ShortCut = 24642
+      end    
+      item
+        Command = ecColSelUp
+        ShortCut = 40998
+      end    
+      item
+        Command = ecColSelDown
+        ShortCut = 41000
+      end    
+      item
+        Command = ecColSelLeft
+        ShortCut = 40997
+      end    
+      item
+        Command = ecColSelRight
+        ShortCut = 40999
+      end    
+      item
+        Command = ecColSelPageDown
+        ShortCut = 40994
+      end    
+      item
+        Command = ecColSelPageBottom
+        ShortCut = 57378
+      end    
+      item
+        Command = ecColSelPageUp
+        ShortCut = 40993
+      end    
+      item
+        Command = ecColSelPageTop
+        ShortCut = 57377
+      end    
+      item
+        Command = ecColSelLineStart
+        ShortCut = 40996
+      end    
+      item
+        Command = ecColSelLineEnd
+        ShortCut = 40995
+      end    
+      item
+        Command = ecColSelEditorTop
+        ShortCut = 57380
+      end    
+      item
+        Command = ecColSelEditorBottom
+        ShortCut = 57379
       end>
-    RowSelect = True
-    SortType = stText
+    MouseActions = <>
+    MouseTextActions = <>
+    MouseSelActions = <>
+    VisibleSpecialChars = [vscSpace, vscTabAtLast]
+    ReadOnly = True
+    SelectedColor.BackPriority = 50
+    SelectedColor.ForePriority = 50
+    SelectedColor.FramePriority = 50
+    SelectedColor.BoldPriority = 50
+    SelectedColor.ItalicPriority = 50
+    SelectedColor.UnderlinePriority = 50
+    SelectedColor.StrikeOutPriority = 50
+    BracketHighlightStyle = sbhsBoth
+    BracketMatchColor.Background = clNone
+    BracketMatchColor.Foreground = clNone
+    BracketMatchColor.Style = [fsBold]
+    FoldedCodeColor.Background = clNone
+    FoldedCodeColor.Foreground = clGray
+    FoldedCodeColor.FrameColor = clGray
+    MouseLinkColor.Background = clNone
+    MouseLinkColor.Foreground = clBlue
+    LineHighlightColor.Background = clNone
+    LineHighlightColor.Foreground = clNone
+    inline SynLeftGutterPartList1: TSynGutterPartList
+      object SynGutterLineNumber1: TSynGutterLineNumber
+        Width = 17
+        MouseActions = <>
+        MarkupInfo.Background = clBtnFace
+        MarkupInfo.Foreground = clNone
+        DigitCount = 2
+        ShowOnlyLineNumbersMultiplesOf = 1
+        ZeroStart = False
+        LeadingZeros = False
+      end
+      object SynGutterChanges1: TSynGutterChanges
+        Width = 4
+        MouseActions = <>
+        ModifiedColor = 59900
+        SavedColor = clGreen
+      end
+      object SynGutterSeparator1: TSynGutterSeparator
+        Width = 2
+        MouseActions = <>
+        MarkupInfo.Background = clWhite
+        MarkupInfo.Foreground = clGray
+      end
+    end
+  end
+  object pnlTop: TPanel
+    Left = 0
+    Height = 342
+    Top = 0
+    Width = 396
+    Align = alTop
+    AutoSize = True
+    ClientHeight = 342
+    ClientWidth = 396
+    Constraints.MinHeight = 340
     TabOrder = 1
-    ViewStyle = vsReport
+    object pnlButtons: TPanel
+      Left = 270
+      Height = 340
+      Top = 1
+      Width = 125
+      Align = alRight
+      AutoSize = True
+      BevelOuter = bvNone
+      ClientHeight = 340
+      ClientWidth = 125
+      Constraints.MinHeight = 340
+      TabOrder = 0
+      object btnSelect: TButton
+        AnchorSideLeft.Control = pnlButtons
+        AnchorSideTop.Control = pnlButtons
+        AnchorSideRight.Control = pnlButtons
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Side = asrBottom
+        Left = 6
+        Height = 25
+        Top = 6
+        Width = 113
+        Anchors = [akTop, akLeft, akRight]
+        AutoSize = True
+        BorderSpacing.Left = 6
+        BorderSpacing.Top = 6
+        BorderSpacing.Right = 6
+        Caption = 'btnSelect'
+        TabOrder = 0
+      end
+      object btnRename: TButton
+        AnchorSideLeft.Control = pnlButtons
+        AnchorSideTop.Control = btnSelect
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = pnlButtons
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Side = asrBottom
+        Left = 6
+        Height = 25
+        Top = 37
+        Width = 113
+        Anchors = [akTop, akLeft, akRight]
+        AutoSize = True
+        BorderSpacing.Left = 6
+        BorderSpacing.Top = 6
+        BorderSpacing.Right = 6
+        Caption = 'Rename'
+        OnClick = btnRenameClick
+        TabOrder = 1
+      end
+      object btnPlay: TButton
+        AnchorSideLeft.Control = pnlButtons
+        AnchorSideTop.Control = btnDelete
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = pnlButtons
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = PanelRepeat
+        Left = 6
+        Height = 25
+        Top = 166
+        Width = 113
+        Anchors = [akLeft, akRight, akBottom]
+        AutoSize = True
+        BorderSpacing.Left = 6
+        BorderSpacing.Top = 6
+        BorderSpacing.Right = 6
+        BorderSpacing.Bottom = 6
+        Caption = 'Playback macro'
+        OnClick = btnPlayClick
+        TabOrder = 5
+      end
+      object btnRecord: TButton
+        AnchorSideLeft.Control = pnlButtons
+        AnchorSideTop.Control = PanelRepeat
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = pnlButtons
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = btnRecordStop
+        Left = 6
+        Height = 25
+        Top = 278
+        Width = 113
+        Anchors = [akLeft, akRight, akBottom]
+        AutoSize = True
+        BorderSpacing.Left = 6
+        BorderSpacing.Top = 6
+        BorderSpacing.Right = 6
+        BorderSpacing.Bottom = 6
+        Caption = 'Record macro'
+        OnClick = btnRecordClick
+        TabOrder = 6
+      end
+      object btnRecordStop: TButton
+        AnchorSideLeft.Control = pnlButtons
+        AnchorSideTop.Control = btnRecord
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = pnlButtons
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = pnlButtons
+        AnchorSideBottom.Side = asrBottom
+        Left = 6
+        Height = 25
+        Top = 309
+        Width = 113
+        Anchors = [akLeft, akRight, akBottom]
+        AutoSize = True
+        BorderSpacing.Left = 6
+        BorderSpacing.Top = 6
+        BorderSpacing.Right = 6
+        BorderSpacing.Bottom = 6
+        Caption = 'Stop recording'
+        OnClick = btnRecordStopClick
+        TabOrder = 7
+      end
+      object btnDelete: TButton
+        AnchorSideLeft.Control = pnlButtons
+        AnchorSideTop.Control = btnEdit
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = pnlButtons
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Side = asrBottom
+        Left = 6
+        Height = 25
+        Top = 130
+        Width = 113
+        Anchors = [akTop, akLeft, akRight]
+        AutoSize = True
+        BorderSpacing.Left = 6
+        BorderSpacing.Top = 6
+        BorderSpacing.Right = 6
+        Caption = 'Delete'
+        OnClick = btnDeleteClick
+        TabOrder = 4
+      end
+      object btnSetKeys: TButton
+        AnchorSideLeft.Control = pnlButtons
+        AnchorSideTop.Control = btnRename
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = pnlButtons
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Side = asrBottom
+        Left = 6
+        Height = 25
+        Top = 68
+        Width = 113
+        Anchors = [akTop, akLeft, akRight]
+        AutoSize = True
+        BorderSpacing.Left = 6
+        BorderSpacing.Top = 6
+        BorderSpacing.Right = 6
+        Caption = 'btnSetKeys'
+        TabOrder = 2
+      end
+      object btnEdit: TButton
+        AnchorSideLeft.Control = pnlButtons
+        AnchorSideTop.Control = btnSetKeys
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = pnlButtons
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Side = asrBottom
+        Left = 6
+        Height = 25
+        Top = 99
+        Width = 113
+        Anchors = [akTop, akLeft, akRight]
+        AutoSize = True
+        BorderSpacing.Left = 6
+        BorderSpacing.Top = 6
+        BorderSpacing.Right = 6
+        Caption = 'btnEdit'
+        TabOrder = 3
+      end
+      object PanelRepeat: TPanel
+        AnchorSideLeft.Control = pnlButtons
+        AnchorSideTop.Control = btnPlay
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = pnlButtons
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = btnRecord
+        Left = 6
+        Height = 75
+        Top = 197
+        Width = 113
+        Anchors = [akLeft, akRight, akBottom]
+        AutoSize = True
+        BorderSpacing.Left = 6
+        BorderSpacing.Top = 6
+        BorderSpacing.Right = 6
+        BevelOuter = bvNone
+        BorderStyle = bsSingle
+        ClientHeight = 71
+        ClientWidth = 109
+        TabOrder = 8
+        object edRepeat: TSpinEdit
+          AnchorSideLeft.Control = PanelRepeat
+          AnchorSideTop.Control = chkRepeat
+          AnchorSideTop.Side = asrBottom
+          Left = 9
+          Height = 23
+          Top = 25
+          Width = 74
+          AutoSize = False
+          BorderSpacing.Left = 9
+          BorderSpacing.Top = 3
+          BorderSpacing.Right = 7
+          BorderSpacing.Bottom = 3
+          MaxValue = 999
+          MinValue = 1
+          TabOrder = 0
+          Value = 1
+        end
+        object chkRepeat: TCheckBox
+          AnchorSideLeft.Control = PanelRepeat
+          AnchorSideTop.Control = PanelRepeat
+          AnchorSideRight.Control = PanelRepeat
+          AnchorSideRight.Side = asrBottom
+          AnchorSideBottom.Control = edRepeat
+          Left = 3
+          Height = 19
+          Top = 3
+          Width = 103
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 3
+          BorderSpacing.Top = 3
+          BorderSpacing.Right = 3
+          BorderSpacing.Bottom = 3
+          Caption = 'Repeat'
+          OnChange = chkRepeatChange
+          TabOrder = 1
+        end
+        object cbRepeatUntilEof: TCheckBox
+          AnchorSideTop.Control = edRepeat
+          AnchorSideTop.Side = asrBottom
+          Left = 9
+          Height = 19
+          Top = 52
+          Width = 100
+          BorderSpacing.Left = 9
+          BorderSpacing.Top = 4
+          Caption = 'until end of file'
+          OnChange = cbRepeatUntilEofChange
+          TabOrder = 2
+        end
+      end
+    end
+    object lbMacroView: TListView
+      Left = 1
+      Height = 340
+      Top = 1
+      Width = 269
+      Align = alClient
+      AutoWidthLastColumn = True
+      Columns = <      
+        item
+          Width = 200
+        end      
+        item
+          Width = 65
+        end>
+      RowSelect = True
+      SortType = stText
+      TabOrder = 1
+      ViewStyle = vsReport
+      OnSelectItem = lbMacroViewSelectItem
+    end
   end
 end
