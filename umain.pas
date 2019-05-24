@@ -25,9 +25,10 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls,
+  ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls,
   SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils,
-  udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder, uMacroEditor, SynEditLines;
+  udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder, uMacroEditor,
+  SynEditLines, mycustomdialogs, fpjson;
 
 type
 
@@ -190,7 +191,6 @@ type
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     pumEdit: TPopupMenu;
-    ReplaceDialog: TReplaceDialog;
     SaveDialog: TSaveDialog;
     SearchFind: TAction;
     SearchFindPrevious: TAction;
@@ -300,6 +300,8 @@ type
     FindText, ReplaceText: string;
     SynOption: TSynSearchOptions;
     prn: TSynEditPrint;
+    ReplaceDialog: TMyReplaceDialog;
+
 
     function AskFileName(Editor: TEditor): boolean;
     procedure ContextPopup(Sender: TObject; MousePos: TPoint;
@@ -309,7 +311,7 @@ type
     procedure ExecFind(Dialog: TFindDialog);
     procedure mnuLangClick(Sender: TObject);
     procedure mnuThemeClick(Sender: TObject);
-    procedure PrepareReplace(Dialog: TReplaceDialog);
+    procedure PrepareReplace(Dialog: TMyReplaceDialog);
 
     procedure PrepareSearch(Dialog: TFindDialog);
     procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
@@ -837,6 +839,15 @@ begin
   MRU.Recent.Clear;
   ConfigObj.ReadStrings('Recent', 'File', MRU.Recent);
   MRU.ShowRecentFiles;
+  ReplaceDialog := TMyReplaceDialog.Create(self);
+  with ReplaceDialog do
+    begin
+      OnClose := @FindDialogClose;
+      Options := [frDown, frReplace, frReplaceAll, frEntireScope, frHidePromptOnReplace];
+      OnFind := @ReplaceDialogFind;
+      OnReplace := @ReplaceDialogReplace;
+    end;
+
   EditorFactory := TEditorFactory.Create(Self);
   EditorFactory.Align := alClient;
   EditorFactory.OnStatusChange := @EditorStatusChange;
@@ -954,6 +965,7 @@ begin
   ConfigObj.WriteStrings('Recent', 'File', MRU.Recent);
   Mru.Free;
   FreeAndNil(EditorFactory);
+  ReplaceDialog.Free;
 end;
 
 procedure TfMain.FormDropFiles(Sender: TObject; const FileNames: array of string);
@@ -1375,11 +1387,12 @@ begin
     Include(SynOption, ssoMatchCase);
   if frEntireScope in Dialog.Options then
     Include(SynOption, ssoEntireScope);
+
   FindText := Dialog.FindText;
 
 end;
 
-procedure TfMain.PrepareReplace(Dialog: TReplaceDialog);
+procedure TfMain.PrepareReplace(Dialog: TMyReplaceDialog);
 begin
   PrepareSearch(Dialog);
 
@@ -1394,7 +1407,21 @@ begin
     Exclude(SynOption, ssoReplace);
     Exclude(SynOption, ssoReplaceAll);
   end;
-  ReplaceText := Dialog.ReplaceText;
+  case Dialog.SearchMode of
+    smRegexp : begin
+                include(SynOption, ssoRegExpr);
+                ReplaceText := Dialog.ReplaceText;
+               end;
+    smNormal : begin
+                 ReplaceText := Dialog.ReplaceText;
+               end;
+    smExtended: begin
+                  FindText := JSONStringToString(Dialog.FindText);
+                  ReplaceText := JSONStringToString(Dialog.ReplaceText);
+                end;
+  end;
+
+
 end;
 
 function TfMain.AskFileName(Editor: TEditor): boolean;

@@ -30,11 +30,12 @@ uses
   Forms, DefaultTranslator,
   umain, uabout, udmmain, Stringcostants, SupportFuncs, config,
   uCheckFileChange, udglgoto, printer4lazarus, SynEditPrintExtProcs,
-  simplemrumanager, uMacroEditor, uActionMacro, uReplaceMacro, uMacroRecorder;
+  simplemrumanager, uMacroEditor, uActionMacro, uReplaceMacro, uMacroRecorder, LazLogger;
 
 {$R *.res}
 
 begin
+  DebugLogger.LogName := 'test.txt';
   Application.Scaled := True;
   Application.Initialize;
   Application.CreateForm(TdmMain, dmMain);

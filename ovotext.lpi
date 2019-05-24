@@ -178,7 +178,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="15">
+    <Units Count="16">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -262,6 +262,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uMacroRecorder"/>
       </Unit14>
+      <Unit15>
+        <Filename Value="mycustomdialogs.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit15>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

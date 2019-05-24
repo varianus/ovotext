@@ -2020,14 +2020,6 @@ object fMain: TfMain
     Left = 426
     Top = 166
   end
-  object ReplaceDialog: TReplaceDialog
-    OnClose = FindDialogClose
-    Options = [frDown, frReplace, frReplaceAll, frEntireScope, frHidePromptOnReplace]
-    OnFind = ReplaceDialogFind
-    OnReplace = ReplaceDialogReplace
-    Left = 592
-    Top = 168
-  end
   object PrintDialog1: TPrintDialog
     Left = 256
     Top = 170
