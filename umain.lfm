@@ -547,8 +547,8 @@ object fMain: TfMain
     end
     object actMacroPlaybackMulti: TAction
       Category = 'Macro'
-      Caption = 'actMacroPlaybackMulti'
-      Hint = 'Playback macro multiple times'
+      Caption = 'Playback multiple times'
+      Hint = 'Playback macro multiple times …'
       ImageIndex = 35
     end
   end
@@ -788,10 +788,28 @@ object fMain: TfMain
       end
     end
     object MenuItem84: TMenuItem
-      Caption = 'Tools'
+      Caption = 'Macro'
       object MenuItem87: TMenuItem
-        Caption = 'Macro …'
+        Caption = 'Manage …'
         OnClick = MenuItem87Click
+      end
+      object MenuItem85: TMenuItem
+        Action = actMacroRecord
+      end
+      object MenuItem86: TMenuItem
+        Action = actMacroStop
+      end
+      object MenuItem88: TMenuItem
+        Action = actMacroPlayBack
+      end
+      object MenuItem89: TMenuItem
+        Action = actMacroPlaybackMulti
+      end
+      object N3: TMenuItem
+        Caption = '-'
+      end
+      object mnuSavedMacros: TMenuItem
+        Caption = 'Saved Macro'
       end
     end
     object MenuItem3: TMenuItem

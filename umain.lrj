@@ -74,8 +74,8 @@
 {"hash":98242383,"name":"tfmain.actmacroplayback.hint","sourcebytes":[112,108,97,121,98,97,99,107,32,114,101,99,111,114,100,101,100,32,109,97,99,114,111],"value":"playback recorded macro"},
 {"hash":371552,"name":"tfmain.actmacrostop.caption","sourcebytes":[83,116,111,112],"value":"Stop"},
 {"hash":51041111,"name":"tfmain.actmacrostop.hint","sourcebytes":[83,116,111,112,32,114,101,99,111,114,100,105,110,103],"value":"Stop recording"},
-{"hash":167488297,"name":"tfmain.actmacroplaybackmulti.caption","sourcebytes":[97,99,116,77,97,99,114,111,80,108,97,121,98,97,99,107,77,117,108,116,105],"value":"actMacroPlaybackMulti"},
-{"hash":46411363,"name":"tfmain.actmacroplaybackmulti.hint","sourcebytes":[80,108,97,121,98,97,99,107,32,109,97,99,114,111,32,109,117,108,116,105,112,108,101,32,116,105,109,101,115],"value":"Playback macro multiple times"},
+{"hash":57612627,"name":"tfmain.actmacroplaybackmulti.caption","sourcebytes":[80,108,97,121,98,97,99,107,32,109,117,108,116,105,112,108,101,32,116,105,109,101,115],"value":"Playback multiple times"},
+{"hash":241643142,"name":"tfmain.actmacroplaybackmulti.hint","sourcebytes":[80,108,97,121,98,97,99,107,32,109,97,99,114,111,32,109,117,108,116,105,112,108,101,32,116,105,109,101,115,32,226,128,166],"value":"Playback macro multiple times \u2026"},
 {"hash":315429,"name":"tfmain.menuitem1.caption","sourcebytes":[70,105,108,101],"value":"File"},
 {"hash":139726590,"name":"tfmain.mnuopenrecent.caption","sourcebytes":[79,112,101,110,32,82,101,99,101,110,116,32,46,46,46],"value":"Open Recent ..."},
 {"hash":198533332,"name":"tfmain.menuitem29.caption","sourcebytes":[82,101,111,112,101,110,32,97,108,108,32,114,101,99,101,110,116],"value":"Reopen all recent"},
@@ -98,8 +98,9 @@
 {"hash":139375349,"name":"tfmain.mnulanguage.caption","sourcebytes":[76,97,110,103,117,97,103,101],"value":"Language"},
 {"hash":266201246,"name":"tfmain.menuitem52.caption","sourcebytes":[78,97,118,105,103,97,116,105,111,110],"value":"Navigation"},
 {"hash":370579,"name":"tfmain.mnutabs.caption","sourcebytes":[84,97,98,115],"value":"Tabs"},
-{"hash":5989939,"name":"tfmain.menuitem84.caption","sourcebytes":[84,111,111,108,115],"value":"Tools"},
-{"hash":177322454,"name":"tfmain.menuitem87.caption","sourcebytes":[77,97,99,114,111,32,226,128,166],"value":"Macro \u2026"},
+{"hash":5470863,"name":"tfmain.menuitem84.caption","sourcebytes":[77,97,99,114,111],"value":"Macro"},
+{"hash":131257062,"name":"tfmain.menuitem87.caption","sourcebytes":[77,97,110,97,103,101,32,226,128,166],"value":"Manage \u2026"},
+{"hash":103478847,"name":"tfmain.mnusavedmacros.caption","sourcebytes":[83,97,118,101,100,32,77,97,99,114,111],"value":"Saved Macro"},
 {"hash":322608,"name":"tfmain.menuitem3.caption","sourcebytes":[72,101,108,112],"value":"Help"},
 {"hash":267817060,"name":"tfmain.fontdialog.title","sourcebytes":[83,101,108,101,99,116,32,97,32,70,111,110,116],"value":"Select a Font"}
 ]}

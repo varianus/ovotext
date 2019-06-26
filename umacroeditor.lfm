@@ -519,9 +519,9 @@ object FMacroEditor: TFMacroEditor
       ClientWidth = 125
       Constraints.MinHeight = 340
       TabOrder = 0
-      object btnSelect: TButton
+      object btnRename: TButton
         AnchorSideLeft.Control = pnlButtons
-        AnchorSideTop.Control = pnlButtons
+        AnchorSideTop.Side = asrBottom
         AnchorSideRight.Control = pnlButtons
         AnchorSideRight.Side = asrBottom
         AnchorSideBottom.Side = asrBottom
@@ -534,28 +534,9 @@ object FMacroEditor: TFMacroEditor
         BorderSpacing.Left = 6
         BorderSpacing.Top = 6
         BorderSpacing.Right = 6
-        Caption = 'btnSelect'
-        TabOrder = 0
-      end
-      object btnRename: TButton
-        AnchorSideLeft.Control = pnlButtons
-        AnchorSideTop.Control = btnSelect
-        AnchorSideTop.Side = asrBottom
-        AnchorSideRight.Control = pnlButtons
-        AnchorSideRight.Side = asrBottom
-        AnchorSideBottom.Side = asrBottom
-        Left = 6
-        Height = 25
-        Top = 37
-        Width = 113
-        Anchors = [akTop, akLeft, akRight]
-        AutoSize = True
-        BorderSpacing.Left = 6
-        BorderSpacing.Top = 6
-        BorderSpacing.Right = 6
         Caption = 'Rename'
         OnClick = btnRenameClick
-        TabOrder = 1
+        TabOrder = 0
       end
       object btnPlay: TButton
         AnchorSideLeft.Control = pnlButtons
@@ -576,7 +557,7 @@ object FMacroEditor: TFMacroEditor
         BorderSpacing.Bottom = 6
         Caption = 'Playback macro'
         OnClick = btnPlayClick
-        TabOrder = 5
+        TabOrder = 2
       end
       object btnRecord: TButton
         AnchorSideLeft.Control = pnlButtons
@@ -597,7 +578,7 @@ object FMacroEditor: TFMacroEditor
         BorderSpacing.Bottom = 6
         Caption = 'Record macro'
         OnClick = btnRecordClick
-        TabOrder = 6
+        TabOrder = 3
       end
       object btnRecordStop: TButton
         AnchorSideLeft.Control = pnlButtons
@@ -619,29 +600,9 @@ object FMacroEditor: TFMacroEditor
         BorderSpacing.Bottom = 6
         Caption = 'Stop recording'
         OnClick = btnRecordStopClick
-        TabOrder = 7
-      end
-      object btnDelete: TButton
-        AnchorSideLeft.Control = pnlButtons
-        AnchorSideTop.Control = btnEdit
-        AnchorSideTop.Side = asrBottom
-        AnchorSideRight.Control = pnlButtons
-        AnchorSideRight.Side = asrBottom
-        AnchorSideBottom.Side = asrBottom
-        Left = 6
-        Height = 25
-        Top = 130
-        Width = 113
-        Anchors = [akTop, akLeft, akRight]
-        AutoSize = True
-        BorderSpacing.Left = 6
-        BorderSpacing.Top = 6
-        BorderSpacing.Right = 6
-        Caption = 'Delete'
-        OnClick = btnDeleteClick
         TabOrder = 4
       end
-      object btnSetKeys: TButton
+      object btnDelete: TButton
         AnchorSideLeft.Control = pnlButtons
         AnchorSideTop.Control = btnRename
         AnchorSideTop.Side = asrBottom
@@ -650,34 +611,16 @@ object FMacroEditor: TFMacroEditor
         AnchorSideBottom.Side = asrBottom
         Left = 6
         Height = 25
-        Top = 68
+        Top = 37
         Width = 113
         Anchors = [akTop, akLeft, akRight]
         AutoSize = True
         BorderSpacing.Left = 6
         BorderSpacing.Top = 6
         BorderSpacing.Right = 6
-        Caption = 'btnSetKeys'
-        TabOrder = 2
-      end
-      object btnEdit: TButton
-        AnchorSideLeft.Control = pnlButtons
-        AnchorSideTop.Control = btnSetKeys
-        AnchorSideTop.Side = asrBottom
-        AnchorSideRight.Control = pnlButtons
-        AnchorSideRight.Side = asrBottom
-        AnchorSideBottom.Side = asrBottom
-        Left = 6
-        Height = 25
-        Top = 99
-        Width = 113
-        Anchors = [akTop, akLeft, akRight]
-        AutoSize = True
-        BorderSpacing.Left = 6
-        BorderSpacing.Top = 6
-        BorderSpacing.Right = 6
-        Caption = 'btnEdit'
-        TabOrder = 3
+        Caption = 'Delete'
+        OnClick = btnDeleteClick
+        TabOrder = 1
       end
       object PanelRepeat: TPanel
         AnchorSideLeft.Control = pnlButtons
@@ -699,7 +642,7 @@ object FMacroEditor: TFMacroEditor
         BorderStyle = bsSingle
         ClientHeight = 71
         ClientWidth = 109
-        TabOrder = 8
+        TabOrder = 5
         object edRepeat: TSpinEdit
           AnchorSideLeft.Control = PanelRepeat
           AnchorSideTop.Control = chkRepeat

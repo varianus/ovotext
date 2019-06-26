@@ -33,13 +33,10 @@ type
 
   TFMacroEditor = class(TForm)
     btnDelete: TButton;
-    btnEdit: TButton;
     btnPlay: TButton;
     btnRecord: TButton;
     btnRecordStop: TButton;
     btnRename: TButton;
-    btnSelect: TButton;
-    btnSetKeys: TButton;
     chkRepeat: TCheckBox;
     edRepeat: TSpinEdit;
     lbMacroView: TListView;

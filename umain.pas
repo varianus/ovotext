@@ -83,7 +83,13 @@ type
     MenuItem82: TMenuItem;
     MenuItem83: TMenuItem;
     MenuItem84: TMenuItem;
+    MenuItem85: TMenuItem;
+    MenuItem86: TMenuItem;
     MenuItem87: TMenuItem;
+    MenuItem88: TMenuItem;
+    MenuItem89: TMenuItem;
+    N3: TMenuItem;
+    mnuSavedMacros: TMenuItem;
     N2: TMenuItem;
     N1: TMenuItem;
     mnuLineEndings: TMenuItem;
@@ -296,6 +302,7 @@ type
     EditorFactory: TEditorFactory;
     SynMacroRec : TMacroRecorder;
     MRU: TMRUMenuManager;
+    Macros: TMRUMenuManager;
 
     FindText, ReplaceText: string;
     SynOption: TSynSearchOptions;
@@ -459,8 +466,11 @@ begin
   actGoTo.Enabled := Avail and (ed.Lines.Count > 0);
   actCloseAfter.Enabled := EditorFactory.PageCount > EditorFactory.PageIndex;
   actCloseBefore.Enabled := EditorFactory.PageIndex > 0;
+
   actMacroRecord.Enabled := SynMacroRec.State <> msRecording;
   actMacroStop.Enabled := SynMacroRec.State = msRecording;
+  actMacroPlayBack.Enabled := SynMacroRec.State <> msRecording;
+  actMacroPlaybackMulti.Enabled := SynMacroRec.State <> msRecording;
 
   Handled := True;
 end;
@@ -837,6 +847,7 @@ begin
   MRU.OnRecentFile := @RecentFileEvent;
   MRU.MaxRecent := 10;
   MRU.Recent.Clear;
+
   ConfigObj.ReadStrings('Recent', 'File', MRU.Recent);
   MRU.ShowRecentFiles;
   ReplaceDialog := TMyReplaceDialog.Create(self);
@@ -858,6 +869,14 @@ begin
   EditorFactory.Parent := self;
 
   SynMacroRec := TMacroRecorder.Create(EditorFactory);
+  Macros := TMRUMenuManager.Create(Self);
+  Macros.MenuItem := mnuSavedMacros;
+  Macros.OnRecentFile := nil;// @RecentFileEvent;
+  Macros.MaxRecent := 10;
+  Macros.Recent.Clear;
+  SynMacroRec.Macros.MacroNames(Macros.Recent);
+  Macros.ShowRecentFiles;
+
 
   FileNew.Execute;
 

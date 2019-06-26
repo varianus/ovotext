@@ -11,18 +11,21 @@ msgid "All files"
 msgstr ""
 
 #: stringcostants.rsaskfilecreation
+#, object-pascal-format
 msgid ""
 "\"%s\"\n"
 "does not exists. Do you want to create it?"
 msgstr ""
 
 #: stringcostants.rscannotcreate
+#, object-pascal-format
 msgid ""
 "Can not create\n"
 " \"%s\""
 msgstr ""
 
 #: stringcostants.rscannotsave
+#, object-pascal-format
 msgid ""
 "Can not save changes to\n"
 " \"%s\""
@@ -33,6 +36,7 @@ msgid "Error"
 msgstr ""
 
 #: stringcostants.rskeepdeleted
+#, object-pascal-format
 msgid ""
 "%s\n"
 "\n"
@@ -41,6 +45,7 @@ msgid ""
 msgstr ""
 
 #: stringcostants.rsmacro
+msgctxt "stringcostants.rsmacro"
 msgid "Macro"
 msgstr ""
 
@@ -49,6 +54,7 @@ msgid "Unsaved"
 msgstr ""
 
 #: stringcostants.rsmacrodelete
+#, object-pascal-format
 msgid "Delete macro \"%s\" ?"
 msgstr ""
 
@@ -57,6 +63,7 @@ msgid "Select a new name for macro"
 msgstr ""
 
 #: stringcostants.rsnewfile
+#, object-pascal-format
 msgid "<new   %d>"
 msgstr ""
 
@@ -66,6 +73,7 @@ msgid "Reload"
 msgstr ""
 
 #: stringcostants.rsreloadfile
+#, object-pascal-format
 msgid ""
 "%s\n"
 "\n"
@@ -74,6 +82,7 @@ msgid ""
 msgstr ""
 
 #: stringcostants.rsreloadmodified
+#, object-pascal-format
 msgid ""
 "%s\n"
 "\n"
@@ -82,6 +91,7 @@ msgid ""
 msgstr ""
 
 #: stringcostants.rsreloadsimple
+#, object-pascal-format
 msgid ""
 "%s\n"
 "\n"
@@ -90,6 +100,7 @@ msgid ""
 msgstr ""
 
 #: stringcostants.rssavechanges
+#, object-pascal-format
 msgid ""
 "Save changes to\n"
 " \"%s\"?"
@@ -104,14 +115,17 @@ msgid "OVR"
 msgstr ""
 
 #: stringcostants.rsstatusbarpos
+#, object-pascal-format
 msgid "Line: %d  Col:%d"
 msgstr ""
 
 #: stringcostants.rsstatusbarsel
+#, object-pascal-format
 msgid "Sel: %d"
 msgstr ""
 
 #: stringcostants.rstextnotfound
+#, object-pascal-format
 msgid ""
 "Text not found:\n"
 "\"%s\""
@@ -195,10 +209,6 @@ msgctxt "tfmacroeditor.btndelete.caption"
 msgid "Delete"
 msgstr ""
 
-#: tfmacroeditor.btnedit.caption
-msgid "btnEdit"
-msgstr ""
-
 #: tfmacroeditor.btnplay.caption
 msgid "Playback macro"
 msgstr ""
@@ -214,14 +224,6 @@ msgstr ""
 
 #: tfmacroeditor.btnrename.caption
 msgid "Rename"
-msgstr ""
-
-#: tfmacroeditor.btnselect.caption
-msgid "btnSelect"
-msgstr ""
-
-#: tfmacroeditor.btnsetkeys.caption
-msgid "btnSetKeys"
 msgstr ""
 
 #: tfmacroeditor.caption
@@ -290,11 +292,11 @@ msgid "playback recorded macro"
 msgstr ""
 
 #: tfmain.actmacroplaybackmulti.caption
-msgid "actMacroPlaybackMulti"
+msgid "Playback multiple times"
 msgstr ""
 
 #: tfmain.actmacroplaybackmulti.hint
-msgid "Playback macro multiple times"
+msgid "Playback macro multiple times …"
 msgstr ""
 
 #: tfmain.actmacrorecord.caption
@@ -579,12 +581,13 @@ msgid "Find"
 msgstr ""
 
 #: tfmain.menuitem84.caption
-msgid "Tools"
+msgctxt "tfmain.menuitem84.caption"
+msgid "Macro"
 msgstr ""
 
 #: tfmain.menuitem87.caption
 msgctxt "tfmain.menuitem87.caption"
-msgid "Macro …"
+msgid "Manage …"
 msgstr ""
 
 #: tfmain.mnucr.caption
@@ -609,6 +612,10 @@ msgstr ""
 
 #: tfmain.mnuopenrecent.caption
 msgid "Open Recent ..."
+msgstr ""
+
+#: tfmain.mnusavedmacros.caption
+msgid "Saved Macro"
 msgstr ""
 
 #: tfmain.mnutabs.caption

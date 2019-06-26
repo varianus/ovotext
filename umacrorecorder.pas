@@ -37,7 +37,12 @@ type
     Saved: boolean;
   end;
 
-  TMacroList = class (TObjectList<TMacro>);
+  { TMacroList }
+
+  TMacroList = class (TObjectList<TMacro>)
+  public
+    function MacroNames(List:TStrings):Integer;
+  end;
 
 
   TMacroRecorder = class
@@ -77,6 +82,17 @@ type
 implementation
 uses
   umain;
+
+{ TMacroList }
+
+function TMacroList.MacroNames(List: TStrings): Integer;
+var
+  i: Integer;
+begin
+  List.Clear;
+  for i:= 0 to Count -1 do
+    List.Add(Items[I].name);
+end;
 
 
 constructor TMacroRecorder.Create(Factory: TEditorFactory);

@@ -1,13 +1,10 @@
 {"version":1,"strings":[
 {"hash":59679858,"name":"tfmacroeditor.caption","sourcebytes":[77,97,99,114,111,32,101,100,105,116,111,114],"value":"Macro editor"},
-{"hash":60572180,"name":"tfmacroeditor.btnselect.caption","sourcebytes":[98,116,110,83,101,108,101,99,116],"value":"btnSelect"},
 {"hash":93079605,"name":"tfmacroeditor.btnrename.caption","sourcebytes":[82,101,110,97,109,101],"value":"Rename"},
 {"hash":268236911,"name":"tfmacroeditor.btnplay.caption","sourcebytes":[80,108,97,121,98,97,99,107,32,109,97,99,114,111],"value":"Playback macro"},
 {"hash":66640911,"name":"tfmacroeditor.btnrecord.caption","sourcebytes":[82,101,99,111,114,100,32,109,97,99,114,111],"value":"Record macro"},
 {"hash":51041111,"name":"tfmacroeditor.btnrecordstop.caption","sourcebytes":[83,116,111,112,32,114,101,99,111,114,100,105,110,103],"value":"Stop recording"},
 {"hash":78392485,"name":"tfmacroeditor.btndelete.caption","sourcebytes":[68,101,108,101,116,101],"value":"Delete"},
-{"hash":164595763,"name":"tfmacroeditor.btnsetkeys.caption","sourcebytes":[98,116,110,83,101,116,75,101,121,115],"value":"btnSetKeys"},
-{"hash":162708324,"name":"tfmacroeditor.btnedit.caption","sourcebytes":[98,116,110,69,100,105,116],"value":"btnEdit"},
 {"hash":93088644,"name":"tfmacroeditor.chkrepeat.caption","sourcebytes":[82,101,112,101,97,116],"value":"Repeat"},
 {"hash":194958469,"name":"tfmacroeditor.cbrepeatuntileof.caption","sourcebytes":[117,110,116,105,108,32,101,110,100,32,111,102,32,102,105,108,101],"value":"until end of file"}
 ]}
