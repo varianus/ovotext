@@ -42,12 +42,14 @@ type
   TMacroList = class (TObjectList<TMacro>)
   public
     function MacroNames(List:TStrings):Integer;
+
   end;
 
 
   TMacroRecorder = class
   private
     fFactory: TEditorFactory;
+    fOnListChange: TNotifyEvent;
     fOnStateChange: TNotifyEvent;
     fRecordedMacro: TMacro;
     InExecute: Boolean;
@@ -58,7 +60,7 @@ type
     function GetState: TSynMacroState;
     procedure pRecordActions(AAction: TBasicAction; var Handled: Boolean);
     procedure pRecordSearchReplace(Sender: TObject; const ASearch, AReplace: string; AOptions: TSynSearchOptions);
-
+    procedure MacroListChange(ASender: TObject; constref AItem: TMacro; AAction: TCollectionNotification);
     procedure SynMacroRecStateChange(Sender: TObject);
     procedure SynMacroRecUserCommand(aSender: TCustomSynMacroRecorder; aCmd: TSynEditorCommand; var aEvent: TSynMacroEvent);
   protected
@@ -67,9 +69,11 @@ type
     Constructor Create(Factory: TEditorFactory);
     Destructor Destroy; override;
     Procedure SaveMacros;
+    Property LastMacro: TMacro read fRecordedMacro;
 
     Property State: TSynMacroState read GetState;
     property OnStateChange: TNotifyEvent read fOnStateChange write fOnStateChange;
+    property OnListChange: TNotifyEvent read fOnListChange write fOnListChange;
     Property Macros: TMacroList read FMacros;
     property Factory: TEditorFactory read ffactory;
 
@@ -104,12 +108,15 @@ begin
   SynMacroRec.OnStateChange := SynMacroRecStateChange;
   SynMacroRec.OnUserCommand := SynMacroRecUserCommand;
   LoadMacros;
+  FMacros.OnNotify := MacroListChange;
+  fRecordedMacro := nil;
 end;
 
 destructor TMacroRecorder.Destroy;
 begin
   if Assigned(SynMacroRec) then
-    SynMacroRec.Free;
+   SynMacroRec.Free;
+
   inherited Destroy;
 end;
 
@@ -203,6 +210,13 @@ begin
     AddCustomEvent(TSynMacroEvent(AEvent));
 
   end;
+end;
+
+procedure TMacroRecorder.MacroListChange(ASender: TObject; constref AItem: TMacro; AAction: TCollectionNotification);
+begin
+  if Assigned(fOnListChange) then
+     fOnListChange(self);
+
 end;
 
 procedure TMacroRecorder.SynMacroRecStateChange(Sender: TObject);

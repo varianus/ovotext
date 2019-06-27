@@ -239,6 +239,7 @@ type
     procedure actLanguageNoneExecute(Sender: TObject);
     procedure actMacroPlayBackExecute(Sender: TObject);
     procedure actMacroRecordExecute(Sender: TObject);
+    procedure actMacroStopExecute(Sender: TObject);
     procedure actPathToClipboardExecute(Sender: TObject);
     procedure actPrintExecute(Sender: TObject);
     procedure actQuoteExecute(Sender: TObject);
@@ -326,6 +327,7 @@ type
     procedure NewEditor(Editor: TEditor);
     procedure ShowTabs(Sender: TObject);
     Procedure SetupSaveDialog(SaveMode: TSaveMode);
+    procedure SynMacroRecListChange(Sender: TObject);
     procedure SaveConfig;
     procedure ReadConfig;
   public
@@ -469,7 +471,7 @@ begin
 
   actMacroRecord.Enabled := SynMacroRec.State <> msRecording;
   actMacroStop.Enabled := SynMacroRec.State = msRecording;
-  actMacroPlayBack.Enabled := SynMacroRec.State <> msRecording;
+  actMacroPlayBack.Enabled := (SynMacroRec.State <> msRecording) and Assigned(SynMacroRec.LastMacro);
   actMacroPlaybackMulti.Enabled := SynMacroRec.State <> msRecording;
 
   Handled := True;
@@ -499,12 +501,17 @@ end;
 
 procedure TfMain.actMacroPlayBackExecute(Sender: TObject);
 begin
-//  SynMacroRec.PlayBack();
+  SynMacroRec.PlayBack(SynMacroRec.LastMacro);
 end;
 
 procedure TfMain.actMacroRecordExecute(Sender: TObject);
 begin
   SynMacroRec.Start;
+end;
+
+procedure TfMain.actMacroStopExecute(Sender: TObject);
+begin
+  SynMacroRec.Stop;
 end;
 
 procedure TfMain.actPathToClipboardExecute(Sender: TObject);
@@ -876,6 +883,7 @@ begin
   Macros.Recent.Clear;
   SynMacroRec.Macros.MacroNames(Macros.Recent);
   Macros.ShowRecentFiles;
+  SynMacroRec.OnListChange := @SynMacroRecListChange;
 
 
   FileNew.Execute;
@@ -1141,6 +1149,12 @@ begin
              SaveDialog.Title:='Export as HTML File';
            end;
   end;
+end;
+
+procedure TfMain.SynMacroRecListChange(Sender: TObject);
+begin
+  SynMacroRec.Macros.MacroNames(Macros.Recent);
+  Macros.ShowRecentFiles;
 end;
 
 procedure TfMain.SaveConfig;
