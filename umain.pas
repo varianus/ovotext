@@ -334,8 +334,6 @@ type
     { public declarations }
   end;
 
-
-
 var
   fMain: TfMain;
 
@@ -346,8 +344,8 @@ uses lclproc, Stringcostants, uabout, SynExportHTML;
 {$R *.lfm}
 
 const
-  IDX_IMG_MODIFIED = 28;
-  IDX_IMG_STANDARD = 19;
+  IDX_IMG_MODIFIED = 26;
+  IDX_IMG_STANDARD = 18;
 
 { TfMain }
 

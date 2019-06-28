@@ -921,7 +921,7 @@ begin
     r := TabRect(i);
     h := (r.Bottom - r.Bottom - r.Top - 16) div 2;
     h2 := 16 + h;
-    Images.Draw(c, r.Right - h2, r.Top + h, 31);
+    Images.Draw(c, r.Right - h2, r.Top + h, 2);
   end;
   c.Free;
 end;
