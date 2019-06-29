@@ -44,6 +44,7 @@ type
     actCloseBefore: TAction;
     actCloseAfter: TAction;
     actFindLongestLine: TAction;
+    actMacroManager: TAction;
     actMacroPlayBack: TAction;
     actMacroStop: TAction;
     actMacroPlaybackMulti: TAction;
@@ -234,6 +235,7 @@ type
     procedure actFontExecute(Sender: TObject);
     procedure actFullNameToClipBoardExecute(Sender: TObject);
     procedure actGoToExecute(Sender: TObject);
+    procedure actMacroManagerExecute(Sender: TObject);
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
     procedure actJSONPrettyPrintExecute(Sender: TObject);
     procedure actLanguageNoneExecute(Sender: TObject);
@@ -283,7 +285,6 @@ type
     procedure actLowerCaseExecute(Sender: TObject);
     procedure MenuItem28Click(Sender: TObject);
     procedure MenuItem29Click(Sender: TObject);
-    procedure MenuItem87Click(Sender: TObject);
     procedure mnuLineEndingsClick(Sender: TObject);
     procedure mnuCRClick(Sender: TObject);
     procedure mnuCRLFClick(Sender: TObject);
@@ -668,6 +669,11 @@ begin
     Free;
   end;
 
+end;
+
+procedure TfMain.actMacroManagerExecute(Sender: TObject);
+begin
+  ShowMacroEditor(SynMacroRec);
 end;
 
 procedure TfMain.ActCompressSpacesExecute(Sender: TObject);
@@ -1064,11 +1070,6 @@ begin
   for i := 0 to MRU.Recent.Count - 1 do
     EditorFactory.AddEditor(MRU.Recent[i]);
 
-end;
-
-procedure TfMain.MenuItem87Click(Sender: TObject);
-begin
-  ShowMacroEditor(SynMacroRec);
 end;
 
 procedure TfMain.mnuLineEndingsClick(Sender: TObject);
