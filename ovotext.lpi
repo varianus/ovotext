@@ -178,7 +178,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="16">
+    <Units Count="17">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -266,6 +266,14 @@
         <Filename Value="mycustomdialogs.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit15>
+      <Unit16>
+        <Filename Value="replacedialog.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CustomReplaceDialog"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ReplaceDialog"/>
+      </Unit16>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

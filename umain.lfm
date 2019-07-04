@@ -17,6 +17,7 @@ object fMain: TfMain
   OnResize = FormResize
   OnShow = FormShow
   OnWindowStateChange = FormWindowStateChange
+  Position = poOwnerFormCenter
   ShowHint = True
   Visible = True
   object StatusBar: TStatusBar

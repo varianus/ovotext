@@ -28,7 +28,7 @@ uses
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls,
   SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils,
   udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder, uMacroEditor,
-  SynEditLines, mycustomdialogs, fpjson;
+  SynEditLines, replacedialog, fpjson;
 
 type
 
@@ -269,7 +269,7 @@ type
     procedure FileReloadExecute(Sender: TObject);
     procedure FileSaveAsAccept(Sender: TObject);
     procedure FileSaveExecute(Sender: TObject);
-    procedure FindDialogClose(Sender: TObject);
+    procedure FindDialogClose(Sender: TObject; var CloseAction:TCloseAction);
     procedure FindDialogFind(Sender: TObject);
     procedure FontDialogApplyClicked(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -309,7 +309,7 @@ type
     FindText, ReplaceText: string;
     SynOption: TSynSearchOptions;
     prn: TSynEditPrint;
-    ReplaceDialog: TMyReplaceDialog;
+    ReplaceDialog: TCustomReplaceDialog;
 
 
     function AskFileName(Editor: TEditor): boolean;
@@ -320,7 +320,7 @@ type
     procedure ExecFind(Dialog: TFindDialog);
     procedure mnuLangClick(Sender: TObject);
     procedure mnuThemeClick(Sender: TObject);
-    procedure PrepareReplace(Dialog: TMyReplaceDialog);
+    procedure PrepareReplace(Dialog: TCustomReplaceDialog);
 
     procedure PrepareSearch(Dialog: TFindDialog);
     procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
@@ -794,7 +794,7 @@ begin
 
 end;
 
-procedure TfMain.FindDialogClose(Sender: TObject);
+procedure TfMain.FindDialogClose(Sender: TObject; var CloseAction:TCloseAction);
 begin
   self.BringToFront;
 end;
@@ -861,11 +861,11 @@ begin
 
   ConfigObj.ReadStrings('Recent', 'File', MRU.Recent);
   MRU.ShowRecentFiles;
-  ReplaceDialog := TMyReplaceDialog.Create(self);
+  ReplaceDialog := TCustomReplaceDialog.Create(self);
   with ReplaceDialog do
     begin
       OnClose := @FindDialogClose;
-      Options := [frDown, frReplace, frReplaceAll, frEntireScope, frHidePromptOnReplace];
+      Options := [ssoReplace, ssoEntireScope];
       OnFind := @ReplaceDialogFind;
       OnReplace := @ReplaceDialogReplace;
     end;
@@ -1225,28 +1225,30 @@ end;
 
 procedure TfMain.ReplaceDialogFind(Sender: TObject);
 begin
-  ExecFind(ReplaceDialog);
+//  ExecFind(ReplaceDialog);
 end;
 
 procedure TfMain.ReplaceDialogReplace(Sender: TObject);
 var
   ed: TEditor;
+  Options : TSynSearchOptions;
 
 begin
-  PrepareReplace(ReplaceDialog);
-  ed := EditorFactory.CurrentEditor;
 
-  if Ed.SearchReplace(FindText, ReplaceText, SynOption) = 0 then
+  ed := EditorFactory.CurrentEditor;
+  Options := ReplaceDialog.Options;
+
+  if Ed.SearchReplace(ReplaceDialog.FindText, ReplaceDialog.ReplaceText, Options) = 0 then
     ShowMessage(Format(RSTextNotfound, [FindText]))
   else
-  if (ssoReplace in SynOption) and not (ssoReplaceAll in SynOption) then
+  if (ssoReplace in Options) and not (ssoReplaceAll in Options) then
   begin
-    Exclude(SynOption, ssoReplace);
-    Ed.SearchReplace(FindText, '', SynOption);
+    Exclude(Options, ssoReplace);
+    Ed.SearchReplace(ReplaceDialog.FindText, '', Options);
   end;
 
   if Assigned(ed.OnSearchReplace) then
-    ed.OnSearchReplace(Ed, FindText, ReplaceText, SynOption);
+    ed.OnSearchReplace(Ed, ReplaceDialog.FindText, ReplaceDialog.ReplaceText, Options);
 
 end;
 
@@ -1368,7 +1370,7 @@ begin
   Editor := EditorFactory.CurrentEditor;
   if Editor.SelAvail and (Editor.BlockBegin.Y = Editor.BlockEnd.Y) then
     ReplaceDialog.FindText := Editor.SelText;
-  ReplaceDialog.Execute;
+  ReplaceDialog.Show;
 end;
 
 
@@ -1424,35 +1426,23 @@ begin
 
 end;
 
-procedure TfMain.PrepareReplace(Dialog: TMyReplaceDialog);
+procedure TfMain.PrepareReplace(Dialog: TCustomReplaceDialog);
 begin
-  PrepareSearch(Dialog);
 
-  if frReplace in Dialog.Options then
-    Include(SynOption, ssoReplace);
-
-  if frReplaceAll in Dialog.Options then
-    Include(SynOption, ssoReplaceAll);
-
-  if frFindNext in Dialog.Options then
-  begin
-    Exclude(SynOption, ssoReplace);
-    Exclude(SynOption, ssoReplaceAll);
-  end;
-  case Dialog.SearchMode of
-    smRegexp : begin
-                include(SynOption, ssoRegExpr);
-                ReplaceText := Dialog.ReplaceText;
-               end;
-    smNormal : begin
-                 ReplaceText := Dialog.ReplaceText;
-               end;
-    smExtended: begin
-                  FindText := JSONStringToString(Dialog.FindText);
-                  ReplaceText := JSONStringToString(Dialog.ReplaceText);
-                end;
-  end;
-
+  //case Dialog.SearchMode of
+  //  smRegexp : begin
+  //              include(SynOption, ssoRegExpr);
+  //              ReplaceText := Dialog.ReplaceText;
+  //             end;
+  //  smNormal : begin
+  //               ReplaceText := Dialog.ReplaceText;
+  //             end;
+  //  smExtended: begin
+  //                FindText := JSONStringToString(Dialog.FindText);
+  //                ReplaceText := JSONStringToString(Dialog.ReplaceText);
+  //              end;
+  //end;
+  //
 
 end;
 

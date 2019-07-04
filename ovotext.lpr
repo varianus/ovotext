@@ -30,7 +30,7 @@ uses
   Forms, DefaultTranslator,
   umain, uabout, udmmain, Stringcostants, SupportFuncs, config,
   uCheckFileChange, udglgoto, printer4lazarus, SynEditPrintExtProcs,
-  simplemrumanager, uMacroEditor, uActionMacro, uReplaceMacro, uMacroRecorder, LazLogger;
+  simplemrumanager, uMacroEditor, uActionMacro, uReplaceMacro, uMacroRecorder, ReplaceDialog, LazLogger;
 
 {$R *.res}
 

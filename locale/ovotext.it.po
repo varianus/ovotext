@@ -14,6 +14,23 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.0.6\n"
 
+#: replacedialog.lisuereplacethisoccurrenceofwith
+#, object-pascal-format
+msgctxt "replacedialog.lisuereplacethisoccurrenceofwith"
+msgid "Replace this occurrence of \"%s\"%s with \"%s\"?"
+msgstr ""
+
+#: replacedialog.rsfind
+#, fuzzy
+msgctxt "replacedialog.rsfind"
+msgid "Find"
+msgstr "Trova"
+
+#: replacedialog.rsreplace
+msgctxt "replacedialog.rsreplace"
+msgid "Replace"
+msgstr ""
+
 #: stringcostants.rsadministrativerights
 msgctxt "stringcostants.rsadministrativerights"
 msgid "Warning, you are using the root account, you may harm your system!"
@@ -205,6 +222,84 @@ msgstr ""
 "Testo non trovato\n"
 "\"%s\"\n"
 
+#: tcustomreplacedialog.backwardradiobutton.caption
+msgid "Backward"
+msgstr ""
+
+#: tcustomreplacedialog.btnpanel.closebutton.caption
+msgid "Replace All"
+msgstr ""
+
+#: tcustomreplacedialog.btnpanel.okbutton.caption
+msgctxt "tcustomreplacedialog.btnpanel.okbutton.caption"
+msgid "Replace"
+msgstr ""
+
+#: tcustomreplacedialog.caption
+msgid "Replace Text"
+msgstr ""
+
+#: tcustomreplacedialog.casesensitivecheckbox.caption
+msgid "Case sensitive"
+msgstr ""
+
+#: tcustomreplacedialog.directiongroupbox.caption
+msgid "DirectionGroupBox"
+msgstr ""
+
+#: tcustomreplacedialog.editfind.text
+msgid "EditFind"
+msgstr ""
+
+#: tcustomreplacedialog.editreplace.text
+msgid "EditReplace"
+msgstr ""
+
+#: tcustomreplacedialog.entirescopecheckbox.caption
+msgid "Search entire file"
+msgstr ""
+
+#: tcustomreplacedialog.forwardradiobutton.caption
+msgid "Forward"
+msgstr ""
+
+#: tcustomreplacedialog.gboptions.caption
+msgid "Options"
+msgstr ""
+
+#: tcustomreplacedialog.globalradiobutton.caption
+msgid "Global"
+msgstr ""
+
+#: tcustomreplacedialog.promptonreplacecheckbox.caption
+msgid "Prompt on replace"
+msgstr ""
+
+#: tcustomreplacedialog.replacelabel.caption
+msgctxt "tcustomreplacedialog.replacelabel.caption"
+msgid "Replace"
+msgstr ""
+
+#: tcustomreplacedialog.scopegroupbox.caption
+msgid "Scope"
+msgstr ""
+
+#: tcustomreplacedialog.searchmode.caption
+msgid "Search Mode"
+msgstr ""
+
+#: tcustomreplacedialog.selectedradiobutton.caption
+msgid "Selected text"
+msgstr ""
+
+#: tcustomreplacedialog.textlabel.caption
+msgid "Text"
+msgstr ""
+
+#: tcustomreplacedialog.wholewordsonlycheckbox.caption
+msgid "Whole words only"
+msgstr ""
+
 #: tdlggoto.buttonpanel1.okbutton.caption
 msgctxt "tdlggoto.buttonpanel1.okbutton.caption"
 msgid "Go to"
@@ -358,6 +453,11 @@ msgstr "Nessuno"
 #: tfmain.actlowercase.caption
 msgid "lowercase"
 msgstr "minuscolo"
+
+#: tfmain.actmacromanager.caption
+msgctxt "tfmain.actmacromanager.caption"
+msgid "Manage …"
+msgstr ""
 
 #: tfmain.actmacroplayback.caption
 msgid "PlayBack"
@@ -661,11 +761,6 @@ msgctxt "tfmain.menuitem84.caption"
 msgid "Macro"
 msgstr ""
 
-#: tfmain.menuitem87.caption
-msgctxt "tfmain.menuitem87.caption"
-msgid "Manage …"
-msgstr ""
-
 #: tfmain.mnucr.caption
 msgid "Mac (CR)"
 msgstr "Mac (CR)"
@@ -741,5 +836,11 @@ msgstr ""
 
 #: tfmain.toolbutton4.caption
 msgid "ToolButton4"
+msgstr ""
+
+#: ueditor.lisuereplacethisoccurrenceofwith
+#, object-pascal-format
+msgctxt "ueditor.lisuereplacethisoccurrenceofwith"
+msgid "Replace this occurrence of \"%s\"%s with \"%s\"?"
 msgstr ""
 

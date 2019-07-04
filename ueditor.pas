@@ -30,7 +30,7 @@ interface
 uses
   Classes, SysUtils, Controls, Dialogs, ComCtrls, LCLProc, LCLType,
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,
-  SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds,
+  SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds, SynEditStrConst,
   SynEditMouseCmds, SynEditLines, Stringcostants, Forms, Graphics, Config, udmmain,
   uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils;
 
@@ -74,9 +74,11 @@ type
     fDiskLineEndingType : TSynLinesFileLineEndType;
     fOldDiskLineEndingType : TSynLinesFileLineEndType;
     procedure CreateDefaultGutterParts;
+    procedure GetDialogPosition(AWidth, AHeight: integer; out _Left, _Top: integer);
     function GetDiskEncoding: string;
     function GetLineEndingType: TSynLinesFileLineEndType;
     function GuessLineEndType(AString: string): TSynLinesFileLineEndType;
+    procedure OnReplace(Sender: TObject; const ASearch, AReplace: string; Line, Column: integer; var _Action: TSynReplaceAction);
     procedure QuickSort(L, R: integer; CompareFn: TStringsSortCompare);
     procedure SetDiskEncoding(AValue: string);
     procedure SetFileName(AValue: TFileName);
@@ -157,6 +159,10 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   end;
+
+ResourceString
+  lisUEReplaceThisOccurrenceOfWith = 'Replace this occurrence of "%s"%s with "%s"?';
+
 
 implementation
 
@@ -251,6 +257,8 @@ begin
   SyncEdit.Editor := self;
   SyncEdit.GutterGlyph.Assign(bm);
   SyncEdit.CaseSensitive := False;
+
+  OnReplaceText := @OnReplace;
 
   bm.Free;
 end;
@@ -595,6 +603,55 @@ end;
 procedure TEditor.PopPos;
 begin
   CaretXY := fCaretPos;
+end;
+
+procedure TEditor.GetDialogPosition(AWidth, AHeight: integer;
+  out _Left, _Top: integer);
+var
+  P: TPoint;
+  ABounds: TRect;
+begin
+  P := ClientToScreen(Point(CaretXPix, CaretYPix));
+  ABounds := Screen.MonitorFromPoint(P).WorkareaRect;
+  _Left := ClientOrigin.X + (AWidth - AWidth) div 2;
+  _Top := P.Y - AHeight - 3 * LineHeight;
+  if _Top < ABounds.Top + 10 then
+    _Top := P.Y + 2 * LineHeight;
+  if _Top + AHeight > ABounds.Bottom then
+    _Top := (ABounds.Bottom + ABounds.Top - AHeight) div 2;
+  if _Top < ABounds.Top then _Top := ABounds.Top;
+end;
+
+
+procedure TEditor.OnReplace(Sender: TObject; const ASearch, AReplace:
+  string; Line, Column: integer; var _Action: TSynReplaceAction);
+
+  function Shorten(const s: string): string;
+  const
+    MAX_LEN=300;
+  begin
+    Result:=s;
+    if Length(Result)>MAX_LEN then
+      Result:=LeftStr(Result, MAX_LEN)+'...';
+  end;
+
+var a,x,y:integer;
+  AText:AnsiString;
+begin
+
+  AText:=Format(lisUEReplaceThisOccurrenceOfWith,[Shorten(ASearch),LineEnding,Shorten(AReplace)]);
+
+  GetDialogPosition(300,150,X,Y);
+  a:=MessageDlgPos(AText,mtconfirmation,
+            [mbYes,mbYesToAll,mbNo,mbCancel],0,X,Y);
+
+  case a of
+    mrYes:   _Action :=raReplace;
+    mrNo :   _Action :=raSkip;
+    mrAll,mrYesToAll: _Action :=raReplaceAll;
+  else
+    _Action:=raCancel;
+  end;
 end;
 
 
