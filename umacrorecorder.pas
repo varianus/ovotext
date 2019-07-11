@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, ueditor, uActionMacro, uReplaceMacro, SynMacroRecorder, SynEditKeyCmds, ActnList, LCLProc,
-  SynEditTypes, Config, Stringcostants, Generics.Collections, mycustomdialogs;
+  SynEditTypes, Config, Stringcostants, Generics.Collections, ReplaceDialog;
 
 type
 
@@ -60,7 +60,7 @@ type
     function GetState: TSynMacroState;
     procedure pRecordActions(AAction: TBasicAction; var Handled: Boolean);
     procedure MacroListChange(ASender: TObject; constref AItem: TMacro; AAction: TCollectionNotification);
-    procedure pRecordSearchReplace(Sender: TObject; const ASearch, AReplace: string; AOptions: TSynSearchOptions; ASearchMode: TSearchMode);
+    procedure pRecordSearchReplace(Sender: TObject; const ASearch, AReplace: string; AOptions: TMySynSearchOptions);
     procedure SynMacroRecStateChange(Sender: TObject);
     procedure SynMacroRecUserCommand(aSender: TCustomSynMacroRecorder; aCmd: TSynEditorCommand; var aEvent: TSynMacroEvent);
   protected
@@ -197,7 +197,7 @@ begin
     SynMacroRec.Pause;
 end;
 
-procedure TMacroRecorder.pRecordSearchReplace(Sender:TObject; const ASearch, AReplace: string; AOptions: TSynSearchOptions; ASearchMode: TSearchMode);
+procedure TMacroRecorder.pRecordSearchReplace(Sender:TObject; const ASearch, AReplace: string; AOptions: TMySynSearchOptions);
 var
   AEvent: TReplaceMacroEvent;
 begin
@@ -207,7 +207,6 @@ begin
     AEvent.Search         := ASearch;
     AEvent.Replace        := AReplace;
     AEvent.ReplaceOptions := AOptions;
-    AEvent.SearchMode     := ASearchMode;
     AddCustomEvent(TSynMacroEvent(AEvent));
 
   end;

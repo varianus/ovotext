@@ -33,7 +33,7 @@ uses
   SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds, SynEditStrConst,
   SynEditMouseCmds, SynEditLines, Stringcostants, Forms, Graphics, Config, udmmain,
   uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils,
-  mycustomdialogs;
+  ReplaceDialog;
 
 type
 
@@ -59,7 +59,7 @@ type
 
   TOnBeforeClose = procedure(Editor: TEditor; var Cancel: boolean) of object;
   TOnEditorEvent = procedure(Editor: TEditor) of object;
-  TOnSearchReplaceEvent= procedure (Sender:TObject; const ASearch, AReplace: string; AOptions: TSynSearchOptions; ASearchMode: TSearchMode) of object;
+  TOnSearchReplaceEvent= procedure (Sender:TObject; const ASearch, AReplace: string; AOptions: TMySynSearchOptions) of object;
 
   TEditor = class(TSynEdit)
   private

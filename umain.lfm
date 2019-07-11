@@ -19,6 +19,7 @@ object fMain: TfMain
   OnWindowStateChange = FormWindowStateChange
   Position = poOwnerFormCenter
   ShowHint = True
+  LCLVersion = '2.1.0.0'
   Visible = True
   object StatusBar: TStatusBar
     Left = 0
@@ -77,7 +78,7 @@ object fMain: TfMain
     end
     object ToolButton5: TToolButton
       Left = 25
-      Height = 18
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
@@ -108,7 +109,7 @@ object fMain: TfMain
     end
     object ToolButton12: TToolButton
       Left = 203
-      Height = 18
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
@@ -129,20 +130,20 @@ object fMain: TfMain
     end
     object tbbSepClose: TToolButton
       Left = 126
-      Height = 18
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
     object ToolButton4: TToolButton
       Left = 256
-      Height = 18
+      Height = 8
       Top = 2
       Caption = 'ToolButton4'
       Style = tbsSeparator
     end
     object ToolButton11: TToolButton
       Left = 312
-      Height = 18
+      Height = 8
       Top = 2
       Caption = 'ToolButton11'
       Style = tbsSeparator
@@ -3113,12 +3114,6 @@ object fMain: TfMain
     OnShowHint = AppPropertiesShowHint
     Left = 504
     Top = 72
-  end
-  object FindDialog: TFindDialog
-    OnClose = FindDialogClose
-    OnFind = FindDialogFind
-    Left = 504
-    Top = 166
   end
   object pumEdit: TPopupMenu
     Images = imgList
