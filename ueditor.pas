@@ -32,7 +32,8 @@ uses
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,
   SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds, SynEditStrConst,
   SynEditMouseCmds, SynEditLines, Stringcostants, Forms, Graphics, Config, udmmain,
-  uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils;
+  uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils,
+  mycustomdialogs;
 
 type
 
@@ -58,7 +59,7 @@ type
 
   TOnBeforeClose = procedure(Editor: TEditor; var Cancel: boolean) of object;
   TOnEditorEvent = procedure(Editor: TEditor) of object;
-  TOnSearchReplaceEvent= procedure (Sender:TObject; const ASearch, AReplace: string; AOptions: TSynSearchOptions) of object;
+  TOnSearchReplaceEvent= procedure (Sender:TObject; const ASearch, AReplace: string; AOptions: TSynSearchOptions; ASearchMode: TSearchMode) of object;
 
   TEditor = class(TSynEdit)
   private

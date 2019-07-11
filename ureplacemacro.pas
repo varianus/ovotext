@@ -24,17 +24,21 @@ interface
 uses
   SysUtils, Classes, TypInfo, Graphics, Controls, Forms, Dialogs,
   SynEdit, Menus, ActnList, StdCtrls, ExtCtrls, LCLType,
+  ReplaceDialog,
   SynEditKeyCmds, SynMacroRecorder, SynEditTypes;
 
 const
   ecReplace: TsynEditorCommand = ecUserFirst +15001;
 
 type
+
+  { TReplaceMacroEvent }
+
   TReplaceMacroEvent = class(TSynMacroEvent)
 
   private
     fSearch, fReplace: string;
-    fReplaceOptions: TSynSearchOptions;
+    fReplaceOptions: TmySynSearchOptions;
     function GetAsString : String; override;
     procedure InitEventParameters(sStr : String); override;
   public
@@ -47,7 +51,7 @@ type
   public
     property Replace: string read fReplace write fReplace;
     property Search: string read fSearch write fSearch;
-    property ReplaceOptions: TSynSearchOptions read fReplaceOptions write fReplaceOptions;
+    property ReplaceOptions: TMySynSearchOptions read fReplaceOptions write fReplaceOptions;
 
   end;
 
@@ -55,7 +59,7 @@ implementation
 
 { TReplaceMacroEvent }
 
-constructor TReplaceMacroEvent.Create;
+constructor TReplaceMacroEvent.Create();
 begin
   inherited Create;
 end;
@@ -69,7 +73,7 @@ begin
 
   Result := 'ecReplace ' + fSearch  + #09 +
                            fReplace + #09 +
-                           SetToString(PTypeInfo(TypeInfo(TSynSearchOptions)), LongInt(fReplaceOptions), true);
+                           SetToString(PTypeInfo(TypeInfo(TmySynSearchOptions)), LongInt(fReplaceOptions), true);
 end;
 
 procedure TReplaceMacroEvent.InitEventParameters(sStr: String);
@@ -85,7 +89,7 @@ begin
     st.DelimitedText := Copy(cHead, 1, Length(sStr));
     fSearch := st[0];
     fReplace := st[1];
-    ReplaceOptions:=TSynSearchOptions(StringToSet(PTypeInfo(TypeInfo(TSynSearchOptions)), st[2]));
+    fReplaceOptions:=TMySynSearchOptions(StringToSet(PTypeInfo(TypeInfo(TSynSearchOptions)), st[2]));
   finally
     st.free
   end;
@@ -117,7 +121,7 @@ end;
 
 procedure TReplaceMacroEvent.Playback(aEditor: TCustomSynEdit);
 begin
-  aEditor.SearchReplace(fSearch, fReplace, fReplaceOptions);
+  aEditor.SearchReplace(fSearch, fReplace, TSynSearchOptions(fReplaceOptions));
 end;
 
 procedure TReplaceMacroEvent.SaveToStream(aStream: TStream);

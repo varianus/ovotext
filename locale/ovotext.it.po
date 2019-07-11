@@ -236,11 +236,18 @@ msgid "Replace"
 msgstr ""
 
 #: tcustomreplacedialog.caption
+msgctxt "tcustomreplacedialog.caption"
 msgid "Replace Text"
 msgstr ""
 
 #: tcustomreplacedialog.casesensitivecheckbox.caption
+msgctxt "tcustomreplacedialog.casesensitivecheckbox.caption"
 msgid "Case sensitive"
+msgstr ""
+
+#: tcustomreplacedialog.cbreplace.caption
+msgctxt "tcustomreplacedialog.cbreplace.caption"
+msgid "Replace With"
 msgstr ""
 
 #: tcustomreplacedialog.directiongroupbox.caption
@@ -248,6 +255,7 @@ msgid "DirectionGroupBox"
 msgstr ""
 
 #: tcustomreplacedialog.editfind.text
+msgctxt "tcustomreplacedialog.editfind.text"
 msgid "EditFind"
 msgstr ""
 
@@ -256,6 +264,7 @@ msgid "EditReplace"
 msgstr ""
 
 #: tcustomreplacedialog.entirescopecheckbox.caption
+msgctxt "tcustomreplacedialog.entirescopecheckbox.caption"
 msgid "Search entire file"
 msgstr ""
 
@@ -272,20 +281,17 @@ msgid "Global"
 msgstr ""
 
 #: tcustomreplacedialog.promptonreplacecheckbox.caption
+msgctxt "tcustomreplacedialog.promptonreplacecheckbox.caption"
 msgid "Prompt on replace"
 msgstr ""
 
-#: tcustomreplacedialog.replacelabel.caption
-msgctxt "tcustomreplacedialog.replacelabel.caption"
-msgid "Replace"
+#: tcustomreplacedialog.rgsearchmode.caption
+msgctxt "tcustomreplacedialog.rgsearchmode.caption"
+msgid "Search Mode"
 msgstr ""
 
 #: tcustomreplacedialog.scopegroupbox.caption
 msgid "Scope"
-msgstr ""
-
-#: tcustomreplacedialog.searchmode.caption
-msgid "Search Mode"
 msgstr ""
 
 #: tcustomreplacedialog.selectedradiobutton.caption
@@ -293,10 +299,12 @@ msgid "Selected text"
 msgstr ""
 
 #: tcustomreplacedialog.textlabel.caption
-msgid "Text"
+msgctxt "tcustomreplacedialog.textlabel.caption"
+msgid "Text to find"
 msgstr ""
 
 #: tcustomreplacedialog.wholewordsonlycheckbox.caption
+msgctxt "tcustomreplacedialog.wholewordsonlycheckbox.caption"
 msgid "Whole words only"
 msgstr ""
 
@@ -316,62 +324,6 @@ msgstr ""
 
 #: tdlggoto.label2.caption
 msgid "Column number"
-msgstr ""
-
-#: tfabout.blicense.caption
-msgid "&License"
-msgstr ""
-
-#: tfabout.caption
-msgid "About"
-msgstr ""
-
-#: tfabout.label1.caption
-#, fuzzy
-msgctxt "tfabout.label1.caption"
-msgid "OvoText"
-msgstr "OvoText"
-
-#: tfabout.label2.caption
-msgctxt "tfabout.label2.caption"
-msgid "Version"
-msgstr ""
-
-#: tfabout.label3.caption
-msgid "Author : Marco Caselli"
-msgstr ""
-
-#: tfabout.label4.caption
-msgid "Another text editor"
-msgstr ""
-
-#: tfabout.label5.caption
-msgid "Lazarus"
-msgstr ""
-
-#: tfabout.label6.caption
-msgid "Home Page"
-msgstr ""
-
-#: tfabout.label7.caption
-msgid "FPC"
-msgstr ""
-
-#: tfabout.label8.caption
-msgid "Build Date"
-msgstr ""
-
-#: tfabout.label9.caption
-msgid "SVN rev:"
-msgstr ""
-
-#: tfabout.lhomepage.caption
-msgid "https://github.com/varianus/ovotext"
-msgstr ""
-
-#: tfabout.lversion.caption
-msgctxt "tfabout.lversion.caption"
-msgid "Version"
 msgstr ""
 
 #: tfmacroeditor.btndelete.caption

@@ -12,10 +12,25 @@ type
 
   { TCustomReplaceDialog }
 
+  { TMyReplaceDialog }
+  TSearchMode = (smNormal, smExtended, smRegexp);
+
+  TMySynSearchOption = (ssoMatchCase, ssoWholeWord,
+      ssoBackwards,
+      ssoEntireScope, ssoSelectedOnly,
+      ssoReplace, ssoReplaceAll,
+      ssoPrompt,
+      ssoSearchInReplacement,    // continue search-replace in replacement (with ssoReplaceAll) // replace recursive
+      ssoRegExpr, ssoRegExprMultiLine,
+      ssoFindContinue, ssoExtended);
+  TMySynSearchOptions = set of TMySynSearchOption;
+
+
   TCustomReplaceDialog = class(TForm)
     BackwardRadioButton: TRadioButton;
     BtnPanel: TButtonPanel;
     CaseSensitiveCheckBox: TCheckBox;
+    cbReplace: TCheckBox;
     DirectionGroupBox: TGroupBox;
     EntireScopeCheckBox: TCheckBox;
     ForwardRadioButton: TRadioButton;
@@ -23,7 +38,7 @@ type
     gbOptions: TGroupBox;
     PromptOnReplaceCheckBox: TCheckBox;
     ScopeGroupBox: TGroupBox;
-    SearchMode: TRadioGroup;
+    rgSearchMode: TRadioGroup;
     PanelButtons: TPanel;
     EditFind: TEdit;
     SelectedRadioButton: TRadioButton;
@@ -32,20 +47,21 @@ type
     ReplaceLabel: TLabel;
     WholeWordsOnlyCheckBox: TCheckBox;
     procedure CancelButtonClick(Sender: TObject);
+    procedure cbReplaceChange(Sender: TObject);
     procedure CloseButtonClick(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
   private
     FOnFind: TNotifyEvent;
     FOnReplace: TNotifyEvent;
     fReplaceAllClickedLast: boolean;
-    FOptions: TSynSearchOptions;
+    FOptions: TMYSynSearchOptions;
     procedure Find;
     function GetFindText: string;
-    function GetOptions: TSynSearchOptions;
+    function GetOptions: TMySynSearchOptions;
     function GetReplaceText: string;
     procedure Replace;
     procedure SetFindText(AValue: string);
-    procedure SetOptions(AValue: TSynSearchOptions);
+    procedure SetOptions(AValue: TMySynSearchOptions);
     procedure SetReplaceText(AValue: string);
 
   public
@@ -54,7 +70,7 @@ type
     property ReplaceText: string read GetReplaceText write SetReplaceText;
     property OnReplace: TNotifyEvent read FOnReplace write FOnReplace;
     property OnFind: TNotifyEvent read FOnFind write FOnFind;
-    property Options: TSynSearchOptions read GetOptions write SetOptions;
+    property Options: TMySynSearchOptions read GetOptions write SetOptions;
 
   end;
 
@@ -98,6 +114,15 @@ begin
   Close;
 end;
 
+procedure TCustomReplaceDialog.cbReplaceChange(Sender: TObject);
+begin
+  if cbReplace.Checked then
+    Options:=Options + [ssoReplace]
+  else
+    Options:=Options - [ssoReplace];
+
+end;
+
 procedure TCustomReplaceDialog.Find;
 begin
   if Assigned(FOnFind) then
@@ -110,16 +135,20 @@ begin
 end;
 
 
-procedure TCustomReplaceDialog.SetOptions(AValue: TSynSearchOptions);
+procedure TCustomReplaceDialog.SetOptions(AValue: TMySynSearchOptions);
 begin
   CaseSensitiveCheckBox.Checked := ssoMatchCase in AValue;
   WholeWordsOnlyCheckBox.Checked := ssoWholeWord in AValue;
   if ssoRegExpr in AValue then
-     SearchMode.ItemIndex := 2;
+     rgSearchMode.ItemIndex := 2
+  else
+  if ssoExtended in AValue then
+     rgSearchMode.ItemIndex := 1
+  else
+     rgSearchMode.ItemIndex := 0;
 
-  //MultiLineCheckBox.Checked := ssoRegExprMultiLine in AValue;
+  cbReplace.Checked := ssoReplace in AValue;
   PromptOnReplaceCheckBox.Checked := ssoPrompt in AValue;
-
 
   if ssoSelectedOnly in AValue then
     SelectedRadioButton.Checked := True
@@ -167,7 +196,7 @@ begin
   BtnPanel.OkButton.Kind := bkCustom;
 end;
 
-function TCustomReplaceDialog.GetOptions: TSynSearchOptions;
+function TCustomReplaceDialog.GetOptions: TMySynSearchOptions;
 begin
   Result := [];
   if CaseSensitiveCheckBox.Checked then
@@ -175,9 +204,9 @@ begin
   if WholeWordsOnlyCheckBox.Checked then
     Include(Result, ssoWholeWord);
 
-  case SearchMode.ItemIndex of
+  case rgSearchMode.ItemIndex of
   0:;
-  1: ;
+  1: Include(Result, ssoExtended);
   2: Include(Result, ssoRegExpr);
   end;
 

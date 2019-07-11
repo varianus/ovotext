@@ -22,8 +22,8 @@ object fMain: TfMain
   Visible = True
   object StatusBar: TStatusBar
     Left = 0
-    Height = 23
-    Top = 407
+    Height = 21
+    Top = 409
     Width = 815
     Panels = <    
       item

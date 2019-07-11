@@ -127,7 +127,6 @@ type
     FileCloseAll: TAction;
     FileSave: TAction;
     FileExit: TAction;
-    FindDialog: TFindDialog;
     FontDialog: TFontDialog;
     HelpAbout: TAction;
     FileClose: TAction;
@@ -270,7 +269,6 @@ type
     procedure FileSaveAsAccept(Sender: TObject);
     procedure FileSaveExecute(Sender: TObject);
     procedure FindDialogClose(Sender: TObject; var CloseAction:TCloseAction);
-    procedure FindDialogFind(Sender: TObject);
     procedure FontDialogApplyClicked(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -307,7 +305,7 @@ type
     Macros: TMRUMenuManager;
 
     FindText, ReplaceText: string;
-    SynOption: TSynSearchOptions;
+    SynOption: TMySynSearchOptions;
     prn: TSynEditPrint;
     ReplaceDialog: TCustomReplaceDialog;
 
@@ -317,12 +315,8 @@ type
       var Handled: Boolean);
     function EditorAvalaible: boolean; inline;
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
-    procedure ExecFind(Dialog: TFindDialog);
     procedure mnuLangClick(Sender: TObject);
     procedure mnuThemeClick(Sender: TObject);
-    procedure PrepareReplace(Dialog: TCustomReplaceDialog);
-
-    procedure PrepareSearch(Dialog: TFindDialog);
     procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
     procedure RecentFileEvent(Sender: TObject; const AFileName: string);
     procedure NewEditor(Editor: TEditor);
@@ -799,20 +793,6 @@ begin
   self.BringToFront;
 end;
 
-procedure TfMain.FindDialogFind(Sender: TObject);
-begin
-  ExecFind(FindDialog);
-end;
-
-procedure TfMain.ExecFind(Dialog: TFindDialog);
-begin
-  PrepareSearch(Dialog);
-
-  if EditorFactory.CurrentEditor.SearchReplace(FindText, '', SynOption) = 0 then
-    ShowMessage(Format(RSTextNotfound, [Dialog.FindText]));
-
-end;
-
 procedure TfMain.FontDialogApplyClicked(Sender: TObject);
 var
   i: integer;
@@ -1224,31 +1204,49 @@ begin
 end;
 
 procedure TfMain.ReplaceDialogFind(Sender: TObject);
+var
+  ed: TEditor;
+  Options : TMySynSearchOptions;
 begin
-//  ExecFind(ReplaceDialog);
+  ed := EditorFactory.CurrentEditor;
+  Options := ReplaceDialog.Options;
+  Exclude(Options, ssoReplace);
+  if ssoExtended in Options then
+     FindText := JSONStringToString(ReplaceDialog.FindText);
+
+  if Ed.SearchReplace(FindText, '', TSynSearchOptions(Options)) = 0 then
+    ShowMessage(Format(RSTextNotfound, [FindText]))
 end;
+
+
 
 procedure TfMain.ReplaceDialogReplace(Sender: TObject);
 var
   ed: TEditor;
-  Options : TSynSearchOptions;
+  Options : TMySynSearchOptions;
 
 begin
 
   ed := EditorFactory.CurrentEditor;
   Options := ReplaceDialog.Options;
 
-  if Ed.SearchReplace(ReplaceDialog.FindText, ReplaceDialog.ReplaceText, Options) = 0 then
+  if ssoExtended in Options then
+    begin
+      FindText := JSONStringToString(ReplaceDialog.FindText);
+      ReplaceText := JSONStringToString(ReplaceDialog.ReplaceText);
+    end;
+
+  if Ed.SearchReplace(FindText, ReplaceText, TSynSearchOptions(Options)) = 0 then
     ShowMessage(Format(RSTextNotfound, [FindText]))
   else
   if (ssoReplace in Options) and not (ssoReplaceAll in Options) then
   begin
     Exclude(Options, ssoReplace);
-    Ed.SearchReplace(ReplaceDialog.FindText, '', Options);
+    Ed.SearchReplace(FindText, '', TSynSearchOptions(Options));
   end;
 
   if Assigned(ed.OnSearchReplace) then
-    ed.OnSearchReplace(Ed, ReplaceDialog.FindText, ReplaceDialog.ReplaceText, Options);
+    ed.OnSearchReplace(Ed, FindText, ReplaceText, Options);
 
 end;
 
@@ -1317,15 +1315,18 @@ begin
 
   if not EditorAvalaible then
     exit;
+
   Editor := EditorFactory.CurrentEditor;
   if Editor.SelAvail and (Editor.BlockBegin.Y = Editor.BlockEnd.Y) then
-    FindDialog.FindText := Editor.SelText;
-  FindDialog.Execute;
+    ReplaceDialog.FindText := Editor.SelText;
+
+  ReplaceDialog.Options:=ReplaceDialog.Options -  [ssoReplace, ssoReplaceAll];
+  ReplaceDialog.Show;
 end;
 
 procedure TfMain.SearchFindNext1Execute(Sender: TObject);
 var
-  sOpt: TSynSearchOptions;
+  sOpt: TMySynSearchOptions;
   Ed: TEditor;
 begin
   if (FindText = EmptyStr) then
@@ -1335,7 +1336,7 @@ begin
   begin
     sOpt := SynOption;
     sOpt := sOpt - [ssoBackWards];
-    if Ed.SearchReplace(FindText, '', sOpt) = 0 then
+    if Ed.SearchReplace(FindText, '', TSynSearchOptions(sOpt)) = 0 then
       ShowMessage(Format(RSTextNotfound, [FindText]));
   end;
 
@@ -1343,7 +1344,7 @@ end;
 
 procedure TfMain.SearchFindPreviousExecute(Sender: TObject);
 var
-  sOpt: TSynSearchOptions;
+  sOpt: TMySynSearchOptions;
   Ed: TEditor;
 begin
   if (FindText = EmptyStr) then
@@ -1354,7 +1355,7 @@ begin
   begin
     sOpt := SynOption;
     sOpt := sOpt + [ssoBackWards];
-    if Ed.SearchReplace(FindText, '', sOpt) = 0 then
+    if Ed.SearchReplace(FindText, '', TSynSearchOptions(sOpt)) = 0 then
       ShowMessage(Format(RSTextNotfound, [FindText]));
   end;
 
@@ -1410,24 +1411,6 @@ begin
   Result := Assigned(EditorFactory) and Assigned(EditorFactory.CurrentEditor);
 end;
 
-procedure TfMain.PrepareSearch(Dialog: TFindDialog);
-begin
-  SynOption := [];
-  if not (frDown in Dialog.Options) then
-    Include(SynOption, ssoBackwards);
-  if frWholeWord in Dialog.Options then
-    Include(SynOption, ssoWholeWord);
-  if frMatchCase in Dialog.Options then
-    Include(SynOption, ssoMatchCase);
-  if frEntireScope in Dialog.Options then
-    Include(SynOption, ssoEntireScope);
-
-  FindText := Dialog.FindText;
-
-end;
-
-procedure TfMain.PrepareReplace(Dialog: TCustomReplaceDialog);
-begin
 
   //case Dialog.SearchMode of
   //  smRegexp : begin
@@ -1444,7 +1427,6 @@ begin
   //end;
   //
 
-end;
 
 function TfMain.AskFileName(Editor: TEditor): boolean;
 begin

@@ -178,7 +178,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="17">
+    <Units Count="20">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -263,17 +263,27 @@
         <UnitName Value="uMacroRecorder"/>
       </Unit14>
       <Unit15>
-        <Filename Value="mycustomdialogs.pas"/>
+        <Filename Value="ureplacemacro.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="uReplaceMacro"/>
       </Unit15>
       <Unit16>
+        <Filename Value="uactionmacro.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="supportclasses.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SupportClasses"/>
+      </Unit17>
+      <Unit18>
         <Filename Value="replacedialog.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="CustomReplaceDialog"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ReplaceDialog"/>
-      </Unit16>
+      </Unit18>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
