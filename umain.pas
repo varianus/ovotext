@@ -1212,10 +1212,12 @@ begin
   Options := ReplaceDialog.Options;
   Exclude(Options, ssoReplace);
   if ssoExtended in Options then
-     FindText := JSONStringToString(ReplaceDialog.FindText);
+    FindText := JSONStringToString(ReplaceDialog.FindText)
+  else
+    FindText:= ReplaceDialog.FindText;
 
   if Ed.SearchReplace(FindText, '', TSynSearchOptions(Options)) = 0 then
-    ShowMessage(Format(RSTextNotfound, [FindText]))
+    ShowMessage(Format(RSTextNotfound, [ReplaceDialog.FindText]))
 end;
 
 
@@ -1234,10 +1236,15 @@ begin
     begin
       FindText := JSONStringToString(ReplaceDialog.FindText);
       ReplaceText := JSONStringToString(ReplaceDialog.ReplaceText);
+    end
+  else
+    begin
+      FindText := ReplaceDialog.FindText;
+      ReplaceText := ReplaceDialog.ReplaceText;
     end;
 
   if Ed.SearchReplace(FindText, ReplaceText, TSynSearchOptions(Options)) = 0 then
-    ShowMessage(Format(RSTextNotfound, [FindText]))
+    ShowMessage(Format(RSTextNotfound, [ReplaceDialog.FindText]))
   else
   if (ssoReplace in Options) and not (ssoReplaceAll in Options) then
   begin
