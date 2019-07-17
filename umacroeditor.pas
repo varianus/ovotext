@@ -75,6 +75,7 @@ begin
   if not Assigned(FMacroEditor) then
    FMacroEditor := TFMacroEditor.Create(Nil);
   FMacroEditor.SynMacroRec:= Recorder;
+  FMacroEditor.ReloadMacros;
   FMacroEditor.Show;
 
 end;
@@ -111,15 +112,24 @@ begin
 end;
 
 procedure TFMacroEditor.btnDeleteClick(Sender: TObject);
+var
+  idx : integer;
 begin
   if not Assigned(lbMacroView.Selected) then
     exit;
+  idx := lbMacroView.Selected.Index;
 
   if MessageDlg(RSMacro, format(RSMacroDelete, [lbMacroView.Selected.Caption]), mtConfirmation, [mbYes,mbNo], 0) = mrYes then
     begin
       SynMacroRec.Macros.Remove(TMacro(lbMacroView.Selected.Data));
+      ReloadMacros;
+      if idx < SynMacroRec.Macros.Count then
+        lbMacroView.Selected := lbMacroView.Items[idx]
+      else
+        if (SynMacroRec.Macros.Count <> 0) then
+          lbMacroView.Selected := lbMacroView.Items[idx-1]
     end;
-  ReloadMacros;
+
 end;
 
 procedure TFMacroEditor.btnRecordStopClick(Sender: TObject);
@@ -179,7 +189,7 @@ end;
 
 procedure TFMacroEditor.lbMacroViewSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
 begin
- if Assigned(Item) then
+ if Assigned(Item) and selected then
     SynEdit1.Lines.Text :=  TMacro(Item.Data).Commands;
 end;
 
