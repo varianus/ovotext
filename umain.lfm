@@ -564,6 +564,21 @@ object fMain: TfMain
       ImageIndex = 12
       OnExecute = actMacroManagerExecute
     end
+    object actZoomIn: TAction
+      Caption = 'Zoom In'
+      OnExecute = actZoomInExecute
+      ShortCut = 16491
+    end
+    object actZoomOut: TAction
+      Caption = 'Zoom Out'
+      OnExecute = actZoomOutExecute
+      ShortCut = 16493
+    end
+    object actZoomReset: TAction
+      Caption = 'Zoom Reset'
+      OnExecute = actZoomResetExecute
+      ShortCut = 16495
+    end
   end
   object mnuMain: TMainMenu
     Images = imgList
@@ -798,6 +813,18 @@ object fMain: TfMain
         object MenuItem56: TMenuItem
           Caption = '-'
         end
+      end
+      object N4: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem91: TMenuItem
+        Action = actZoomIn
+      end
+      object MenuItem92: TMenuItem
+        Action = actZoomOut
+      end
+      object MenuItem93: TMenuItem
+        Action = actZoomReset
       end
     end
     object MenuItem84: TMenuItem

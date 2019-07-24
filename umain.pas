@@ -28,7 +28,7 @@ uses
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls,
   SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils,
   udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder, uMacroEditor,
-  SynEditLines, replacedialog, fpjson;
+  SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, fpjson;
 
 type
 
@@ -44,6 +44,9 @@ type
     actCloseBefore: TAction;
     actCloseAfter: TAction;
     actFindLongestLine: TAction;
+    actZoomIn: TAction;
+    actZoomOut: TAction;
+    actZoomReset: TAction;
     actMacroManager: TAction;
     actMacroPlayBack: TAction;
     actMacroStop: TAction;
@@ -89,6 +92,10 @@ type
     MenuItem87: TMenuItem;
     MenuItem88: TMenuItem;
     MenuItem89: TMenuItem;
+    N4: TMenuItem;
+    MenuItem91: TMenuItem;
+    MenuItem92: TMenuItem;
+    MenuItem93: TMenuItem;
     N3: TMenuItem;
     mnuSavedMacros: TMenuItem;
     N2: TMenuItem;
@@ -251,6 +258,9 @@ type
     procedure actTrimTrailingExecute(Sender: TObject);
     procedure actXMLCompactExecute(Sender: TObject);
     procedure actXMLPrettyPrintExecute(Sender: TObject);
+    procedure actZoomInExecute(Sender: TObject);
+    procedure actZoomOutExecute(Sender: TObject);
+    procedure actZoomResetExecute(Sender: TObject);
     procedure AppPropertiesActivate(Sender: TObject);
     procedure AppPropertiesDropFiles(Sender: TObject; const FileNames: array of String);
     procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
@@ -617,6 +627,43 @@ begin
   Ed := EditorFactory.CurrentEditor;
   Ed.TextOperation(@FormatXML, [tomFullText]);
 end;
+
+procedure TfMain.actZoomInExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  Ed.ExecuteCommand(ecZoomIn,#0,nil);
+
+end;
+
+procedure TfMain.actZoomOutExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  Ed.ExecuteCommand(ecZoomout,#0,nil);
+
+end;
+
+procedure TfMain.actZoomResetExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  Ed.ExecuteCommand(ecZoomNorm,#0,nil);
+
+end;
+
 
 procedure TfMain.AppPropertiesActivate(Sender: TObject);
 begin

@@ -225,11 +225,11 @@ constructor TEditor.Create(AOwner: TComponent);
 var
   bm: TBitmap;
 
-  procedure DeleteKeyStrokes(keys:TSynEditKeyStrokes;Code: word; SS: TShiftState);
+  procedure DeleteKeyStroke(keys:TSynEditKeyStrokes;Code: word; SS: TShiftState);
   var
    id : Integer;
   begin
-      id := keys.FindKeycode(ord('N'),[ssCtrl]);
+      id := keys.FindKeycode(code,ss);
       if id <> - 1 then
         keys.Delete(id);
   end;
@@ -240,13 +240,12 @@ begin
   Options := Options + [eoAltSetsColumnMode];
   MouseOptions := MouseOptions + [emCtrlWheelZoom, emRightMouseMovesCursor];
 
-
-  DeleteKeyStrokes(Keystrokes,ord('N'),[ssCtrl]);
+  DeleteKeyStroke(Keystrokes,ord('N'),[ssCtrl]);
 
   CreateDefaultGutterParts;
 
   multicaret := TSynPluginMultiCaret.Create(self);
-  DeleteKeyStrokes(MultiCaret.KeyStrokes,ord('N'),[ssCtrl]);
+  DeleteKeyStroke(MultiCaret.KeyStrokes,ord('N'),[ssCtrl]);
 
   multicaret.EnableWithColumnSelection := True;
   multicaret.DefaultMode := mcmMoveAllCarets;
