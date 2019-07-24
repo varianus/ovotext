@@ -47,6 +47,7 @@ type
     actZoomIn: TAction;
     actZoomOut: TAction;
     actZoomReset: TAction;
+    actToggleSpecialChar: TAction;
     actMacroManager: TAction;
     actMacroPlayBack: TAction;
     actMacroStop: TAction;
@@ -222,7 +223,9 @@ type
     ToolButton16: TToolButton;
     ToolButton17: TToolButton;
     ToolButton18: TToolButton;
+    ToolButton19: TToolButton;
     ToolButton2: TToolButton;
+    ToolButton20: TToolButton;
     ToolButton3: TToolButton;
     tbbClose: TToolButton;
     tbbCloseAll: TToolButton;
@@ -253,6 +256,7 @@ type
     procedure actQuoteExecute(Sender: TObject);
     procedure actSQLPrettyPrintExecute(Sender: TObject);
     procedure actTabToSpaceExecute(Sender: TObject);
+    procedure actToggleSpecialCharExecute(Sender: TObject);
     procedure actTrimExecute(Sender: TObject);
     procedure actTrimLeadingExecute(Sender: TObject);
     procedure actTrimTrailingExecute(Sender: TObject);
@@ -568,6 +572,13 @@ begin
 
   Ed := EditorFactory.CurrentEditor;
   Ed.TextOperation(@TabsToSpace);
+end;
+
+procedure TfMain.actToggleSpecialCharExecute(Sender: TObject);
+begin
+  actToggleSpecialChar.Checked := not actToggleSpecialChar.Checked;
+  EditorFactory.ChangeOptions(eoShowSpecialChars, actToggleSpecialChar.Checked);
+
 end;
 
 procedure TfMain.actTrimExecute(Sender: TObject);

@@ -153,6 +153,8 @@ type
     function SaveAll: boolean;
     procedure DoCheckFileChanges;
     procedure ReloadHighLighters;
+    procedure ChangeOptions(Option: TSynEditorOption; Add: boolean);
+
     {$IFDEF NEEDCLOSEBTN}
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: integer); override;
     procedure PaintWindow(DC: HDC); override;
@@ -889,6 +891,21 @@ end;
 procedure TEditorFactory.DoCheckFileChanges;
 begin
   FWatcher.CheckFiles;
+end;
+
+procedure TEditorFactory.ChangeOptions(Option: TSynEditorOption; Add:boolean);
+var
+ i: integer;
+ ed: TEditor;
+begin
+    for i := PageCount - 1 downto 0 do
+    begin
+      ed := TEditorTabSheet(Pages[i]).Editor;
+      if Add then
+        ed.Options := ed.Options + [Option]
+      else
+        ed.Options := ed.Options - [Option];
+    end;
 end;
 
 procedure TEditorFactory.ReloadHighLighters;

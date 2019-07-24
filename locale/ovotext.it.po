@@ -326,6 +326,62 @@ msgstr ""
 msgid "Column number"
 msgstr ""
 
+#: tfabout.blicense.caption
+msgid "&License"
+msgstr ""
+
+#: tfabout.caption
+msgid "About"
+msgstr ""
+
+#: tfabout.label1.caption
+#, fuzzy
+msgctxt "tfabout.label1.caption"
+msgid "OvoText"
+msgstr "OvoText"
+
+#: tfabout.label2.caption
+msgctxt "tfabout.label2.caption"
+msgid "Version"
+msgstr ""
+
+#: tfabout.label3.caption
+msgid "Author : Marco Caselli"
+msgstr ""
+
+#: tfabout.label4.caption
+msgid "Another text editor"
+msgstr ""
+
+#: tfabout.label5.caption
+msgid "Lazarus"
+msgstr ""
+
+#: tfabout.label6.caption
+msgid "Home Page"
+msgstr ""
+
+#: tfabout.label7.caption
+msgid "FPC"
+msgstr ""
+
+#: tfabout.label8.caption
+msgid "Build Date"
+msgstr ""
+
+#: tfabout.label9.caption
+msgid "SVN rev:"
+msgstr ""
+
+#: tfabout.lhomepage.caption
+msgid "https://github.com/varianus/ovotext"
+msgstr ""
+
+#: tfabout.lversion.caption
+msgctxt "tfabout.lversion.caption"
+msgid "Version"
+msgstr ""
+
 #: tfmacroeditor.btndelete.caption
 #, fuzzy
 msgctxt "tfmacroeditor.btndelete.caption"
@@ -464,6 +520,10 @@ msgstr "Formatta SQL"
 msgid "Tab to Spaces"
 msgstr "Tabulazione in Spazi"
 
+#: tfmain.acttogglespecialchar.caption
+msgid "Toggle Special Char"
+msgstr ""
+
 #: tfmain.acttrim.caption
 msgid "Trim"
 msgstr "Rimuovi spazi agli estremi"
@@ -487,6 +547,18 @@ msgstr "Compatta XML"
 #: tfmain.actxmlprettyprint.caption
 msgid "Beautify  XML"
 msgstr "Formatta XML"
+
+#: tfmain.actzoomin.caption
+msgid "Zoom In"
+msgstr ""
+
+#: tfmain.actzoomout.caption
+msgid "Zoom Out"
+msgstr ""
+
+#: tfmain.actzoomreset.caption
+msgid "Zoom Reset"
+msgstr ""
 
 #: tfmain.caption
 msgctxt "tfmain.caption"
@@ -784,6 +856,10 @@ msgstr "Ordinamento Discendente"
 
 #: tfmain.toolbutton11.caption
 msgid "ToolButton11"
+msgstr ""
+
+#: tfmain.toolbutton20.caption
+msgid "ToolButton20"
 msgstr ""
 
 #: tfmain.toolbutton4.caption
