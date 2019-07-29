@@ -24,7 +24,7 @@ interface
 uses
   SysUtils, Classes, TypInfo, Graphics, Controls, Forms, Dialogs,
   SynEdit, Menus, ActnList, StdCtrls, ExtCtrls, LCLType,
-  ReplaceDialog,
+  ReplaceDialog, fpjson,
   SynEditKeyCmds, SynMacroRecorder, SynEditTypes;
 
 const
@@ -38,7 +38,8 @@ type
 
   private
     fSearch, fReplace: string;
-    fReplaceOptions: TmySynSearchOptions;
+    fReplaceOptions: TMySynSearchOptions;
+  protected
     function GetAsString : String; override;
     procedure InitEventParameters(sStr : String); override;
   public
@@ -89,7 +90,7 @@ begin
     st.DelimitedText := Copy(cHead, 1, Length(sStr));
     fSearch := st[0];
     fReplace := st[1];
-    fReplaceOptions:=TMySynSearchOptions(StringToSet(PTypeInfo(TypeInfo(TSynSearchOptions)), st[2]));
+    fReplaceOptions:=TMySynSearchOptions(StringToSet(PTypeInfo(TypeInfo(TMySynSearchOptions)), st[2]));
   finally
     st.free
   end;
@@ -120,8 +121,20 @@ begin
 end;
 
 procedure TReplaceMacroEvent.Playback(aEditor: TCustomSynEdit);
+var
+  ReplaceText, FindText: String;
 begin
-  aEditor.SearchReplace(fSearch, fReplace, TSynSearchOptions(fReplaceOptions));
+  if ssoExtended in TMySynSearchOptions(fReplaceOptions) then
+    begin
+      FindText := JSONStringToString(fSearch);
+      ReplaceText := JSONStringToString(fReplace);
+    end
+  else
+    begin
+      FindText := fSearch;
+      ReplaceText := fReplace;
+    end;
+  aEditor.SearchReplace(FindText, ReplaceText, TSynSearchOptions(fReplaceOptions));
 end;
 
 procedure TReplaceMacroEvent.SaveToStream(aStream: TStream);

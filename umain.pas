@@ -1311,7 +1311,7 @@ begin
   end;
 
   if Assigned(ed.OnSearchReplace) then
-    ed.OnSearchReplace(Ed, FindText, ReplaceText, Options);
+    ed.OnSearchReplace(Ed, ReplaceDialog.FindText, ReplaceDialog.ReplaceText, Options);
 
 end;
 
