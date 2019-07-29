@@ -306,10 +306,13 @@ var
   s: RawByteString='';
   wSize: integer;
   b:boolean;
+  Error: Integer;
 begin
   SetFileName(AFileName);
-  fStream := TFileStream.Create(FFileName, fmOpenRead,fmShareDenyNone);
+  fStream := nil;
   try
+    fStream := TFileStream.Create(FFileName, fmOpenRead,fmShareDenyNone);
+
     wSize := fStream.Size;
     SetLength(s, wSize);
     if wSize > 0 then
@@ -327,9 +330,19 @@ begin
     fOldDiskLineEndingType := fDiskLineEndingType;
 
 
-  finally
-    FreeAndNil(fStream);
+  Except
+    on e: EFOpenError do
+      begin
+        Error := GetLastOSError;
+        MessageDlg(RSError, Format(RSCannotSave, [fFileName, Error, SysErrorMessage(Error)]), mtError, [mbRetry, mbCancel, mbIgnore], 0)
+      end
+    else raise;
+
+
   end;
+
+  if Assigned(fStream) then
+    fStream.free;
 
 end;
 
@@ -353,6 +366,7 @@ var
   s: RawByteString='';
   fStream: TFileStream;
   b: boolean;
+  Error: integer;
 begin
   repeat
     Retry := False;
@@ -384,7 +398,8 @@ begin
 
     if not Result then
     begin
-      case MessageDlg(RSError, Format(RSCannotSave, [fFileName]), mtError, [mbRetry, mbCancel, mbIgnore], 0) of
+      Error := GetLastOSError;
+      case MessageDlg(RSError, Format(RSCannotSave, [fFileName, Error, SysErrorMessage(Error)]), mtError, [mbRetry, mbCancel, mbIgnore], 0) of
         mrAbort: Result := False;
         mrIgnore: Result := True;
         mrRetry: Retry := True;
