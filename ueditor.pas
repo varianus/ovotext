@@ -312,7 +312,8 @@ begin
   try
     wSize := fStream.Size;
     SetLength(s, wSize);
-    fStream.Read(s[1], wSize);
+    if wSize > 0 then
+      fStream.Read(s[1], wSize);
     FDiskEncoding := NormalizeEncoding(GuessEncoding(s));
 
     S := ConvertEncodingToUTF8(s,FDiskEncoding, b);
