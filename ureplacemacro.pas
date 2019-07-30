@@ -87,6 +87,7 @@ begin
   st := TStringList.Create;
   try
     st.Delimiter := #09;
+    st.StrictDelimiter := true;
     st.DelimitedText := Copy(cHead, 1, Length(sStr));
     fSearch := st[0];
     fReplace := st[1];
