@@ -36,6 +36,7 @@ type
     bLicense: TBitBtn;
     Image1: TImage;
     Label1: TLabel;
+    Label11: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -50,6 +51,7 @@ type
     lbLazVersion: TLabel;
     lbSVNRev: TLabel;
     lHomePage: TLabel;
+    lHomePage2: TLabel;
     lVersion: TLabel;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);

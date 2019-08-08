@@ -64,6 +64,14 @@ msgstr ""
 "Impossibile creare\n"
 " \"%s\"\n"
 
+#: stringcostants.rscannotopen
+#, object-pascal-format
+msgid ""
+"Cannot open file \n"
+" \"%s\" \n"
+" Error: %d - %s"
+msgstr ""
+
 #: stringcostants.rscannotsave
 #, object-pascal-format, fuzzy
 #| msgid ""
@@ -71,10 +79,12 @@ msgstr ""
 #| " \"%s\"\n"
 msgid ""
 "Can not save changes to\n"
-" \"%s\""
+" \"%s\" \n"
+" Error: %d - %s"
 msgstr ""
-"Impossibile salvare cambiamento a\n"
-" \"%s\"\n"
+"Impossibile salvare file \n"
+" \"%s\" \n"
+" Errore: %d - %s"
 
 #: stringcostants.rserror
 msgid "Error"
@@ -104,7 +114,7 @@ msgid "Macro"
 msgstr ""
 
 #: stringcostants.rsmacrodefaultname
-msgid "Unsaved"
+msgid "Current recorded macro"
 msgstr ""
 
 #: stringcostants.rsmacrodelete
@@ -431,6 +441,13 @@ msgid "Close all on the left"
 msgstr "Chiudi tutti a sinistra"
 
 #: tfmain.actcompressspaces.caption
+msgctxt "tfmain.actcompressspaces.caption"
+msgid "Reduce multiple spaces"
+msgstr "Rimuovi spazi multipli"
+
+#: tfmain.actcompressspaces.hint
+#, fuzzy
+msgctxt "tfmain.actcompressspaces.hint"
 msgid "Reduce multiple spaces"
 msgstr "Rimuovi spazi multipli"
 
@@ -439,16 +456,34 @@ msgid "Find Longest Line"
 msgstr ""
 
 #: tfmain.actfont.caption
+msgctxt "tfmain.actfont.caption"
+msgid "Select Font"
+msgstr "Seleziona Carattere"
+
+#: tfmain.actfont.hint
+#, fuzzy
+msgctxt "tfmain.actfont.hint"
 msgid "Select Font"
 msgstr "Seleziona Carattere"
 
 #: tfmain.actfullnametoclipboard.caption
+msgctxt "tfmain.actfullnametoclipboard.caption"
+msgid "Full File name to clipboard"
+msgstr "Copia nome completo"
+
+#: tfmain.actfullnametoclipboard.hint
+#, fuzzy
+msgctxt "tfmain.actfullnametoclipboard.hint"
 msgid "Full File name to clipboard"
 msgstr "Copia nome completo"
 
 #: tfmain.actgoto.caption
 msgid "Go To ..."
 msgstr "Vai a ..."
+
+#: tfmain.actgoto.hint
+msgid "Go to line"
+msgstr ""
 
 #: tfmain.actjsonprettyprint.caption
 msgid "Beautify JSON"
@@ -505,6 +540,13 @@ msgid "File Path to clipboard"
 msgstr "Copia percorso file"
 
 #: tfmain.actprint.caption
+msgctxt "tfmain.actprint.caption"
+msgid "Print"
+msgstr "Stampa"
+
+#: tfmain.actprint.hint
+#, fuzzy
+msgctxt "tfmain.actprint.hint"
 msgid "Print"
 msgstr "Stampa"
 
@@ -528,11 +570,26 @@ msgstr ""
 msgid "Trim"
 msgstr "Rimuovi spazi agli estremi"
 
+#: tfmain.acttrim.hint
+msgid "Trim leading ad trailing spaces"
+msgstr ""
+
 #: tfmain.acttrimleading.caption
 msgid "Trim Leading spaces"
 msgstr "Rimuovi spazi iniziali"
 
+#: tfmain.acttrimleading.hint
+msgid "Trim leading spaces"
+msgstr ""
+
 #: tfmain.acttrimtrailing.caption
+msgctxt "tfmain.acttrimtrailing.caption"
+msgid "Trim Trailing spaces"
+msgstr "Rimuovi gli spazi finali"
+
+#: tfmain.acttrimtrailing.hint
+#, fuzzy
+msgctxt "tfmain.acttrimtrailing.hint"
 msgid "Trim Trailing spaces"
 msgstr "Rimuovi gli spazi finali"
 
@@ -599,6 +656,13 @@ msgid "Paste"
 msgstr "Incolla"
 
 #: tfmain.editredo.caption
+msgctxt "tfmain.editredo.caption"
+msgid "Redo"
+msgstr "Ripeti"
+
+#: tfmain.editredo.hint
+#, fuzzy
+msgctxt "tfmain.editredo.hint"
 msgid "Redo"
 msgstr "Ripeti"
 
@@ -673,7 +737,9 @@ msgid "&Open..."
 msgstr "&Apri..."
 
 #: tfmain.fileopen.hint
-msgid "Open"
+#, fuzzy
+#| msgid "Open"
+msgid "Open file"
 msgstr "Apri"
 
 #: tfmain.filereload.caption
@@ -694,6 +760,10 @@ msgstr "Salva"
 #: tfmain.filesaveall.caption
 msgid "Save All"
 msgstr "Salva tutti"
+
+#: tfmain.filesaveall.hint
+msgid "Save all"
+msgstr ""
 
 #: tfmain.filesaveas.caption
 msgid "Save as..."
@@ -831,12 +901,23 @@ msgid "Find"
 msgstr "Trova"
 
 #: tfmain.searchfindnext1.caption
+msgctxt "tfmain.searchfindnext1.caption"
+msgid "Find next"
+msgstr "Trova successivo"
+
+#: tfmain.searchfindnext1.hint
+#, fuzzy
+msgctxt "tfmain.searchfindnext1.hint"
 msgid "Find next"
 msgstr "Trova successivo"
 
 #: tfmain.searchfindprevious.caption
 msgid "&Find Previous"
 msgstr "Trova &precedente"
+
+#: tfmain.searchfindprevious.hint
+msgid "Find Previous"
+msgstr ""
 
 #: tfmain.searchreplace.caption
 msgid "&Replace"
@@ -847,10 +928,24 @@ msgid "Search and Replace"
 msgstr "Cerca e Sostituisce"
 
 #: tfmain.sortascending.caption
+msgctxt "tfmain.sortascending.caption"
+msgid "Sort Ascending"
+msgstr "Ordinamento Crescente"
+
+#: tfmain.sortascending.hint
+#, fuzzy
+msgctxt "tfmain.sortascending.hint"
 msgid "Sort Ascending"
 msgstr "Ordinamento Crescente"
 
 #: tfmain.sortdescending.caption
+msgctxt "tfmain.sortdescending.caption"
+msgid "Sort Descending"
+msgstr "Ordinamento Discendente"
+
+#: tfmain.sortdescending.hint
+#, fuzzy
+msgctxt "tfmain.sortdescending.hint"
 msgid "Sort Descending"
 msgstr "Ordinamento Discendente"
 

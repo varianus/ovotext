@@ -1,15 +1,14 @@
 object fAbout: TfAbout
   Left = 2062
-  Height = 317
+  Height = 346
   Top = 405
-  Width = 436
+  Width = 398
   Caption = 'About'
-  ClientHeight = 317
-  ClientWidth = 436
+  ClientHeight = 346
+  ClientWidth = 398
   OnClose = FormClose
   OnShow = FormShow
   Position = poMainFormCenter
-  LCLVersion = '2.1.0.0'
   object Image1: TImage
     Left = 0
     Height = 108
@@ -1491,9 +1490,9 @@ object fAbout: TfAbout
     OptimalFill = True
   end
   object Label2: TLabel
-    Left = 69
+    Left = 68
     Height = 17
-    Top = 143
+    Top = 156
     Width = 60
     Alignment = taRightJustify
     AutoSize = False
@@ -1504,9 +1503,9 @@ object fAbout: TfAbout
     OptimalFill = True
   end
   object lVersion: TLabel
-    Left = 138
+    Left = 137
     Height = 17
-    Top = 143
+    Top = 156
     Width = 170
     AutoSize = False
     Caption = 'Version'
@@ -1541,9 +1540,9 @@ object fAbout: TfAbout
     OptimalFill = True
   end
   object Label6: TLabel
-    Left = 17
+    Left = 16
     Height = 17
-    Top = 115
+    Top = 128
     Width = 112
     Alignment = taRightJustify
     AutoSize = False
@@ -1554,9 +1553,9 @@ object fAbout: TfAbout
     OptimalFill = True
   end
   object lHomePage: TLabel
-    Left = 136
+    Left = 135
     Height = 17
-    Top = 115
+    Top = 128
     Width = 301
     AutoSize = False
     Caption = 'https://github.com/varianus/ovotext'
@@ -1570,9 +1569,9 @@ object fAbout: TfAbout
     OptimalFill = True
   end
   object bClose: TBitBtn
-    Left = 321
+    Left = 298
     Height = 26
-    Top = 268
+    Top = 308
     Width = 91
     Anchors = [akRight, akBottom]
     DefaultCaption = True
@@ -1581,18 +1580,18 @@ object fAbout: TfAbout
     TabOrder = 0
   end
   object bLicense: TBitBtn
-    Left = 381
+    Left = 343
     Height = 25
-    Top = 377
+    Top = 406
     Width = 65
     Anchors = [akRight, akBottom]
     Caption = '&License'
     TabOrder = 1
   end
   object lbLazVersion: TLabel
-    Left = 138
+    Left = 137
     Height = 14
-    Top = 174
+    Top = 187
     Width = 59
     AutoSize = False
     Font.Height = 14
@@ -1601,9 +1600,9 @@ object fAbout: TfAbout
     OptimalFill = True
   end
   object Label7: TLabel
-    Left = 69
+    Left = 68
     Height = 14
-    Top = 197
+    Top = 210
     Width = 60
     Alignment = taRightJustify
     AutoSize = False
@@ -1614,9 +1613,9 @@ object fAbout: TfAbout
     OptimalFill = True
   end
   object lbFPCVersion: TLabel
-    Left = 138
+    Left = 137
     Height = 14
-    Top = 197
+    Top = 210
     Width = 59
     AutoSize = False
     Font.Height = 14
@@ -1625,9 +1624,9 @@ object fAbout: TfAbout
     OptimalFill = True
   end
   object Label5: TLabel
-    Left = 69
+    Left = 68
     Height = 14
-    Top = 174
+    Top = 187
     Width = 60
     Alignment = taRightJustify
     AutoSize = False
@@ -1638,9 +1637,9 @@ object fAbout: TfAbout
     OptimalFill = True
   end
   object Label8: TLabel
-    Left = 69
+    Left = 68
     Height = 14
-    Top = 218
+    Top = 231
     Width = 60
     Alignment = taRightJustify
     AutoSize = False
@@ -1651,9 +1650,9 @@ object fAbout: TfAbout
     OptimalFill = True
   end
   object lbBuildDate: TLabel
-    Left = 138
+    Left = 137
     Height = 14
-    Top = 218
+    Top = 231
     Width = 59
     AutoSize = False
     Font.Height = 14
@@ -1662,9 +1661,9 @@ object fAbout: TfAbout
     OptimalFill = True
   end
   object Label9: TLabel
-    Left = 69
+    Left = 68
     Height = 14
-    Top = 240
+    Top = 253
     Width = 60
     Alignment = taRightJustify
     AutoSize = False
@@ -1675,9 +1674,9 @@ object fAbout: TfAbout
     OptimalFill = True
   end
   object lbSVNRev: TLabel
-    Left = 138
+    Left = 137
     Height = 14
-    Top = 240
+    Top = 253
     Width = 59
     AutoSize = False
     Font.Height = 14
@@ -1686,14 +1685,42 @@ object fAbout: TfAbout
     OptimalFill = True
   end
   object lbEngine: TLabel
-    Left = 336
+    Left = 335
     Height = 14
-    Top = 174
+    Top = 187
     Width = 115
     AutoSize = False
     Font.Height = 14
     ParentColor = False
     ParentFont = False
+    OptimalFill = True
+  end
+  object Label11: TLabel
+    Left = 23
+    Height = 17
+    Top = 278
+    Width = 112
+    Alignment = taRightJustify
+    AutoSize = False
+    Caption = 'Icons are from '
+    Font.Height = 18
+    ParentColor = False
+    ParentFont = False
+    OptimalFill = True
+  end
+  object lHomePage2: TLabel
+    Left = 135
+    Height = 17
+    Top = 278
+    Width = 216
+    Caption = 'https://github.com/KDE/breeze-icons'
+    Font.Color = clBlue
+    Font.Height = 18
+    ParentColor = False
+    ParentFont = False
+    OnMouseDown = lHomePageMouseDown
+    OnMouseEnter = lHomePageMouseEnter
+    OnMouseLeave = lHomePageMouseLeave
     OptimalFill = True
   end
 end

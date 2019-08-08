@@ -40,11 +40,20 @@ msgid ""
 " \"%s\""
 msgstr ""
 
+#: stringcostants.rscannotopen
+#, object-pascal-format
+msgid ""
+"Cannot open file \n"
+" \"%s\" \n"
+" Error: %d - %s"
+msgstr ""
+
 #: stringcostants.rscannotsave
 #, object-pascal-format
 msgid ""
 "Can not save changes to\n"
-" \"%s\""
+" \"%s\" \n"
+" Error: %d - %s"
 msgstr ""
 
 #: stringcostants.rserror
@@ -66,7 +75,7 @@ msgid "Macro"
 msgstr ""
 
 #: stringcostants.rsmacrodefaultname
-msgid "Unsaved"
+msgid "Current recorded macro"
 msgstr ""
 
 #: stringcostants.rsmacrodelete
@@ -354,6 +363,12 @@ msgid "Close all on the left"
 msgstr ""
 
 #: tfmain.actcompressspaces.caption
+msgctxt "tfmain.actcompressspaces.caption"
+msgid "Reduce multiple spaces"
+msgstr ""
+
+#: tfmain.actcompressspaces.hint
+msgctxt "tfmain.actcompressspaces.hint"
 msgid "Reduce multiple spaces"
 msgstr ""
 
@@ -362,15 +377,31 @@ msgid "Find Longest Line"
 msgstr ""
 
 #: tfmain.actfont.caption
+msgctxt "tfmain.actfont.caption"
+msgid "Select Font"
+msgstr ""
+
+#: tfmain.actfont.hint
+msgctxt "tfmain.actfont.hint"
 msgid "Select Font"
 msgstr ""
 
 #: tfmain.actfullnametoclipboard.caption
+msgctxt "tfmain.actfullnametoclipboard.caption"
+msgid "Full File name to clipboard"
+msgstr ""
+
+#: tfmain.actfullnametoclipboard.hint
+msgctxt "tfmain.actfullnametoclipboard.hint"
 msgid "Full File name to clipboard"
 msgstr ""
 
 #: tfmain.actgoto.caption
 msgid "Go To ..."
+msgstr ""
+
+#: tfmain.actgoto.hint
+msgid "Go to line"
 msgstr ""
 
 #: tfmain.actjsonprettyprint.caption
@@ -428,6 +459,12 @@ msgid "File Path to clipboard"
 msgstr ""
 
 #: tfmain.actprint.caption
+msgctxt "tfmain.actprint.caption"
+msgid "Print"
+msgstr ""
+
+#: tfmain.actprint.hint
+msgctxt "tfmain.actprint.hint"
 msgid "Print"
 msgstr ""
 
@@ -451,11 +488,25 @@ msgstr ""
 msgid "Trim"
 msgstr ""
 
+#: tfmain.acttrim.hint
+msgid "Trim leading ad trailing spaces"
+msgstr ""
+
 #: tfmain.acttrimleading.caption
 msgid "Trim Leading spaces"
 msgstr ""
 
+#: tfmain.acttrimleading.hint
+msgid "Trim leading spaces"
+msgstr ""
+
 #: tfmain.acttrimtrailing.caption
+msgctxt "tfmain.acttrimtrailing.caption"
+msgid "Trim Trailing spaces"
+msgstr ""
+
+#: tfmain.acttrimtrailing.hint
+msgctxt "tfmain.acttrimtrailing.hint"
 msgid "Trim Trailing spaces"
 msgstr ""
 
@@ -522,6 +573,12 @@ msgid "Paste"
 msgstr ""
 
 #: tfmain.editredo.caption
+msgctxt "tfmain.editredo.caption"
+msgid "Redo"
+msgstr ""
+
+#: tfmain.editredo.hint
+msgctxt "tfmain.editredo.hint"
 msgid "Redo"
 msgstr ""
 
@@ -596,7 +653,7 @@ msgid "&Open..."
 msgstr ""
 
 #: tfmain.fileopen.hint
-msgid "Open"
+msgid "Open file"
 msgstr ""
 
 #: tfmain.filereload.caption
@@ -616,6 +673,10 @@ msgstr ""
 
 #: tfmain.filesaveall.caption
 msgid "Save All"
+msgstr ""
+
+#: tfmain.filesaveall.hint
+msgid "Save all"
 msgstr ""
 
 #: tfmain.filesaveas.caption
@@ -754,11 +815,21 @@ msgid "Find"
 msgstr ""
 
 #: tfmain.searchfindnext1.caption
+msgctxt "tfmain.searchfindnext1.caption"
+msgid "Find next"
+msgstr ""
+
+#: tfmain.searchfindnext1.hint
+msgctxt "tfmain.searchfindnext1.hint"
 msgid "Find next"
 msgstr ""
 
 #: tfmain.searchfindprevious.caption
 msgid "&Find Previous"
+msgstr ""
+
+#: tfmain.searchfindprevious.hint
+msgid "Find Previous"
 msgstr ""
 
 #: tfmain.searchreplace.caption
@@ -770,10 +841,22 @@ msgid "Search and Replace"
 msgstr ""
 
 #: tfmain.sortascending.caption
+msgctxt "tfmain.sortascending.caption"
+msgid "Sort Ascending"
+msgstr ""
+
+#: tfmain.sortascending.hint
+msgctxt "tfmain.sortascending.hint"
 msgid "Sort Ascending"
 msgstr ""
 
 #: tfmain.sortdescending.caption
+msgctxt "tfmain.sortdescending.caption"
+msgid "Sort Descending"
+msgstr ""
+
+#: tfmain.sortdescending.hint
+msgctxt "tfmain.sortdescending.hint"
 msgid "Sort Descending"
 msgstr ""
 
