@@ -137,7 +137,7 @@
             </Options>
           </Linking>
           <Other>
-            <CustomOptions Value="-FcUTF8 -O4"/>
+            <CustomOptions Value="-O4"/>
           </Other>
         </CompilerOptions>
       </Item4>
