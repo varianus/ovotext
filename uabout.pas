@@ -44,12 +44,10 @@ type
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
-    Label9: TLabel;
     lbBuildDate: TLabel;
     lbEngine: TLabel;
     lbFPCVersion: TLabel;
     lbLazVersion: TLabel;
-    lbSVNRev: TLabel;
     lHomePage: TLabel;
     lHomePage2: TLabel;
     lVersion: TLabel;

@@ -1660,30 +1660,6 @@ object fAbout: TfAbout
     ParentFont = False
     OptimalFill = True
   end
-  object Label9: TLabel
-    Left = 68
-    Height = 14
-    Top = 253
-    Width = 60
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'SVN rev:'
-    Font.Height = 14
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object lbSVNRev: TLabel
-    Left = 137
-    Height = 14
-    Top = 253
-    Width = 59
-    AutoSize = False
-    Font.Height = 14
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
   object lbEngine: TLabel
     Left = 335
     Height = 14
@@ -1713,6 +1689,7 @@ object fAbout: TfAbout
     Height = 17
     Top = 278
     Width = 216
+    AutoSize = False
     Caption = 'https://github.com/KDE/breeze-icons'
     Font.Color = clBlue
     Font.Height = 18
