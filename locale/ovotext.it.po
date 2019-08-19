@@ -350,6 +350,10 @@ msgctxt "tfabout.label1.caption"
 msgid "OvoText"
 msgstr "OvoText"
 
+#: tfabout.label11.caption
+msgid "Icons are from "
+msgstr ""
+
 #: tfabout.label2.caption
 msgctxt "tfabout.label2.caption"
 msgid "Version"
@@ -385,6 +389,10 @@ msgstr ""
 
 #: tfabout.lhomepage.caption
 msgid "https://github.com/varianus/ovotext"
+msgstr ""
+
+#: tfabout.lhomepage2.caption
+msgid "https://github.com/KDE/breeze-icons"
 msgstr ""
 
 #: tfabout.lversion.caption
