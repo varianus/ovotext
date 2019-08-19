@@ -595,7 +595,7 @@ object fMain: TfMain
     object actToggleSpecialChar: TAction
       Category = 'Settings'
       Caption = 'Toggle Special Char'
-      ImageIndex = 35
+      ImageIndex = 30
       OnExecute = actToggleSpecialCharExecute
     end
     object actZoomIn: TAction
