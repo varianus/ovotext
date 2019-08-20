@@ -5,7 +5,7 @@ unit ReplaceDialog;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, lcltype,
   Buttons, StdCtrls, ExtCtrls, ButtonPanel, SynEditTypes;
 
 type
@@ -49,6 +49,7 @@ type
     procedure CancelButtonClick(Sender: TObject);
     procedure cbReplaceChange(Sender: TObject);
     procedure CloseButtonClick(Sender: TObject);
+    procedure EditFindKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure OKButtonClick(Sender: TObject);
   private
     FOnFind: TNotifyEvent;
@@ -106,6 +107,12 @@ begin
   fReplaceAllClickedLast := True;
   Replace;
   ModalResult := mrNone;
+end;
+
+procedure TCustomReplaceDialog.EditFindKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if (Key = VK_RETURN) and not cbReplace.Checked then
+    Find;
 end;
 
 procedure TCustomReplaceDialog.CancelButtonClick(Sender: TObject);
