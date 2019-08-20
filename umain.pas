@@ -353,8 +353,8 @@ uses lclproc, Stringcostants, uabout, SynExportHTML;
 {$R *.lfm}
 
 const
-  IDX_IMG_MODIFIED = 26;
-  IDX_IMG_STANDARD = 18;
+  IDX_IMG_MODIFIED = 3;
+  IDX_IMG_STANDARD = -1;
 
 { TfMain }
 

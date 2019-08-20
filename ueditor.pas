@@ -992,7 +992,10 @@ begin
     r := TabRect(i);
     h := (r.Bottom - r.Top);
     if (X > r.right - h) and (Y > r.bottom - h) then
+      begin
        CloseEditor(TEditorTabSheet(Page[i]).Editor);
+       Invalidate;
+      end;
   end;
 end;
 
@@ -1011,7 +1014,7 @@ begin
     r := TabRect(i);
     h := (r.Bottom - r.Bottom - r.Top - 16) div 2;
     h2 := 16 + h;
-    Images.Draw(c, r.Right - h2, r.Top + h, 2);
+    Images.Draw(c, r.Right - h2, r.Top + h, 7);
   end;
   c.Free;
 end;
