@@ -48,13 +48,15 @@ object fMain: TfMain
   end
   object ToolBar1: TToolBar
     Left = 0
+    Height = 28
     Top = 0
     Width = 673
+    AutoSize = True
     BorderWidth = 3
-    ButtonHeight = 18
-    ButtonWidth = 22
+    ButtonHeight = 26
+    ButtonWidth = 28
     Images = imgList
-    ImagesWidth = 16
+    ImagesWidth = 24
     TabOrder = 1
     object ToolButton1: TToolButton
       Left = 1
@@ -62,120 +64,120 @@ object fMain: TfMain
       Action = FileNew
     end
     object ToolButton2: TToolButton
-      Left = 28
+      Left = 34
       Top = 2
       Action = FileOpen
     end
     object ToolButton3: TToolButton
-      Left = 50
+      Left = 62
       Top = 2
       Action = FileSave
     end
     object tbbClose: TToolButton
-      Left = 72
+      Left = 90
       Top = 2
       Action = FileClose
     end
     object ToolButton5: TToolButton
-      Left = 23
-      Height = 18
+      Left = 29
+      Height = 26
       Top = 2
       Style = tbsDivider
     end
     object ToolButton6: TToolButton
-      Left = 121
+      Left = 151
       Top = 2
       Action = EditCut
     end
     object ToolButton7: TToolButton
-      Left = 143
+      Left = 179
       Top = 2
       Action = EditCopy
     end
     object ToolButton8: TToolButton
-      Left = 165
+      Left = 207
       Top = 2
       Action = EditPaste
     end
     object ToolButton9: TToolButton
-      Left = 192
+      Left = 240
       Top = 2
       Action = EditUndo
     end
     object ToolButton10: TToolButton
-      Left = 214
+      Left = 268
       Top = 2
       Action = EditRedo
     end
     object ToolButton12: TToolButton
-      Left = 187
-      Height = 18
+      Left = 235
+      Height = 26
       Top = 2
       Style = tbsDivider
     end
     object ToolButton13: TToolButton
-      Left = 244
+      Left = 304
       Top = 2
       Action = SearchFind
     end
     object ToolButton15: TToolButton
-      Left = 266
+      Left = 332
       Top = 2
       Action = SearchReplace
     end
     object tbbCloseAll: TToolButton
-      Left = 94
+      Left = 118
       Top = 2
       Action = FileCloseAll
     end
     object tbbSepClose: TToolButton
-      Left = 116
-      Height = 18
+      Left = 146
+      Height = 26
       Top = 2
       Style = tbsDivider
     end
     object ToolButton4: TToolButton
-      Left = 236
-      Height = 18
+      Left = 296
+      Height = 26
       Top = 2
       Caption = 'ToolButton4'
       Style = tbsSeparator
     end
     object ToolButton11: TToolButton
-      Left = 288
-      Height = 18
+      Left = 360
+      Height = 26
       Top = 2
       Caption = 'ToolButton11'
       Style = tbsSeparator
     end
     object ToolButton14: TToolButton
-      Left = 326
+      Left = 404
       Top = 2
       Action = actMacroRecord
     end
     object ToolButton16: TToolButton
-      Left = 348
+      Left = 432
       Top = 2
       Action = actMacroStop
     end
     object ToolButton17: TToolButton
-      Left = 370
+      Left = 460
       Top = 2
       Action = actMacroPlayBack
     end
     object ToolButton18: TToolButton
-      Left = 392
+      Left = 488
       Top = 2
       Action = actMacroPlaybackMulti
     end
     object ToolButton19: TToolButton
-      Left = 296
+      Left = 368
       Top = 2
       Action = actToggleSpecialChar
     end
     object ToolButton20: TToolButton
-      Left = 318
-      Height = 18
+      Left = 396
+      Height = 26
       Top = 2
       Caption = 'ToolButton20'
       Style = tbsSeparator
@@ -184,7 +186,7 @@ object fMain: TfMain
   object lbMessage: TStaticText
     Left = 0
     Height = 24
-    Top = 32
+    Top = 28
     Width = 673
     Align = alTop
     Alignment = taCenter
@@ -893,6 +895,7 @@ object fMain: TfMain
     end
   end
   object imgList: TImageList
+    Scaled = True
     Left = 344
     Top = 72
     Bitmap = {
