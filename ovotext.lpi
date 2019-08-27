@@ -178,7 +178,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="19">
+    <Units Count="20">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -284,6 +284,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ReplaceDialog"/>
       </Unit18>
+      <Unit19>
+        <Filename Value="simplesingleinstance.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SimpleSingleInstance"/>
+      </Unit19>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

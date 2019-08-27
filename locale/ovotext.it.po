@@ -31,6 +31,22 @@ msgctxt "replacedialog.rsreplace"
 msgid "Replace"
 msgstr ""
 
+#: simplesingleinstance.serrsetsingleinstanceglobalstarted
+msgid "You cannot change the single instance global property when it's been started."
+msgstr ""
+
+#: simplesingleinstance.serrsetsingleinstanceidstarted
+msgid "You cannot change the single instance ID when it's been started."
+msgstr ""
+
+#: simplesingleinstance.serrsingleinstancenotclient
+msgid "Current instance is not a client."
+msgstr ""
+
+#: simplesingleinstance.serrstartsingleinstancestarted
+msgid "You cannot start single instance when it's been already started."
+msgstr ""
+
 #: stringcostants.rsadministrativerights
 msgctxt "stringcostants.rsadministrativerights"
 msgid "Warning, you are using the root account, you may harm your system!"
@@ -381,10 +397,6 @@ msgstr ""
 
 #: tfabout.label8.caption
 msgid "Build Date"
-msgstr ""
-
-#: tfabout.label9.caption
-msgid "SVN rev:"
 msgstr ""
 
 #: tfabout.lhomepage.caption

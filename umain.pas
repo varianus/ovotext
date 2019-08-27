@@ -26,7 +26,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls,
-  SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils,
+  SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils, SingleInstance,
   udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder, uMacroEditor,
   SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, fpjson;
 
@@ -267,6 +267,7 @@ type
     procedure actZoomResetExecute(Sender: TObject);
     procedure AppPropertiesActivate(Sender: TObject);
     procedure AppPropertiesDropFiles(Sender: TObject; const FileNames: array of String);
+    procedure AppPropertiesIdle(Sender: TObject; var Done: Boolean);
     procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
     procedure EditRedoExecute(Sender: TObject);
     procedure ExportHtmlToClipBoardExecute(Sender: TObject);
@@ -334,6 +335,7 @@ type
     procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
     procedure RecentFileEvent(Sender: TObject; const AFileName: string);
     procedure NewEditor(Editor: TEditor);
+    procedure ServerReceivedParams(Sender: TBaseSingleInstance; aParams: TStringList);
     procedure ShowTabs(Sender: TObject);
     Procedure SetupSaveDialog(SaveMode: TSaveMode);
     procedure SynMacroRecListChange(Sender: TObject);
@@ -689,6 +691,11 @@ begin
     EditorFactory.AddEditor(FileNames[i])
 end;
 
+procedure TfMain.AppPropertiesIdle(Sender: TObject; var Done: Boolean);
+begin
+  Application.SingleInstance.ServerCheckMessages;
+end;
+
 procedure TfMain.actFontExecute(Sender: TObject);
 var
   i: integer;
@@ -880,6 +887,20 @@ begin
     CanClose := True;
 end;
 
+procedure TfMain.ServerReceivedParams(Sender: TBaseSingleInstance;
+  aParams: TStringList);
+var
+  I: Integer;
+  str: string;
+begin
+
+  for str in aParams do
+    begin
+      if copy(str, 1, 2) <> '--' then
+        EditorFactory.AddEditor(str);
+    end;
+end;
+
 procedure TfMain.FormCreate(Sender: TObject);
 var
   i: integer;
@@ -888,9 +909,10 @@ var
   CurrLetter: string;
   SaveLetter: string;
   CurrMenu: TMenuItem;
+  ParamList: TstringList;
 
 begin
-
+  Application.SingleInstance.OnServerReceivedParams := @ServerReceivedParams;
   MRU := TMRUMenuManager.Create(Self);
   MRU.MenuItem := mnuOpenRecent;
   MRU.OnRecentFile := @RecentFileEvent;
@@ -927,10 +949,6 @@ begin
   Macros.ShowRecentFiles;
   SynMacroRec.OnListChange := @SynMacroRecListChange;
 
-
-  FileNew.Execute;
-
-
   //// move close button to right
   //tbbCloseAll.Align := alRight;
   //tbbSepClose.Align := alRight;
@@ -938,13 +956,6 @@ begin
 
   // Parameters
   FileOpen.Dialog.Filter := configobj.GetFiters;
-
-  for i := 1 to Paramcount do
-  begin
-    // dirty hack to skip parameter as --debug=....
-    if copy(ParamStr(i), 1, 2) <> '--' then
-      EditorFactory.AddEditor(ParamStr(i));
-  end;
 
   prn := TSynEditPrint.Create(Self);
   prn.Colors := True;
@@ -987,6 +998,19 @@ begin
     mnuTheme.OnClick:=@mnuThemeClick;
     mnuThemes.Add(mnuTheme);
   end;
+
+  IF ParamCount > 0  then
+   try
+     ParamList := TStringList.Create;
+     for i := 1 to ParamCount do
+       ParamList.Add(ParamStr(I));
+     ServerReceivedParams(Application.SingleInstance, ParamList);
+   finally
+     FreeAndNil(ParamList);
+   end;
+
+  if EditorFactory.PageCount = 0 then
+    FileNew.Execute;
 
 end;
 
@@ -1031,6 +1055,7 @@ end;
 
 procedure TfMain.FormDestroy(Sender: TObject);
 begin
+  Application.SingleInstance.OnServerReceivedParams:= nil;
   ConfigObj.WriteStrings('Recent', 'File', MRU.Recent);
   Mru.Free;
   FreeAndNil(EditorFactory);

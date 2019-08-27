@@ -27,19 +27,30 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, DefaultTranslator,
+  Forms, DefaultTranslator,  singleinstance,
   umain, uabout, udmmain, Stringcostants, SupportFuncs, config,
   uCheckFileChange, udglgoto, printer4lazarus, SynEditPrintExtProcs,
-  simplemrumanager, uMacroEditor, uActionMacro, uReplaceMacro, uMacroRecorder, ReplaceDialog, LazLogger;
+  simplemrumanager, uMacroEditor, uActionMacro, uReplaceMacro, uMacroRecorder, ReplaceDialog, LazLogger, SimpleSingleInstance;
 
 {$R *.res}
 
 begin
   DebugLogger.LogName := 'test.txt';
-  Application.Scaled := True;
+  Application.SingleInstanceClass:= DefaultSingleInstanceClass;
+  Application.SingleInstanceEnabled:= True;
+  TSimpleSingleInstance(Application.SingleInstance).DefaultMessage := 'show';
   Application.Initialize;
-  Application.CreateForm(TdmMain, dmMain);
-  Application.CreateForm(TfMain, fMain);
-  Application.Run;
+  Application.Scaled:=True;
+  if Application.SingleInstance.StartResult <> siClient then
+    begin
+      Application.CreateForm(TdmMain, dmMain);
+      Application.CreateForm(TfMain, fMain);
+      Application.Run;
+    end
+  else
+    begin
+     Application.Free;
+   end;
+
 end.
 

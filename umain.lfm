@@ -2361,6 +2361,7 @@ object fMain: TfMain
     ShowButtonGlyphs = sbgSystem
     ShowMenuGlyphs = sbgSystem
     OnActivate = AppPropertiesActivate
+    OnIdle = AppPropertiesIdle
     OnDropFiles = AppPropertiesDropFiles
     OnShowHint = AppPropertiesShowHint
     Left = 504

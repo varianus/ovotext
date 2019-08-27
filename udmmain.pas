@@ -31,6 +31,8 @@ uses
 
 type
 
+  { TdmMain }
+
   TdmMain = class(TDataModule)
     imgIcons: TImageList;
     imgBookMark: TImageList;
@@ -39,6 +41,7 @@ type
     fHTMLExporter : TSynExporterHTML;
     function GetSynExporterHTML: TSynExporterHTML;
     function GetSynExporterRTF: TSynExporterRTF;
+
   public
     Property RFTExporter: TSynExporterRTF read GetSynExporterRTF;
     Property HTMLExporter: TSynExporterHTML read GetSynExporterHTML;
