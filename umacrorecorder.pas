@@ -17,9 +17,8 @@
   to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
   MA 02111-1307, USA.
 }
+{$I codegen.inc}
 unit uMacroRecorder;
-
-{$mode delphi}{$H+}
 
 interface
 
@@ -39,7 +38,7 @@ type
 
   { TMacroList }
 
-  TMacroList = class (TObjectList<TMacro>)
+  TMacroList = class ( specialize TObjectList<TMacro>)
   public
     function MacroNames(List:TStrings):Integer;
 
@@ -105,10 +104,10 @@ begin
   fFactory := Factory;
   FMacros:= TMacroList.Create;
   SynMacroRec := TSynMacroRecorder.Create(nil);
-  SynMacroRec.OnStateChange := SynMacroRecStateChange;
-  SynMacroRec.OnUserCommand := SynMacroRecUserCommand;
+  SynMacroRec.OnStateChange := @SynMacroRecStateChange;
+  SynMacroRec.OnUserCommand := @SynMacroRecUserCommand;
   LoadMacros;
-  FMacros.OnNotify := MacroListChange;
+  FMacros.OnNotify := @MacroListChange;
   fRecordedMacro := nil;
 end;
 
@@ -226,8 +225,8 @@ begin
 
   if SynMacroRec.State = msRecording then
    begin
-     fMain.ActionList.OnExecute:= pRecordActions;
-     TEditor(SynMacroRec.CurrentEditor).OnSearchReplace := pRecordSearchReplace;
+     fMain.ActionList.OnExecute:= @pRecordActions;
+     TEditor(SynMacroRec.CurrentEditor).OnSearchReplace := @pRecordSearchReplace;
    end
    else
    begin

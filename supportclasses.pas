@@ -1,6 +1,5 @@
+{$I codegen.inc}
 unit SupportClasses;
-
-{$mode objfpc}{$H+}
 
 interface
 

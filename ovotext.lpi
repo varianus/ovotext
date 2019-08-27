@@ -63,6 +63,12 @@
               </Win32>
             </Options>
           </Linking>
+          <Other>
+            <CustomOptions Value="-O4 -dRELEASE"/>
+            <OtherDefines Count="1">
+              <Define0 Value="RELEASE"/>
+            </OtherDefines>
+          </Other>
         </CompilerOptions>
       </Item2>
       <Item3 Name="Debug64">
@@ -137,7 +143,10 @@
             </Options>
           </Linking>
           <Other>
-            <CustomOptions Value="-O4"/>
+            <CustomOptions Value="-O4 -dRELEASE"/>
+            <OtherDefines Count="1">
+              <Define0 Value="RELEASE"/>
+            </OtherDefines>
           </Other>
         </CompilerOptions>
       </Item4>
@@ -178,7 +187,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="20">
+    <Units Count="21">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -270,6 +279,7 @@
       <Unit16>
         <Filename Value="uactionmacro.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="uActionMacro"/>
       </Unit16>
       <Unit17>
         <Filename Value="supportclasses.pas"/>
@@ -289,6 +299,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SimpleSingleInstance"/>
       </Unit19>
+      <Unit20>
+        <Filename Value="codegen.inc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit20>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

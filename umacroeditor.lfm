@@ -10,6 +10,7 @@ object FMacroEditor: TFMacroEditor
   Constraints.MinWidth = 250
   OnClose = FormClose
   OnShow = FormShow
+  LCLVersion = '2.1.0.0'
   inline SynEdit1: TSynEdit
     Left = 0
     Height = 164
@@ -640,8 +641,8 @@ object FMacroEditor: TFMacroEditor
         BorderSpacing.Right = 6
         BevelOuter = bvNone
         BorderStyle = bsSingle
-        ClientHeight = 75
-        ClientWidth = 114
+        ClientHeight = 77
+        ClientWidth = 116
         TabOrder = 5
         object edRepeat: TSpinEdit
           AnchorSideLeft.Control = PanelRepeat

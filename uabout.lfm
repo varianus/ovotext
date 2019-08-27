@@ -9,6 +9,7 @@ object fAbout: TfAbout
   OnClose = FormClose
   OnShow = FormShow
   Position = poMainFormCenter
+  LCLVersion = '2.1.0.0'
   object Image1: TImage
     Left = 0
     Height = 108

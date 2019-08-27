@@ -36,10 +36,8 @@ located at http://SynEdit.SourceForge.net
 
 Known Issues:
 -------------------------------------------------------------------------------}
-
+{$I codegen.inc}
 unit SynExportRTF;
-
-{$mode objfpc}{$H+}
 
 interface
 

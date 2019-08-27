@@ -11,6 +11,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
   Constraints.MinWidth = 480
   PopupMode = pmAuto
   Position = poMainFormCenter
+  LCLVersion = '2.1.0.0'
   object TextLabel: TLabel
     Left = 16
     Height = 15
