@@ -721,6 +721,7 @@ var
   i: integer;
   DefaultAttr: TFontAttributes;
 begin
+  result := nil;
   if FileName <> EmptyStr then
   begin
     // do not reopen same file

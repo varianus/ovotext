@@ -891,12 +891,17 @@ procedure TfMain.ServerReceivedParams(Sender: TBaseSingleInstance;
 var
   I: Integer;
   str: string;
+  Editor: TEditor;
 begin
 
   for str in aParams do
     begin
       if copy(str, 1, 2) <> '--' then
-        EditorFactory.AddEditor(str);
+        begin
+          Editor := EditorFactory.AddEditor(str);
+          if Assigned(Editor) and not Editor.Untitled then
+            MRU.AddToRecent(str);
+        end;
     end;
 end;
 
@@ -915,7 +920,7 @@ begin
   MRU := TMRUMenuManager.Create(Self);
   MRU.MenuItem := mnuOpenRecent;
   MRU.OnRecentFile := @RecentFileEvent;
-  MRU.MaxRecent := 10;
+  MRU.MaxRecent := 15;
   MRU.Recent.Clear;
 
   ConfigObj.ReadStrings('Recent', 'File', MRU.Recent);
@@ -942,7 +947,7 @@ begin
   Macros := TMRUMenuManager.Create(Self);
   Macros.MenuItem := mnuSavedMacros;
   Macros.OnRecentFile := nil;// @RecentFileEvent;
-  Macros.MaxRecent := 10;
+  Macros.MaxRecent := 15;
   Macros.Recent.Clear;
   SynMacroRec.Macros.MacroNames(Macros.Recent);
   Macros.ShowRecentFiles;
