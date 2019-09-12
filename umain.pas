@@ -903,6 +903,8 @@ begin
             MRU.AddToRecent(str);
         end;
     end;
+  Application.BringToFront;
+  ShowOnTop;
 end;
 
 procedure TfMain.FormCreate(Sender: TObject);
