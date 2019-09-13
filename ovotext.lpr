@@ -33,10 +33,9 @@ uses
 {$R *.res}
 
 begin
-  DebugLogger.LogName := 'test.txt';
   Application.SingleInstanceClass:= DefaultSingleInstanceClass;
   Application.SingleInstanceEnabled:= True;
-  TSimpleSingleInstance(Application.SingleInstance).DefaultMessage := 'show';
+  TSimpleSingleInstance(Application.SingleInstance).DefaultMessage := '--show';
   Application.Initialize;
   Application.Scaled:=True;
   if Application.SingleInstance.StartResult <> siClient then
