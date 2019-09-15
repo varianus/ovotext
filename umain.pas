@@ -1414,7 +1414,9 @@ begin
 
   Editor := EditorFactory.CurrentEditor;
   if Editor.SelAvail and (Editor.BlockBegin.Y = Editor.BlockEnd.Y) then
-    ReplaceDialog.FindText := Editor.SelText;
+    ReplaceDialog.FindText := Editor.SelText
+  else
+    ReplaceDialog.FindText:= Editor.GetWordAtRowCol(Editor.CaretXY);
 
   ReplaceDialog.Options:=ReplaceDialog.Options -  [ssoReplace, ssoReplaceAll];
   ReplaceDialog.Show;
