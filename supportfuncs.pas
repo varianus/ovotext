@@ -53,7 +53,8 @@ function BuildFileList(const Path: string; const Attr: integer; const List: TStr
 
 
 implementation
-uses math;
+
+uses Math;
 
 const
   Aligner = #31;
@@ -72,9 +73,7 @@ const
   SQLKEYWORDMAX = 21;
 
 var
-  sqlKeyWord: array[1..SQLKEYWORDMAX] of string = (' INNER JOIN', ' LEFT JOIN', ' RIGHT JOIN',
-    ' WHERE', ' LEFT OUTER JOIN', ' GROUP BY', ' ORDER BY', ' HAVING', ' FROM', ' SELECT', ' AND',  'FOR', ' INSERT INTO',
-    ' OR', ' UPDATE', ' SET', ' DELETE', ' ALTER ', ' JOIN', ' DROP', ' VALUES');
+  sqlKeyWord: array[1..SQLKEYWORDMAX] of string = (' INNER JOIN', ' LEFT JOIN', ' RIGHT JOIN', ' WHERE', ' LEFT OUTER JOIN', ' GROUP BY', ' ORDER BY', ' HAVING', ' FROM', ' SELECT', ' AND', 'FOR', ' INSERT INTO', ' OR', ' UPDATE', ' SET', ' DELETE', ' ALTER ', ' JOIN', ' DROP', ' VALUES');
 
 function CleanupName(aName: string): string;
 var
@@ -134,7 +133,7 @@ end;
 function FormatXML(const S: string): string;
 const
   bHighlightCloseTag = False;
-  CDATA =  '![CDATA[';
+  CDATA = '![CDATA[';
   COMMENT = '!--';
 var
   st: TMemoryStream;
@@ -146,7 +145,7 @@ var
   bQuoteActive: boolean;
   cChar: char;
   bCheckIndent: boolean;
-  bSkipping : boolean;
+  bSkipping: boolean;
   bTagActive: boolean;
   nStringLoop: integer;
   nIndent: integer;
@@ -164,7 +163,7 @@ var
       // result := result + '[NEGINDENT]';
     end;
     c := ' ';
-    for nIndentLoop := 0 to nIndent -1 do
+    for nIndentLoop := 0 to nIndent - 1 do
     begin
       st.Write(c, SizeOf(char));
     end;
@@ -172,63 +171,63 @@ var
 
   procedure SkipCDATAorComment;
   var
-    MaybeDone:boolean;
+    MaybeDone: boolean;
   begin
-    inc(nStringLoop);
-    bSkipping := false;
-    if copy (s, nStringLoop, Length(CDATA)) = CDATA then
+    Inc(nStringLoop);
+    bSkipping := False;
+    if copy(s, nStringLoop, Length(CDATA)) = CDATA then
+    begin
+      MaybeDone := False;
+      while nStringLoop <= Length(S) do
       begin
-        MaybeDone := false;
-        while nStringLoop <= Length(S) do
+        if s[nStringLoop] = ']' then
+        begin
+          if MaybeDone then
           begin
-            if s[nStringLoop]= ']' then
-              begin
-              if MaybeDone then
-                begin
-                  c:= ']';
-                  st.Write(c, SizeOf(char));
-                  szCurrentTag := CDATA;
-                  bSkipping := true;
-                  break;
-                end
-              else
-                 MaybeDone:= true;
-              end
-            else
-              MaybeDone:= false;
-            c:= s[nStringLoop];
+            c := ']';
             st.Write(c, SizeOf(char));
-            inc(nStringLoop);
-          end;
-      end
-    else
-      begin
-        if copy (s, nStringLoop, Length(COMMENT)) = COMMENT then
-          begin
-            MaybeDone := false;
-            while nStringLoop <= Length(S) do
-              begin
-                if s[nStringLoop]= '-' then
-                  begin
-                  if MaybeDone then
-                    begin
-                      c:= '-';
-                      st.Write(c, SizeOf(char));
-                      szCurrentTag := COMMENT;
-                      bSkipping := true;
-                      break;
-                    end
-                  else
-                     MaybeDone:= true;
-                  end
-                else
-                  MaybeDone:= false;
-                c:= s[nStringLoop];
-                st.Write(c, SizeOf(char));
-                inc(nStringLoop);
-              end;
+            szCurrentTag := CDATA;
+            bSkipping := True;
+            break;
           end
+          else
+            MaybeDone := True;
+        end
+        else
+          MaybeDone := False;
+        c := s[nStringLoop];
+        st.Write(c, SizeOf(char));
+        Inc(nStringLoop);
       end;
+    end
+    else
+    begin
+      if copy(s, nStringLoop, Length(COMMENT)) = COMMENT then
+      begin
+        MaybeDone := False;
+        while nStringLoop <= Length(S) do
+        begin
+          if s[nStringLoop] = '-' then
+          begin
+            if MaybeDone then
+            begin
+              c := '-';
+              st.Write(c, SizeOf(char));
+              szCurrentTag := COMMENT;
+              bSkipping := True;
+              break;
+            end
+            else
+              MaybeDone := True;
+          end
+          else
+            MaybeDone := False;
+          c := s[nStringLoop];
+          st.Write(c, SizeOf(char));
+          Inc(nStringLoop);
+        end;
+      end;
+    end;
 
   end;
 
@@ -238,7 +237,7 @@ begin
   bTagActive := False;
   Result := '';
   nIndent := 0;
-  bSkipping := false;
+  bSkipping := False;
   bCheckIndent := False;
   szCurrentTag := '';
   St := TMemoryStream.Create;
@@ -292,10 +291,10 @@ begin
         if bCheckIndent then
           Inc(nIndent, NUMBEROFSPACEFORTAB);
         if bSkipping then
-          begin
-            Dec(nIndent, NUMBEROFSPACEFORTAB);
-            bSkipping := false;
-          end;
+        begin
+          Dec(nIndent, NUMBEROFSPACEFORTAB);
+          bSkipping := False;
+        end;
       end;
       '"':
       begin
@@ -336,7 +335,7 @@ begin
         st.Write(cChar, SizeOf(char));
       end;
     end; // case
-    inc(nStringLoop);
+    Inc(nStringLoop);
   end;
 
   SetString(Result, st.Memory, st.Size);
@@ -364,27 +363,27 @@ var
   insideString: boolean;
 begin
   i := 1;
-  result:='';
-  insideString := false;
+  Result := '';
+  insideString := False;
   while i <= length(aInput) do
   begin
     if (aInput[i] = '\') then
     begin
-      result := result + aInput[i] + aInput[i + 1];
-      inc(i, 2);
+      Result := Result + aInput[i] + aInput[i + 1];
+      Inc(i, 2);
     end
     else if aInput[i] = '"' then
     begin
-      result := result + aInput[i];
+      Result := Result + aInput[i];
       insideString := not insideString;
-      inc(i);
+      Inc(i);
     end
     else if not insideString and (aInput[i] in whitespace) then
-      inc(i)
+      Inc(i)
     else
     begin
-      result := result + aInput[i];
-      inc(i);
+      Result := Result + aInput[i];
+      Inc(i);
     end;
   end;
 end;
@@ -401,32 +400,35 @@ begin
     sl.Text := aInput;
     for i := 0 to sl.Count - 1 do
     begin
-      case sl[i][1] of
+      case sl[i][Length(sl[i])] of
         '{':
-          begin
-            sl[i] := Spaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
-            inc(lvl);
-            if (Length(sl[i]) > 1) and (sl[i][2] = '}') then
-              dec(lvl);
-          end;
+        begin
+          sl[i] := Spaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
+          Inc(lvl);
+          if (Length(sl[i]) > 1) and (sl[i][2] = '}') then
+            Dec(lvl);
+        end;
         '[':
-          begin
-            sl[i] := Spaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
-            inc(lvl);
-            if (Length(sl[i]) > 1) and (sl[i][2] = ']') then
-              dec(lvl);
+        begin
+          sl[i] := Spaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
+          Inc(lvl);
+          if (Length(sl[i]) > 1) and (sl[i][2] = ']') then
+            Dec(lvl);
+        end;
+        else
+          case sl[i][1] of
+            '}', ']':
+            begin
+              Dec(lvl);
+              lvl := max(lvl, 0);
+              sl[i] := Spaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
+            end
+            else
+              sl[i] := Spaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
           end;
-        '}', ']':
-          begin
-            dec(lvl);
-            lvl := max(lvl, 0);
-            sl[i] := Spaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
-          end
-      else
-        sl[i] := Spaces(lvl * NUMBEROFSPACEFORTAB) + sl[i];
       end;
     end;
-    result := sl.Text;
+    Result := sl.Text;
   finally
     sl.Free;
   end;
@@ -440,91 +442,91 @@ var
 begin
   s := '';
   i := 1;
-  insideString := false;
+  insideString := False;
   while i <= length(aInput) do
   begin
     if insideString then
     begin
       s := s + aInput[i];
       if aInput[i] = '\' then
-        begin
-          s := s + aInput[i + 1];
-          inc(i, 2);
-        end
-      else
-        begin
-          if aInput[i] = '"' then
-            insideString := false;
-          inc(i);
-          end;
+      begin
+        s := s + aInput[i + 1];
+        Inc(i, 2);
       end
+      else
+      begin
+        if aInput[i] = '"' then
+          insideString := False;
+        Inc(i);
+      end;
+    end
     else
     begin
       case aInput[i] of
         '\':
-          begin
-            s := s + aInput[i] + aInput[i + 1];
-            inc(i, 2);
-          end;
+        begin
+          s := s + aInput[i] + aInput[i + 1];
+          Inc(i, 2);
+        end;
         '"':
-          begin
-            s := s + aInput[i];
-            insideString := not insideString;
-            inc(i);
-          end;
-        '{':
-          begin
-            if aInput[i + 1] = '}' then
-            begin
-              s := s + '{}';
-              inc(i, 2);
-            end
-            else
-            begin
-              s := s + sLineBreak + aInput[i] + sLineBreak;
-              inc(i);
-            end;
-          end;
-        '[':
-          begin
-            if aInput[i + 1] = ']' then
-            begin
-              s := s + '[]';
-              inc(i, 2);
-            end
-            else
-            begin
-              s := s + sLineBreak + aInput[i] + sLineBreak;
-              inc(i);
-            end;
-          end;
-        '}', ']':
-          begin
-            if (length(aInput) > i) and (aInput[i + 1] = ',') then
-            begin
-              s := s + sLineBreak + aInput[i] + ',' + sLineBreak;
-              inc(i, 2);
-            end
-            else
-            begin
-              s := s + sLineBreak + aInput[i] + sLineBreak;
-              inc(i);
-            end;
-          end;
-        ',':
-          begin
-            s := s + aInput[i] + sLineBreak;
-            inc(i);
-          end;
-      else
         begin
           s := s + aInput[i];
-          inc(i);
+          insideString := not insideString;
+          Inc(i);
+        end;
+        '{':
+        begin
+          if aInput[i + 1] = '}' then
+          begin
+            s := s + '{}';
+            Inc(i, 2);
+          end
+          else
+          begin
+            s := s + ' ' + aInput[i] + sLineBreak;
+            Inc(i);
+          end;
+        end;
+        '[':
+        begin
+          if aInput[i + 1] = ']' then
+          begin
+            s := s + '[]';
+            Inc(i, 2);
+          end
+          else
+          begin
+            s := s + ' ' + aInput[i] + sLineBreak;
+            Inc(i);
+          end;
+        end;
+        '}', ']':
+        begin
+          if (length(aInput) > i) and (aInput[i + 1] = ',') then
+          begin
+            s := s + sLineBreak + aInput[i] + ',' + sLineBreak;
+            Inc(i, 2);
+          end
+          else
+          begin
+            s := s + sLineBreak + aInput[i] + sLineBreak;
+            Inc(i);
+          end;
+        end;
+        ',':
+        begin
+          s := s + aInput[i] + sLineBreak;
+          Inc(i);
+        end;
+        else
+        begin
+          s := s + aInput[i];
+          Inc(i);
         end;
       end;
     end;
   end;
-  result := s;
+  Result := s;
 end;
 
 function RemoveEmptyLines(const aInput: string): string;
@@ -540,7 +542,7 @@ begin
       if sl[i] = '' then
         sl.Delete(i);
     end;
-    result := sl.Text;
+    Result := sl.Text;
   finally
     sl.Free;
   end;
@@ -548,19 +550,19 @@ end;
 
 function CompactXML(const S: string): string;
 begin
-  Result := ReplaceRegExpr('>\s{0,}<',S,'><',true);
+  Result := ReplaceRegExpr('>\s{0,}<', S, '><', True);
 end;
 
 function FormatJSON(const S: string): string;
 begin
   // Clean the input from previous formatting
-  result := RemoveWhiteSpace(S);
+  Result := RemoveWhiteSpace(S);
   // Split up logical units of JSON
-  result := InsertLineBreaks(result);
+  Result := InsertLineBreaks(Result);
   // It's easier to clean up empty lines then preventing them
-  result := RemoveEmptyLines(result);
+  Result := RemoveEmptyLines(Result);
   // Indent each line with the correct space
-  result := Indent(result);
+  Result := Indent(Result);
 end;
 
 {$IFDEF UNIX}
@@ -574,9 +576,9 @@ end;
 // Derived from "Like" by Michael Winter
 function StrMatches(const Substr, S: string; const Index: SizeInt = 1): boolean;
 var
-  StringPtr:  PChar;
+  StringPtr: PChar;
   PatternPtr: PChar;
-  StringRes:  PChar;
+  StringRes: PChar;
   PatternRes: PChar;
 begin
   Result := SubStr = '*';
@@ -584,79 +586,79 @@ begin
   if Result or (S = '') then
     Exit;
 
-  StringPtr  := PChar(@S[Index]);
+  StringPtr := PChar(@S[Index]);
   PatternPtr := PChar(SubStr);
-  StringRes  := nil;
+  StringRes := nil;
   PatternRes := nil;
 
   repeat
     repeat
       case PatternPtr^ of
         #0:
-          begin
+        begin
           Result := StringPtr^ = #0;
           if Result or (StringRes = nil) or (PatternRes = nil) then
             Exit;
 
-          StringPtr  := StringRes;
+          StringPtr := StringRes;
           PatternPtr := PatternRes;
           Break;
-          end;
+        end;
         '*':
-          begin
+        begin
           Inc(PatternPtr);
           PatternRes := PatternPtr;
           Break;
-          end;
+        end;
         '?':
-          begin
+        begin
           if StringPtr^ = #0 then
             Exit;
           Inc(StringPtr);
           Inc(PatternPtr);
-          end;
+        end;
         else
-          begin
+        begin
           if StringPtr^ = #0 then
             Exit;
           if StringPtr^ <> PatternPtr^ then
-            begin
+          begin
             if (StringRes = nil) or (PatternRes = nil) then
               Exit;
-            StringPtr  := StringRes;
+            StringPtr := StringRes;
             PatternPtr := PatternRes;
             Break;
-            end
+          end
           else
-            begin
+          begin
             Inc(StringPtr);
             Inc(PatternPtr);
-            end;
           end;
         end;
+      end;
     until False;
 
     repeat
       case PatternPtr^ of
         #0:
-          begin
+        begin
           Result := True;
           Exit;
-          end;
+        end;
         '*':
-          begin
+        begin
           Inc(PatternPtr);
           PatternRes := PatternPtr;
-          end;
+        end;
         '?':
-          begin
+        begin
           if StringPtr^ = #0 then
             Exit;
           Inc(StringPtr);
           Inc(PatternPtr);
-          end;
+        end;
         else
-          begin
+        begin
           repeat
             if StringPtr^ = #0 then
               Exit;
@@ -668,8 +670,8 @@ begin
           StringRes := StringPtr;
           Inc(PatternPtr);
           Break;
-          end;
         end;
+      end;
     until False;
   until False;
 end;
@@ -698,22 +700,22 @@ function BuildFileList(const Path: string; const Attr: integer; const List: TStr
 var
   SearchRec: TSearchRec;
   IndexMask: integer;
-  MaskList:  TStringList;
+  MaskList: TStringList;
   Masks, Directory: string;
 begin
   Assert(List <> nil);
   MaskList := TStringList.Create;
-    try
+  try
     {* extract the Directory *}
     Directory := ExtractFileDir(Path);
 
     {* files can be searched in the current directory *}
     if Directory <> '' then
-      begin
+    begin
       Directory := IncludeTrailingPathDelimiter(Directory);
       {* extract the FileMasks portion out of Path *}
-      Masks     := copy(Path, Length(Directory) + 1, Length(Path));
-      end
+      Masks := copy(Path, Length(Directory) + 1, Length(Path));
+    end
     else
       Masks := Path;
 
@@ -724,9 +726,9 @@ begin
     Result := FindFirstUTF8(Directory + AllFilesMask, faAnyFile, SearchRec) = 0;
 
     List.BeginUpdate;
-      try
+    try
       while Result do
-        begin
+      begin
         {* if the filename matches any mask then it is added to the list *}
         if Recurring and ((searchrec.Attr and faDirectory) <> 0) and (SearchRec.Name <> '.') and
           (SearchRec.Name <> '..') then
@@ -737,10 +739,10 @@ begin
           if (SearchRec.Name <> '.') and (SearchRec.Name <> '..') and
             ((SearchRec.Attr and Attr) = (SearchRec.Attr and faAnyFile)) and
             IsFileNameMatch(SearchRec.Name, MaskList.Strings[IndexMask], False) then
-            begin
-              List.Add(Directory + SearchRec.Name);
+          begin
+            List.Add(Directory + SearchRec.Name);
             Break;
-            end;
+          end;
 
         case FindNext(SearchRec) of
           0: ;
@@ -748,15 +750,15 @@ begin
             Break;
           else
             Result := False;
-          end;
         end;
-      finally
-      FindClose(SearchRec);
-      List.EndUpdate;
       end;
     finally
-    MaskList.Free;
+      FindClose(SearchRec);
+      List.EndUpdate;
     end;
+  finally
+    MaskList.Free;
+  end;
 end;
 
 function CharReplace(var S: string; const Search, Replace: char): integer;
@@ -816,40 +818,40 @@ var
   SL: TStringList;
 
   procedure EmitStatement;
-    var
-      idRow: integer;
-      AlignerPos:integer;
-    begin
-      SL := TStringList.Create;
-      try
-        SL.Text := strOut;
-        for idRow := 0 to SL.Count - 1 do
-        begin
-          AlignerPos := pos(Aligner, SL[idRow]);
-          if AlignerPos = 0 then
-            Continue;
-          cntSpaces := (maxKeyword - AlignerPos);
-          Before := Trim(copy(SL[idRow], 1, AlignerPos - 1));
-          After := sl[idRow];
-          Delete(After, 1, AlignerPos);
-          SL[idRow] := spaces(cntSpaces) + Before + ' ' + After;
-        end;
-        Result := Result + SL.Text;
-        maxKeyword := 0;
-        strOut := '';
-      finally
-       SL.Free;
+  var
+    idRow: integer;
+    AlignerPos: integer;
+  begin
+    SL := TStringList.Create;
+    try
+      SL.Text := strOut;
+      for idRow := 0 to SL.Count - 1 do
+      begin
+        AlignerPos := pos(Aligner, SL[idRow]);
+        if AlignerPos = 0 then
+          Continue;
+        cntSpaces := (maxKeyword - AlignerPos);
+        Before := Trim(copy(SL[idRow], 1, AlignerPos - 1));
+        After := sl[idRow];
+        Delete(After, 1, AlignerPos);
+        SL[idRow] := spaces(cntSpaces) + Before + ' ' + After;
       end;
+      Result := Result + SL.Text;
+      maxKeyword := 0;
+      strOut := '';
+    finally
+      SL.Free;
     end;
+  end;
 
 begin
   strout := '';
   maxKeyword := 0;
-  Result:='';
+  Result := '';
   if S <> '' then
   begin
     strSQL := S;
-    strSQL := ' ' + strSQL +' ';
+    strSQL := ' ' + strSQL + ' ';
     CharReplace(strSQL, CR, SPACE);
     CharReplace(strSQL, LF, SPACE);
     strSQL := RemoveSpacesInExcess(strSQL);
@@ -859,7 +861,7 @@ begin
     begin
       blnkeyWord := False;
       for intKeyWord := 1 to SQLKEYWORDMAX do
-        if UpperCase(Copy(strSQL, lngChar, Length(sqlKeyWord[intKeyWord]) )) = (sqlKeyWord[intKeyWord]) then
+        if UpperCase(Copy(strSQL, lngChar, Length(sqlKeyWord[intKeyWord]))) = (sqlKeyWord[intKeyWord]) then
         begin
           blnkeyWord := True;
           Maxkeyword := max(Length(sqlKeyWord[intKeyWord]), maxKeyword);
@@ -899,7 +901,7 @@ begin
               Match(ROUND_OPEN, ROUND_CLOSE, Copy(strSQL, lngChar + 1, Length(strsql)));
 
             strOut := strOut + Copy(strSQL, lngChar, lngEnd + 1);
-           // Strout := strOut + ROUND_OPEN+ FormatSQL(Copy(strSQL, lngChar+1, lngEnd -1 )) + ROUND_CLOSE;
+            // Strout := strOut + ROUND_OPEN+ FormatSQL(Copy(strSQL, lngChar+1, lngEnd -1 )) + ROUND_CLOSE;
             lngChar := lngChar + lngEnd + 1;
           end;
           SPACE:
@@ -918,7 +920,8 @@ begin
           begin
             Strout := Strout + strSQL[lngChar] + CRLF;
             EmitStatement;
-            strSQL[lngChar]:= SPACE;
+            strSQL[lngChar] := SPACE;
+
           end;
           else
           begin
