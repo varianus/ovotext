@@ -615,6 +615,11 @@ object fMain: TfMain
       OnExecute = actZoomResetExecute
       ShortCut = 16495
     end
+    object actJSONCompact: TAction
+      Category = 'PrettyPrint'
+      Caption = 'Compact JSON'
+      OnExecute = actJSONCompactExecute
+    end
   end
   object mnuMain: TMainMenu
     Images = imgList
@@ -799,6 +804,9 @@ object fMain: TfMain
         end
         object MenuItem72: TMenuItem
           Action = actJSONPrettyPrint
+        end
+        object MenuItem94: TMenuItem
+          Action = actJSONCompact
         end
         object MenuItem74: TMenuItem
           Action = actSQLPrettyPrint

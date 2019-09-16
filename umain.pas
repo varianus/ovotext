@@ -43,6 +43,7 @@ type
     actCloseBefore: TAction;
     actCloseAfter: TAction;
     actFindLongestLine: TAction;
+    actJSONCompact: TAction;
     actZoomIn: TAction;
     actZoomOut: TAction;
     actZoomReset: TAction;
@@ -92,6 +93,7 @@ type
     MenuItem87: TMenuItem;
     MenuItem88: TMenuItem;
     MenuItem89: TMenuItem;
+    MenuItem94: TMenuItem;
     N4: TMenuItem;
     MenuItem91: TMenuItem;
     MenuItem92: TMenuItem;
@@ -243,6 +245,7 @@ type
     procedure actFontExecute(Sender: TObject);
     procedure actFullNameToClipBoardExecute(Sender: TObject);
     procedure actGoToExecute(Sender: TObject);
+    procedure actJSONCompactExecute(Sender: TObject);
     procedure actMacroManagerExecute(Sender: TObject);
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
     procedure actJSONPrettyPrintExecute(Sender: TObject);
@@ -727,6 +730,17 @@ begin
     Free;
   end;
 
+end;
+
+procedure TfMain.actJSONCompactExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  Ed.TextOperation(@CompactJson, [tomFullText]);
 end;
 
 procedure TfMain.actMacroManagerExecute(Sender: TObject);

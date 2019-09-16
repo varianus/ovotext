@@ -48,6 +48,7 @@ function TabsToSpace(const S: string): string;
 function FormatXML(const S: string): string;
 function CompactXML(const S: string): string;
 function FormatJson(const S: string): string;
+function CompactJson(const S: string): string;
 function FormatSQL(const S: string): string;
 function BuildFileList(const Path: string; const Attr: integer; const List: TStrings; Recurring: boolean): boolean;
 
@@ -483,7 +484,7 @@ begin
           end
           else
           begin
-            s := s + ' ' + aInput[i] + sLineBreak;
+            s := s + aInput[i] + sLineBreak;
             Inc(i);
           end;
         end;
@@ -496,7 +497,7 @@ begin
           end
           else
           begin
-            s := s + ' ' + aInput[i] + sLineBreak;
+            s := s + aInput[i] + sLineBreak;
             Inc(i);
           end;
         end;
@@ -801,6 +802,11 @@ begin
       until (last >= Length(Text)) or (Text[Last] = closeChar);
   until First = last;
   Result := Last;
+end;
+
+function CompactJson(const S: string): string;
+begin
+  Result := RemoveWhiteSpace(S);
 end;
 
 function FormatSQL(const S: string): string;
