@@ -1,8 +1,6 @@
 {"version":1,"strings":[
 {"hash":217702020,"name":"tcustomreplacedialog.caption","sourcebytes":[82,101,112,108,97,99,101,32,84,101,120,116],"value":"Replace Text"},
 {"hash":12204740,"name":"tcustomreplacedialog.textlabel.caption","sourcebytes":[84,101,120,116,32,116,111,32,102,105,110,100],"value":"Text to find"},
-{"hash":185126132,"name":"tcustomreplacedialog.editfind.text","sourcebytes":[69,100,105,116,70,105,110,100],"value":"EditFind"},
-{"hash":143562501,"name":"tcustomreplacedialog.editreplace.text","sourcebytes":[69,100,105,116,82,101,112,108,97,99,101],"value":"EditReplace"},
 {"hash":167681317,"name":"tcustomreplacedialog.rgsearchmode.caption","sourcebytes":[83,101,97,114,99,104,32,77,111,100,101],"value":"Search Mode"},
 {"hash":5875301,"name":"tcustomreplacedialog.scopegroupbox.caption","sourcebytes":[83,99,111,112,101],"value":"Scope"},
 {"hash":44373508,"name":"tcustomreplacedialog.selectedradiobutton.caption","sourcebytes":[83,101,108,101,99,116,101,100,32,116,101,120,116],"value":"Selected text"},
@@ -17,5 +15,7 @@
 {"hash":59319096,"name":"tcustomreplacedialog.directiongroupbox.caption","sourcebytes":[68,105,114,101,99,116,105,111,110,71,114,111,117,112,66,111,120],"value":"DirectionGroupBox"},
 {"hash":128113668,"name":"tcustomreplacedialog.backwardradiobutton.caption","sourcebytes":[66,97,99,107,119,97,114,100],"value":"Backward"},
 {"hash":225040580,"name":"tcustomreplacedialog.forwardradiobutton.caption","sourcebytes":[70,111,114,119,97,114,100],"value":"Forward"},
-{"hash":217690840,"name":"tcustomreplacedialog.cbreplace.caption","sourcebytes":[82,101,112,108,97,99,101,32,87,105,116,104],"value":"Replace With"}
+{"hash":217690840,"name":"tcustomreplacedialog.cbreplace.caption","sourcebytes":[82,101,112,108,97,99,101,32,87,105,116,104],"value":"Replace With"},
+{"hash":185126132,"name":"tcustomreplacedialog.editfind.text","sourcebytes":[69,100,105,116,70,105,110,100],"value":"EditFind"},
+{"hash":143562501,"name":"tcustomreplacedialog.editreplace.text","sourcebytes":[69,100,105,116,82,101,112,108,97,99,101],"value":"EditReplace"}
 ]}

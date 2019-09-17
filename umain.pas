@@ -939,13 +939,13 @@ begin
   MRU.MaxRecent := 15;
   MRU.Recent.Clear;
 
-  ConfigObj.ReadStrings('Recent', 'File', MRU.Recent);
+  ConfigObj.ReadStrings('Recent', 'Files', MRU.Recent);
   MRU.ShowRecentFiles;
   ReplaceDialog := TCustomReplaceDialog.Create(self);
   with ReplaceDialog do
     begin
       OnClose := @FindDialogClose;
-      Options := [ssoReplace, ssoEntireScope];
+//      Options := [ssoReplace, ssoEntireScope];
       OnFind := @ReplaceDialogFind;
       OnReplace := @ReplaceDialogReplace;
     end;
@@ -1012,7 +1012,7 @@ begin
     mnuTheme := TMenuItem.Create(Self);
     mnuTheme.Caption := ConfigObj.ThemeList.Keys[i];
     mnuTheme.RadioItem := true;
-    if ConfigObj.ThemeList.Data[i] = ConfigObj.XMLConfigExtended.Filename then
+    if ConfigObj.ThemeList.Data[i] = ConfigObj.AppSettings.ColorSchema then
       mnuTheme.Checked := true;
     mnuTheme.Tag := i;
     mnuTheme.OnClick:=@mnuThemeClick;
@@ -1076,7 +1076,7 @@ end;
 procedure TfMain.FormDestroy(Sender: TObject);
 begin
   Application.SingleInstance.OnServerReceivedParams:= nil;
-  ConfigObj.WriteStrings('Recent', 'File', MRU.Recent);
+  ConfigObj.WriteStrings('Recent', 'Files', MRU.Recent);
   Mru.Free;
   FreeAndNil(EditorFactory);
   ReplaceDialog.Free;
@@ -1242,17 +1242,17 @@ end;
 procedure TfMain.SaveConfig;
 begin
   with ConfigObj.ConfigHolder do begin
-    SetValue('MainForm/NormalLeft', Left);
-    SetValue('MainForm/NormalTop', Top);
-    SetValue('MainForm/NormalWidth', Width);
-    SetValue('MainForm/NormalHeight', Height);
+    Find('MainForm/NormalLeft', true).AsInteger:= Left;
+    Find('MainForm/NormalTop', true).AsInteger:=  Top;
+    Find('MainForm/NormalWidth', true).AsInteger:=  Width;
+    Find('MainForm/NormalHeight', true).AsInteger:=  Height;
 
-    SetValue('MainForm/RestoredLeft', RestoredLeft);
-    SetValue('MainForm/RestoredTop', RestoredTop);
-    SetValue('MainForm/RestoredWidth', RestoredWidth);
-    SetValue('MainForm/RestoredHeight', RestoredHeight);
+    Find('MainForm/RestoredLeft', true).AsInteger:=  RestoredLeft;
+    Find('MainForm/RestoredTop', true).AsInteger:=  RestoredTop;
+    Find('MainForm/RestoredWidth', true).AsInteger:=  RestoredWidth;
+    Find('MainForm/RestoredHeight', true).AsInteger:=  RestoredHeight;
 
-    SetValue('MainForm/WindowState', Integer(WindowState));
+    Find('MainForm/WindowState', true).AsInteger:=  Integer(WindowState);
   end;
 
 end;
@@ -1263,26 +1263,26 @@ var
 begin
   with ConfigObj.ConfigHolder do
   begin
-    LastWindowState := TWindowState(GetValue('MainForm/WindowState', Integer(WindowState)));
+    LastWindowState := TWindowState(GetValueDef('MainForm/WindowState', Integer(WindowState)));
 
     if LastWindowState = wsMaximized then
     begin
       WindowState := wsNormal;
       BoundsRect := Bounds(
-        GetValue('MainForm/RestoredLeft', RestoredLeft),
-        GetValue('MainForm/RestoredTop', RestoredTop),
-        GetValue('MainForm/RestoredWidth', RestoredWidth),
-        GetValue('MainForm/RestoredHeight', RestoredHeight));
+        GetValueDef('MainForm/RestoredLeft', RestoredLeft),
+        GetValueDef('MainForm/RestoredTop', RestoredTop),
+        GetValueDef('MainForm/RestoredWidth', RestoredWidth),
+        GetValueDef('MainForm/RestoredHeight', RestoredHeight));
       WindowState := wsMaximized;
     end
     else
     begin
       WindowState := wsNormal;
       BoundsRect := Bounds(
-        GetValue('MainForm/NormalLeft', Left),
-        GetValue('MainForm/NormalTop', Top),
-        GetValue('MainForm/NormalWidth', Width),
-        GetValue('MainForm/NormalHeight', Height));
+        GetValueDef('MainForm/NormalLeft', Left),
+        GetValueDef('MainForm/NormalTop', Top),
+        GetValueDef('MainForm/NormalWidth', Width),
+        GetValueDef('MainForm/NormalHeight', Height));
     end;
   end;
 

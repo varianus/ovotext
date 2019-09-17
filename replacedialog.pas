@@ -23,8 +23,8 @@ unit ReplaceDialog;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, lcltype,
-  Buttons, StdCtrls, ExtCtrls, ButtonPanel, SynEditTypes;
+  Classes, SysUtils, TypInfo, Forms, Controls, Graphics, Dialogs, lcltype,
+  Buttons, StdCtrls, ExtCtrls, ButtonPanel, Config, SynEditTypes;
 
 type
 
@@ -50,6 +50,8 @@ type
     CaseSensitiveCheckBox: TCheckBox;
     cbReplace: TCheckBox;
     DirectionGroupBox: TGroupBox;
+    EditFind: TComboBox;
+    EditReplace: TComboBox;
     EntireScopeCheckBox: TCheckBox;
     ForwardRadioButton: TRadioButton;
     GlobalRadioButton: TRadioButton;
@@ -58,16 +60,16 @@ type
     ScopeGroupBox: TGroupBox;
     rgSearchMode: TRadioGroup;
     PanelButtons: TPanel;
-    EditFind: TEdit;
     SelectedRadioButton: TRadioButton;
     TextLabel: TLabel;
-    EditReplace: TEdit;
     ReplaceLabel: TLabel;
     WholeWordsOnlyCheckBox: TCheckBox;
     procedure CancelButtonClick(Sender: TObject);
     procedure cbReplaceChange(Sender: TObject);
     procedure CloseButtonClick(Sender: TObject);
     procedure EditFindKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    procedure FormCreate(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
   private
     FOnFind: TNotifyEvent;
@@ -78,7 +80,9 @@ type
     function GetFindText: string;
     function GetOptions: TMySynSearchOptions;
     function GetReplaceText: string;
+    procedure LoadHistory;
     procedure Replace;
+    procedure SaveHistory;
     procedure SetFindText(AValue: string);
     procedure SetOptions(AValue: TMySynSearchOptions);
     procedure SetReplaceText(AValue: string);
@@ -102,8 +106,34 @@ implementation
 
 {$R *.lfm}
 
+procedure TCustomReplaceDialog.SaveHistory;
+begin
+  ConfigObj.WriteStrings('History','Find', EditFind.Items);
+  ConfigObj.WriteStrings('History','Replace', EditReplace.Items);
+  ConfigObj.ConfigHolder.Find('History/Options', true).AsString:=SetToString(PTypeInfo(TypeInfo(TmySynSearchOptions)), LongInt(GetOptions), true);
+
+end;
+
+Procedure TCustomReplaceDialog.LoadHistory;
+var
+  tmp: string;
+begin
+  ConfigObj.ReadStrings('History','Find', EditFind.Items);
+  ConfigObj.ReadStrings('History','Replace', EditReplace.Items);
+  try
+    tmp := Configobj.ConfigHolder.GetValueDef('History/Options', '');
+    FOptions := TMySynSearchOptions(StringToSet(PTypeInfo(TypeInfo(TMySynSearchOptions)), tmp));
+  except
+    FOptions := [ssoReplace, ssoEntireScope];
+  end;
+
+  SetOptions(FOptions);
+
+end;
+
 procedure TCustomReplaceDialog.Replace;
 begin
+  SaveHistory;
   if Assigned(FOnReplace) then
     FOnReplace(Self);
 end;
@@ -116,6 +146,8 @@ end;
 procedure TCustomReplaceDialog.OKButtonClick(Sender: TObject);
 begin
   fReplaceAllClickedLast := false;
+  EditFind.AddHistoryItem(EditFind.Text,10,true,true);
+  EditReplace.AddHistoryItem(EditReplace.Text,10,true,true);
   Replace;
   ModalResult := mrNone;
 end;
@@ -123,6 +155,8 @@ end;
 procedure TCustomReplaceDialog.CloseButtonClick(Sender: TObject);
 begin
   fReplaceAllClickedLast := True;
+  EditFind.AddHistoryItem(EditFind.Text,10,true,true);
+  EditReplace.AddHistoryItem(EditReplace.Text,10,true,true);
   Replace;
   ModalResult := mrNone;
 end;
@@ -133,9 +167,20 @@ begin
     Find;
 end;
 
+procedure TCustomReplaceDialog.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  SaveHistory;
+end;
+
+procedure TCustomReplaceDialog.FormCreate(Sender: TObject);
+begin
+  LoadHistory;
+end;
+
 procedure TCustomReplaceDialog.CancelButtonClick(Sender: TObject);
 begin
   ModalResult := mrCancel;
+  SaveHistory;
   Close;
 end;
 
@@ -150,6 +195,7 @@ end;
 
 procedure TCustomReplaceDialog.Find;
 begin
+  SaveHistory;
   if Assigned(FOnFind) then
     FOnFind(Self);
 end;

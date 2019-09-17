@@ -22,7 +22,7 @@ unit Config;
 interface
 
 uses
-  Classes, SysUtils, Graphics, XMLPropStorage, XMLConf,  dom,
+  Classes, SysUtils, Graphics, JsonTools,  dom,
   LResources, FGL, SupportFuncs, Stringcostants,
   SynEditHighlighter, SynEditStrConst, SynEditStrConstExtra,
   // included with Lazarus
@@ -126,12 +126,12 @@ type
 
   { TXMLConfigExtended }
 
-  TXMLConfigExtended = class(TXMLConfig)
-  public
-    function PathExists(APath: string): boolean;
-    function isLoaded: boolean;
-  end;
-
+  //TXMLConfigExtended = class(TXMLConfig)
+  //public
+  //  function PathExists(APath: string): boolean;
+  //  function isLoaded: boolean;
+  //end;
+  //
   TConfig = class
   private
     fHighlighters: THighLighterList;
@@ -141,11 +141,13 @@ type
     FDirty: boolean;
     FFont: TFont;
     ResourcesPath: string;
-    fXMLConfigExtended: TXMLConfigExtended;
-    fConfigHolder: TXMLConfigStorage;
-    fColorSchema: TXMLConfigStorage;
+//    fXMLConfigExtended: TXMLConfigExtended;
+    fConfigHolder: TJsonNode;
+    fColorSchema: TJsonNode;
+    fSchemaName: string;
     fThemesList: TStringDictionary;
     fAttributeAliases : TStringDictionary;
+
 
     function GetBackGroundColor: TColor;
     procedure LoadAliases;
@@ -178,11 +180,11 @@ type
     // -- //
     property ThemeList: TStringDictionary read fThemesList;
     property Dirty: boolean read FDirty write SetDirty;
-    property ConfigHolder: TXMLConfigStorage read  fConfigHolder;
+    property ConfigHolder: TJsonNode read  fConfigHolder;
     property ConfigDir: string read fConfigDir;
     property ConfigFile: string read FConfigFile;
     property Font: TFont read FFont write SetFont;
-    property XMLConfigExtended: TXMLConfigExtended read fXMLConfigExtended;
+  //  property XMLConfigExtended: TXMLConfigExtended read fXMLConfigExtended;
     property AppSettings: RAppSettings read FAppSettings write FAppSettings;
     property BackGroundColor: TColor read GetBackGroundColor;
   end;
@@ -276,44 +278,6 @@ begin
   Result := FConfigObj;
 end;
 
-
-function TXMLConfigExtended.PathExists(APath: string): boolean;
-  { Find a children element, nil if not found. }
-  function FindElementChildren(Element: TDOMElement; const ElementName: string): TDOMElement;
-  var
-    Node: TDOMNode;
-  begin
-    Node := Element.FindNode(ElementName);
-    if (Node <> nil) and (Node.NodeType = ELEMENT_NODE) then
-      Result := Node as TDOMElement
-    else
-      Result := nil;
-  end;
-
-var
-  SeekPos: integer;
-  PathComponent: string;
-  fElement: TDOMElement;
-begin
-  fElement := Doc.DocumentElement;
-  SeekPos := 1;
-  while fElement <> nil do
-  begin
-    PathComponent := NextToken(APath, SeekPos, '/');
-    if PathComponent = '' then
-      break;
-    fElement := FindElementChildren(fElement, PathComponent);
-  end;
-
-  Result := Assigned(fElement);
-end;
-
-function TXMLConfigExtended.isLoaded: boolean;
-begin
-  Result := Filename <> '';
-end;
-
-
 constructor TConfig.Create;
 begin
   FFont := Tfont.Create;
@@ -322,8 +286,12 @@ begin
     , True
 {$ENDIF}
     );
+
+  FConfigFile := ChangeFileExt(FConfigFile,'.json');
   fConfigDir := GetConfigDir;
-  fConfigHolder := TXMLConfigStorage.Create(FConfigFile, FileExists(FConfigFile));
+  fConfigHolder := TJsonNode.Create;
+  if FileExists(FConfigFile) then
+   fConfigHolder.LoadFromFile(FConfigFile);
 
   fHighlighters := THighlighterList.Create;
   fThemesList := TStringDictionary.Create;
@@ -335,19 +303,17 @@ begin
   fAttributeAliases := TStringDictionary.Create;
   LoadAliases;
 
-  FXMLConfigExtended := TXMLConfigExtended.Create(nil);
-
   if (FAppSettings.ColorSchema <> '') then
-    if FileExists(FAppSettings.ColorSchema) then
-      fXMLConfigExtended.Filename := FAppSettings.ColorSchema
-    else
+    if not FileExists(FAppSettings.ColorSchema) then
       FAppSettings.ColorSchema := '';
 
   if (FAppSettings.ColorSchema = '') then
-    if FileExists(IncludeTrailingPathDelimiter(ResourcesPath) + 'schema-Default.xml') then
-      fXMLConfigExtended.Filename := IncludeTrailingPathDelimiter(ResourcesPath) + 'schema-Default.xml';
+    if FileExists(IncludeTrailingPathDelimiter(ResourcesPath) + 'schema-Default.json') then
+      FAppSettings.ColorSchema := IncludeTrailingPathDelimiter(ResourcesPath) + 'schema-Default.json';
 
-  fColorSchema := TXMLConfigStorage.Create(FXMLConfigExtended);
+  fColorSchema := TJsonNode.Create;
+  if FAppSettings.ColorSchema <> '' then
+    fColorSchema.LoadFromFile(FAppSettings.ColorSchema);
 
 end;
 
@@ -381,8 +347,8 @@ const
   DefaultPath = 'Schema/DefaultLang/';
 
 begin
-  if not XMLConfigExtended.isLoaded then
-    exit;
+   if FAppSettings.ColorSchema = '' then
+     exit;
 
   DefaultAttrib := ReadFontAttributes('Schema/Default/Text/', FontAttributes());
   AttrPath := 'Schema/' + CleanupName(Highlighter.GetLanguageName) + '/';
@@ -390,7 +356,7 @@ begin
   for i := 0 to Highlighter.AttrCount - 1 do
   begin
     AttrName := CleanupName(Highlighter.Attribute[i].Name);
-    if XMLConfigExtended.PathExists(AttrPath + AttrName + '/') then
+    if Assigned(FcolorSchema.find(AttrPath + AttrName + '/')) then
       SetAttribute(AttrPath + AttrName + '/', Highlighter.Attribute[i], DefaultAttrib)
     else
       begin
@@ -400,8 +366,6 @@ begin
         SetAttribute(DefaultPath + AttrName + '/', Highlighter.Attribute[i], DefaultAttrib);
       end
   end;
-
-  XMLConfigExtended.CloseKey;
 
 end;
 
@@ -447,8 +411,8 @@ var
   i: Integer;
 begin
 
-  XMLConfigExtended.Filename:=ThemeList.Data[Index];
-  FAppSettings.ColorSchema := XMLConfigExtended.Filename;
+  fColorSchema.LoadFromFile(ThemeList.Data[Index]);
+  FAppSettings.ColorSchema := ThemeList.Data[Index];
   Dirty := TRUE;
   for i := 0 to HIGHLIGHTERCOUNT - 1 do
    if Assigned(ARHighlighter[i].HL) then
@@ -486,22 +450,22 @@ procedure TConfig.LoadThemes;
 var
   FileList: TStringList;
   I: integer;
-  Doc: TXMLConfigExtended;
+  Doc: TJsonNode;
   SchemaName: string;
 
 begin
   fThemesList.Clear;
   FileList := TStringList.Create;
 
-  BuildFileList(ResourcesPath + 'schema-*.xml', faAnyFile, FileList, False);
-  BuildFileList(ConfigDir + 'schema-*.xml', faAnyFile, FileList, False);
+  BuildFileList(ResourcesPath + 'schema-*.json', faAnyFile, FileList, False);
+  BuildFileList(ConfigDir + 'schema-*.json', faAnyFile, FileList, False);
 
   for I := 0 to Pred(FileList.Count) do
   begin
     try
-      Doc := TXMLConfigExtended.Create(nil);
-      doc.Filename := FileList[i];
-      SchemaName := doc.GetValue('Schema/Name', '');
+      Doc := TJsonNode.Create();
+      doc.LoadFromFile( FileList[i]);
+      SchemaName := doc.GetValueDef('Schema/Name', '');
       if SchemaName <> '' then
         fThemesList.Add(SchemaName, FileList[i]);
     except
@@ -550,11 +514,10 @@ end;
 destructor TConfig.Destroy;
 begin
   SaveConfig;
-  fConfigHolder.WriteToDisk;
+  fConfigHolder.SaveToFile(FConfigFile);
   fConfigHolder.Free;
   fColorSchema.Free;
   FFont.Free;
-  FXMLConfigExtended.Free;
   fHighlighters.Free;
   fThemesList.Free;
   inherited Destroy;
@@ -565,13 +528,13 @@ begin
   if not FDirty then
     Exit;
 
-  fConfigHolder.SetValue(SectionUnix + '/' + IdentResourcesPath, ResourcesPath);
-  fConfigHolder.SetValue('Application/CloseWithLastTab', FAppSettings.CloseWithLastTab);
-  fConfigHolder.SetValue('Application/ColorSchema/Name', FAppSettings.ColorSchema);
+  fConfigHolder.Find(SectionUnix + '/' + IdentResourcesPath, true).AsString := ResourcesPath;
+  fConfigHolder.Find('Application/CloseWithLastTab', true).AsBoolean := FAppSettings.CloseWithLastTab;
+  fConfigHolder.Find('Application/ColorSchema/Name', true).AsString := FAppSettings.ColorSchema;
 
-  fConfigHolder.SetValue('Editor/Font/Name', FFont.Name);
-  fConfigHolder.SetValue('Editor/Font/Height', FFont.Height);
-  fConfigHolder.SetValue('Editor/Font/Height', FFont.Height);
+  fConfigHolder.Find('Editor/Font/Name', true).AsString := FFont.Name;
+  fConfigHolder.Find('Editor/Font/Height', true).AsInteger := FFont.Height;
+
   FDirty := false;
 end;
 
@@ -579,15 +542,13 @@ procedure TConfig.ReadConfig;
 var
   fontName: string;
 begin
-  ResourcesPath := fConfigHolder.GetValue(SectionUnix + '/' + IdentResourcesPath, GetResourcesPath);
+  ResourcesPath := fConfigHolder.GetValueDef(SectionUnix + '/' + IdentResourcesPath, GetResourcesPath);
 
-  FAppSettings.CloseWithLastTab :=
-    fConfigHolder.GetValue('Application/CloseWithLastTab', False);
+  FAppSettings.CloseWithLastTab := fConfigHolder.GetValueDef('Application/CloseWithLastTab', False);
 
-  FAppSettings.ColorSchema :=
-    fConfigHolder.GetValue('Application/ColorSchema/Name', '');
+  FAppSettings.ColorSchema := fConfigHolder.GetValueDef('Application/ColorSchema/Name', '');
 
-  fontName := fConfigHolder.GetValue('Editor/Font/Name', EmptyStr);
+  fontName := fConfigHolder.GetValueDef('Editor/Font/Name', EmptyStr);
   if fontName = EmptyStr then
   begin
     FFont.Name := SynDefaultFontName;
@@ -596,24 +557,49 @@ begin
   else
   begin
     FFont.Name := fontName;
-    FFont.Height := fConfigHolder.GetValue('Editor/Font/Height', 0);
+    FFont.Height := fConfigHolder.GetValueDef('Editor/Font/Height', 0);
   end;
 
   FDirty := False;
-
-
-
-end;
-
-procedure TConfig.WriteStrings(Section: string; Name: string; Values: TStrings);
-begin
-  fConfigHolder.SetValue(Section + '/' + Name, Values);
 end;
 
 function TConfig.ReadStrings(Section: string; Name: string; Values: TStrings): integer;
+var
+  Node: TJsonNode;
+  i: Integer;
 begin
-  fConfigHolder.GetValue(Section + '/' + Name, Values);
+  Values.Clear;
+  Node := fConfigHolder.find(Section + '/' + Name);
+  if Assigned(Node) then
+    begin
+      for i := 0 to node.Count -1 do
+       Values.Add(Node.Child(i).AsString);
+    end;
+
   Result := Values.Count;
+end;
+
+
+procedure TConfig.WriteStrings(Section: string; Name: string; Values: TStrings);
+var
+  Node: TJsonNode;
+  i: Integer;
+begin
+  Node := fConfigHolder.find(Section + '/' + Name);
+  if Assigned(Node) then
+    begin
+     Node.Clear;
+     for i := 0 to Values.Count -1 do
+       node.Add('',Values[i]);
+    end
+  else
+    begin
+      Node := fConfigHolder.find(Section + '/' + Name, true);  // fConfigHolder.Add(APath, nkArray);
+      node.Kind:=nkArray;
+      for i := 0 to Values.Count -1 do
+        node.Add('',Values[i]);
+
+    end;
 end;
 
 function TConfig.GetBackGroundColor: TColor;
@@ -639,7 +625,7 @@ var
   tmpString: string;
 begin
   try
-    tmpString := fColorSchema.GetValue(Section + Ident, IntToHex(Default, 8));
+    tmpString := fColorSchema.GetValueDef(Section + Ident, IntToHex(Default, 8));
     if not IdentToColor(tmpString, Result) then
       if not TryStrToInt(tmpString, Result) then
         Result := Default;
@@ -654,7 +640,7 @@ var
   tmp: string;
 begin
   try
-    tmp := fColorSchema.GetValue(Section + Ident, '');
+    tmp := fColorSchema.GetValueDef(Section + Ident, '');
     Result := TFontStyles(StringToSet(PTypeInfo(TypeInfo(TFontstyles)), tmp));
   except
     Result := default;
@@ -677,12 +663,12 @@ begin
 
   if not ColorToIdent(Value, tmp) then
     tmp := '$' + IntToHex(Value, 8);
-  fConfigHolder.setValue(Section + '/' + Ident, tmp);
+  fConfigHolder.Find(Section + '/' + Ident, true).AsString := tmp;
 end;
 
 procedure TConfig.Flush;
 begin
-  fConfigHolder.WriteToDisk;
+  fConfigHolder.SaveToFile(FConfigFile);
 end;
 
 function TConfig.GetResourcesPath: string;

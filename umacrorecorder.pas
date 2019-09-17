@@ -258,14 +258,15 @@ var
   NewMacro: TMacro;
   i: Integer;
 begin
-  NewCount := ConfigObj.ConfigHolder.GetValue('Macros/Count',0);
+
+  NewCount := ConfigObj.ConfigHolder.GetValuedef('Macros/Count',0);
 
   for i:=0 to NewCount-1 do
     begin
     NewMacro := TMacro.Create;
-    NewMacro.Name     := ConfigObj.ConfigHolder.GetValue('Macros/Macro'+IntToStr(i+1)+'/Name','');
-    NewMacro.Commands := ConfigObj.ConfigHolder.GetValue('Macros/Macro'+IntToStr(i+1)+'/Commands','');
-    NewMacro.ShortCut := ConfigObj.ConfigHolder.GetValue('Macros/Macro'+IntToStr(i+1)+'/Shortcut',0);
+    NewMacro.Name     := ConfigObj.ConfigHolder.GetValueDef('Macros/Macro'+IntToStr(i+1)+'/Name','');
+    NewMacro.Commands := ConfigObj.ConfigHolder.GetValueDef('Macros/Macro'+IntToStr(i+1)+'/Commands','');
+    NewMacro.ShortCut := ConfigObj.ConfigHolder.GetValueDef('Macros/Macro'+IntToStr(i+1)+'/Shortcut',0);
     NewMacro.Saved    := true;
 
     if FMacros.Count>i then
@@ -281,15 +282,15 @@ procedure TMacroRecorder.SaveMacros;
 var
   i: Integer;
 begin
-  ConfigObj.ConfigHolder.SetDeleteValue('Macros/Count',FMacros.Count, 0);
-  for i := 0 to FMacros.Count -1 do
-    begin
-     ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Name',FMacros[i].Name,'') ;
-     ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Commands',FMacros[i].Commands,'') ;
-     ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Shortcut',FMacros[i].ShortCut,0) ;
-     FMacros[i].Saved := true;
-    end;
-
+//  ConfigObj.ConfigHolder.SetDeleteValue('Macros/Count',FMacros.Count, 0);
+  //for i := 0 to FMacros.Count -1 do
+  //  begin
+  //   ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Name',FMacros[i].Name,'') ;
+  //   ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Commands',FMacros[i].Commands,'') ;
+  //   ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Shortcut',FMacros[i].ShortCut,0) ;
+  //   FMacros[i].Saved := true;
+  //  end;
+  //
 end;
 
 procedure TMacroRecorder.pRecordActions(AAction: TBasicAction; var Handled: Boolean);

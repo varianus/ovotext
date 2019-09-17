@@ -1,0 +1,189 @@
+{
+  "Schema": {
+    "Name": "Son of obsidian",
+    "Default": {
+      "Text": {
+        "Background": "$002A2822",
+        "Foreground": "$00F3F2F1"
+      },
+      "Gutter": {
+        "Background": "$002A2822",
+        "Foreground": "$0063C793"
+      },
+      "LineNumber": {
+        "Background": "$002A2822",
+        "Foreground": "$0063C793"
+      }
+    },
+    "DefaultLang": {
+      "Assembler": {
+        "Background": "$002A2822",
+        "Foreground": "$0063C793"
+      },
+      "Comment": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$007B7466"
+      },
+      "Directive": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$00BD82A0"
+      },
+      "Number": {
+        "Background": "$002A2822",
+        "Foreground": "$0022CDFF"
+      },
+      "Reserved_word": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$0063C793"
+      },
+      "String": {
+        "Background": "$002A2822",
+        "Foreground": "$000076EC"
+      },
+      "Symbol": {
+        "Background": "$002A2822",
+        "Foreground": "$00F3F2F1"
+      },
+      "Text": {
+        "Background": "$002A2822",
+        "Foreground": "$00F3F2F1"
+      },
+      "Special": {
+        "Style": "fsBold",
+        "Foreground": "clLime"
+      },
+      "Error": {
+        "Style": "fsBold",
+        "Foreground": "clRed"
+      },
+      "Space": {
+        "Background": "$002A2822",
+        "Foreground": "$00F3F2F1"
+      },
+      "Identifier": {
+        "Background": "$002A2822",
+        "Foreground": "$00F3F2F1"
+      }
+    },
+    "HTML_document": {
+      "Asp": {
+        "Background": "clYellow",
+        "Foreground": "clBlack"
+      }
+    },
+    "SQL": {
+      "Data_type": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$00F3F2F1"
+      },
+      "Default_packages": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$000076EC"
+      },
+      "Exception": {
+        "Style": "fsItalic",
+        "Background": "$002A2822",
+        "Foreground": "$000076EC"
+      },
+      "Function": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$0063C793"
+      },
+      "Reserved_word__PL_SQL_": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$0063C793"
+      },
+      "SQL_Plus_command": {
+        "Style": "fsBold",
+        "Background": "clWhite",
+        "Foreground": "clPurple"
+      }
+    },
+    "Python": {
+      "Float": {
+        "Background": "$002A2822",
+        "Foreground": "$0022CDFF"
+      },
+      "Hexadecimal": {
+        "Background": "$002A2822",
+        "Foreground": "$0022CDFF"
+      },
+      "Non_reserved_keyword": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$00F3F2F1"
+      },
+      "Octal": {
+        "Background": "$002A2822",
+        "Foreground": "$0022CDFF"
+      },
+      "SyntaxError": {
+        "Background": "$002A2822",
+        "Foreground": "$000076EC"
+      },
+      "System_functions_and_variables": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$00F3F2F1"
+      }
+    },
+    "INI_file": {
+      "Section": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$0063C793"
+      }
+    },
+    "Diff_File": {
+      "Diff_Added_line": {
+        "Background": "$00CCFFCC",
+        "Foreground": "clBlack"
+      },
+      "Diff_Changed_Line": {
+        "Background": "$00AAFFFF",
+        "Foreground": "clBlack"
+      },
+      "Diff_Chunk_Line_Counts": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$0022CDFF"
+      },
+      "Diff_Chunk_Marker": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$00F3F2F1"
+      },
+      "Diff_Chunk_New_Line_Count": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$00BD82A0"
+      },
+      "Diff_Chunk_Original_Line_Count": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$000076EC"
+      },
+      "Diff_New_File": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$00F3F2F1"
+      },
+      "Diff_Original_File": {
+        "Style": "fsBold",
+        "Background": "$002A2822",
+        "Foreground": "$00B18C67"
+      },
+      "Diff_Removed_Line": {
+        "Background": "$00FFC7C7",
+        "Foreground": "clBlack"
+      }
+    }
+  }
+}
