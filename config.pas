@@ -126,12 +126,6 @@ type
 
   { TXMLConfigExtended }
 
-  //TXMLConfigExtended = class(TXMLConfig)
-  //public
-  //  function PathExists(APath: string): boolean;
-  //  function isLoaded: boolean;
-  //end;
-  //
   TConfig = class
   private
     fHighlighters: THighLighterList;
@@ -184,7 +178,6 @@ type
     property ConfigDir: string read fConfigDir;
     property ConfigFile: string read FConfigFile;
     property Font: TFont read FFont write SetFont;
-  //  property XMLConfigExtended: TXMLConfigExtended read fXMLConfigExtended;
     property AppSettings: RAppSettings read FAppSettings write FAppSettings;
     property BackGroundColor: TColor read GetBackGroundColor;
   end;

@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, ueditor, uActionMacro, uReplaceMacro, SynMacroRecorder, SynEditKeyCmds, ActnList, LCLProc,
-  SynEditTypes, Config, Stringcostants, Generics.Collections, ReplaceDialog;
+  SynEditTypes, Config, Stringcostants, Generics.Collections, ReplaceDialog, JsonTools;
 
 type
 
@@ -256,17 +256,24 @@ function TMacroRecorder.LoadMacros: integer;
 var
   NewCount: LongInt;
   NewMacro: TMacro;
+  ArrayNode: TJsonNode;
+  MacroNode: TJsonNode;
+
   i: Integer;
 begin
 
-  NewCount := ConfigObj.ConfigHolder.GetValuedef('Macros/Count',0);
+  FMacros.Clear;
+  ArrayNode:= ConfigObj.ConfigHolder.Find('Macros');
+  if not Assigned(ArrayNode) then
+    exit;
 
-  for i:=0 to NewCount-1 do
+  for MacroNode in ArrayNode do
     begin
+
     NewMacro := TMacro.Create;
-    NewMacro.Name     := ConfigObj.ConfigHolder.GetValueDef('Macros/Macro'+IntToStr(i+1)+'/Name','');
-    NewMacro.Commands := ConfigObj.ConfigHolder.GetValueDef('Macros/Macro'+IntToStr(i+1)+'/Commands','');
-    NewMacro.ShortCut := ConfigObj.ConfigHolder.GetValueDef('Macros/Macro'+IntToStr(i+1)+'/Shortcut',0);
+    NewMacro.Name     := MacroNode.GetValueDef('Name','');
+    NewMacro.Commands := MacroNode.GetValueDef('Commands','');
+    NewMacro.ShortCut := MacroNode.GetValueDef('Shortcut',0);
     NewMacro.Saved    := true;
 
     if FMacros.Count>i then
@@ -274,23 +281,30 @@ begin
     else
       FMacros.Add(NewMacro);
   end;
-  while FMacros.Count>NewCount do FMacros.Delete(FMacros.Count-1);
 
 end;
 
 procedure TMacroRecorder.SaveMacros;
 var
-  i: Integer;
+ Macro: TMacro;
+ ArrayNode: TJsonNode;
+ MacroNode: TJsonNode;
+
 begin
-//  ConfigObj.ConfigHolder.SetDeleteValue('Macros/Count',FMacros.Count, 0);
-  //for i := 0 to FMacros.Count -1 do
-  //  begin
-  //   ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Name',FMacros[i].Name,'') ;
-  //   ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Commands',FMacros[i].Commands,'') ;
-  //   ConfigObj.ConfigHolder.SetDeleteValue('Macros/Macro'+IntToStr(i+1)+'/Shortcut',FMacros[i].ShortCut,0) ;
-  //   FMacros[i].Saved := true;
-  //  end;
-  //
+
+  ArrayNode:= ConfigObj.ConfigHolder.Find('Macros');
+  ArrayNode.Kind := nkArray;
+  ArrayNode.Clear;
+
+
+  for Macro in Macros do
+    begin
+       MacroNode := ArrayNode.Add('Macro', nkObject);
+       MacroNode.Find('Name',True).AsString := Macro.Name;
+       MacroNode.Find('Commands',True).AsString := Macro.Commands;
+       MacroNode.Find('ShortCut',True).AsInteger := Macro.ShortCut;
+    end;
+
 end;
 
 procedure TMacroRecorder.pRecordActions(AAction: TBasicAction; var Handled: Boolean);
