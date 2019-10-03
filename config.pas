@@ -134,6 +134,7 @@ type
     fConfigDir: string;
     FDirty: boolean;
     FFont: TFont;
+    FShowRowNumber: boolean;
     ResourcesPath: string;
 //    fXMLConfigExtended: TXMLConfigExtended;
     fConfigHolder: TJsonNode;
@@ -147,6 +148,7 @@ type
     procedure LoadAliases;
     procedure SetDirty(AValue: boolean);
     procedure SetFont(AValue: TFont);
+    procedure SetShowRowNumber(AValue: boolean);
     procedure WriteColor(const Section, Ident: string; const Value: TColor);
     procedure InitializeHighlighter(Highlighter: TSynCustomHighlighter);
     procedure FontAttribToAttribute(Attribute: TSynHighlighterAttributes; Attrib: TFontAttributes);
@@ -178,6 +180,7 @@ type
     property ConfigDir: string read fConfigDir;
     property ConfigFile: string read FConfigFile;
     property Font: TFont read FFont write SetFont;
+    property ShowRowNumber: boolean read FShowRowNumber write SetShowRowNumber;
     property AppSettings: RAppSettings read FAppSettings write FAppSettings;
     property BackGroundColor: TColor read GetBackGroundColor;
   end;
@@ -468,7 +471,7 @@ begin
 
 end;
 
-Procedure TConfig.LoadAliases;
+procedure TConfig.LoadAliases;
 begin
   //Default
   //fAttributeAliases.Add('Assembler','');
@@ -527,6 +530,8 @@ begin
 
   fConfigHolder.Find('Editor/Font/Name', true).AsString := FFont.Name;
   fConfigHolder.Find('Editor/Font/Height', true).AsInteger := FFont.Height;
+  fConfigHolder.Find('Editor/ShowRowNumber', true).AsBoolean := FShowRowNumber;
+
 
   FDirty := false;
 end;
@@ -538,7 +543,6 @@ begin
   ResourcesPath := fConfigHolder.GetValueDef(SectionUnix + '/' + IdentResourcesPath, GetResourcesPath);
 
   FAppSettings.CloseWithLastTab := fConfigHolder.GetValueDef('Application/CloseWithLastTab', False);
-
   FAppSettings.ColorSchema := fConfigHolder.GetValueDef('Application/ColorSchema/Name', '');
 
   fontName := fConfigHolder.GetValueDef('Editor/Font/Name', EmptyStr);
@@ -552,6 +556,8 @@ begin
     FFont.Name := fontName;
     FFont.Height := fConfigHolder.GetValueDef('Editor/Font/Height', 0);
   end;
+
+  FShowRowNumber := fConfigHolder.GetValueDef('Editor/ShowRowNumber', True);
 
   FDirty := False;
 end;
@@ -610,6 +616,13 @@ end;
 procedure TConfig.SetFont(AValue: TFont);
 begin
   FFont.Assign(AValue);
+  FDirty := True;
+end;
+
+procedure TConfig.SetShowRowNumber(AValue: boolean);
+begin
+  if FShowRowNumber=AValue then Exit;
+  FShowRowNumber:=AValue;
   FDirty := True;
 end;
 

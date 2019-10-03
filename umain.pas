@@ -43,6 +43,7 @@ type
     actCloseBefore: TAction;
     actCloseAfter: TAction;
     actFindLongestLine: TAction;
+    actShowRowNumber: TAction;
     actJSONCompact: TAction;
     actZoomIn: TAction;
     actZoomOut: TAction;
@@ -93,7 +94,9 @@ type
     MenuItem87: TMenuItem;
     MenuItem88: TMenuItem;
     MenuItem89: TMenuItem;
+    N5: TMenuItem;
     MenuItem94: TMenuItem;
+    MenuItem95: TMenuItem;
     N4: TMenuItem;
     MenuItem91: TMenuItem;
     MenuItem92: TMenuItem;
@@ -169,8 +172,8 @@ type
     MenuItem25: TMenuItem;
     MenuItem26: TMenuItem;
     MenuItem27: TMenuItem;
-    MenuItem28: TMenuItem;
-    MenuItem29: TMenuItem;
+    mnuCleanRecent: TMenuItem;
+    mnuReopenAllRecent: TMenuItem;
     MenuItem30: TMenuItem;
     MenuItem31: TMenuItem;
     MenuItem32: TMenuItem;
@@ -256,6 +259,7 @@ type
     procedure actPathToClipboardExecute(Sender: TObject);
     procedure actPrintExecute(Sender: TObject);
     procedure actQuoteExecute(Sender: TObject);
+    procedure actShowRowNumberExecute(Sender: TObject);
     procedure actSQLPrettyPrintExecute(Sender: TObject);
     procedure actTabToSpaceExecute(Sender: TObject);
     procedure actToggleSpecialCharExecute(Sender: TObject);
@@ -298,8 +302,8 @@ type
     procedure FormWindowStateChange(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
     procedure actLowerCaseExecute(Sender: TObject);
-    procedure MenuItem28Click(Sender: TObject);
-    procedure MenuItem29Click(Sender: TObject);
+    procedure mnuCleanRecentClick(Sender: TObject);
+    procedure mnuReopenAllRecentClick(Sender: TObject);
     procedure mnuLineEndingsClick(Sender: TObject);
     procedure mnuCRClick(Sender: TObject);
     procedure mnuCRLFClick(Sender: TObject);
@@ -554,6 +558,19 @@ begin
 
   Ed := EditorFactory.CurrentEditor;
   Ed.TextOperation(@QuotedStr, [tomLines]);
+end;
+
+procedure TfMain.actShowRowNumberExecute(Sender: TObject);
+var
+  i: Integer;
+begin
+  actShowRowNumber.Checked := not actShowRowNumber.Checked;
+
+  for i := 0 to EditorFactory.PageCount - 1 do
+    TEditorTabSheet(EditorFactory.Pages[i]).Editor.Gutter.Visible := actShowRowNumber.Checked;
+
+  ConfigObj.ShowRowNumber:=actShowRowNumber.Checked;
+
 end;
 
 procedure TfMain.actSQLPrettyPrintExecute(Sender: TObject);
@@ -938,6 +955,7 @@ begin
   MRU.OnRecentFile := @RecentFileEvent;
   MRU.MaxRecent := 15;
   MRU.Recent.Clear;
+  actShowRowNumber.Checked:=ConfigObj.ShowRowNumber;
 
   ConfigObj.ReadStrings('Recent', 'Files', MRU.Recent);
   MRU.ShowRecentFiles;
@@ -1139,14 +1157,14 @@ begin
 
 end;
 
-procedure TfMain.MenuItem28Click(Sender: TObject);
+procedure TfMain.mnuCleanRecentClick(Sender: TObject);
 begin
   MRU.Recent.Clear;
   MRU.ShowRecentFiles;
   ConfigObj.WriteStrings('Recent', 'File', MRU.Recent);
 end;
 
-procedure TfMain.MenuItem29Click(Sender: TObject);
+procedure TfMain.mnuReopenAllRecentClick(Sender: TObject);
 var
   i: integer;
 begin

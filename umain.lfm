@@ -5,7 +5,7 @@ object fMain: TfMain
   Width = 673
   AllowDropFiles = True
   Caption = 'OvoText'
-  ClientHeight = 409
+  ClientHeight = 448
   ClientWidth = 673
   Menu = mnuMain
   OnActivate = FormActivate
@@ -19,12 +19,11 @@ object fMain: TfMain
   OnWindowStateChange = FormWindowStateChange
   Position = poOwnerFormCenter
   ShowHint = True
-  LCLVersion = '2.1.0.0'
   Visible = True
   object StatusBar: TStatusBar
     Left = 0
-    Height = 23
-    Top = 425
+    Height = 19
+    Top = 429
     Width = 673
     Panels = <    
       item
@@ -81,7 +80,7 @@ object fMain: TfMain
     end
     object ToolButton5: TToolButton
       Left = 29
-      Height = 5
+      Height = 26
       Top = 2
       Style = tbsDivider
     end
@@ -112,7 +111,7 @@ object fMain: TfMain
     end
     object ToolButton12: TToolButton
       Left = 235
-      Height = 5
+      Height = 26
       Top = 2
       Style = tbsDivider
     end
@@ -133,20 +132,20 @@ object fMain: TfMain
     end
     object tbbSepClose: TToolButton
       Left = 146
-      Height = 5
+      Height = 26
       Top = 2
       Style = tbsDivider
     end
     object ToolButton4: TToolButton
       Left = 296
-      Height = 8
+      Height = 26
       Top = 2
       Caption = 'ToolButton4'
       Style = tbsSeparator
     end
     object ToolButton11: TToolButton
       Left = 360
-      Height = 8
+      Height = 26
       Top = 2
       Caption = 'ToolButton11'
       Style = tbsSeparator
@@ -178,7 +177,7 @@ object fMain: TfMain
     end
     object ToolButton20: TToolButton
       Left = 396
-      Height = 8
+      Height = 26
       Top = 2
       Caption = 'ToolButton20'
       Style = tbsSeparator
@@ -621,6 +620,11 @@ object fMain: TfMain
       Caption = 'Compact JSON'
       OnExecute = actJSONCompactExecute
     end
+    object actShowRowNumber: TAction
+      Category = 'Settings'
+      Caption = 'Show row numbers'
+      OnExecute = actShowRowNumberExecute
+    end
   end
   object mnuMain: TMainMenu
     Images = imgList
@@ -640,13 +644,13 @@ object fMain: TfMain
       object mnuOpenRecent: TMenuItem
         Caption = 'Open Recent ...'
       end
-      object MenuItem29: TMenuItem
+      object mnuReopenAllRecent: TMenuItem
         Caption = 'Reopen all recent'
-        OnClick = MenuItem29Click
+        OnClick = mnuReopenAllRecentClick
       end
-      object MenuItem28: TMenuItem
+      object mnuCleanRecent: TMenuItem
         Caption = 'Clean recent file list'
-        OnClick = MenuItem28Click
+        OnClick = mnuCleanRecentClick
       end
       object MenuItem83: TMenuItem
         Action = FileReload
@@ -833,12 +837,19 @@ object fMain: TfMain
       end
     end
     object MenuItem35: TMenuItem
-      Caption = 'Settings'
+      Caption = 'View'
       object MenuItem36: TMenuItem
         Action = actFont
       end
       object mnuThemes: TMenuItem
         Caption = 'Themes'
+      end
+      object N5: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem95: TMenuItem
+        Action = actShowRowNumber
+        ShowAlwaysCheckable = True
       end
     end
     object mnuLanguage: TMenuItem
@@ -2407,19 +2418,6 @@ object fMain: TfMain
     object MenuItem45: TMenuItem
       Action = actFullNameToClipBoard
     end
-  end
-  object SaveDialog: TSaveDialog
-    Left = 344
-    Top = 168
-  end
-  object FontDialog: TFontDialog
-    Title = 'Select a Font'
-    MinFontSize = 0
-    MaxFontSize = 0
-    Options = [fdForceFontExist, fdWysiwyg, fdApplyButton]
-    OnApplyClicked = FontDialogApplyClicked
-    Left = 504
-    Top = 176
   end
   object PrintDialog1: TPrintDialog
     Left = 256
