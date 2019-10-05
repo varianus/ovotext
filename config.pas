@@ -18,6 +18,7 @@
   MA 02111-1307, USA.
 }
 {$I codegen.inc}
+{$modeswitch ADVANCEDRECORDS}
 unit Config;
 interface
 
@@ -114,6 +115,8 @@ type
   RAppSettings = record
     CloseWithLastTab: boolean;
     ColorSchema: string;
+    DarkIconTheme: boolean;
+    property Dark: boolean read DarkIconTheme write darkicontheme;
   end;
 
   { RFontAttributes }
@@ -527,6 +530,7 @@ begin
   fConfigHolder.Find(SectionUnix + '/' + IdentResourcesPath, true).AsString := ResourcesPath;
   fConfigHolder.Find('Application/CloseWithLastTab', true).AsBoolean := FAppSettings.CloseWithLastTab;
   fConfigHolder.Find('Application/ColorSchema/Name', true).AsString := FAppSettings.ColorSchema;
+  fConfigHolder.Find('Application/DarkIconTheme', true).AsBoolean := FAppSettings.DarkIconTheme;
 
   fConfigHolder.Find('Editor/Font/Name', true).AsString := FFont.Name;
   fConfigHolder.Find('Editor/Font/Height', true).AsInteger := FFont.Height;
@@ -544,6 +548,7 @@ begin
 
   FAppSettings.CloseWithLastTab := fConfigHolder.GetValueDef('Application/CloseWithLastTab', False);
   FAppSettings.ColorSchema := fConfigHolder.GetValueDef('Application/ColorSchema/Name', '');
+  FAppSettings.DarkIconTheme := fConfigHolder.GetValueDef('Application/DarkIconTheme', False);
 
   fontName := fConfigHolder.GetValueDef('Editor/Font/Name', EmptyStr);
   if fontName = EmptyStr then

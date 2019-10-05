@@ -98,6 +98,7 @@
 {"hash":257875860,"name":"tfmain.actzoomreset.caption","sourcebytes":[90,111,111,109,32,82,101,115,101,116],"value":"Zoom Reset"},
 {"hash":247640654,"name":"tfmain.actjsoncompact.caption","sourcebytes":[67,111,109,112,97,99,116,32,74,83,79,78],"value":"Compact JSON"},
 {"hash":215841411,"name":"tfmain.actshowrownumber.caption","sourcebytes":[83,104,111,119,32,114,111,119,32,110,117,109,98,101,114,115],"value":"Show row numbers"},
+{"hash":143548629,"name":"tfmain.actdarkicontheme.caption","sourcebytes":[68,97,114,107,32,73,99,111,110,32,84,104,101,109,101],"value":"Dark Icon Theme"},
 {"hash":315429,"name":"tfmain.menuitem1.caption","sourcebytes":[70,105,108,101],"value":"File"},
 {"hash":139726590,"name":"tfmain.mnuopenrecent.caption","sourcebytes":[79,112,101,110,32,82,101,99,101,110,116,32,46,46,46],"value":"Open Recent ..."},
 {"hash":198533332,"name":"tfmain.mnureopenallrecent.caption","sourcebytes":[82,101,111,112,101,110,32,97,108,108,32,114,101,99,101,110,116],"value":"Reopen all recent"},
