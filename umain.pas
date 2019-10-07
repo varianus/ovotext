@@ -209,7 +209,7 @@ type
     SaveDialog: TSaveDialog;
     SearchFind: TAction;
     SearchFindPrevious: TAction;
-    SearchFindNext1: TAction;
+    SearchFindNext: TAction;
     SearchReplace: TAction;
     lbMessage: TStaticText;
     StatusBar: TStatusBar;
@@ -309,7 +309,7 @@ type
     procedure ReplaceDialogReplace(Sender: TObject);
     procedure SearchFindAccept(Sender: TObject);
     procedure SearchFindExecute(Sender: TObject);
-    procedure SearchFindNext1Execute(Sender: TObject);
+    procedure SearchFindNextExecute(Sender: TObject);
     procedure SearchFindPreviousExecute(Sender: TObject);
     procedure SearchReplaceExecute(Sender: TObject);
     procedure SortAscendingExecute(Sender: TObject);
@@ -1436,7 +1436,7 @@ begin
   ReplaceDialog.Show;
 end;
 
-procedure TfMain.SearchFindNext1Execute(Sender: TObject);
+procedure TfMain.SearchFindNextExecute(Sender: TObject);
 var
   sOpt: TMySynSearchOptions;
   Ed: TEditor;
