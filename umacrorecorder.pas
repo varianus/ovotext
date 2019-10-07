@@ -292,7 +292,7 @@ var
 
 begin
 
-  ArrayNode:= ConfigObj.ConfigHolder.Find('Macros');
+  ArrayNode:= ConfigObj.ConfigHolder.Find('Macros', true);
   ArrayNode.Kind := nkArray;
   ArrayNode.Clear;
 

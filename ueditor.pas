@@ -258,6 +258,7 @@ begin
   SyncEdit.Editor := self;
   SyncEdit.GutterGlyph.Assign(bm);
   SyncEdit.CaseSensitive := False;
+  Gutter.Visible:= ConfigObj.ShowRowNumber;
 
   OnReplaceText := @OnReplace;
 
