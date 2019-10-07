@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, TypInfo, Forms, Controls, Graphics, Dialogs, lcltype,
-  Buttons, StdCtrls, ExtCtrls, ButtonPanel, Config, SynEditTypes;
+  Buttons, StdCtrls, ExtCtrls, ButtonPanel, Arrow, ComCtrls, Config, SynEditTypes;
 
 type
 
@@ -63,6 +63,9 @@ type
     SelectedRadioButton: TRadioButton;
     TextLabel: TLabel;
     ReplaceLabel: TLabel;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
     WholeWordsOnlyCheckBox: TCheckBox;
     procedure CancelButtonClick(Sender: TObject);
     procedure cbReplaceChange(Sender: TObject);

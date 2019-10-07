@@ -2,18 +2,17 @@ object CustomReplaceDialog: TCustomReplaceDialog
   Left = -1
   Height = 350
   Top = -1
-  Width = 510
+  Width = 583
   BorderIcons = [biSystemMenu, biHelp]
   Caption = 'Replace Text'
   ClientHeight = 350
-  ClientWidth = 510
+  ClientWidth = 583
   Constraints.MinHeight = 184
   Constraints.MinWidth = 480
   OnClose = FormClose
   OnCreate = FormCreate
   PopupMode = pmAuto
   Position = poMainFormCenter
-  LCLVersion = '2.1.0.0'
   object TextLabel: TLabel
     Left = 16
     Height = 15
@@ -36,7 +35,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     ParentColor = False
   end
   object PanelButtons: TPanel
-    Left = 510
+    Left = 583
     Height = 304
     Top = 0
     Width = 0
@@ -86,7 +85,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     Left = 246
     Height = 80
     Top = 64
-    Width = 258
+    Width = 331
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Around = 6
     Caption = 'Scope'
@@ -98,13 +97,13 @@ object CustomReplaceDialog: TCustomReplaceDialog
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 1
     ClientHeight = 60
-    ClientWidth = 254
+    ClientWidth = 327
     TabOrder = 2
     object SelectedRadioButton: TRadioButton
       Left = 6
       Height = 19
       Top = 8
-      Width = 242
+      Width = 315
       Caption = 'Selected text'
       TabOrder = 0
     end
@@ -112,7 +111,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
       Left = 6
       Height = 19
       Top = 35
-      Width = 242
+      Width = 315
       Caption = 'Global'
       Checked = True
       TabOrder = 1
@@ -123,7 +122,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     Left = 6
     Height = 34
     Top = 310
-    Width = 498
+    Width = 571
     OKButton.Name = 'OKButton'
     OKButton.Caption = 'Replace'
     OKButton.OnClick = OKButtonClick
@@ -194,7 +193,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     Left = 243
     Height = 77
     Top = 150
-    Width = 261
+    Width = 334
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Around = 6
     Caption = 'DirectionGroupBox'
@@ -206,13 +205,13 @@ object CustomReplaceDialog: TCustomReplaceDialog
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 1
     ClientHeight = 57
-    ClientWidth = 257
+    ClientWidth = 330
     TabOrder = 5
     object BackwardRadioButton: TRadioButton
       Left = 6
       Height = 19
       Top = 7
-      Width = 245
+      Width = 318
       Caption = 'Backward'
       TabOrder = 0
     end
@@ -220,7 +219,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
       Left = 6
       Height = 19
       Top = 33
-      Width = 245
+      Width = 318
       Caption = 'Forward'
       Checked = True
       TabOrder = 1
@@ -241,7 +240,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     Left = 130
     Height = 23
     Top = 5
-    Width = 330
+    Width = 366
     Anchors = [akTop, akLeft, akRight]
     AutoComplete = True
     AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
@@ -256,7 +255,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     Left = 130
     Height = 23
     Top = 35
-    Width = 330
+    Width = 366
     Anchors = [akTop, akLeft, akRight]
     AutoComplete = True
     AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
@@ -264,5 +263,34 @@ object CustomReplaceDialog: TCustomReplaceDialog
     ItemHeight = 15
     TabOrder = 8
     Text = 'EditReplace'
+  end
+  object ToolBar1: TToolBar
+    Left = 429
+    Height = 30
+    Top = 269
+    Width = 145
+    Align = alNone
+    Anchors = [akRight, akBottom]
+    AutoSize = True
+    BorderWidth = 1
+    ButtonHeight = 30
+    ButtonWidth = 72
+    Caption = 'ToolBar1'
+    EdgeBorders = []
+    EdgeInner = esNone
+    EdgeOuter = esNone
+    Flat = False
+    Images = fMain.imgList
+    TabOrder = 9
+    object ToolButton1: TToolButton
+      Left = 73
+      Top = 0
+      Action = fMain.SearchFindPrevious
+    end
+    object ToolButton2: TToolButton
+      Left = 1
+      Top = 0
+      Action = fMain.SearchFindNext
+    end
   end
 end
