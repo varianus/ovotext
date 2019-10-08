@@ -9,6 +9,8 @@ object CustomReplaceDialog: TCustomReplaceDialog
   ClientWidth = 583
   Constraints.MinHeight = 184
   Constraints.MinWidth = 480
+  KeyPreview = True
+  OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
   PopupMode = pmAuto
@@ -184,48 +186,6 @@ object CustomReplaceDialog: TCustomReplaceDialog
       TabOrder = 3
     end
   end
-  object DirectionGroupBox: TGroupBox
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = ScopeGroupBox
-    AnchorSideTop.Side = asrBottom
-    AnchorSideRight.Control = Owner
-    AnchorSideRight.Side = asrBottom
-    Left = 243
-    Height = 77
-    Top = 150
-    Width = 334
-    Anchors = [akTop, akLeft, akRight]
-    BorderSpacing.Around = 6
-    Caption = 'DirectionGroupBox'
-    ChildSizing.LeftRightSpacing = 6
-    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
-    ChildSizing.EnlargeVertical = crsHomogenousSpaceResize
-    ChildSizing.ShrinkHorizontal = crsHomogenousSpaceResize
-    ChildSizing.ShrinkVertical = crsHomogenousSpaceResize
-    ChildSizing.Layout = cclLeftToRightThenTopToBottom
-    ChildSizing.ControlsPerLine = 1
-    ClientHeight = 57
-    ClientWidth = 330
-    TabOrder = 5
-    object BackwardRadioButton: TRadioButton
-      Left = 6
-      Height = 19
-      Top = 7
-      Width = 318
-      Caption = 'Backward'
-      TabOrder = 0
-    end
-    object ForwardRadioButton: TRadioButton
-      Left = 6
-      Height = 19
-      Top = 33
-      Width = 318
-      Caption = 'Forward'
-      Checked = True
-      TabOrder = 1
-      TabStop = True
-    end
-  end
   object cbReplace: TCheckBox
     Left = 16
     Height = 19
@@ -233,7 +193,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     Width = 89
     Caption = 'Replace With'
     OnChange = cbReplaceChange
-    TabOrder = 6
+    TabOrder = 5
   end
   object EditFind: TComboBox
     AnchorSideTop.Side = asrCenter
@@ -246,7 +206,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
     ItemHeight = 15
     OnKeyDown = EditFindKeyDown
-    TabOrder = 7
+    TabOrder = 6
     Text = 'EditFind'
   end
   object EditReplace: TComboBox
@@ -261,7 +221,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
     BorderSpacing.Left = 8
     ItemHeight = 15
-    TabOrder = 8
+    TabOrder = 7
     Text = 'EditReplace'
   end
   object ToolBar1: TToolBar
@@ -281,7 +241,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     EdgeOuter = esNone
     Flat = False
     Images = fMain.imgList
-    TabOrder = 9
+    TabOrder = 8
     object ToolButton1: TToolButton
       Left = 73
       Top = 0
@@ -291,6 +251,48 @@ object CustomReplaceDialog: TCustomReplaceDialog
       Left = 1
       Top = 0
       Action = fMain.SearchFindNext
+    end
+  end
+  object DirectionGroupBox: TGroupBox
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = ScopeGroupBox
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 243
+    Height = 77
+    Top = 150
+    Width = 334
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Around = 6
+    Caption = 'Direction'
+    ChildSizing.LeftRightSpacing = 6
+    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+    ChildSizing.EnlargeVertical = crsHomogenousSpaceResize
+    ChildSizing.ShrinkHorizontal = crsHomogenousSpaceResize
+    ChildSizing.ShrinkVertical = crsHomogenousSpaceResize
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 1
+    ClientHeight = 57
+    ClientWidth = 330
+    TabOrder = 9
+    object BackwardRadioButton: TRadioButton
+      Left = 6
+      Height = 19
+      Top = 7
+      Width = 318
+      Caption = 'Backward'
+      TabOrder = 0
+    end
+    object ForwardRadioButton: TRadioButton
+      Left = 6
+      Height = 19
+      Top = 33
+      Width = 318
+      Caption = 'Forward'
+      Checked = True
+      TabOrder = 1
+      TabStop = True
     end
   end
 end

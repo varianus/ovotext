@@ -27,7 +27,7 @@ uses
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls,
   SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils, SingleInstance,
   udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder, uMacroEditor,
-  SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, fpjson;
+  SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, lclintf, fpjson, LMessages;
 
 type
 
@@ -279,7 +279,11 @@ type
     procedure AppPropertiesDropFiles(Sender: TObject; const FileNames: array of String);
     procedure AppPropertiesIdle(Sender: TObject; var Done: Boolean);
     procedure AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
+    procedure EditCopyExecute(Sender: TObject);
+    procedure EditCutExecute(Sender: TObject);
+    procedure EditPasteExecute(Sender: TObject);
     procedure EditRedoExecute(Sender: TObject);
+    procedure EditSelectAllExecute(Sender: TObject);
     procedure ExportHtmlToClipBoardExecute(Sender: TObject);
     procedure ExportHtmlToFileExecute(Sender: TObject);
     procedure ExportRTFToClipBoardExecute(Sender: TObject);
@@ -299,6 +303,7 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
+    procedure FormDeactivate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormDropFiles(Sender: TObject; const FileNames: array of string);
     procedure FormResize(Sender: TObject);
@@ -388,6 +393,11 @@ begin
     EditorFactory.CurrentEditor.Redo;
 end;
 
+procedure TfMain.EditSelectAllExecute(Sender: TObject);
+begin
+   SendMessage (GetFocus, LM_CHAR, VK_CONTROL+VK_A, 0);
+end;
+
 procedure TfMain.ExportHtmlToClipBoardExecute(Sender: TObject);
 var
   Ed: TEditor;
@@ -448,6 +458,21 @@ end;
 procedure TfMain.AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
 begin
   StatusBar.Panels[5].Text := HintInfo.HintStr;
+end;
+
+procedure TfMain.EditCopyExecute(Sender: TObject);
+begin
+  SendMessage (GetFocus, LM_COPY, 0, 0);
+end;
+
+procedure TfMain.EditCutExecute(Sender: TObject);
+begin
+  SendMessage (GetFocus, lM_CUT, 0, 0);
+end;
+
+procedure TfMain.EditPasteExecute(Sender: TObject);
+begin
+  SendMessage (GetFocus, lM_Paste, 0, 0);
 end;
 
 procedure TfMain.ContextPopup(Sender: TObject; MousePos: TPoint;var Handled: Boolean);
@@ -914,6 +939,7 @@ end;
 
 procedure TfMain.FormActivate(Sender: TObject);
 begin
+  //ActionList.State := asNormal;
   if Assigned(EditorFactory) and assigned(EditorFactory.CurrentEditor) then
     EditorFactory.CurrentEditor.SetFocus;
 end;
@@ -1087,6 +1113,11 @@ begin
   if EditorFactory.PageCount = 0 then
     FileNew.Execute;
 
+end;
+
+procedure TfMain.FormDeactivate(Sender: TObject);
+begin
+  //ActionList.State := asSuspended;
 end;
 
 procedure TfMain.mnuLangClick(Sender: TObject);
@@ -1536,9 +1567,15 @@ begin
   if not EditorAvalaible then
     exit;
   Editor := EditorFactory.CurrentEditor;
+
   if Editor.SelAvail and (Editor.BlockBegin.Y = Editor.BlockEnd.Y) then
-    ReplaceDialog.FindText := Editor.SelText;
+    ReplaceDialog.FindText := Editor.SelText
+  else
+    ReplaceDialog.FindText:= Editor.GetWordAtRowCol(Editor.CaretXY);
+
+  ReplaceDialog.cbReplace.Checked := true;
   ReplaceDialog.Show;
+
 end;
 
 
