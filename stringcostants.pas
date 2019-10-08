@@ -27,7 +27,7 @@ uses
 
 const
   DisplayAppName = 'OvoText';
-  AppVersion = '0.0.1';//{$i version.inc};
+  AppVersion = '0.1.0';//{$i version.inc};
   BuildDate = {$I %DATE%};
   lazVersion  = lcl_version;         // Lazarus version (major.minor.micro)
   fpcVersion  = {$I %FPCVERSION%};   // FPC version (major.minor.micro)
@@ -49,7 +49,13 @@ resourcestring
   RSSaveChanges = 'Save changes to'+LineEnding+
                   ' "%s"?';
   RSCannotSave = 'Can not save changes to'+LineEnding+
-                 ' "%s"';
+                 ' "%s" '+LineEnding+
+                 ' Error: %d - %s';
+
+  RSCannotOpen = 'Cannot open file '+LineEnding+
+                 ' "%s" '+LineEnding+
+                 ' Error: %d - %s';
+
   RSAskFileCreation = '"%s"'+LineEnding+
                       'does not exists. Do you want to create it?';
   RSCannotCreate = 'Can not create'+LineEnding+
@@ -74,7 +80,7 @@ resourcestring
   RSTextNotFound = 'Text not found:'+LineEnding+'"%s"';
 
   RSMacro        = 'Macro';
-  RSMacroDefaultName = 'Unsaved';
+  RSMacroDefaultName = 'Current recorded macro';
   RSMacroNewName = 'Select a new name for macro';
 
   RSMacroDelete  = 'Delete macro "%s" ?';
