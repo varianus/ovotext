@@ -10,7 +10,6 @@ object CustomReplaceDialog: TCustomReplaceDialog
   Constraints.MinHeight = 184
   Constraints.MinWidth = 480
   KeyPreview = True
-  OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
   PopupMode = pmAuto
@@ -76,7 +75,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
       'Extended'
       'Grep search'
     )
-    TabOrder = 1
+    TabOrder = 6
   end
   object ScopeGroupBox: TGroupBox
     AnchorSideLeft.Control = gbOptions
@@ -100,7 +99,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     ChildSizing.ControlsPerLine = 1
     ClientHeight = 60
     ClientWidth = 327
-    TabOrder = 2
+    TabOrder = 5
     object SelectedRadioButton: TRadioButton
       Left = 6
       Height = 19
@@ -136,7 +135,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     CancelButton.Name = 'CancelButton'
     CancelButton.DefaultCaption = True
     CancelButton.OnClick = CancelButtonClick
-    TabOrder = 3
+    TabOrder = 9
     DefaultButton = pbClose
     ShowButtons = [pbOK, pbCancel, pbClose]
     ShowGlyphs = []
@@ -193,7 +192,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     Width = 89
     Caption = 'Replace With'
     OnChange = cbReplaceChange
-    TabOrder = 5
+    TabOrder = 2
   end
   object EditFind: TComboBox
     AnchorSideTop.Side = asrCenter
@@ -206,7 +205,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
     ItemHeight = 15
     OnKeyDown = EditFindKeyDown
-    TabOrder = 6
+    TabOrder = 1
     Text = 'EditFind'
   end
   object EditReplace: TComboBox
@@ -221,8 +220,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
     BorderSpacing.Left = 8
     ItemHeight = 15
-    TabOrder = 7
-    Text = 'EditReplace'
+    TabOrder = 3
   end
   object ToolBar1: TToolBar
     Left = 429
@@ -235,7 +233,6 @@ object CustomReplaceDialog: TCustomReplaceDialog
     BorderWidth = 1
     ButtonHeight = 30
     ButtonWidth = 72
-    Caption = 'ToolBar1'
     EdgeBorders = []
     EdgeInner = esNone
     EdgeOuter = esNone
@@ -275,7 +272,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     ChildSizing.ControlsPerLine = 1
     ClientHeight = 57
     ClientWidth = 330
-    TabOrder = 9
+    TabOrder = 7
     object BackwardRadioButton: TRadioButton
       Left = 6
       Height = 19

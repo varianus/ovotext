@@ -71,7 +71,6 @@ type
     procedure cbReplaceChange(Sender: TObject);
     procedure CloseButtonClick(Sender: TObject);
     procedure EditFindKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
@@ -169,10 +168,6 @@ procedure TCustomReplaceDialog.EditFindKeyDown(Sender: TObject; var Key: Word; S
 begin
   if (Key = VK_RETURN) and not cbReplace.Checked then
     Find;
-end;
-
-procedure TCustomReplaceDialog.FormActivate(Sender: TObject);
-begin
 end;
 
 procedure TCustomReplaceDialog.FormClose(Sender: TObject; var CloseAction: TCloseAction);

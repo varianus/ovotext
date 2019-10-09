@@ -8,7 +8,6 @@ object dlgGoTo: TdlgGoTo
   ClientHeight = 149
   ClientWidth = 250
   OnShow = FormShow
-  LCLVersion = '2.1.0.0'
   object seLine: TSpinEdit
     Left = 139
     Height = 23
@@ -45,7 +44,7 @@ object dlgGoTo: TdlgGoTo
     CloseButton.DefaultCaption = True
     CancelButton.Name = 'CancelButton'
     CancelButton.DefaultCaption = True
-    TabOrder = 1
+    TabOrder = 2
     ShowButtons = [pbOK, pbCancel]
   end
   object Label2: TLabel
@@ -65,7 +64,7 @@ object dlgGoTo: TdlgGoTo
     Top = 56
     Width = 98
     Alignment = taRightJustify
-    TabOrder = 2
+    TabOrder = 1
     Value = 1
   end
 end

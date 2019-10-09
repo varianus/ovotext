@@ -201,16 +201,7 @@ msgid "Replace With"
 msgstr ""
 
 #: tcustomreplacedialog.directiongroupbox.caption
-msgid "DirectionGroupBox"
-msgstr ""
-
-#: tcustomreplacedialog.editfind.text
-msgctxt "tcustomreplacedialog.editfind.text"
-msgid "EditFind"
-msgstr ""
-
-#: tcustomreplacedialog.editreplace.text
-msgid "EditReplace"
+msgid "Direction"
 msgstr ""
 
 #: tcustomreplacedialog.entirescopecheckbox.caption
@@ -392,6 +383,10 @@ msgctxt "tfmain.actcompressspaces.hint"
 msgid "Reduce multiple spaces"
 msgstr ""
 
+#: tfmain.actdarkicontheme.caption
+msgid "Dark Icon Theme"
+msgstr ""
+
 #: tfmain.actfindlongestline.caption
 msgid "Find Longest Line"
 msgstr ""
@@ -422,6 +417,10 @@ msgstr ""
 
 #: tfmain.actgoto.hint
 msgid "Go to line"
+msgstr ""
+
+#: tfmain.actjsoncompact.caption
+msgid "Compact JSON"
 msgstr ""
 
 #: tfmain.actjsonprettyprint.caption
@@ -490,6 +489,10 @@ msgstr ""
 
 #: tfmain.actquote.caption
 msgid "Quote"
+msgstr ""
+
+#: tfmain.actshowrownumber.caption
+msgid "Show row numbers"
 msgstr ""
 
 #: tfmain.actsqlprettyprint.caption
@@ -707,10 +710,6 @@ msgstr ""
 msgid "Save as "
 msgstr ""
 
-#: tfmain.fontdialog.title
-msgid "Select a Font"
-msgstr ""
-
 #: tfmain.helpabout.caption
 msgid "About..."
 msgstr ""
@@ -727,20 +726,12 @@ msgstr ""
 msgid "File"
 msgstr ""
 
-#: tfmain.menuitem28.caption
-msgid "Clean recent file list"
-msgstr ""
-
-#: tfmain.menuitem29.caption
-msgid "Reopen all recent"
-msgstr ""
-
 #: tfmain.menuitem3.caption
 msgid "Help"
 msgstr ""
 
 #: tfmain.menuitem35.caption
-msgid "Settings"
+msgid "View"
 msgstr ""
 
 #: tfmain.menuitem39.caption
@@ -789,6 +780,11 @@ msgctxt "tfmain.menuitem84.caption"
 msgid "Macro"
 msgstr ""
 
+#: tfmain.mnucleanrecent.caption
+msgctxt "tfmain.mnucleanrecent.caption"
+msgid "Clean recent file list"
+msgstr ""
+
 #: tfmain.mnucr.caption
 msgid "Mac (CR)"
 msgstr ""
@@ -813,6 +809,11 @@ msgstr ""
 msgid "Open Recent ..."
 msgstr ""
 
+#: tfmain.mnureopenallrecent.caption
+msgctxt "tfmain.mnureopenallrecent.caption"
+msgid "Reopen all recent"
+msgstr ""
+
 #: tfmain.mnusavedmacros.caption
 msgid "Saved Macro"
 msgstr ""
@@ -831,17 +832,17 @@ msgstr ""
 
 #: tfmain.searchfind.hint
 msgctxt "tfmain.searchfind.hint"
-msgid "Find"
+msgid "Search for text"
 msgstr ""
 
-#: tfmain.searchfindnext1.caption
-msgctxt "tfmain.searchfindnext1.caption"
+#: tfmain.searchfindnext.caption
+msgctxt "tfmain.searchfindnext.caption"
 msgid "Find next"
 msgstr ""
 
-#: tfmain.searchfindnext1.hint
-msgctxt "tfmain.searchfindnext1.hint"
-msgid "Find next"
+#: tfmain.searchfindnext.hint
+msgctxt "tfmain.searchfindnext.hint"
+msgid "Find next occ"
 msgstr ""
 
 #: tfmain.searchfindprevious.caption
@@ -878,18 +879,6 @@ msgstr ""
 #: tfmain.sortdescending.hint
 msgctxt "tfmain.sortdescending.hint"
 msgid "Sort Descending"
-msgstr ""
-
-#: tfmain.toolbutton11.caption
-msgid "ToolButton11"
-msgstr ""
-
-#: tfmain.toolbutton20.caption
-msgid "ToolButton20"
-msgstr ""
-
-#: tfmain.toolbutton4.caption
-msgid "ToolButton4"
 msgstr ""
 
 #: ueditor.lisuereplacethisoccurrenceofwith

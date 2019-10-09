@@ -162,10 +162,6 @@ type
     destructor Destroy; override;
   end;
 
-ResourceString
-  lisUEReplaceThisOccurrenceOfWith = 'Replace this occurrence of "%s"%s with "%s"?';
-
-
 implementation
 
 { TEditorTabSheet }

@@ -9,7 +9,6 @@ object fAbout: TfAbout
   OnClose = FormClose
   OnShow = FormShow
   Position = poMainFormCenter
-  LCLVersion = '2.1.0.0'
   object Image1: TImage
     Left = 0
     Height = 108
@@ -1581,9 +1580,9 @@ object fAbout: TfAbout
     TabOrder = 0
   end
   object bLicense: TBitBtn
-    Left = 343
+    Left = 200
     Height = 25
-    Top = 406
+    Top = 308
     Width = 65
     Anchors = [akRight, akBottom]
     Caption = '&License'

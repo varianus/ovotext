@@ -18,7 +18,7 @@ msgstr ""
 #, object-pascal-format
 msgctxt "replacedialog.lisuereplacethisoccurrenceofwith"
 msgid "Replace this occurrence of \"%s\"%s with \"%s\"?"
-msgstr ""
+msgstr "Sostituisci questa occorrenza di \"%s\"%s con \"%s\"?"
 
 #: replacedialog.rsfind
 #, fuzzy
@@ -27,25 +27,26 @@ msgid "Find"
 msgstr "Trova"
 
 #: replacedialog.rsreplace
+#, fuzzy
 msgctxt "replacedialog.rsreplace"
 msgid "Replace"
-msgstr ""
+msgstr "Sostituisci"
 
 #: simplesingleinstance.serrsetsingleinstanceglobalstarted
 msgid "You cannot change the single instance global property when it's been started."
-msgstr ""
+msgstr "Non puoi cambiare la proprieta globale di singola istanza dopo l'avvio"
 
 #: simplesingleinstance.serrsetsingleinstanceidstarted
 msgid "You cannot change the single instance ID when it's been started."
-msgstr ""
+msgstr "Non puoi cambiare l'ID di singola istanza dopo l'avvio"
 
 #: simplesingleinstance.serrsingleinstancenotclient
 msgid "Current instance is not a client."
-msgstr ""
+msgstr "L'istanza corrente non è un client"
 
 #: simplesingleinstance.serrstartsingleinstancestarted
 msgid "You cannot start single instance when it's been already started."
-msgstr ""
+msgstr "Non puoi avviare l'istanza singola se è già avviata"
 
 #: stringcostants.rsadministrativerights
 msgctxt "stringcostants.rsadministrativerights"
@@ -127,20 +128,20 @@ msgstr ""
 #: stringcostants.rsmacro
 msgctxt "stringcostants.rsmacro"
 msgid "Macro"
-msgstr ""
+msgstr "Macro"
 
 #: stringcostants.rsmacrodefaultname
 msgid "Current recorded macro"
-msgstr ""
+msgstr "Macro registrata corrente"
 
 #: stringcostants.rsmacrodelete
 #, object-pascal-format
 msgid "Delete macro \"%s\" ?"
-msgstr ""
+msgstr "Elimina macro \"%s\" ?"
 
 #: stringcostants.rsmacronewname
 msgid "Select a new name for macro"
-msgstr ""
+msgstr "Seleziona un nuovo nome per la macro"
 
 #: stringcostants.rsnewfile
 #, object-pascal-format
@@ -250,115 +251,106 @@ msgstr ""
 
 #: tcustomreplacedialog.backwardradiobutton.caption
 msgid "Backward"
-msgstr ""
+msgstr "Indietro"
 
 #: tcustomreplacedialog.btnpanel.closebutton.caption
 msgid "Replace All"
-msgstr ""
+msgstr "Sostituisci tutto"
 
 #: tcustomreplacedialog.btnpanel.okbutton.caption
 msgctxt "tcustomreplacedialog.btnpanel.okbutton.caption"
 msgid "Replace"
-msgstr ""
+msgstr "Sostituisci"
 
 #: tcustomreplacedialog.caption
 msgctxt "tcustomreplacedialog.caption"
 msgid "Replace Text"
-msgstr ""
+msgstr "Sostituisci teso"
 
 #: tcustomreplacedialog.casesensitivecheckbox.caption
 msgctxt "tcustomreplacedialog.casesensitivecheckbox.caption"
 msgid "Case sensitive"
-msgstr ""
+msgstr "Distingui maiuscolo/minuscolo"
 
 #: tcustomreplacedialog.cbreplace.caption
 msgctxt "tcustomreplacedialog.cbreplace.caption"
 msgid "Replace With"
-msgstr ""
+msgstr "Sostiruisci con"
 
 #: tcustomreplacedialog.directiongroupbox.caption
-msgid "DirectionGroupBox"
-msgstr ""
-
-#: tcustomreplacedialog.editfind.text
-msgctxt "tcustomreplacedialog.editfind.text"
-msgid "EditFind"
-msgstr ""
-
-#: tcustomreplacedialog.editreplace.text
-msgid "EditReplace"
-msgstr ""
+msgid "Direction"
+msgstr "Direzione"
 
 #: tcustomreplacedialog.entirescopecheckbox.caption
 msgctxt "tcustomreplacedialog.entirescopecheckbox.caption"
 msgid "Search entire file"
-msgstr ""
+msgstr "Cerca in tutto il file"
 
 #: tcustomreplacedialog.forwardradiobutton.caption
 msgid "Forward"
-msgstr ""
+msgstr "Avanti"
 
 #: tcustomreplacedialog.gboptions.caption
 msgid "Options"
-msgstr ""
+msgstr "Opzioni"
 
 #: tcustomreplacedialog.globalradiobutton.caption
 msgid "Global"
-msgstr ""
+msgstr "Globale"
 
 #: tcustomreplacedialog.promptonreplacecheckbox.caption
 msgctxt "tcustomreplacedialog.promptonreplacecheckbox.caption"
 msgid "Prompt on replace"
-msgstr ""
+msgstr "Conferma sostituzione"
 
 #: tcustomreplacedialog.rgsearchmode.caption
 msgctxt "tcustomreplacedialog.rgsearchmode.caption"
 msgid "Search Mode"
-msgstr ""
+msgstr "Modalitaà di ricerca"
 
 #: tcustomreplacedialog.scopegroupbox.caption
 msgid "Scope"
-msgstr ""
+msgstr "Ambito"
 
 #: tcustomreplacedialog.selectedradiobutton.caption
 msgid "Selected text"
-msgstr ""
+msgstr "Testo selezionato"
 
 #: tcustomreplacedialog.textlabel.caption
 msgctxt "tcustomreplacedialog.textlabel.caption"
 msgid "Text to find"
-msgstr ""
+msgstr "Testo da trovare"
 
 #: tcustomreplacedialog.wholewordsonlycheckbox.caption
 msgctxt "tcustomreplacedialog.wholewordsonlycheckbox.caption"
 msgid "Whole words only"
-msgstr ""
+msgstr "solo parole intere"
 
 #: tdlggoto.buttonpanel1.okbutton.caption
 msgctxt "tdlggoto.buttonpanel1.okbutton.caption"
 msgid "Go to"
-msgstr ""
+msgstr "Vai a "
 
 #: tdlggoto.caption
 msgctxt "tdlggoto.caption"
 msgid "Go to"
-msgstr ""
+msgstr "Vai a"
 
 #: tdlggoto.label1.caption
 msgid "Line number"
-msgstr ""
+msgstr "Numero linea"
 
 #: tdlggoto.label2.caption
 msgid "Column number"
-msgstr ""
+msgstr "Numero colonna"
 
 #: tfabout.blicense.caption
 msgid "&License"
-msgstr ""
+msgstr "&Licenza"
 
 #: tfabout.caption
 msgid "About"
-msgstr ""
+msgstr "Informazioni"
 
 #: tfabout.label1.caption
 #, fuzzy
@@ -368,28 +360,28 @@ msgstr "OvoText"
 
 #: tfabout.label11.caption
 msgid "Icons are from "
-msgstr ""
+msgstr "Icone prese da"
 
 #: tfabout.label2.caption
 msgctxt "tfabout.label2.caption"
 msgid "Version"
-msgstr ""
+msgstr "Versione"
 
 #: tfabout.label3.caption
 msgid "Author : Marco Caselli"
-msgstr ""
+msgstr "Autore : Marco Caselli"
 
 #: tfabout.label4.caption
 msgid "Another text editor"
-msgstr ""
+msgstr "Un altro editor di testo"
 
 #: tfabout.label5.caption
 msgid "Lazarus"
-msgstr ""
+msgstr "Lazarus"
 
 #: tfabout.label6.caption
 msgid "Home Page"
-msgstr ""
+msgstr "Sito Web"
 
 #: tfabout.label7.caption
 msgid "FPC"
@@ -397,7 +389,7 @@ msgstr ""
 
 #: tfabout.label8.caption
 msgid "Build Date"
-msgstr ""
+msgstr "Data Build"
 
 #: tfabout.lhomepage.caption
 msgid "https://github.com/varianus/ovotext"
@@ -410,7 +402,7 @@ msgstr ""
 #: tfabout.lversion.caption
 msgctxt "tfabout.lversion.caption"
 msgid "Version"
-msgstr ""
+msgstr "Versione"
 
 #: tfmacroeditor.btndelete.caption
 #, fuzzy
@@ -420,33 +412,33 @@ msgstr "Elimina"
 
 #: tfmacroeditor.btnplay.caption
 msgid "Playback macro"
-msgstr ""
+msgstr "Esegui macro"
 
 #: tfmacroeditor.btnrecord.caption
 msgid "Record macro"
-msgstr ""
+msgstr "Registra macro"
 
 #: tfmacroeditor.btnrecordstop.caption
 msgctxt "tfmacroeditor.btnrecordstop.caption"
 msgid "Stop recording"
-msgstr ""
+msgstr "Ferma registrazione"
 
 #: tfmacroeditor.btnrename.caption
 msgid "Rename"
-msgstr ""
+msgstr "Rinomina"
 
 #: tfmacroeditor.caption
 msgid "Macro editor"
-msgstr ""
+msgstr "Editor Macro"
 
 #: tfmacroeditor.cbrepeatuntileof.caption
 msgctxt "tfmacroeditor.cbrepeatuntileof.caption"
 msgid "until end of file"
-msgstr ""
+msgstr "fino alla fine del file"
 
 #: tfmacroeditor.chkrepeat.caption
 msgid "Repeat"
-msgstr ""
+msgstr "Ripeti"
 
 #: tfmain.actcloseafter.caption
 msgid "Close all on the right"
@@ -471,9 +463,13 @@ msgctxt "tfmain.actcompressspaces.hint"
 msgid "Reduce multiple spaces"
 msgstr "Rimuovi spazi multipli"
 
+#: tfmain.actdarkicontheme.caption
+msgid "Dark Icon Theme"
+msgstr "Icone per tema scuro"
+
 #: tfmain.actfindlongestline.caption
 msgid "Find Longest Line"
-msgstr ""
+msgstr "Trova line più lunga"
 
 #: tfmain.actfont.caption
 msgctxt "tfmain.actfont.caption"
@@ -503,7 +499,11 @@ msgstr "Vai a ..."
 
 #: tfmain.actgoto.hint
 msgid "Go to line"
-msgstr ""
+msgstr "Vai a linea"
+
+#: tfmain.actjsoncompact.caption
+msgid "Compact JSON"
+msgstr "Compatta JSON"
 
 #: tfmain.actjsonprettyprint.caption
 msgid "Beautify JSON"
@@ -520,40 +520,40 @@ msgstr "minuscolo"
 #: tfmain.actmacromanager.caption
 msgctxt "tfmain.actmacromanager.caption"
 msgid "Manage …"
-msgstr ""
+msgstr "Gestisci …"
 
 #: tfmain.actmacroplayback.caption
 msgid "PlayBack"
-msgstr ""
+msgstr "Esegui"
 
 #: tfmain.actmacroplayback.hint
 msgid "playback recorded macro"
-msgstr ""
+msgstr "esegui macro registrata"
 
 #: tfmain.actmacroplaybackmulti.caption
 msgid "Playback multiple times"
-msgstr ""
+msgstr "Esegui più volte"
 
 #: tfmain.actmacroplaybackmulti.hint
 msgid "Playback macro multiple times …"
-msgstr ""
+msgstr "Esegui la macro più volte …"
 
 #: tfmain.actmacrorecord.caption
 msgid "Record"
-msgstr ""
+msgstr "Registra"
 
 #: tfmain.actmacrorecord.hint
 msgid "Begin macro recording"
-msgstr ""
+msgstr "Inizia registrazione macro"
 
 #: tfmain.actmacrostop.caption
 msgid "Stop"
-msgstr ""
+msgstr "Stop"
 
 #: tfmain.actmacrostop.hint
 msgctxt "tfmain.actmacrostop.hint"
 msgid "Stop recording"
-msgstr ""
+msgstr "Ferma registrazione"
 
 #: tfmain.actpathtoclipboard.caption
 msgid "File Path to clipboard"
@@ -574,6 +574,10 @@ msgstr "Stampa"
 msgid "Quote"
 msgstr "Metti fra apici"
 
+#: tfmain.actshowrownumber.caption
+msgid "Show row numbers"
+msgstr "Mostra numeri di linea"
+
 #: tfmain.actsqlprettyprint.caption
 msgid "Beautify SQL"
 msgstr "Formatta SQL"
@@ -588,11 +592,11 @@ msgstr ""
 
 #: tfmain.acttrim.caption
 msgid "Trim"
-msgstr "Rimuovi spazi agli estremi"
+msgstr "Rimuovi spazi"
 
 #: tfmain.acttrim.hint
 msgid "Trim leading ad trailing spaces"
-msgstr ""
+msgstr "Rimuovi spazi agli estremi"
 
 #: tfmain.acttrimleading.caption
 msgid "Trim Leading spaces"
@@ -600,7 +604,7 @@ msgstr "Rimuovi spazi iniziali"
 
 #: tfmain.acttrimleading.hint
 msgid "Trim leading spaces"
-msgstr ""
+msgstr "Rimuovi spazi iniziali"
 
 #: tfmain.acttrimtrailing.caption
 msgctxt "tfmain.acttrimtrailing.caption"
@@ -627,15 +631,15 @@ msgstr "Formatta XML"
 
 #: tfmain.actzoomin.caption
 msgid "Zoom In"
-msgstr ""
+msgstr "Aumenta Zoom"
 
 #: tfmain.actzoomout.caption
 msgid "Zoom Out"
-msgstr ""
+msgstr "Diminuisci Zoom"
 
 #: tfmain.actzoomreset.caption
 msgid "Zoom Reset"
-msgstr ""
+msgstr "Reimposta Zoom"
 
 #: tfmain.caption
 msgctxt "tfmain.caption"
@@ -793,10 +797,6 @@ msgstr "Salva come..."
 msgid "Save as "
 msgstr "Salva come "
 
-#: tfmain.fontdialog.title
-msgid "Select a Font"
-msgstr "Seleziona un font"
-
 #: tfmain.helpabout.caption
 msgid "About..."
 msgstr "Informazioni..."
@@ -813,21 +813,13 @@ msgstr "lbMessaggio"
 msgid "File"
 msgstr "File"
 
-#: tfmain.menuitem28.caption
-msgid "Clean recent file list"
-msgstr "Pulisci lista file recenti"
-
-#: tfmain.menuitem29.caption
-msgid "Reopen all recent"
-msgstr "Riapri files recenti"
-
 #: tfmain.menuitem3.caption
 msgid "Help"
 msgstr "Aiuto"
 
 #: tfmain.menuitem35.caption
-msgid "Settings"
-msgstr "Impostazioni"
+msgid "View"
+msgstr "Visualizza"
 
 #: tfmain.menuitem39.caption
 msgid "Spaces operations"
@@ -873,7 +865,12 @@ msgstr "Trova"
 #: tfmain.menuitem84.caption
 msgctxt "tfmain.menuitem84.caption"
 msgid "Macro"
-msgstr ""
+msgstr "Macro"
+
+#: tfmain.mnucleanrecent.caption
+msgctxt "tfmain.mnucleanrecent.caption"
+msgid "Clean recent file list"
+msgstr "Pulisci lista file recenti"
 
 #: tfmain.mnucr.caption
 msgid "Mac (CR)"
@@ -899,9 +896,14 @@ msgstr "Converti fine riga"
 msgid "Open Recent ..."
 msgstr "Apri recente ..."
 
+#: tfmain.mnureopenallrecent.caption
+msgctxt "tfmain.mnureopenallrecent.caption"
+msgid "Reopen all recent"
+msgstr "Riapri files recenti"
+
 #: tfmain.mnusavedmacros.caption
 msgid "Saved Macro"
-msgstr ""
+msgstr "Macro Salvata"
 
 #: tfmain.mnutabs.caption
 msgid "Tabs"
@@ -917,18 +919,17 @@ msgstr "&Cerca"
 
 #: tfmain.searchfind.hint
 msgctxt "tfmain.searchfind.hint"
-msgid "Find"
-msgstr "Trova"
+msgid "Search for text"
+msgstr "Trova testo"
 
-#: tfmain.searchfindnext1.caption
-msgctxt "tfmain.searchfindnext1.caption"
+#: tfmain.searchfindnext.caption
+msgctxt "tfmain.searchfindnext.caption"
 msgid "Find next"
 msgstr "Trova successivo"
 
-#: tfmain.searchfindnext1.hint
-#, fuzzy
-msgctxt "tfmain.searchfindnext1.hint"
-msgid "Find next"
+#: tfmain.searchfindnext.hint
+msgctxt "tfmain.searchfindnext.hint"
+msgid "Find next occ"
 msgstr "Trova successivo"
 
 #: tfmain.searchfindprevious.caption
@@ -937,7 +938,7 @@ msgstr "Trova &precedente"
 
 #: tfmain.searchfindprevious.hint
 msgid "Find Previous"
-msgstr ""
+msgstr "Trova Precedente"
 
 #: tfmain.searchreplace.caption
 msgid "&Replace"
@@ -969,21 +970,9 @@ msgctxt "tfmain.sortdescending.hint"
 msgid "Sort Descending"
 msgstr "Ordinamento Discendente"
 
-#: tfmain.toolbutton11.caption
-msgid "ToolButton11"
-msgstr ""
-
-#: tfmain.toolbutton20.caption
-msgid "ToolButton20"
-msgstr ""
-
-#: tfmain.toolbutton4.caption
-msgid "ToolButton4"
-msgstr ""
-
 #: ueditor.lisuereplacethisoccurrenceofwith
-#, object-pascal-format
+#, object-pascal-format, fuzzy
 msgctxt "ueditor.lisuereplacethisoccurrenceofwith"
 msgid "Replace this occurrence of \"%s\"%s with \"%s\"?"
-msgstr ""
+msgstr "Sostituisci questa occorrenza di \"%s\"%s con \"%s\"?"
 

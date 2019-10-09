@@ -141,14 +141,12 @@ object fMain: TfMain
       Left = 296
       Height = 26
       Top = 2
-      Caption = 'ToolButton4'
       Style = tbsSeparator
     end
     object ToolButton11: TToolButton
       Left = 360
       Height = 26
       Top = 2
-      Caption = 'ToolButton11'
       Style = tbsSeparator
     end
     object ToolButton14: TToolButton
@@ -180,7 +178,6 @@ object fMain: TfMain
       Left = 396
       Height = 26
       Top = 2
-      Caption = 'ToolButton20'
       Style = tbsSeparator
     end
   end
@@ -262,7 +259,7 @@ object fMain: TfMain
     object SearchFind: TAction
       Category = 'Search'
       Caption = '&Search'
-      Hint = 'Find'
+      Hint = 'Search for text'
       ImageIndex = 15
       OnExecute = SearchFindExecute
       ShortCut = 16454
@@ -286,7 +283,7 @@ object fMain: TfMain
     object SearchFindNext: TAction
       Category = 'Search'
       Caption = 'Find next'
-      Hint = 'Find next'
+      Hint = 'Find next occ'
       ImageIndex = 17
       OnExecute = SearchFindNextExecute
       ShortCut = 114
