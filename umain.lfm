@@ -51,7 +51,7 @@ object fMain: TfMain
     SimplePanel = False
     OnResize = StatusBarResize
   end
-  object ToolBar1: TToolBar
+  object MainToolbar: TToolBar
     Left = 0
     Height = 28
     Top = 0
@@ -634,6 +634,12 @@ object fMain: TfMain
       Category = 'Settings'
       Caption = 'Dark Icon Theme'
       OnExecute = actDarkIconThemeExecute
+    end
+    object actFullScreen: TAction
+      Category = 'Settings'
+      Caption = 'actFullScreen'
+      OnExecute = actFullScreenExecute
+      ShortCut = 122
     end
   end
   object mnuMain: TMainMenu

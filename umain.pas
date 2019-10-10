@@ -44,6 +44,7 @@ type
     actCloseAfter: TAction;
     actFindLongestLine: TAction;
     actDarkIconTheme: TAction;
+    actFullScreen: TAction;
     actShowRowNumber: TAction;
     actJSONCompact: TAction;
     actZoomIn: TAction;
@@ -219,7 +220,7 @@ type
     SearchReplace: TAction;
     lbMessage: TStaticText;
     StatusBar: TStatusBar;
-    ToolBar1: TToolBar;
+    MainToolbar: TToolBar;
     ToolButton1: TToolButton;
     ToolButton10: TToolButton;
     ToolButton11: TToolButton;
@@ -251,6 +252,7 @@ type
     procedure actFindLongestLineExecute(Sender: TObject);
     procedure actFontExecute(Sender: TObject);
     procedure actFullNameToClipBoardExecute(Sender: TObject);
+    procedure actFullScreenExecute(Sender: TObject);
     procedure actGoToExecute(Sender: TObject);
     procedure actJSONCompactExecute(Sender: TObject);
     procedure actMacroManagerExecute(Sender: TObject);
@@ -778,6 +780,37 @@ begin
   Clipboard.AsText := Ed.FileName;
 end;
 
+procedure TfMain.actFullScreenExecute(Sender: TObject);
+{$J+} //writeable constants on
+const
+  rect: TRect = (Left:0; Top:0; Right:0; Bottom:0);
+  ws : TWindowState = wsNormal;
+{$J-} //writeable constants off
+var
+  r : TRect;
+begin
+  if BorderStyle <> bsNone then
+  begin
+    ws := WindowState;
+    rect := BoundsRect;
+    MainToolbar.Visible := false;
+    Menu:= nil;
+    BorderStyle := bsNone;
+    r := Screen.MonitorFromWindow(Handle).BoundsRect;
+    SetBounds(r.Left, r.Top, r.Right-r.Left, r.Bottom-r.Top) ;
+  end
+  else
+  begin
+    BorderStyle := bsSizeable;
+    MainToolbar.Visible := true;
+    Menu:= mnuMain;
+    if ws = wsMaximized then
+      WindowState := wsMaximized
+    else
+      SetBounds(rect.Left, rect.Top, rect.Right-rect.Left, rect.Bottom-rect.Top) ;
+  end;
+end;
+
 procedure TfMain.actGoToExecute(Sender: TObject);
 begin
   with TdlgGoTo.Create(Self) do
@@ -961,7 +994,6 @@ end;
 procedure TfMain.ServerReceivedParams(Sender: TBaseSingleInstance;
   aParams: TStringList);
 var
-  I: Integer;
   str: string;
   Editor: TEditor;
 begin
@@ -984,7 +1016,7 @@ begin
   if Dark then
     begin
       ActionList.Images := imgListDark;
-      ToolBar1.Images := imgListDark;
+      MainToolbar.Images := imgListDark;
       mnuMain.Images := imgListDark;
       pumEdit.Images := imgListDark;
       pumTabs.Images := imgListDark;
@@ -992,7 +1024,7 @@ begin
   else
     begin
       ActionList.Images := imgList;
-      ToolBar1.Images := imgList;
+      MainToolbar.Images := imgList;
       mnuMain.Images := imgList;
       pumEdit.Images := imgList;
       pumTabs.Images := imgList;
@@ -1105,7 +1137,7 @@ begin
    try
      ParamList := TStringList.Create;
      for i := 1 to ParamCount do
-       ParamList.Add(ParamStr(I));
+       ParamList.Add(ParamStr(i));
      ServerReceivedParams(Application.SingleInstance, ParamList);
    finally
      FreeAndNil(ParamList);
