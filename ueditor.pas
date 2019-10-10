@@ -86,6 +86,8 @@ type
     procedure SetOnSearcReplace(AValue: TOnSearchReplaceEvent);
     procedure SetText(NewText: string);
     procedure SetUntitled(AValue: boolean);
+  protected
+    procedure SetHighlighter(const Value: TSynCustomHighlighter); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -218,6 +220,12 @@ begin
     FFileName := EmptyStr;
 end;
 
+procedure TEditor.SetHighlighter(const Value: TSynCustomHighlighter);
+begin
+  inherited SetHighlighter(Value);
+  DoOnStatusChange([]);
+end;
+
 constructor TEditor.Create(AOwner: TComponent);
 var
   bm: TBitmap;
@@ -336,6 +344,7 @@ begin
 
 
   end;
+  DoOnStatusChange([]);
 
   if Assigned(fStream) then
     fStream.free;
@@ -565,6 +574,7 @@ procedure TEditor.SetDiskEncoding(AValue: string);
 begin
   if FDiskEncoding = AValue then Exit;
   FDiskEncoding := AValue;
+  DoOnStatusChange([]);
 end;
 
 procedure TEditor.TextOperation(Operation: TTextOperation; const Level: TTextOperationLevel = DefaultOperationLevel);

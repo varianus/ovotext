@@ -36,6 +36,7 @@ const
   AppName = 'ovotext';
 
 resourcestring
+  RSNormalText = 'Normal text file';
   RSAllFile = 'All files';
   RSError = 'Error';
   RSReload = 'Reload';

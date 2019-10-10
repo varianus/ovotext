@@ -1,12 +1,12 @@
 object fMain: TfMain
   Left = 525
-  Height = 448
+  Height = 485
   Top = 172
-  Width = 673
+  Width = 1106
   AllowDropFiles = True
   Caption = 'OvoText'
-  ClientHeight = 448
-  ClientWidth = 673
+  ClientHeight = 485
+  ClientWidth = 1106
   Menu = mnuMain
   OnActivate = FormActivate
   OnClose = FormClose
@@ -24,8 +24,8 @@ object fMain: TfMain
   object StatusBar: TStatusBar
     Left = 0
     Height = 23
-    Top = 425
-    Width = 673
+    Top = 462
+    Width = 1106
     Panels = <    
       item
         Width = 200
@@ -34,7 +34,10 @@ object fMain: TfMain
         Width = 150
       end    
       item
-        Width = 40
+        Width = 100
+      end    
+      item
+        Width = 100
       end    
       item
         Width = 100
@@ -43,15 +46,16 @@ object fMain: TfMain
         Width = 100
       end    
       item
-        Width = 500
+        Width = 50
       end>
     SimplePanel = False
+    OnResize = StatusBarResize
   end
   object ToolBar1: TToolBar
     Left = 0
     Height = 28
     Top = 0
-    Width = 673
+    Width = 1106
     AutoSize = True
     BorderWidth = 3
     ButtonHeight = 26
@@ -185,7 +189,7 @@ object fMain: TfMain
     Left = 0
     Height = 24
     Top = 28
-    Width = 673
+    Width = 1106
     Align = alTop
     Alignment = taCenter
     Caption = 'lbMessage'

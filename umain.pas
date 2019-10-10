@@ -23,7 +23,7 @@ unit umain;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
+  Classes, SysUtils, Math, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls,
   SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils, SingleInstance,
   udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder, uMacroEditor,
@@ -328,6 +328,7 @@ type
     procedure SortAscendingExecute(Sender: TObject);
     procedure SortDescendingExecute(Sender: TObject);
     procedure actUpperCaseExecute(Sender: TObject);
+    procedure StatusBarResize(Sender: TObject);
   private
     EditorFactory: TEditorFactory;
     SynMacroRec : TMacroRecorder;
@@ -457,7 +458,7 @@ end;
 
 procedure TfMain.AppPropertiesShowHint(var HintStr: string; var CanShow: boolean; var HintInfo: THintInfo);
 begin
-  StatusBar.Panels[5].Text := HintInfo.HintStr;
+  StatusBar.Panels[3].Text := HintInfo.HintStr;
 end;
 
 procedure TfMain.EditCopyExecute(Sender: TObject);
@@ -1213,6 +1214,21 @@ begin
 
 end;
 
+procedure TfMain.StatusBarResize(Sender: TObject);
+var
+  i: integer;
+  pnlSize : integer;
+begin
+  pnlSize := 0;
+  for i := 1 to StatusBar.Panels.Count -1 do
+    begin
+      inc(pnlSize, StatusBar.Panels[i].Width);
+    end;
+
+  StatusBar.Panels[0].Width := max(0, StatusBar.Width - pnlSize - (StatusBar.BorderWidth * 2));
+
+end;
+
 procedure TfMain.actLowerCaseExecute(Sender: TObject);
 var
   Ed: TEditor;
@@ -1462,18 +1478,17 @@ begin
 
   Editor := EditorFactory.CurrentEditor;
 
+  if Assigned(Editor.Highlighter) then
+    StatusBar.panels[0].Text := Editor.Highlighter.LanguageName
+  else
+    StatusBar.panels[0].Text := RSNormalText;
+
   if (scCaretX in Changes) or (scCaretY in Changes) then
-    StatusBar.Panels[0].Text := Format(RSStatusBarPos, [Editor.CaretY, Editor.CaretX]);
+    StatusBar.Panels[1].Text := Format(RSStatusBarPos, [Editor.CaretY, Editor.CaretX]);
 
   if (scSelection in Changes) then
-    StatusBar.Panels[1].Text :=
+    StatusBar.Panels[2].Text :=
       Format(RSStatusBarSel, [Editor.SelEnd - Editor.SelStart]);
-
-  if (scInsertMode in Changes) then
-    if Editor.InsertMode then
-      StatusBar.Panels[2].Text := RSStatusBarInsMode
-    else
-      StatusBar.Panels[2].Text := RSStatusBarOvrMode;
 
   if (scModified in Changes) then
     if Editor.Modified then
@@ -1482,15 +1497,20 @@ begin
       Editor.Sheet.ImageIndex := IDX_IMG_STANDARD;
 
   case Editor.LineEndingType of
-    sfleCrLf: StatusBar.Panels[3].Text := mnuCRLF.Caption;
-    sfleLf:   StatusBar.Panels[3].Text := mnuLF.Caption;
-    sfleCr:   StatusBar.Panels[3].Text := mnuCR.Caption;
-  else
-    StatusBar.Panels[3].Text:= '';
-  end;
+    sfleCrLf: StatusBar.Panels[4].Text := mnuCRLF.Caption;
+    sfleLf:   StatusBar.Panels[4].Text := mnuLF.Caption;
+      sfleCr:   StatusBar.Panels[4].Text := mnuCR.Caption;
+    else
+      StatusBar.Panels[4].Text:= '';
+    end;
 
-  StatusBar.Panels[4].Text := Editor.DiskEncoding;
+ StatusBar.Panels[5].Text := Editor.DiskEncoding;
 
+ if (scInsertMode in Changes) then
+    if Editor.InsertMode then
+      StatusBar.Panels[6].Text := RSStatusBarInsMode
+    else
+      StatusBar.Panels[6].Text := RSStatusBarOvrMode;
 end;
 
 procedure TfMain.RecentFileEvent(Sender: TObject; const AFileName: string);
