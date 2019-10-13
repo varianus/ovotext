@@ -341,7 +341,8 @@ type
     SynOption: TMySynSearchOptions;
     prn: TSynEditPrint;
     ReplaceDialog: TCustomReplaceDialog;
-
+    rect: TRect;
+    ws : TWindowState;
 
     function AskFileName(Editor: TEditor): boolean;
     procedure ContextPopup(Sender: TObject; MousePos: TPoint;
@@ -781,33 +782,32 @@ begin
 end;
 
 procedure TfMain.actFullScreenExecute(Sender: TObject);
-{$J+} //writeable constants on
-const
-  rect: TRect = (Left:0; Top:0; Right:0; Bottom:0);
-  ws : TWindowState = wsNormal;
-{$J-} //writeable constants off
 var
   r : TRect;
 begin
-  if BorderStyle <> bsNone then
+
+  if WindowState <> wsFullScreen then
   begin
     ws := WindowState;
     rect := BoundsRect;
     MainToolbar.Visible := false;
     Menu:= nil;
+    {$IFDEF WINDOWS}
     BorderStyle := bsNone;
-    r := Screen.MonitorFromWindow(Handle).BoundsRect;
-    SetBounds(r.Left, r.Top, r.Right-r.Left, r.Bottom-r.Top) ;
+    {$ENDIF}
+    WindowState:=wsFullScreen;
+    Application.ProcessMessages;
+    WindowState:=wsFullScreen;
   end
   else
   begin
-    BorderStyle := bsSizeable;
     MainToolbar.Visible := true;
     Menu:= mnuMain;
-    if ws = wsMaximized then
-      WindowState := wsMaximized
-    else
-      SetBounds(rect.Left, rect.Top, rect.Right-rect.Left, rect.Bottom-rect.Top) ;
+    {$IFDEF WINDOWS}
+    BorderStyle := bsNone;
+    {$ENDIF}
+    WindowState:= ws;
+    BoundsRect := rect;
   end;
 end;
 
