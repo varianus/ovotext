@@ -114,7 +114,7 @@ type
     function GetEnumerator: TJsonNodeEnumerator;
     { Loading and saving methods }
     procedure LoadFromStream(Stream: TStream);
-    procedure SaveToStream(Stream: TStream);
+    procedure SaveToStream(Stream: TStream; Formatted:boolean=false);
     procedure LoadFromFile(const FileName: string);
     procedure SaveToFile(const FileName: string; Formatted:boolean=false);
     { Convert a json string into a value or a collection of nodes. If the
@@ -446,43 +446,37 @@ end;
 
 procedure TJsonNode.LoadFromStream(Stream: TStream);
 var
-  S: TStringStream;
+  S: string;
+  I: Int64;
 begin
-  S := TStringStream.Create('');
-  try
-    S.CopyFrom(Stream, 0);
-    Parse(S.DataString);
-  finally
-    S.Free;
-  end;
+  I := Stream.Size - Stream.Position;
+  S := '';
+  SetLength(S, I);
+  Stream.Read(PChar(S)^, I);
+  Parse(S);
 end;
 
-procedure TJsonNode.SaveToStream(Stream: TStream);
+procedure TJsonNode.SaveToStream(Stream: TStream; Formatted:boolean=false);
 var
-  S: TStringStream;
+  S: string;
+  I: Int64;
 begin
-  S := TStringStream.Create(AsString);
-  try
-    Stream.CopyFrom(Stream, 0);
-  finally
-    S.Free;
-  end;
+  if Formatted then
+    S := Value
+  else
+    S := AsJson;
+  I := Length(S);
+  Stream.Write(PChar(S)^, I);
 end;
 
 procedure TJsonNode.LoadFromFile(const FileName: string);
 var
   F: TFileStream;
-  S: TStringStream;
 begin
   F := TFileStream.Create(FileName, fmOpenRead);
-  S := TStringStream.Create('');
   try
-    S.CopyFrom(F, 0);
-    if S.Size = 0 then
-      Exit;
-    Parse(S.DataString);
+    LoadFromStream(F);
   finally
-    S.Free;
     F.Free;
   end;
 end;
@@ -490,17 +484,11 @@ end;
 procedure TJsonNode.SaveToFile(const FileName: string; Formatted:boolean=false);
 var
   F: TFileStream;
-  S: TStringStream;
 begin
   F := TFileStream.Create(FileName, fmCreate);
-  if Formatted then
-    S := TStringStream.Create(Value)
-  else
-    S := TStringStream.Create(AsJson);
   try
-    F.CopyFrom(S, 0);
+    SaveToStream(F, Formatted);
   finally
-    S.Free;
     F.Free;
   end;
 end;
@@ -1338,7 +1326,7 @@ end;
 
 { Convert a json string to a pascal string }
 
-function UnicodeToString(C: LongWord): string;
+function UnicodeToString(C: LongWord): string; inline;
 begin
   if C = 0 then
     Result := ''
@@ -1357,7 +1345,7 @@ begin
     Result := '';
 end;
 
-function UnicodeToSize(C: LongWord): Integer;
+function UnicodeToSize(C: LongWord): Integer; inline;
 begin
   if C = 0 then
     Result := 0
@@ -1371,6 +1359,26 @@ begin
     Result := 4
   else
     Result := 0;
+end;
+
+function HexToByte(C: Char): Byte; inline;
+const
+  Zero = Ord('0');
+  UpA = Ord('A');
+  LoA = Ord('a');
+begin
+  if C < 'A' then
+    Result := Ord(C) - Zero
+  else if C < 'a' then
+    Result := Ord(C) - UpA + 10
+  else
+    Result := Ord(C) - LoA + 10;
+end;
+
+function HexToInt(A, B, C, D: Char): Integer; inline;
+begin
+  Result := HexToByte(A) shl 12 or HexToByte(B) shl 8 or HexToByte(C) shl 4 or
+    HexToByte(D);
 end;
 
 function JsonStringDecode(const S: string): string;
@@ -1394,7 +1402,7 @@ function JsonStringDecode(const S: string): string;
         begin
           if (C[1] in Hex) and (C[2] in Hex) and (C[3] in Hex) and (C[4] in Hex) then
           begin
-            J := UnicodeToSize(StrToInt('$' + C[1] + C[2] + C[3] + C[4]));
+            J := UnicodeToSize(HexToInt(C[1], C[2], C[3], C[4]));
             if J = 0 then
               Exit(0);
             Inc(I, J - 1);
@@ -1444,7 +1452,7 @@ begin
       end
       else if C^ = 'u' then
       begin
-        H := UnicodeToString(StrToInt('$' + C[1] + C[2] + C[3] + C[4]));
+        H := UnicodeToString(HexToInt(C[1], C[2], C[3], C[4]));
         for J := 1 to Length(H) - 1 do
         begin
           R[I] := H[J];
