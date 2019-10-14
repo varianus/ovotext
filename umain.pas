@@ -804,10 +804,11 @@ begin
     MainToolbar.Visible := true;
     Menu:= mnuMain;
     {$IFDEF WINDOWS}
-    BorderStyle := bsNone;
+    BorderStyle := bsSizeable;
     {$ENDIF}
     WindowState:= ws;
     BoundsRect := rect;
+
   end;
 end;
 
