@@ -116,7 +116,7 @@ type
     procedure LoadFromStream(Stream: TStream);
     procedure SaveToStream(Stream: TStream);
     procedure LoadFromFile(const FileName: string);
-    procedure SaveToFile(const FileName: string);
+    procedure SaveToFile(const FileName: string; Formatted:boolean=false);
     { Convert a json string into a value or a collection of nodes. If the
       current node is root then the json must be an array or object. }
     procedure Parse(const Json: string);
@@ -487,13 +487,16 @@ begin
   end;
 end;
 
-procedure TJsonNode.SaveToFile(const FileName: string);
+procedure TJsonNode.SaveToFile(const FileName: string; Formatted:boolean=false);
 var
   F: TFileStream;
   S: TStringStream;
 begin
   F := TFileStream.Create(FileName, fmCreate);
-  S := TStringStream.Create(AsJson);
+  if Formatted then
+    S := TStringStream.Create(Value)
+  else
+    S := TStringStream.Create(AsJson);
   try
     F.CopyFrom(S, 0);
   finally

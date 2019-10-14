@@ -513,7 +513,7 @@ end;
 destructor TConfig.Destroy;
 begin
   SaveConfig;
-  fConfigHolder.SaveToFile(FConfigFile);
+  fConfigHolder.SaveToFile(FConfigFile, true);
   fConfigHolder.Free;
   fColorSchema.Free;
   FFont.Free;
