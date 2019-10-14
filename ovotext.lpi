@@ -100,8 +100,7 @@
           </CodeGeneration>
           <Linking>
             <Debugging>
-              <DebugInfoType Value="dsDwarf2Set"/>
-              <UseExternalDbgSyms Value="True"/>
+              <DebugInfoType Value="dsDwarf3"/>
             </Debugging>
             <Options>
               <Win32>
@@ -187,7 +186,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="21">
+    <Units Count="22">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -303,6 +302,11 @@
         <Filename Value="codegen.inc"/>
         <IsPartOfProject Value="True"/>
       </Unit20>
+      <Unit21>
+        <Filename Value="jsontools.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="JsonTools"/>
+      </Unit21>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
