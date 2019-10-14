@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, ueditor, uActionMacro, uReplaceMacro, SynMacroRecorder, SynEditKeyCmds, ActnList, LCLProc,
-  SynEditTypes, Config, Stringcostants, Generics.Collections, ReplaceDialog, JsonTools;
+  Config, Stringcostants, Generics.Collections, ReplaceDialog, JsonTools;
 
 type
 

@@ -25,9 +25,9 @@ interface
 uses
   Classes, SysUtils, Math, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls,
-  SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils, SingleInstance,
+  SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils, LazUTF8, SingleInstance,
   udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder, uMacroEditor,
-  SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, lclintf, fpjson, LMessages;
+  SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, lclintf, jsontools, LMessages;
 
 type
 
@@ -347,6 +347,7 @@ type
     function AskFileName(Editor: TEditor): boolean;
     procedure ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+
     function EditorAvalaible: boolean; inline;
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
     procedure mnuLangClick(Sender: TObject);
@@ -762,7 +763,8 @@ procedure TfMain.actFontExecute(Sender: TObject);
 var
   i: integer;
 begin
-  FontDialog.Font.Assign(ConfigObj.Font);
+  if Assigned(ConfigObj.Font) then
+    FontDialog.Font.Assign(ConfigObj.Font);
   if FontDialog.Execute then
   begin
     for i := 0 to EditorFactory.PageCount - 1 do
@@ -1450,15 +1452,13 @@ begin
   Options := ReplaceDialog.Options;
   Exclude(Options, ssoReplace);
   if ssoExtended in Options then
-    FindText := JSONStringToString(ReplaceDialog.FindText)
+    FindText := DecodeExtendedSearch(ReplaceDialog.FindText)
   else
     FindText:= ReplaceDialog.FindText;
 
   if Ed.SearchReplace(FindText, '', TSynSearchOptions(Options)) = 0 then
     ShowMessage(Format(RSTextNotfound, [ReplaceDialog.FindText]))
 end;
-
-
 
 procedure TfMain.ReplaceDialogReplace(Sender: TObject);
 var
@@ -1472,8 +1472,8 @@ begin
 
   if ssoExtended in Options then
     begin
-      FindText := JSONStringToString(ReplaceDialog.FindText);
-      ReplaceText := JSONStringToString(ReplaceDialog.ReplaceText);
+      FindText := DecodeExtendedSearch(ReplaceDialog.FindText);
+      ReplaceText := DecodeExtendedSearch(ReplaceDialog.ReplaceText);
     end
   else
     begin

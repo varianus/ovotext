@@ -51,11 +51,11 @@ function FormatJson(const S: string): string;
 function CompactJson(const S: string): string;
 function FormatSQL(const S: string): string;
 function BuildFileList(const Path: string; const Attr: integer; const List: TStrings; Recurring: boolean): boolean;
-
+function DecodeExtendedSearch(S: string): string;
 
 implementation
 
-uses Math;
+uses Math, lazutf8;
 
 const
   Aligner = #31;
@@ -75,6 +75,59 @@ const
 
 var
   sqlKeyWord: array[1..SQLKEYWORDMAX] of string = (' INNER JOIN', ' LEFT JOIN', ' RIGHT JOIN', ' WHERE', ' LEFT OUTER JOIN', ' GROUP BY', ' ORDER BY', ' HAVING', ' FROM', ' SELECT', ' AND', 'FOR', ' INSERT INTO', ' OR', ' UPDATE', ' SET', ' DELETE', ' ALTER ', ' JOIN', ' DROP', ' VALUES');
+
+function DecodeExtendedSearch(S: string): string;
+const
+  Escape = ['b', 't', 'n', 'v', 'f', 'r'];
+var
+  C: PChar;
+  R: string;
+  I, J: Integer;
+  H: string;
+begin
+  C := PChar(S);
+  I := Length(S);
+  if I < 1 then
+    Exit('');
+  R := '';
+  SetLength(R, I);
+  I := 1;
+  while C^ <> #00 do
+  begin
+    if C^ = '\' then
+    begin
+      Inc(C);
+      if C^ in Escape then
+      case C^ of
+        'b': R[I] := #8;
+        't': R[I] := #9;
+        'n': R[I] := #10;
+        'v': R[I] := #11;
+        'f': R[I] := #12;
+        'r': R[I] := #13;
+      end
+      else if C^ = 'u' then
+      begin
+        H := UnicodeToUTF8(StrToInt('$' + C[1] + C[2] + C[3] + C[4]));
+        for J := 1 to Length(H) - 1 do
+        begin
+          R[I] := H[J];
+          Inc(I);
+        end;
+        R[I] := H[Length(H)];
+        Inc(C, 4);
+      end
+      else
+        R[I] := C^;
+    end
+    else
+      R[I] := C^;
+    Inc(C);
+    Inc(I);
+  end;
+  SetLength(r,i-1);
+  Result := R;
+end;
 
 function CleanupName(aName: string): string;
 var

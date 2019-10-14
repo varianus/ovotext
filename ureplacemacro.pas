@@ -25,7 +25,7 @@ interface
 uses
   SysUtils, Classes, TypInfo, Graphics, Controls, Forms, Dialogs,
   SynEdit, Menus, ActnList, StdCtrls, ExtCtrls, LCLType,
-  ReplaceDialog, fpjson,
+  ReplaceDialog, SupportFuncs,
   SynEditKeyCmds, SynMacroRecorder, SynEditTypes;
 
 const
@@ -128,8 +128,8 @@ var
 begin
   if ssoExtended in TMySynSearchOptions(fReplaceOptions) then
     begin
-      FindText := JSONStringToString(fSearch);
-      ReplaceText := JSONStringToString(fReplace);
+      FindText := decodeExtendedSearch(fSearch);
+      ReplaceText := decodeExtendedSearch(fReplace);
     end
   else
     begin
