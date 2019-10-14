@@ -32,7 +32,7 @@ uses
   SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds, SynEditStrConst,
   SynEditMouseCmds, SynEditLines, Stringcostants, Forms, Graphics, Config, udmmain,
   uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils,
-  ReplaceDialog;
+  ReplaceDialog, SupportFuncs;
 
 type
 
@@ -242,6 +242,7 @@ var
 begin
 
   inherited Create(AOwner);
+  TabWidth := NUMBEROFSPACEFORTAB;
   Options := Options + [eoAltSetsColumnMode];
   MouseOptions := MouseOptions + [emCtrlWheelZoom, emRightMouseMovesCursor];
 
