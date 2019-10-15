@@ -637,7 +637,7 @@ object fMain: TfMain
     end
     object actFullScreen: TAction
       Category = 'Settings'
-      Caption = 'actFullScreen'
+      Caption = 'Toggle Fullscreen'
       OnExecute = actFullScreenExecute
       ShortCut = 122
     end
@@ -2438,6 +2438,15 @@ object fMain: TfMain
     object MenuItem45: TMenuItem
       Action = actFullNameToClipBoard
     end
+  end
+  object FontDialog: TFontDialog
+    Title = 'Select a Font'
+    MinFontSize = 0
+    MaxFontSize = 0
+    Options = [fdForceFontExist, fdWysiwyg, fdApplyButton]
+    OnApplyClicked = FontDialogApplyClicked
+    Left = 376
+    Top = 176
   end
   object PrintDialog1: TPrintDialog
     Left = 256
