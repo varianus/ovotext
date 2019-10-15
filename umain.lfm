@@ -215,7 +215,7 @@ object fMain: TfMain
     end
     object HelpAbout: TAction
       Category = 'Apps'
-      Caption = 'About...'
+      Caption = 'About…'
       Hint = 'About ovotext'
       ImageIndex = 10
       OnExecute = HelpAboutExecute
@@ -262,7 +262,7 @@ object fMain: TfMain
     end
     object SearchFind: TAction
       Category = 'Search'
-      Caption = '&Search'
+      Caption = '&Search…'
       Hint = 'Search for text'
       ImageIndex = 15
       OnExecute = SearchFindExecute
@@ -270,7 +270,7 @@ object fMain: TfMain
     end
     object SearchReplace: TAction
       Category = 'Search'
-      Caption = '&Replace'
+      Caption = '&Replace…'
       Hint = 'Search and Replace'
       ImageIndex = 16
       OnExecute = SearchReplaceExecute
@@ -294,7 +294,7 @@ object fMain: TfMain
     end
     object FileOpen: TFileOpen
       Category = 'File'
-      Caption = '&Open...'
+      Caption = '&Open…'
       Dialog.Options = [ofAllowMultiSelect, ofPathMustExist, ofFileMustExist, ofShareAware, ofEnableSizing, ofViewDetail, ofAutoPreview]
       Hint = 'Open file'
       ImageIndex = 2
@@ -304,7 +304,7 @@ object fMain: TfMain
     end
     object FileSaveAs: TFileSaveAs
       Category = 'File'
-      Caption = 'Save as...'
+      Caption = 'Save as…'
       Hint = 'Save as '
       ImageIndex = 5
       OnAccept = FileSaveAsAccept
@@ -416,7 +416,7 @@ object fMain: TfMain
     end
     object actGoTo: TAction
       Category = 'Navigation'
-      Caption = 'Go To ...'
+      Caption = 'Go To…'
       DisableIfNoHandler = False
       Hint = 'Go to line'
       ImageIndex = 19
@@ -589,13 +589,13 @@ object fMain: TfMain
     end
     object actMacroPlaybackMulti: TAction
       Category = 'Macro'
-      Caption = 'Playback multiple times'
+      Caption = 'Playback multiple times…'
       Hint = 'Playback macro multiple times …'
       ImageIndex = 34
     end
     object actMacroManager: TAction
       Category = 'Macro'
-      Caption = 'Manage …'
+      Caption = 'Manage…'
       ImageIndex = 28
       OnExecute = actMacroManagerExecute
     end
