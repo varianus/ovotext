@@ -68,6 +68,7 @@ type
     Constructor Create(Factory: TEditorFactory);
     Destructor Destroy; override;
     Procedure SaveMacros;
+    procedure SignalChange;
     Property LastMacro: TMacro read fRecordedMacro;
 
     Property State: TSynMacroState read GetState;
@@ -305,6 +306,12 @@ begin
        MacroNode.Find('ShortCut',True).AsInteger := Macro.ShortCut;
     end;
 
+end;
+
+procedure TMacroRecorder.SignalChange;
+begin
+  if Assigned(fOnListChange) then
+    fOnListChange(self);
 end;
 
 procedure TMacroRecorder.pRecordActions(AAction: TBasicAction; var Handled: Boolean);

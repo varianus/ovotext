@@ -207,7 +207,7 @@ begin
       item.Data := Macro;
       item.SubItems.Add(ShortCutToText(Macro.ShortCut));
     end;
-
+  SynMacroRec.SignalChange;
 end;
 
 initialization
