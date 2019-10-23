@@ -133,6 +133,7 @@
           <Linking>
             <Debugging>
               <GenerateDebugInfo Value="False"/>
+              <DebugInfoType Value="dsDwarf3"/>
             </Debugging>
             <LinkSmart Value="True"/>
             <Options>
@@ -186,7 +187,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="22">
+    <Units Count="23">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -307,6 +308,13 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="JsonTools"/>
       </Unit21>
+      <Unit22>
+        <Filename Value="umacroplayback.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fMacroPlayBack"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit22>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -25,9 +25,12 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, DefaultTranslator, singleinstance, umain, uabout, udmmain, Stringcostants, SupportFuncs, config,
-  uCheckFileChange, udglgoto, printer4lazarus, SynEditPrintExtProcs, simplemrumanager, uMacroEditor, uActionMacro,
-  uReplaceMacro, uMacroRecorder, ReplaceDialog, LazLogger, SimpleSingleInstance, JsonTools;
+  Forms, DefaultTranslator, singleinstance,
+  printer4lazarus, SynEditPrintExtProcs,
+  //projects unit
+  umain, uabout, udmmain, Stringcostants, SupportFuncs, config,
+  uCheckFileChange, udglgoto,  simplemrumanager, uMacroEditor, uActionMacro,
+  uReplaceMacro, uMacroRecorder, ReplaceDialog, LazLogger, SimpleSingleInstance, JsonTools, umacroplayback;
 
 {$R *.res}
 

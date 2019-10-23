@@ -592,6 +592,7 @@ object fMain: TfMain
       Caption = 'Playback multiple times…'
       Hint = 'Playback macro multiple times …'
       ImageIndex = 34
+      OnExecute = actMacroPlaybackMultiExecute
     end
     object actMacroManager: TAction
       Category = 'Macro'

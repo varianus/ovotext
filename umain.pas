@@ -27,7 +27,7 @@ uses
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls,
   SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils, LazUTF8, SingleInstance,
   udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder, uMacroEditor,
-  SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, lclintf, jsontools, LMessages;
+  SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, lclintf, jsontools, umacroplayback, LMessages;
 
 type
 
@@ -260,6 +260,7 @@ type
     procedure actJSONPrettyPrintExecute(Sender: TObject);
     procedure actLanguageNoneExecute(Sender: TObject);
     procedure actMacroPlayBackExecute(Sender: TObject);
+    procedure actMacroPlaybackMultiExecute(Sender: TObject);
     procedure actMacroRecordExecute(Sender: TObject);
     procedure actMacroStopExecute(Sender: TObject);
     procedure actPathToClipboardExecute(Sender: TObject);
@@ -552,6 +553,11 @@ end;
 procedure TfMain.actMacroPlayBackExecute(Sender: TObject);
 begin
   SynMacroRec.PlayBack(SynMacroRec.LastMacro);
+end;
+
+procedure TfMain.actMacroPlaybackMultiExecute(Sender: TObject);
+begin
+  ShowMacroPlayBack(SynMacroRec);
 end;
 
 procedure TfMain.actMacroRecordExecute(Sender: TObject);

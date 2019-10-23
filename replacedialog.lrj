@@ -13,7 +13,6 @@
 {"hash":126295477,"name":"tcustomreplacedialog.entirescopecheckbox.caption","sourcebytes":[83,101,97,114,99,104,32,101,110,116,105,114,101,32,102,105,108,101],"value":"Search entire file"},
 {"hash":267776421,"name":"tcustomreplacedialog.promptonreplacecheckbox.caption","sourcebytes":[80,114,111,109,112,116,32,111,110,32,114,101,112,108,97,99,101],"value":"Prompt on replace"},
 {"hash":217690840,"name":"tcustomreplacedialog.cbreplace.caption","sourcebytes":[82,101,112,108,97,99,101,32,87,105,116,104],"value":"Replace With"},
-{"hash":185126132,"name":"tcustomreplacedialog.editfind.text","sourcebytes":[69,100,105,116,70,105,110,100],"value":"EditFind"},
 {"hash":146466142,"name":"tcustomreplacedialog.directiongroupbox.caption","sourcebytes":[68,105,114,101,99,116,105,111,110],"value":"Direction"},
 {"hash":128113668,"name":"tcustomreplacedialog.backwardradiobutton.caption","sourcebytes":[66,97,99,107,119,97,114,100],"value":"Backward"},
 {"hash":225040580,"name":"tcustomreplacedialog.forwardradiobutton.caption","sourcebytes":[70,111,114,119,97,114,100],"value":"Forward"}

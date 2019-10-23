@@ -206,7 +206,6 @@ object CustomReplaceDialog: TCustomReplaceDialog
     ItemHeight = 15
     OnKeyDown = EditFindKeyDown
     TabOrder = 1
-    Text = 'EditFind'
   end
   object EditReplace: TComboBox
     AnchorSideLeft.Side = asrBottom
