@@ -43,7 +43,8 @@ uses
   SynHighlighterM3, SynHighlighterLDraw, SynHighlighterVBScript,
   SynHighlighterSml, SynHighlighterIDL, SynHighlighterCobol, SynHighlighterGWS,
   SynHighlighterAsm, SynHighlighterLua, SynHighlighterFortran,
-  SynHighlighterProlog, SynHighlighterRC, SynHighlighterR;
+  SynHighlighterProlog, SynHighlighterRC, SynHighlighterR,
+  SynHighlighterMD;
 
 type
   RHighlighter = record
@@ -53,7 +54,7 @@ type
   end;
 
 const
-  HIGHLIGHTERCOUNT = 48;
+  HIGHLIGHTERCOUNT = 49;
   ARHighlighter: array [0..HIGHLIGHTERCOUNT - 1] of RHighlighter = (
     (HLClass: TSynAWKSyn; Filter: SYNS_FilterAWK; HL: nil),
     (HLClass: TSynBaanSyn; Filter: SYNS_FilterBaan; HL: nil),
@@ -82,6 +83,7 @@ const
     (HLClass: TSynLuaSyn; Filter: SYNS_FilterLua; HL: nil),
     (HLClass: TSynModelicaSyn; Filter: SYNS_FilterModelica; HL: nil),
     (HLClass: TSynM3Syn; Filter: SYNS_FilterModula3; HL: nil),
+    (HLClass: TSynMDSyn; Filter: SYNS_FilterMarkdown; HL: nil),
     (HLClass: TSynVBScriptSyn; Filter: SYNS_FilterVBScript; HL: nil),
     (HLClass: TSynBatSyn; Filter: SYNS_FilterBatch; HL: nil),
     (HLClass: TSynPasSyn; Filter: SYNS_FilterPascal; HL: nil),
@@ -103,6 +105,7 @@ const
     (HLClass: TSynVrml97Syn; Filter: SYNS_FilterVrml97; HL: nil),
     (HLClass: TSynAsmSyn; Filter: SYNS_FilterX86Asm; HL: nil),
     (HLClass: TSynXMLSyn; Filter: SYNS_FilterXML; HL: nil));
+
 
 type
 
