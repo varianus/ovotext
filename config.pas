@@ -345,6 +345,7 @@ var
   AttrPath: string;
   AttributeAlias :string;
   DefaultAttrib: TFontAttributes;
+  style : TFontStyles;
 const
   DefaultPath = 'Schema/DefaultLang/';
 
@@ -365,7 +366,11 @@ begin
       if fAttributeAliases.TryGetData(AttrName, AttributeAlias) then
         SetAttribute(DefaultPath + AttributeAlias+ '/', Highlighter.Attribute[i], DefaultAttrib)
       else
-        SetAttribute(DefaultPath + AttrName + '/', Highlighter.Attribute[i], DefaultAttrib);
+        begin
+          Style := Highlighter.Attribute[i].Style;
+          SetAttribute(DefaultPath + AttrName + '/', Highlighter.Attribute[i], DefaultAttrib);
+          Highlighter.Attribute[i].Style :=  style;
+        end
       end
   end;
 
