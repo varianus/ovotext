@@ -19,7 +19,6 @@ object fMain: TfMain
   OnShow = FormShow
   OnWindowStateChange = FormWindowStateChange
   Position = poOwnerFormCenter
-  ShowHint = True
   Visible = True
   object StatusBar: TStatusBar
     Left = 0
@@ -200,6 +199,10 @@ object fMain: TfMain
     ParentColor = False
     TabOrder = 2
     Visible = False
+  end
+  object SaveDialog: TSaveDialog
+    Left = 472
+    Top = 176
   end
   object ActionList: TActionList
     Images = imgList
