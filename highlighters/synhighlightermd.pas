@@ -102,6 +102,7 @@ Type
     Function  GetAttri(Const eTokenKind: TMDTokenKind): TSynHighlighterAttributes;
     Procedure SetAttri(Const eTokenKind: TMDTokenKind; Const Attri: TSynHighlighterAttributes);
     Function  IsFirstCharOnLine(Const iIndex : Integer) : Boolean;
+    function GetTokenPos: Integer; override;
   Public
     Constructor Create(AOwner: TComponent); Override;
     Destructor Destroy; Override;
@@ -256,10 +257,10 @@ procedure TSynMDSyn.AddAndUpdateAttributes(const _Attribute: TSynHighlighterAttr
   BackColour: TColor; const FontStyle: TFontStyles);
 
 Begin
-  AddAttribute(_Attribute);
   _Attribute.Foreground := ForeColour;
   _Attribute.Background := BackColour;
   _Attribute.Style := FontStyle;
+  AddAttribute(_Attribute);
 End;
 
 (**
@@ -1044,6 +1045,11 @@ begin
   Run := 0;
   fLineNumber := LineNumber;
   Next;
+end;
+
+function TSynMDSyn.GetTokenPos: Integer;
+begin
+  Result := fTokenPos;
 end;
 
 (** Registers the highlighter. **)
