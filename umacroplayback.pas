@@ -60,7 +60,7 @@ begin
     exit;
 
   if not Assigned(cbMacro.Items.Objects[cbMacro.ItemIndex]) then
-    exit
+    exit;
 
   ed.SetFocus;
   if chkRepeat.Checked then
