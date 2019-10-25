@@ -486,7 +486,7 @@ End;
 function TSynMDSyn.GetRange: Pointer;
 
 Begin
-  Result := Pointer(FRange);
+  Result := pointer(PtrInt(FRange));
 End;
 
 (**
@@ -982,7 +982,7 @@ End;
 procedure TSynMDSyn.SetRange(Value: Pointer);
 
 Begin
-  FRange := TMDRangeState(Value);
+  FRange := TMDRangeState(UIntPtr(Value));
 End;
 
 (**
