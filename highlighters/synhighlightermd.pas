@@ -70,10 +70,12 @@ Type
     FRange:          TMDRangeState;
     FTokenID:        TMDTokenKind;
     fTokenPos :Integer;
-
+    FAttributeChar: WideChar;
     FIdentFuncTable: Array [0 .. 1] Of TIdentFuncTableFunc;
     FTokenAttri:     Array [Low(TMDTokenKind) .. High(TMDTokenKind)] Of TSynHighlighterAttributes;
+    procedure EscapeProc;
     function IsLineEnd(_Run: Integer): Boolean;
+    function MatchingAttribute(const iIndex: Integer): Boolean;
    Protected
     Run: LongInt;
     Function  FuncKeyword(Const Index: Integer): TMDTokenKind;
@@ -92,6 +94,7 @@ Type
     Procedure MDNumberOpenProc;
     Procedure MDMonospaceOpenProc;
     Procedure MDMonospaceProc;
+    procedure MDTextAttibuteOpenProc;
     Procedure SymbolProc;
     Procedure TextProc;
     procedure SetLine(const NewValue: string; LineNumber: Integer); override;
@@ -662,6 +665,35 @@ End;
 
 (**
 
+  This method search for matching text attibutes char
+  line.
+
+  @precon  None.
+  @postcon Returns
+
+  @param   iIndex as an Integer as a constant
+  @return  a Boolean
+
+**)
+function TSynMDSyn.MatchingAttribute(const iIndex: Integer): Boolean;
+Var
+  iChar : Integer;
+Begin
+  Result := False;
+  iChar := iIndex;
+  Repeat
+    Inc(iChar);
+  Until IsLineEnd(iChar) Or ((FLine[iChar] = FAttributeChar) and (fLine[pred(iChar)] <> '\'));
+  if (FLine[iChar] = FAttributeChar) then
+    begin
+      result := not ( (fLine[pred(iChar)] in acSpace) and not (fLine[succ(iChar)] in acSpace));
+    end;
+
+
+End;
+
+(**
+
   This method returns true if the given character is an identifier character.
 
   @precon  None.
@@ -713,16 +745,37 @@ End;
   @postcon Starts a bold section of there are more than one asterik.
 
 **)
-procedure TSynMDSyn.MDBoldBulletOpenProc;
+procedure TSynMDSyn.MDTextAttibuteOpenProc;
 
 Begin
+  FAttributeChar := FLine[Run];
   Inc(Run);
-  If FLine[Run] = '*' Then
+  If FLine[Run] = FAttributeChar Then
     Begin
       Inc(Run);
       fRange := rsMDBold;
       fTokenID := tkMDBold;
     End Else
+  If IsFirstCharOnLine(Pred(Run)) and (FLine[Run] in acSpace) Then
+    Begin
+      fTokenID := tkMDBullet;
+      FRange := rsMDBullet;
+    End Else
+     begin
+       if MatchingAttribute(Run) then
+         begin
+          FTokenID := tkMDItalic;
+          fRange := rsMDItalic;
+        end
+       else
+         FTokenID := tkMDSymbol;
+     end;
+End;
+
+procedure TSynMDSyn.MDBoldBulletOpenProc;
+
+Begin
+  Inc(Run);
   If IsFirstCharOnLine(Pred(Run)) Then
     Begin
       fTokenID := tkMDBullet;
@@ -750,7 +803,7 @@ Begin
     Begin
       fTokenID := tkMDBold;
       Repeat
-        If (FLine[Run] = '*') And (FLine[Run - 1] = '*') Then
+        If (FLine[Run] = FAttributeChar) And (FLine[Run - 1] = FAttributeChar) Then
           Begin
             inc(Run);
             fRange := rsMDText;
@@ -824,8 +877,8 @@ Begin
       FTokenID := tkMDItalic;
       Repeat
         Inc(Run);
-      Until IsLineEnd(Run) Or (FLine[Run] = '_');
-      If FLine[Run] = '_' Then
+      Until IsLineEnd(Run) Or (FLine[Run] = FAttributeChar);
+      If FLine[Run] = FAttributeChar Then
         Begin
           Inc(Run);
           FRange := rsMDText;
@@ -903,8 +956,11 @@ Begin
       #10: LFProc;
       #13: CRProc;
       '#': MDCommentSubHeadingOpenProc;
-      '_': MDItalicOpenProc;
-      '*': MDBoldBulletOpenProc;
+      '\': EscapeProc;
+      '_','*' : MDTextAttibuteOpenProc;
+//      '_': MDItalicOpenProc;
+//      '*': MDBoldBulletOpenProc;
+      '+': MDBoldBulletOpenProc;
       '0'..'9': MDNumberOpenProc;
       '`': MDMonospaceOpenProc;
       #1 .. #9, #11, #12, #14..#32: SpaceProc;
@@ -934,6 +990,12 @@ Begin
       FRange := rsMDText;
     End;
   Inc(Run);
+End;
+
+procedure TSynMDSyn.EscapeProc;
+
+Begin
+  Inc(Run,2);
 End;
 
 (**
