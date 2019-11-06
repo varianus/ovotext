@@ -516,6 +516,10 @@ begin
   fAttributeAliases.Add('Pragma','Directive');
   fAttributeAliases.Add('Variable','Identifier');
   fAttributeAliases.Add('Documentation','Space');
+  fAttributeAliases.Add('Bullet','Directive');
+  fAttributeAliases.Add('Subheading','Directive');
+  fAttributeAliases.Add('Monospace','Assembler');
+
 end;
 
 destructor TConfig.Destroy;

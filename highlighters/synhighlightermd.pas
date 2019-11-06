@@ -106,6 +106,7 @@ Type
     Procedure SetAttri(Const eTokenKind: TMDTokenKind; Const Attri: TSynHighlighterAttributes);
     Function  IsFirstCharOnLine(Const iIndex : Integer) : Boolean;
     function GetTokenPos: Integer; override;
+    function GetToken: string; override;
   Public
     Constructor Create(AOwner: TComponent); Override;
     Destructor Destroy; Override;
@@ -240,6 +241,7 @@ Const
   acSpace = [#32, #9];
   (** A constant to define the characters that should be considered as symbols. **)
   acSymbols = [#32 .. #128] - acSpace - acIdentifier - acMDCommentChars;
+  acNumberedLists = ['.',')'];
 
 {$Q-}
 
@@ -828,14 +830,14 @@ procedure TSynMDSyn.MDCommentSubHeadingOpenProc;
 
 Begin
   Inc(Run);
-  If FLine[Run] = '#' Then
+//  If FLine[Run] = '#' Then
     Begin
       FRange := rsMDSubHeading;
       FTokenID := tkMDSubheading;
-    End Else
-    Begin
-      FRange := rsMDLineComment;
-      FTokenID := tkMDLineComment;
+//    End Else
+//    Begin
+//      FRange := rsMDLineComment;
+//      FTokenID := tkMDLineComment;
     End;
 End;
 
@@ -921,7 +923,7 @@ procedure TSynMDSyn.MDNumberOpenProc;
 
 Begin
   Inc(Run);
-  If IsFirstCharOnLine(Pred(Run)) Then
+  If IsFirstCharOnLine(Pred(Run)) and (fLine[run] in acNumberedLists) Then
     Begin
       FTokenID := tkMDNumber;
       FRange := rsMDNumber;
@@ -948,8 +950,8 @@ Begin
     rsMDItalic:      MDItalicProc;
     rsMDBold:        MDBoldProc;
     rsMDMonospace :  MDMonospaceProc;
-    rsMDBullet:      MDGenericLineProc(tkMDBullet);
-    rsMDNumber:      MDGenericLineProc(tkMDNumber);
+  //  rsMDBullet:      MDGenericLineProc(tkMDBullet);
+  //  rsMDNumber:      MDGenericLineProc(tkMDNumber);
   Else
     Case FLine[Run] Of
       #00: NullProc;
@@ -958,8 +960,6 @@ Begin
       '#': MDCommentSubHeadingOpenProc;
       '\': EscapeProc;
       '_','*' : MDTextAttibuteOpenProc;
-//      '_': MDItalicOpenProc;
-//      '*': MDBoldBulletOpenProc;
       '+': MDBoldBulletOpenProc;
       '0'..'9': MDNumberOpenProc;
       '`': MDMonospaceOpenProc;
@@ -1112,6 +1112,15 @@ end;
 function TSynMDSyn.GetTokenPos: Integer;
 begin
   Result := fTokenPos;
+end;
+
+function TSynMDSyn.GetToken: string;
+var
+  Len: LongInt;
+begin
+  Result := '';
+  Len := Run - fTokenPos;
+  SetString(Result, (FLine + fTokenPos), Len);
 end;
 
 (** Registers the highlighter. **)
