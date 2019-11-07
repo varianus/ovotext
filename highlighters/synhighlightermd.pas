@@ -30,6 +30,7 @@ Type
     tkMDMonospace,
     tkMDBullet,
     tkMDNumber,
+    tkMDCode,
     //: @todo [link](http://example.com)
     //: @todo [Image](Image_icon.png)
     //: @todo In-line HTML support
@@ -47,7 +48,8 @@ Type
     rsMDMonospace,
     rsMDBullet,
     rsMDNumber,
-    rsMDText
+    rsMDText,
+    rsMDCode
   );
 
   (** A pointer to a function table procedure. **)
@@ -76,6 +78,8 @@ Type
     procedure EscapeProc;
     function IsLineEnd(_Run: Integer): Boolean;
     function MatchingAttribute(const iIndex: Integer): Boolean;
+    procedure MDCodeOpenProc;
+    procedure MDCodeProc;
    Protected
     Run: LongInt;
     Function  FuncKeyword(Const Index: Integer): TMDTokenKind;
@@ -229,6 +233,8 @@ const
   SYNS_AttrNumber = 'Number';
   (** A resource string for the MD text attribute name. **)
   SYNS_AttrText = 'Text';
+  (** A resource string for the MD text attribute name. **)
+  SYNS_AttrCode = 'Code';
 
 Const
   (** Table function index. **)
@@ -324,6 +330,9 @@ Begin
   AddAndUpdateAttributes(FTokenAttri[tkMDText], clNone, clNone, []);
   FTokenAttri[tkMDSpace] := TSynHighlighterAttributes.Create(SYNS_AttrSpace, SYNS_AttrSpace);
   AddAndUpdateAttributes(FTokenAttri[tkMDSpace], clNone, clNone, []);
+  FTokenAttri[tkMDCode] := TSynHighlighterAttributes.Create(SYNS_AttrCode, SYNS_AttrCode);
+  AddAndUpdateAttributes(FTokenAttri[tkMDCode], clNone, clNone, []);
+
   SetAttributesOnChange(@DefHighlightChange);
   InitIdent;
   fDefaultFilter := SYNS_FilterMarkdown;
@@ -774,6 +783,19 @@ Begin
      end;
 End;
 
+procedure TSynMDSyn.MDCodeOpenProc;
+
+Begin
+  FAttributeChar := FLine[Run];
+  Inc(Run);
+  If (FLine[Run] = FAttributeChar) and (FLine[Run+1] = FAttributeChar) Then
+    Begin
+      Inc(Run, 2);
+      fRange := rsMDCode;
+      fTokenID := tkMDCode;
+    End;
+end;
+
 procedure TSynMDSyn.MDBoldBulletOpenProc;
 
 Begin
@@ -816,6 +838,22 @@ Begin
       Until IsLineEnd(Run);
     End;
   End;
+End;
+
+procedure TSynMDSyn.MDCodeProc;
+
+Begin
+  fTokenID := tkMDCode;
+  Repeat
+    If (FLine[Run] = FAttributeChar) And (FLine[Run + 1] = FAttributeChar) and (FLine[Run + 2] = FAttributeChar) Then
+      Begin
+        inc(Run,3);
+        fRange := rsMDText;
+        Break;
+      End
+    else
+      inc(run);
+  Until  (Run >= FLineLen);
 End;
 
 (**
@@ -950,6 +988,7 @@ Begin
     rsMDItalic:      MDItalicProc;
     rsMDBold:        MDBoldProc;
     rsMDMonospace :  MDMonospaceProc;
+    rsMDCode:        MDCodeProc;
   //  rsMDBullet:      MDGenericLineProc(tkMDBullet);
   //  rsMDNumber:      MDGenericLineProc(tkMDNumber);
   Else
@@ -961,6 +1000,7 @@ Begin
       '\': EscapeProc;
       '_','*' : MDTextAttibuteOpenProc;
       '+': MDBoldBulletOpenProc;
+      '~': MDCodeOpenProc;
       '0'..'9': MDNumberOpenProc;
       '`': MDMonospaceOpenProc;
       #1 .. #9, #11, #12, #14..#32: SpaceProc;

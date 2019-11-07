@@ -519,6 +519,7 @@ begin
   fAttributeAliases.Add('Bullet','Directive');
   fAttributeAliases.Add('Subheading','Directive');
   fAttributeAliases.Add('Monospace','Assembler');
+  fAttributeAliases.Add('Code','Assembler');
 
 end;
 
