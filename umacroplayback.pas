@@ -64,13 +64,10 @@ begin
 
   ed.SetFocus;
   if chkRepeat.Checked then
-     begin
-       if cbRepeatUntilEof.Checked then
-        SynMacroRec.Playback(TMacro(cbMacro.Items.Objects[cbMacro.ItemIndex]), True, -1)
-       else
-        SynMacroRec.Playback(TMacro(cbMacro.Items.Objects[cbMacro.ItemIndex]), True, edRepeat.Value) ;
-     end
-
+    SynMacroRec.Playback(TMacro(cbMacro.Items.Objects[cbMacro.ItemIndex]), True, edRepeat.Value)
+  else
+  if cbRepeatUntilEof.Checked then
+          SynMacroRec.Playback(TMacro(cbMacro.Items.Objects[cbMacro.ItemIndex]), True, -1)
   else
     SynMacroRec.Playback(TMacro(cbMacro.Items.Objects[cbMacro.ItemIndex]));
 end;
