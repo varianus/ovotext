@@ -95,10 +95,11 @@ object fMacroPlayBack: TfMacroPlayBack
     HelpButton.DefaultCaption = True
     CloseButton.Name = 'CloseButton'
     CloseButton.DefaultCaption = True
+    CloseButton.OnClick = CloseButtonClick
     CancelButton.Name = 'CancelButton'
     CancelButton.DefaultCaption = True
     TabOrder = 3
-    ShowButtons = [pbOK, pbCancel]
+    ShowButtons = [pbOK, pbClose]
   end
   object chkRepeat: TRadioButton
     AnchorSideTop.Control = edRepeat

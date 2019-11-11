@@ -21,6 +21,7 @@ type
     Label1: TLabel;
     Label2: TLabel;
     PanelRepeat: TPanel;
+    procedure CloseButtonClick(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
   private
     SynMacroRec: TMacroRecorder;
@@ -70,6 +71,11 @@ begin
           SynMacroRec.Playback(TMacro(cbMacro.Items.Objects[cbMacro.ItemIndex]), True, -1)
   else
     SynMacroRec.Playback(TMacro(cbMacro.Items.Objects[cbMacro.ItemIndex]));
+end;
+
+procedure TfMacroPlayBack.CloseButtonClick(Sender: TObject);
+begin
+  Self.Close;
 end;
 
 procedure TfMacroPlayBack.ReloadMacros;
