@@ -105,7 +105,7 @@ constructor TMacroRecorder.Create(Factory: TEditorFactory);
 begin
   inherited Create;
   fFactory := Factory;
-  FMacros:= TMacroList.Create;
+  FMacros:= TMacroList.Create(true);
   SynMacroRec := TSynMacroRecorder.Create(nil);
   SynMacroRec.OnStateChange := @SynMacroRecStateChange;
   SynMacroRec.OnUserCommand := @SynMacroRecUserCommand;
@@ -118,6 +118,8 @@ destructor TMacroRecorder.Destroy;
 begin
   if Assigned(SynMacroRec) then
    SynMacroRec.Free;
+
+  FMacros.Free;
 
   inherited Destroy;
 end;
@@ -261,8 +263,6 @@ var
   NewMacro: TMacro;
   ArrayNode: TJsonNode;
   MacroNode: TJsonNode;
-
-  i: Integer;
 begin
 
   FMacros.Clear;
@@ -272,16 +272,11 @@ begin
 
   for MacroNode in ArrayNode do
     begin
-
-    NewMacro := TMacro.Create;
-    NewMacro.Name     := MacroNode.GetValueDef('Name','');
-    NewMacro.Commands := MacroNode.GetValueDef('Commands','');
-    NewMacro.ShortCut := MacroNode.GetValueDef('Shortcut',0);
-    NewMacro.Saved    := true;
-
-    if FMacros.Count>i then
-      FMacros[i]:=NewMacro
-    else
+      NewMacro := TMacro.Create;
+      NewMacro.Name     := MacroNode.GetValueDef('Name','');
+      NewMacro.Commands := MacroNode.GetValueDef('Commands','');
+      NewMacro.ShortCut := MacroNode.GetValueDef('Shortcut',0);
+      NewMacro.Saved    := true;
       FMacros.Add(NewMacro);
   end;
 

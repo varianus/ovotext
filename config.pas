@@ -479,7 +479,7 @@ begin
     end;
     FreeAndNil(doc);
   end;
-
+  FileList.Free;
 end;
 
 procedure TConfig.LoadAliases;
@@ -524,6 +524,8 @@ begin
 end;
 
 destructor TConfig.Destroy;
+var
+  i: Integer;
 begin
   SaveConfig;
   fConfigHolder.SaveToFile(FConfigFile, true);
@@ -532,6 +534,10 @@ begin
   FFont.Free;
   fHighlighters.Free;
   fThemesList.Free;
+  fAttributeAliases.free;
+  for i := 0 to HIGHLIGHTERCOUNT - 1 do
+    ARHighlighter[i].HL.Free;
+
   inherited Destroy;
 end;
 

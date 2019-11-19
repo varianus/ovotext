@@ -1206,6 +1206,7 @@ begin
   Application.SingleInstance.OnServerReceivedParams:= nil;
   ConfigObj.WriteStrings('Recent', 'Files', MRU.Recent);
   Mru.Free;
+  SynMacroRec.Free;
   FreeAndNil(EditorFactory);
   ReplaceDialog.Free;
 end;
