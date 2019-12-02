@@ -45,6 +45,7 @@ type
     actFindLongestLine: TAction;
     actDarkIconTheme: TAction;
     actFullScreen: TAction;
+    actFileNameToClipboard: TAction;
     actMacroSave: TAction;
     actShowRowNumber: TAction;
     actJSONCompact: TAction;
@@ -101,6 +102,7 @@ type
     MenuItem88: TMenuItem;
     MenuItem89: TMenuItem;
     MenuItem90: TMenuItem;
+    MenuItem97: TMenuItem;
     N5: TMenuItem;
     MenuItem94: TMenuItem;
     MenuItem95: TMenuItem;
@@ -252,6 +254,7 @@ type
     procedure actCloseBeforeExecute(Sender: TObject);
     procedure ActCompressSpacesExecute(Sender: TObject);
     procedure actDarkIconThemeExecute(Sender: TObject);
+    procedure actFileNameToClipboardExecute(Sender: TObject);
     procedure actFindLongestLineExecute(Sender: TObject);
     procedure actFontExecute(Sender: TObject);
     procedure actFullNameToClipBoardExecute(Sender: TObject);
@@ -519,6 +522,8 @@ begin
   ExportHtmlToClipBoard.Enabled := Avail and ed.SelAvail;
   ExportRTFToClipBoard.Enabled := Avail and ed.SelAvail;
   actFullNameToClipBoard.Enabled := Avail and not ed.Untitled;
+  actFileNameToClipboard.Enabled := Avail and not ed.Untitled;
+  actPathToClipboard.Enabled := Avail and not ed.Untitled;
   ExportHtmlToFile.Enabled:= Avail;
   ExportRTFToFile.Enabled:= Avail;
   actGoTo.Enabled := Avail and (ed.Lines.Count > 0);
@@ -640,6 +645,13 @@ begin
 
 end;
 
+procedure TfMain.actFileNameToClipboardExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  Ed := EditorFactory.CurrentEditor;
+  Clipboard.AsText := ExtractFileName(Ed.FileName);
+end;
 
 procedure TfMain.actSQLPrettyPrintExecute(Sender: TObject);
 var

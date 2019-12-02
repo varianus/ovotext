@@ -7,6 +7,7 @@ object fMain: TfMain
   Caption = 'OvoText'
   ClientHeight = 485
   ClientWidth = 1106
+  Font.Height = -12
   Menu = mnuMain
   OnActivate = FormActivate
   OnClose = FormClose
@@ -652,6 +653,11 @@ object fMain: TfMain
       Category = 'Macro'
       Caption = 'Save current recorded macro'
       OnExecute = actMacroSaveExecute
+    end
+    object actFileNameToClipboard: TAction
+      Category = 'Filename'
+      Caption = 'File Name only'
+      OnExecute = actFileNameToClipboardExecute
     end
   end
   object mnuMain: TMainMenu
@@ -2479,6 +2485,9 @@ object fMain: TfMain
     end
     object MenuItem64: TMenuItem
       Action = actPathToClipboard
+    end
+    object MenuItem97: TMenuItem
+      Action = actFileNameToClipboard
     end
     object N1: TMenuItem
       Caption = '-'
