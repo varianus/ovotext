@@ -82,6 +82,7 @@ resourcestring
 
   RSMacro        = 'Macro';
   RSMacroDefaultName = 'Current recorded macro';
+  RSMacroSaving = 'Select a name for macro';
   RSMacroNewName = 'Select a new name for macro';
 
   RSMacroDelete  = 'Delete macro "%s" ?';

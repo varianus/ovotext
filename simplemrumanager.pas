@@ -41,15 +41,17 @@ Type
 
   TRecentMenuItem = Class(TMenuItem)
   Private
+    FData: TObject;
     FFileName : string;
   Public
     Property FileName : String Read FFileName;
+    property Data: TObject read FData;
   end;
   TRecentMenuItemClass = Class of TRecentMenuItem;
 
   { TMRUMenuManager }
 
-  TOnRecentFileEvent = Procedure(Sender : TObject; Const AFileName : String) of object;
+  TOnRecentFileEvent = Procedure(Sender : TObject; Const AFileName : String; const AData: TObject) of object;
 
   TMRUMenuManager = Class(TComponent)
   Private
@@ -175,8 +177,9 @@ begin
   end;
 end;
 
-procedure TMRUMenuManager.AddToRecent(AFileName : String);
+{ TRecentMenuItem }
 
+procedure TMRUMenuManager.AddToRecent(AFileName : String);
 Var
   J : Integer;
 
@@ -237,6 +240,7 @@ begin
       M:=CreateMenuItem(Self.Owner);
       M.Caption:=CreateMenuCaption(I,FRecent[i]);
       M.FFileName:=FRecent[i];
+      m.FData := FRecent.Objects[i];
       M.OnClick:=@DoOnRecentClick;
       FMIRecent.Add(M);
     end;
@@ -248,6 +252,7 @@ begin
       M := CreateMenuItem(Self.Owner);
       M.Caption := CreateMenuCaption(I, Recent[i]);
       M.FFileName := FRecent[i];
+      M.FData := FRecent.Objects[i];
       M.OnClick := @DoOnRecentClick;
       FPMRecent.Items.Add(M);
     end;
@@ -330,13 +335,14 @@ begin
 end;
 
 procedure TMRUMenuManager.DoOnRecentClick(Sender: TObject);
-Var
-  FN : String;
+var
+  FN: string;
 begin
   With (Sender as TRecentMenuItem) do
     FN:=FileName;
+
   if (FN<>'') and (OnRecentFile<>Nil) then
-    OnRecentFile(Self,FN);
+    OnRecentFile(Self,FN,(Sender as TRecentMenuItem).Data);
 end;
 
 end.

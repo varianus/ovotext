@@ -35,7 +35,7 @@ type
     Name: string;
     Commands: String;
     ShortCut: TShortCut;
-    Saved: boolean;
+    UnNamed: boolean;
   end;
 
   { TMacroList }
@@ -43,7 +43,6 @@ type
   TMacroList = class ( specialize TObjectList<TMacro>)
   public
     function MacroNames(List:TStrings):Integer;
-
   end;
 
 
@@ -69,8 +68,10 @@ type
   public
     Constructor Create(Factory: TEditorFactory);
     Destructor Destroy; override;
+    Procedure SaveMacro(NewName:string);
     Procedure SaveMacros;
     procedure SignalChange;
+    Procedure RemoveUnsaved;
     Property LastMacro: TMacro read fRecordedMacro;
 
     Property State: TSynMacroState read GetState;
@@ -97,9 +98,8 @@ var
 begin
   List.Clear;
   for i:= 0 to Count -1 do
-    List.Add(Items[I].name);
+    List.AddObject(Items[I].name, Items[i]);
 end;
-
 
 constructor TMacroRecorder.Create(Factory: TEditorFactory);
 begin
@@ -116,12 +116,19 @@ end;
 
 destructor TMacroRecorder.Destroy;
 begin
-  if Assigned(SynMacroRec) then
-   SynMacroRec.Free;
-
+  RemoveUnsaved;
   FMacros.Free;
 
   inherited Destroy;
+end;
+
+procedure TMacroRecorder.SaveMacro(NewName: string);
+begin
+  fRecordedMacro.Name := NewName;
+  fRecordedMacro.UnNamed := true;
+  fRecordedMacro := nil;
+  SaveMacros;
+
 end;
 
 { TMacroRecorder }
@@ -130,6 +137,7 @@ procedure TMacroRecorder.Start;
 begin
   case SynMacroRec.State of
     msStopped: begin
+                 RemoveUnsaved;
                  SynMacroRec.AddEditor(fFactory.CurrentEditor);
                  SynMacroRec.RecordMacro(fFactory.CurrentEditor);
                  fFactory.CurrentEditor.SetFocus;
@@ -189,7 +197,7 @@ begin
   fRecordedMacro.Commands := SynMacroRec.AsString;
   TEditor(SynMacroRec.CurrentEditor).OnSearchReplace := nil;
   fRecordedMacro.Name := RSMacroDefaultName;
-  fRecordedMacro.Saved := false;
+  fRecordedMacro.UnNamed := false;
   FMacros.Add(fRecordedMacro);
   SynMacroRec.Stop;
   SaveMacros;
@@ -276,7 +284,7 @@ begin
       NewMacro.Name     := MacroNode.GetValueDef('Name','');
       NewMacro.Commands := MacroNode.GetValueDef('Commands','');
       NewMacro.ShortCut := MacroNode.GetValueDef('Shortcut',0);
-      NewMacro.Saved    := true;
+      NewMacro.UnNamed    := true;
       FMacros.Add(NewMacro);
   end;
 
@@ -294,9 +302,11 @@ begin
   ArrayNode.Kind := nkArray;
   ArrayNode.Clear;
 
-
   for Macro in Macros do
     begin
+       if Macro.UnNamed = False then
+         Continue;
+
        MacroNode := ArrayNode.Add('Macro', nkObject);
        MacroNode.Find('Name',True).AsString := Macro.Name;
        MacroNode.Find('Commands',True).AsString := Macro.Commands;
@@ -309,6 +319,15 @@ procedure TMacroRecorder.SignalChange;
 begin
   if Assigned(fOnListChange) then
     fOnListChange(self);
+end;
+
+procedure TMacroRecorder.RemoveUnsaved;
+begin
+  if not Assigned(fRecordedMacro) then exit;
+
+  FMacros.Remove(fRecordedMacro);
+  fRecordedMacro := Nil;
+
 end;
 
 procedure TMacroRecorder.pRecordActions(AAction: TBasicAction; var Handled: Boolean);

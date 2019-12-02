@@ -610,16 +610,19 @@ object fMain: TfMain
       OnExecute = actToggleSpecialCharExecute
     end
     object actZoomIn: TAction
+      Category = 'Navigation'
       Caption = 'Zoom In'
       OnExecute = actZoomInExecute
       ShortCut = 16491
     end
     object actZoomOut: TAction
+      Category = 'Navigation'
       Caption = 'Zoom Out'
       OnExecute = actZoomOutExecute
       ShortCut = 16493
     end
     object actZoomReset: TAction
+      Category = 'Navigation'
       Caption = 'Zoom Reset'
       OnExecute = actZoomResetExecute
       ShortCut = 16480
@@ -644,6 +647,11 @@ object fMain: TfMain
       Caption = 'Toggle Fullscreen'
       OnExecute = actFullScreenExecute
       ShortCut = 122
+    end
+    object actMacroSave: TAction
+      Category = 'Macro'
+      Caption = 'Save current recorded macro'
+      OnExecute = actMacroSaveExecute
     end
   end
   object mnuMain: TMainMenu
@@ -917,6 +925,12 @@ object fMain: TfMain
       end
       object MenuItem86: TMenuItem
         Action = actMacroStop
+      end
+      object MenuItem90: TMenuItem
+        Action = actMacroSave
+      end
+      object MenuItem29: TMenuItem
+        Caption = '-'
       end
       object MenuItem88: TMenuItem
         Action = actMacroPlayBack

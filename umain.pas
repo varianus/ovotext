@@ -45,6 +45,7 @@ type
     actFindLongestLine: TAction;
     actDarkIconTheme: TAction;
     actFullScreen: TAction;
+    actMacroSave: TAction;
     actShowRowNumber: TAction;
     actJSONCompact: TAction;
     actZoomIn: TAction;
@@ -73,6 +74,7 @@ type
     ExportRTFToFile: TAction;
     imgListDark: TImageList;
     MenuItem28: TMenuItem;
+    MenuItem29: TMenuItem;
     MenuItem53: TMenuItem;
     MenuItem54: TMenuItem;
     MenuItem55: TMenuItem;
@@ -98,6 +100,7 @@ type
     MenuItem87: TMenuItem;
     MenuItem88: TMenuItem;
     MenuItem89: TMenuItem;
+    MenuItem90: TMenuItem;
     N5: TMenuItem;
     MenuItem94: TMenuItem;
     MenuItem95: TMenuItem;
@@ -262,6 +265,7 @@ type
     procedure actMacroPlayBackExecute(Sender: TObject);
     procedure actMacroPlaybackMultiExecute(Sender: TObject);
     procedure actMacroRecordExecute(Sender: TObject);
+    procedure actMacroSaveExecute(Sender: TObject);
     procedure actMacroStopExecute(Sender: TObject);
     procedure actPathToClipboardExecute(Sender: TObject);
     procedure actPrintExecute(Sender: TObject);
@@ -354,8 +358,9 @@ type
     procedure mnuLangClick(Sender: TObject);
     procedure mnuThemeClick(Sender: TObject);
     procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
-    procedure RecentFileEvent(Sender: TObject; const AFileName: string);
+    procedure RecentFileEvent(Sender: TObject; const AFileName: string; const AData: TObject);
     procedure NewEditor(Editor: TEditor);
+    procedure RecentMacroEvent(Sender: TObject; const AFileName: string; const AData: TObject);
     procedure ServerReceivedParams(Sender: TBaseSingleInstance; aParams: TStringList);
     procedure SetIconTheme(Dark: boolean);
     procedure ShowTabs(Sender: TObject);
@@ -563,6 +568,19 @@ end;
 procedure TfMain.actMacroRecordExecute(Sender: TObject);
 begin
   SynMacroRec.Start;
+end;
+
+procedure TfMain.actMacroSaveExecute(Sender: TObject);
+var
+  NewName: string;
+begin
+  //
+  NewName := InputBox(RSMacroSaving, RSMacroNewName,'');
+
+  if NewName = '' then exit;
+  SynMacroRec.SaveMacro(NewName);
+  SynMacroRec.SignalChange;
+
 end;
 
 procedure TfMain.actMacroStopExecute(Sender: TObject);
@@ -1083,7 +1101,7 @@ begin
   SynMacroRec := TMacroRecorder.Create(EditorFactory);
   Macros := TMRUMenuManager.Create(Self);
   Macros.MenuItem := mnuSavedMacros;
-  Macros.OnRecentFile := nil;// @RecentFileEvent;
+  Macros.OnRecentFile := @RecentMacroEvent;
   Macros.MaxRecent := 15;
   Macros.Recent.Clear;
   SynMacroRec.Macros.MacroNames(Macros.Recent);
@@ -1553,10 +1571,15 @@ begin
       StatusBar.Panels[6].Text := RSStatusBarOvrMode;
 end;
 
-procedure TfMain.RecentFileEvent(Sender: TObject; const AFileName: string);
+procedure TfMain.RecentFileEvent(Sender: TObject; const AFileName: string; const AData: TObject);
 begin
   EditorFactory.AddEditor(AFileName);
   MRU.AddToRecent(AFileName);
+end;
+
+procedure TfMain.RecentMacroEvent(Sender: TObject; const AFileName: string; const AData: TObject);
+begin
+  SynMacroRec.PlayBack(TMacro(Adata));
 end;
 
 procedure TfMain.NewEditor(Editor: TEditor);
