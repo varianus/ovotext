@@ -1,6 +1,22 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
+#: jsontools.sindexoutofbounds
+msgid "Index out of bounds"
+msgstr ""
+
+#: jsontools.snodenotcollection
+msgid "Node is not a container"
+msgstr ""
+
+#: jsontools.sparsingerror
+msgid "Error while parsing text"
+msgstr ""
+
+#: jsontools.srootnodekind
+msgid "Root node must be an array or object"
+msgstr ""
+
 #: replacedialog.lisuereplacethisoccurrenceofwith
 #, object-pascal-format
 msgctxt "replacedialog.lisuereplacethisoccurrenceofwith"
@@ -106,6 +122,10 @@ msgstr ""
 #: stringcostants.rsnewfile
 #, object-pascal-format
 msgid "<new   %d>"
+msgstr ""
+
+#: stringcostants.rsnormaltext
+msgid "Normal text file"
 msgstr ""
 
 #: stringcostants.rsreload
@@ -358,7 +378,30 @@ msgid "until end of file"
 msgstr ""
 
 #: tfmacroeditor.chkrepeat.caption
+msgctxt "tfmacroeditor.chkrepeat.caption"
 msgid "Repeat"
+msgstr ""
+
+#: tfmacroplayback.caption
+msgid "Macro Playback"
+msgstr ""
+
+#: tfmacroplayback.cbrepeatuntileof.caption
+msgid "Until end of file"
+msgstr ""
+
+#: tfmacroplayback.chkrepeat.caption
+msgctxt "tfmacroplayback.chkrepeat.caption"
+msgid "Repeat"
+msgstr ""
+
+#: tfmacroplayback.label1.caption
+msgctxt "tfmacroplayback.label1.caption"
+msgid "Macro"
+msgstr ""
+
+#: tfmacroplayback.label2.caption
+msgid "times"
 msgstr ""
 
 #: tfmain.actcloseafter.caption
@@ -411,8 +454,12 @@ msgctxt "tfmain.actfullnametoclipboard.hint"
 msgid "Full File name to clipboard"
 msgstr ""
 
+#: tfmain.actfullscreen.caption
+msgid "Toggle Fullscreen"
+msgstr ""
+
 #: tfmain.actgoto.caption
-msgid "Go To ..."
+msgid "Go To…"
 msgstr ""
 
 #: tfmain.actgoto.hint
@@ -437,7 +484,7 @@ msgstr ""
 
 #: tfmain.actmacromanager.caption
 msgctxt "tfmain.actmacromanager.caption"
-msgid "Manage …"
+msgid "Manage…"
 msgstr ""
 
 #: tfmain.actmacroplayback.caption
@@ -449,7 +496,7 @@ msgid "playback recorded macro"
 msgstr ""
 
 #: tfmain.actmacroplaybackmulti.caption
-msgid "Playback multiple times"
+msgid "Playback multiple times…"
 msgstr ""
 
 #: tfmain.actmacroplaybackmulti.hint
@@ -672,7 +719,7 @@ msgid "New"
 msgstr ""
 
 #: tfmain.fileopen.caption
-msgid "&Open..."
+msgid "&Open…"
 msgstr ""
 
 #: tfmain.fileopen.hint
@@ -703,15 +750,19 @@ msgid "Save all"
 msgstr ""
 
 #: tfmain.filesaveas.caption
-msgid "Save as..."
+msgid "Save as…"
 msgstr ""
 
 #: tfmain.filesaveas.hint
 msgid "Save as "
 msgstr ""
 
+#: tfmain.fontdialog.title
+msgid "Select a Font"
+msgstr ""
+
 #: tfmain.helpabout.caption
-msgid "About..."
+msgid "About…"
 msgstr ""
 
 #: tfmain.helpabout.hint
@@ -827,7 +878,7 @@ msgid "Themes"
 msgstr ""
 
 #: tfmain.searchfind.caption
-msgid "&Search"
+msgid "&Search…"
 msgstr ""
 
 #: tfmain.searchfind.hint
@@ -854,7 +905,7 @@ msgid "Find Previous"
 msgstr ""
 
 #: tfmain.searchreplace.caption
-msgid "&Replace"
+msgid "&Replace…"
 msgstr ""
 
 #: tfmain.searchreplace.hint
@@ -879,11 +930,5 @@ msgstr ""
 #: tfmain.sortdescending.hint
 msgctxt "tfmain.sortdescending.hint"
 msgid "Sort Descending"
-msgstr ""
-
-#: ueditor.lisuereplacethisoccurrenceofwith
-#, object-pascal-format
-msgctxt "ueditor.lisuereplacethisoccurrenceofwith"
-msgid "Replace this occurrence of \"%s\"%s with \"%s\"?"
 msgstr ""
 

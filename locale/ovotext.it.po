@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2019-01-26 18:03+0100\n"
-"Last-Translator: varianus <marcocas@gmail.com>\n"
+"PO-Revision-Date: 2019-12-05 19:15+0100\n"
+"Last-Translator: Marco Caselli <marcocas@gmail.com>\n"
 "Language-Team: Marco Caselli\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -14,6 +14,22 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.0.6\n"
 
+#: jsontools.sindexoutofbounds
+msgid "Index out of bounds"
+msgstr "Indice fuori dai limiti"
+
+#: jsontools.snodenotcollection
+msgid "Node is not a container"
+msgstr "Il nodo non è un contenitore"
+
+#: jsontools.sparsingerror
+msgid "Error while parsing text"
+msgstr "Errore esaminando il testo"
+
+#: jsontools.srootnodekind
+msgid "Root node must be an array or object"
+msgstr "L'oggetto root deve essere un array o un oggetto"
+
 #: replacedialog.lisuereplacethisoccurrenceofwith
 #, object-pascal-format
 msgctxt "replacedialog.lisuereplacethisoccurrenceofwith"
@@ -21,32 +37,30 @@ msgid "Replace this occurrence of \"%s\"%s with \"%s\"?"
 msgstr "Sostituisci questa occorrenza di \"%s\"%s con \"%s\"?"
 
 #: replacedialog.rsfind
-#, fuzzy
 msgctxt "replacedialog.rsfind"
 msgid "Find"
 msgstr "Trova"
 
 #: replacedialog.rsreplace
-#, fuzzy
 msgctxt "replacedialog.rsreplace"
 msgid "Replace"
 msgstr "Sostituisci"
 
 #: simplesingleinstance.serrsetsingleinstanceglobalstarted
 msgid "You cannot change the single instance global property when it's been started."
-msgstr "Non puoi cambiare la proprieta globale di singola istanza dopo l'avvio"
+msgstr "Non puoi cambiare la proprieta globale di singola istanza dopo l'avvio."
 
 #: simplesingleinstance.serrsetsingleinstanceidstarted
 msgid "You cannot change the single instance ID when it's been started."
-msgstr "Non puoi cambiare l'ID di singola istanza dopo l'avvio"
+msgstr "Non puoi cambiare l'ID di singola istanza dopo l'avvio."
 
 #: simplesingleinstance.serrsingleinstancenotclient
 msgid "Current instance is not a client."
-msgstr "L'istanza corrente non è un client"
+msgstr "L'istanza corrente non è un client."
 
 #: simplesingleinstance.serrstartsingleinstancestarted
 msgid "You cannot start single instance when it's been already started."
-msgstr "Non puoi avviare l'istanza singola se è già avviata"
+msgstr "Non puoi avviare l'istanza singola se è già avviata."
 
 #: stringcostants.rsadministrativerights
 msgctxt "stringcostants.rsadministrativerights"
@@ -58,28 +72,22 @@ msgid "All files"
 msgstr "Tutti i files"
 
 #: stringcostants.rsaskfilecreation
-#, object-pascal-format, fuzzy
-#| msgid ""
-#| "\"%s\"\n"
-#| "does not exists. Do you want to create it?\n"
+#, object-pascal-format
 msgid ""
 "\"%s\"\n"
 "does not exists. Do you want to create it?"
 msgstr ""
 "\"%s\"\n"
-"non esiste. Vuoi crearlo?\n"
+"non esiste. Vuoi crearlo?"
 
 #: stringcostants.rscannotcreate
-#, object-pascal-format, fuzzy
-#| msgid ""
-#| "Can not create\n"
-#| " \"%s\"\n"
+#, object-pascal-format
 msgid ""
 "Can not create\n"
 " \"%s\""
 msgstr ""
 "Impossibile creare\n"
-" \"%s\"\n"
+" \"%s\""
 
 #: stringcostants.rscannotopen
 #, object-pascal-format
@@ -88,12 +96,12 @@ msgid ""
 " \"%s\" \n"
 " Error: %d - %s"
 msgstr ""
+"Impossibile aprire\n"
+"\"%s\"\n"
+" Errore: %d - %s"
 
 #: stringcostants.rscannotsave
-#, object-pascal-format, fuzzy
-#| msgid ""
-#| "Can not save changes to\n"
-#| " \"%s\"\n"
+#, object-pascal-format
 msgid ""
 "Can not save changes to\n"
 " \"%s\" \n"
@@ -108,12 +116,7 @@ msgid "Error"
 msgstr "Errore"
 
 #: stringcostants.rskeepdeleted
-#, object-pascal-format, fuzzy
-#| msgid ""
-#| "%s\n"
-#| "\n"
-#| "This file has been deleted by another application.\n"
-#| "Do you want to keep it in the editor?\n"
+#, object-pascal-format
 msgid ""
 "%s\n"
 "\n"
@@ -123,7 +126,7 @@ msgstr ""
 "%s\n"
 "\n"
 "Questo file è stato cancellato da un'altra applicazione.\n"
-"Vuoi mantenerlo nell'editor?\n"
+"Vuoi mantenerlo nell'editor?"
 
 #: stringcostants.rsmacro
 msgctxt "stringcostants.rsmacro"
@@ -148,18 +151,17 @@ msgstr "Seleziona un nuovo nome per la macro"
 msgid "<new   %d>"
 msgstr "<nuovo   %d>"
 
+#: stringcostants.rsnormaltext
+msgid "Normal text file"
+msgstr "File di testo normale"
+
 #: stringcostants.rsreload
 msgctxt "stringcostants.rsreload"
 msgid "Reload"
 msgstr "Ricarica"
 
 #: stringcostants.rsreloadfile
-#, object-pascal-format, fuzzy
-#| msgid ""
-#| "%s\n"
-#| "\n"
-#| "This file has been modified.\n"
-#| "Do you want to reload it and lose changes?\n"
+#, object-pascal-format
 msgid ""
 "%s\n"
 "\n"
@@ -169,15 +171,10 @@ msgstr ""
 "%s\n"
 "\n"
 "Questo file è stato modificato.\n"
-"Vuoi ricaricarlo e perdere le modifiche?\n"
+"Vuoi ricaricarlo e perdere le modifiche?"
 
 #: stringcostants.rsreloadmodified
-#, object-pascal-format, fuzzy
-#| msgid ""
-#| "%s\n"
-#| "\n"
-#| "This file has been modified by another application.\n"
-#| "Do you want to reload it and lose changes?\n"
+#, object-pascal-format
 msgid ""
 "%s\n"
 "\n"
@@ -187,15 +184,10 @@ msgstr ""
 "%s\n"
 "\n"
 "Questo file è stato cancellato da un'altra applicazione.\n"
-"Vuoi mantenerlo nell'editor?\n"
+"Vuoi mantenerlo nell'editor?"
 
 #: stringcostants.rsreloadsimple
-#, object-pascal-format, fuzzy
-#| msgid ""
-#| "%s\n"
-#| "\n"
-#| "This file has been modified by another application.\n"
-#| "Do you want to reload it?\n"
+#, object-pascal-format
 msgid ""
 "%s\n"
 "\n"
@@ -205,19 +197,16 @@ msgstr ""
 "%s\n"
 "\n"
 "Questo file è stato modifica da un'altra applicazione.\n"
-"Vuoi mantenerlo nell'editor?\n"
+"Vuoi mantenerlo nell'editor?"
 
 #: stringcostants.rssavechanges
-#, object-pascal-format, fuzzy
-#| msgid ""
-#| "Save changes to\n"
-#| " \"%s\"?\n"
+#, object-pascal-format
 msgid ""
 "Save changes to\n"
 " \"%s\"?"
 msgstr ""
 "Salva modifiche a\n"
-" \"%s\"?\n"
+" \"%s\"?"
 
 #: stringcostants.rsstatusbarinsmode
 msgid "INS"
@@ -238,16 +227,13 @@ msgid "Sel: %d"
 msgstr "Sel: %d"
 
 #: stringcostants.rstextnotfound
-#, object-pascal-format, fuzzy
-#| msgid ""
-#| "Text not found:\n"
-#| "\"%s\"\n"
+#, object-pascal-format
 msgid ""
 "Text not found:\n"
 "\"%s\""
 msgstr ""
 "Testo non trovato\n"
-"\"%s\"\n"
+"\"%s\""
 
 #: tcustomreplacedialog.backwardradiobutton.caption
 msgid "Backward"
@@ -324,12 +310,12 @@ msgstr "Testo da trovare"
 #: tcustomreplacedialog.wholewordsonlycheckbox.caption
 msgctxt "tcustomreplacedialog.wholewordsonlycheckbox.caption"
 msgid "Whole words only"
-msgstr "solo parole intere"
+msgstr "Solo parole intere"
 
 #: tdlggoto.buttonpanel1.okbutton.caption
 msgctxt "tdlggoto.buttonpanel1.okbutton.caption"
 msgid "Go to"
-msgstr "Vai a "
+msgstr "Vai a"
 
 #: tdlggoto.caption
 msgctxt "tdlggoto.caption"
@@ -350,17 +336,16 @@ msgstr "&Licenza"
 
 #: tfabout.caption
 msgid "About"
-msgstr "Informazioni"
+msgstr "Informazioni su"
 
 #: tfabout.label1.caption
-#, fuzzy
 msgctxt "tfabout.label1.caption"
 msgid "OvoText"
 msgstr "OvoText"
 
 #: tfabout.label11.caption
 msgid "Icons are from "
-msgstr "Icone prese da"
+msgstr "Icone prese da "
 
 #: tfabout.label2.caption
 msgctxt "tfabout.label2.caption"
@@ -385,7 +370,7 @@ msgstr "Sito Web"
 
 #: tfabout.label7.caption
 msgid "FPC"
-msgstr ""
+msgstr "FPC"
 
 #: tfabout.label8.caption
 msgid "Build Date"
@@ -393,11 +378,11 @@ msgstr "Data Build"
 
 #: tfabout.lhomepage.caption
 msgid "https://github.com/varianus/ovotext"
-msgstr ""
+msgstr "https://github.com/varianus/ovotext"
 
 #: tfabout.lhomepage2.caption
 msgid "https://github.com/KDE/breeze-icons"
-msgstr ""
+msgstr "https://github.com/KDE/breeze-icons"
 
 #: tfabout.lversion.caption
 msgctxt "tfabout.lversion.caption"
@@ -405,7 +390,6 @@ msgid "Version"
 msgstr "Versione"
 
 #: tfmacroeditor.btndelete.caption
-#, fuzzy
 msgctxt "tfmacroeditor.btndelete.caption"
 msgid "Delete"
 msgstr "Elimina"
@@ -437,8 +421,31 @@ msgid "until end of file"
 msgstr "fino alla fine del file"
 
 #: tfmacroeditor.chkrepeat.caption
+msgctxt "tfmacroeditor.chkrepeat.caption"
 msgid "Repeat"
 msgstr "Ripeti"
+
+#: tfmacroplayback.caption
+msgid "Macro Playback"
+msgstr "Riproduci macro"
+
+#: tfmacroplayback.cbrepeatuntileof.caption
+msgid "Until end of file"
+msgstr "Fino alla fine del file"
+
+#: tfmacroplayback.chkrepeat.caption
+msgctxt "tfmacroplayback.chkrepeat.caption"
+msgid "Repeat"
+msgstr "Ripeti"
+
+#: tfmacroplayback.label1.caption
+msgctxt "tfmacroplayback.label1.caption"
+msgid "Macro"
+msgstr "Macro"
+
+#: tfmacroplayback.label2.caption
+msgid "times"
+msgstr "volte"
 
 #: tfmain.actcloseafter.caption
 msgid "Close all on the right"
@@ -458,7 +465,6 @@ msgid "Reduce multiple spaces"
 msgstr "Rimuovi spazi multipli"
 
 #: tfmain.actcompressspaces.hint
-#, fuzzy
 msgctxt "tfmain.actcompressspaces.hint"
 msgid "Reduce multiple spaces"
 msgstr "Rimuovi spazi multipli"
@@ -477,7 +483,6 @@ msgid "Select Font"
 msgstr "Seleziona Carattere"
 
 #: tfmain.actfont.hint
-#, fuzzy
 msgctxt "tfmain.actfont.hint"
 msgid "Select Font"
 msgstr "Seleziona Carattere"
@@ -488,14 +493,17 @@ msgid "Full File name to clipboard"
 msgstr "Copia nome completo"
 
 #: tfmain.actfullnametoclipboard.hint
-#, fuzzy
 msgctxt "tfmain.actfullnametoclipboard.hint"
 msgid "Full File name to clipboard"
 msgstr "Copia nome completo"
 
+#: tfmain.actfullscreen.caption
+msgid "Toggle Fullscreen"
+msgstr "A schermo intero"
+
 #: tfmain.actgoto.caption
-msgid "Go To ..."
-msgstr "Vai a ..."
+msgid "Go To…"
+msgstr "Vai a…"
 
 #: tfmain.actgoto.hint
 msgid "Go to line"
@@ -519,8 +527,8 @@ msgstr "minuscolo"
 
 #: tfmain.actmacromanager.caption
 msgctxt "tfmain.actmacromanager.caption"
-msgid "Manage …"
-msgstr "Gestisci …"
+msgid "Manage…"
+msgstr "Gestisci…"
 
 #: tfmain.actmacroplayback.caption
 msgid "PlayBack"
@@ -531,8 +539,8 @@ msgid "playback recorded macro"
 msgstr "esegui macro registrata"
 
 #: tfmain.actmacroplaybackmulti.caption
-msgid "Playback multiple times"
-msgstr "Esegui più volte"
+msgid "Playback multiple times…"
+msgstr "Rimuovi spazi multipli…"
 
 #: tfmain.actmacroplaybackmulti.hint
 msgid "Playback macro multiple times …"
@@ -565,7 +573,6 @@ msgid "Print"
 msgstr "Stampa"
 
 #: tfmain.actprint.hint
-#, fuzzy
 msgctxt "tfmain.actprint.hint"
 msgid "Print"
 msgstr "Stampa"
@@ -588,7 +595,7 @@ msgstr "Tabulazione in Spazi"
 
 #: tfmain.acttogglespecialchar.caption
 msgid "Toggle Special Char"
-msgstr ""
+msgstr "Visualizza caratteri speciali"
 
 #: tfmain.acttrim.caption
 msgid "Trim"
@@ -612,7 +619,6 @@ msgid "Trim Trailing spaces"
 msgstr "Rimuovi gli spazi finali"
 
 #: tfmain.acttrimtrailing.hint
-#, fuzzy
 msgctxt "tfmain.acttrimtrailing.hint"
 msgid "Trim Trailing spaces"
 msgstr "Rimuovi gli spazi finali"
@@ -685,7 +691,6 @@ msgid "Redo"
 msgstr "Ripeti"
 
 #: tfmain.editredo.hint
-#, fuzzy
 msgctxt "tfmain.editredo.hint"
 msgid "Redo"
 msgstr "Ripeti"
@@ -757,14 +762,12 @@ msgid "New"
 msgstr "Nuovo"
 
 #: tfmain.fileopen.caption
-msgid "&Open..."
-msgstr "&Apri..."
+msgid "&Open…"
+msgstr "&Apri…"
 
 #: tfmain.fileopen.hint
-#, fuzzy
-#| msgid "Open"
 msgid "Open file"
-msgstr "Apri"
+msgstr "Apri file"
 
 #: tfmain.filereload.caption
 msgctxt "tfmain.filereload.caption"
@@ -787,19 +790,23 @@ msgstr "Salva tutti"
 
 #: tfmain.filesaveall.hint
 msgid "Save all"
-msgstr ""
+msgstr "Salva tutti"
 
 #: tfmain.filesaveas.caption
-msgid "Save as..."
-msgstr "Salva come..."
+msgid "Save as…"
+msgstr "Salva come…"
 
 #: tfmain.filesaveas.hint
 msgid "Save as "
 msgstr "Salva come "
 
+#: tfmain.fontdialog.title
+msgid "Select a Font"
+msgstr "Seleziona un font"
+
 #: tfmain.helpabout.caption
-msgid "About..."
-msgstr "Informazioni..."
+msgid "About…"
+msgstr "Informazioni su…"
 
 #: tfmain.helpabout.hint
 msgid "About ovotext"
@@ -914,8 +921,8 @@ msgid "Themes"
 msgstr "Temi"
 
 #: tfmain.searchfind.caption
-msgid "&Search"
-msgstr "&Cerca"
+msgid "&Search…"
+msgstr "&Cerca…"
 
 #: tfmain.searchfind.hint
 msgctxt "tfmain.searchfind.hint"
@@ -941,8 +948,8 @@ msgid "Find Previous"
 msgstr "Trova Precedente"
 
 #: tfmain.searchreplace.caption
-msgid "&Replace"
-msgstr "&Sostituisci"
+msgid "&Replace…"
+msgstr "&Sostituisci…"
 
 #: tfmain.searchreplace.hint
 msgid "Search and Replace"
@@ -954,7 +961,6 @@ msgid "Sort Ascending"
 msgstr "Ordinamento Crescente"
 
 #: tfmain.sortascending.hint
-#, fuzzy
 msgctxt "tfmain.sortascending.hint"
 msgid "Sort Ascending"
 msgstr "Ordinamento Crescente"
@@ -965,14 +971,6 @@ msgid "Sort Descending"
 msgstr "Ordinamento Discendente"
 
 #: tfmain.sortdescending.hint
-#, fuzzy
 msgctxt "tfmain.sortdescending.hint"
 msgid "Sort Descending"
 msgstr "Ordinamento Discendente"
-
-#: ueditor.lisuereplacethisoccurrenceofwith
-#, object-pascal-format, fuzzy
-msgctxt "ueditor.lisuereplacethisoccurrenceofwith"
-msgid "Replace this occurrence of \"%s\"%s with \"%s\"?"
-msgstr "Sostituisci questa occorrenza di \"%s\"%s con \"%s\"?"
-
