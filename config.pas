@@ -719,7 +719,7 @@ begin
 
   Result := pathStr + BundleResourcesDirectory;
 {$else}
-  Result := ResourcesPath;
+  Result := DefaultDirectory;
 {$endif}
 {$endif}
 
