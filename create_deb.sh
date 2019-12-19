@@ -47,7 +47,7 @@ $MKDIR $DEBSRCDIR/DEBIAN
 
 $INSTALLEXE  -s $BIN_DIR/ovotext $DEBSRCDIR/usr/bin
 $INSTALLFILE  $BASE/images/ovotext.xpm $DEBSRCDIR/usr/share/pixmaps/ovotext.xpm
-$INSTALLFILE  $BASE/color-schemas/schema-*.xml $DEBSRCDIR/usr/share/ovotext
+$INSTALLFILE  $BASE/color-schemas/schema-*.json $DEBSRCDIR/usr/share/ovotext
 $INSTALLFILE  $PACKAGES_DIR/ovotext.desktop $DEBSRCDIR/usr/share/applications
 
 ##  Add language files
