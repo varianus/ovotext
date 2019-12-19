@@ -552,7 +552,7 @@ begin
   fConfigHolder.Find('Application/DarkIconTheme', true).AsBoolean := FAppSettings.DarkIconTheme;
 
   fConfigHolder.Find('Editor/Font/Name', true).AsString := FFont.Name;
-  fConfigHolder.Find('Editor/Font/Height', true).AsInteger := FFont.Height;
+  fConfigHolder.Find('Editor/Font/Size', true).AsInteger := FFont.Size;
   fConfigHolder.Find('Editor/ShowRowNumber', true).AsBoolean := FShowRowNumber;
 
 
@@ -563,7 +563,7 @@ procedure TConfig.ReadConfig;
 var
   fontName: string;
 begin
-  ResourcesPath := fConfigHolder.GetValueDef(SectionUnix + '/' + IdentResourcesPath, GetResourcesPath);
+  ResourcesPath := IncludeTrailingPathDelimiter(fConfigHolder.GetValueDef(SectionUnix + '/' + IdentResourcesPath, GetResourcesPath));
 
   FAppSettings.CloseWithLastTab := fConfigHolder.GetValueDef('Application/CloseWithLastTab', False);
   FAppSettings.ColorSchema := fConfigHolder.GetValueDef('Application/ColorSchema/Name', '');
@@ -573,12 +573,12 @@ begin
   if fontName = EmptyStr then
   begin
     FFont.Name := SynDefaultFontName;
-    FFont.Height := SynDefaultFontHeight;
+    FFont.Size := SynDefaultFontSize;
   end
   else
   begin
     FFont.Name := fontName;
-    FFont.Height := fConfigHolder.GetValueDef('Editor/Font/Height', 0);
+    FFont.Size := fConfigHolder.GetValueDef('Editor/Font/Size', 0);
   end;
 
   FShowRowNumber := fConfigHolder.GetValueDef('Editor/ShowRowNumber', True);
