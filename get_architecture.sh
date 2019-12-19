@@ -11,6 +11,8 @@ case "$ARCH" in
  "i486") ARCH="i386";;
 
  "x86_64") ARCH="amd64";;
+
+ "armv7l") ARCH="armhf";;
 esac
 
 echo "$ARCH"
