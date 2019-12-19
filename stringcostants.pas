@@ -27,7 +27,7 @@ uses
 
 const
   DisplayAppName = 'OvoText';
-  AppVersion = '0.1.0';//{$i version.inc};
+  AppVersion = {$i version.inc};
   BuildDate = {$I %DATE%};
   lazVersion  = lcl_version;         // Lazarus version (major.minor.micro)
   fpcVersion  = {$I %FPCVERSION%};   // FPC version (major.minor.micro)
