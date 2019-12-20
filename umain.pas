@@ -1416,15 +1416,15 @@ end;
 procedure TfMain.SaveConfig;
 begin
   with ConfigObj.ConfigHolder do begin
-    Find('MainForm/NormalLeft', true).AsInteger:= Left;
-    Find('MainForm/NormalTop', true).AsInteger:=  Top;
-    Find('MainForm/NormalWidth', true).AsInteger:=  Width;
-    Find('MainForm/NormalHeight', true).AsInteger:=  Height;
+    Find('MainForm/NormalLeft', true).AsInteger:= ScaleFormTo96(Left);
+    Find('MainForm/NormalTop', true).AsInteger:=  ScaleFormTo96(Top);
+    Find('MainForm/NormalWidth', true).AsInteger:=  ScaleFormTo96(Width);
+    Find('MainForm/NormalHeight', true).AsInteger:=  ScaleFormTo96(Height);
 
-    Find('MainForm/RestoredLeft', true).AsInteger:=  RestoredLeft;
-    Find('MainForm/RestoredTop', true).AsInteger:=  RestoredTop;
-    Find('MainForm/RestoredWidth', true).AsInteger:=  RestoredWidth;
-    Find('MainForm/RestoredHeight', true).AsInteger:=  RestoredHeight;
+    Find('MainForm/RestoredLeft', true).AsInteger:=  ScaleFormTo96(RestoredLeft);
+    Find('MainForm/RestoredTop', true).AsInteger:=  ScaleFormTo96(RestoredTop);
+    Find('MainForm/RestoredWidth', true).AsInteger:=  ScaleFormTo96(RestoredWidth);
+    Find('MainForm/RestoredHeight', true).AsInteger:=  ScaleFormTo96(RestoredHeight);
 
     Find('MainForm/WindowState', true).AsInteger:=  Integer(WindowState);
   end;
@@ -1443,20 +1443,21 @@ begin
     begin
       WindowState := wsNormal;
       BoundsRect := Bounds(
-        GetValueDef('MainForm/RestoredLeft', RestoredLeft),
-        GetValueDef('MainForm/RestoredTop', RestoredTop),
-        GetValueDef('MainForm/RestoredWidth', RestoredWidth),
-        GetValueDef('MainForm/RestoredHeight', RestoredHeight));
+        Scale96ToForm(GetValueDef('MainForm/RestoredLeft', RestoredLeft)),
+        Scale96ToForm(GetValueDef('MainForm/RestoredTop', RestoredTop)),
+        Scale96ToForm(GetValueDef('MainForm/RestoredWidth', RestoredWidth)),
+        Scale96ToForm(GetValueDef('MainForm/RestoredHeight', RestoredHeight)));
+      WindowState := wsMaximized;
       WindowState := wsMaximized;
     end
     else
     begin
       WindowState := wsNormal;
       BoundsRect := Bounds(
-        GetValueDef('MainForm/NormalLeft', Left),
-        GetValueDef('MainForm/NormalTop', Top),
-        GetValueDef('MainForm/NormalWidth', Width),
-        GetValueDef('MainForm/NormalHeight', Height));
+        Scale96ToForm(GetValueDef('MainForm/NormalLeft', Left)),
+        Scale96ToForm(GetValueDef('MainForm/NormalTop', Top)),
+        Scale96ToForm(GetValueDef('MainForm/NormalWidth', Width)),
+        Scale96ToForm(GetValueDef('MainForm/NormalHeight', Height)));
     end;
   end;
 
