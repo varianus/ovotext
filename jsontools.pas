@@ -4,7 +4,7 @@
 (*  A small json parser with no dependencies            *)
 (*                                                      *)
 (*  http://www.getlazarus.org/json                      *)
-(*  Released under the GPLv3 August 2019                *)
+(*  Dual licence GPLv3 LGPLv3 released August 2019      *)
 (*                                                      *)
 (********************************************************)
 unit JsonTools;
@@ -48,9 +48,9 @@ type
     FNode: TJsonNode;
     FIndex: Integer;
   public
-    procedure Init(Node: TJsonNode);
-    function GetCurrent: TJsonNode;
-    function MoveNext: Boolean;
+    procedure Init(Node: TJsonNode); inline;
+    function GetCurrent: TJsonNode; inline;
+    function MoveNext: Boolean; inline;
     property Current: TJsonNode read GetCurrent;
   end;
 
@@ -80,7 +80,7 @@ type
     FName: string;
     FKind: TJsonNodeKind;
     FValue: string;
-    FList: TList;
+    FList: TFPList;
     procedure ParseObject(Node: TJsonNode; var C: PChar);
     procedure ParseArray(Node: TJsonNode; var C: PChar);
     procedure Error(const Msg: string = '');
@@ -151,7 +151,6 @@ type
     function GetValueDef(const Path: string; _Default: string): String; overload;
     function GetValueDef(const Path: string; _Default: boolean): boolean; overload;
     function GetValueDef(const Path: string; _Default: integer): integer; overload;
-
 
     { Format the node and all its children as json }
     function ToString: string; override;
@@ -877,7 +876,7 @@ begin
     FValue := '0';
     Exit(0);
   end;
-  Result := StrToFloatDef(FValue, 0, DefaultFormatSettings);
+  Result := StrToFloatDef(FValue, 0, JsonSettings);
 end;
 
 procedure TJsonNode.SetAsNumber(Value: Double);
@@ -904,7 +903,7 @@ begin
   if FKind in [nkArray, nkObject] then
   begin
     if FList = nil then
-      FList := TList.Create;
+      FList := TFPList.Create;
     if FKind = nkArray then
       S := IntToStr(FList.Count)
     else
