@@ -32,7 +32,7 @@ uses
   SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds, SynEditStrConst,
   SynEditMouseCmds, SynEditLines, Stringcostants, Forms, Graphics, Config, udmmain,
   uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils,
-  ReplaceDialog, SupportFuncs;
+  ReplaceDialog, SupportFuncs, LCLVersion;
 
 type
 
@@ -155,7 +155,9 @@ type
     procedure DoCheckFileChanges;
     procedure ReloadHighLighters;
     procedure ChangeOptions(Option: TSynEditorOption; Add: boolean);
-
+    {$IF LCL_FULLVERSION>=2000400}
+    function TabRect(AIndex: Integer): TRect; reintroduce;
+    {$ENDIF}
     {$IFDEF NEEDCLOSEBTN}
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: integer); override;
     procedure PaintWindow(DC: HDC); override;
@@ -1044,6 +1046,23 @@ begin
   HintInfo^.HintStr := TEditorTabSheet(Pages[Tab]).Editor.FileName;
 
 end;
+
+{$IF LCL_FULLVERSION>=2000400}
+
+function TEditorFactory.TabRect(AIndex: Integer): TRect;
+var
+  ORect: TRect;
+begin
+  Result := inherited TabRect(AIndex);
+  ORect:= self.BoundsRect;
+  Result.Top := Result.Top - Orect.Top;
+  Result.Bottom := Result.Bottom - Orect.Top;
+  Result.Left := Result.Left - Orect.Left;
+  Result.Right := Result.Right - Orect.Left;
+end;
+{$ENDIF}
+
+
 
 constructor TEditorFactory.Create(AOwner: TComponent);
 begin
