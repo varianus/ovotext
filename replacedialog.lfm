@@ -9,6 +9,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
   ClientWidth = 583
   Constraints.MinHeight = 184
   Constraints.MinWidth = 480
+  Font.Height = -12
   KeyPreview = True
   OnClose = FormClose
   OnCreate = FormCreate

@@ -6,6 +6,7 @@ object fMacroPlayBack: TfMacroPlayBack
   Caption = 'Macro Playback'
   ClientHeight = 144
   ClientWidth = 326
+  Font.Height = -12
   KeyPreview = True
   object Label2: TLabel
     AnchorSideLeft.Control = edRepeat

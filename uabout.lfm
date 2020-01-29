@@ -6,6 +6,7 @@ object fAbout: TfAbout
   Caption = 'About'
   ClientHeight = 346
   ClientWidth = 398
+  Font.Height = -12
   OnClose = FormClose
   OnShow = FormShow
   Position = poMainFormCenter

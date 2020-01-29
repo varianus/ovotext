@@ -229,7 +229,6 @@ object fMain: TfMain
       Caption = '&Cut'
       Hint = 'Cut'
       ImageIndex = 26
-      OnExecute = EditCutExecute
       ShortCut = 16472
     end
     object EditCopy: TEditCopy
@@ -237,7 +236,6 @@ object fMain: TfMain
       Caption = '&Copy'
       Hint = 'Copy'
       ImageIndex = 25
-      OnExecute = EditCopyExecute
       ShortCut = 16451
     end
     object EditPaste: TEditPaste
@@ -245,7 +243,6 @@ object fMain: TfMain
       Caption = '&Paste'
       Hint = 'Paste'
       ImageIndex = 27
-      OnExecute = EditPasteExecute
       ShortCut = 16470
     end
     object EditSelectAll: TEditSelectAll

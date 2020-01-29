@@ -8,6 +8,7 @@ object FMacroEditor: TFMacroEditor
   ClientWidth = 396
   Constraints.MinHeight = 340
   Constraints.MinWidth = 250
+  Font.Height = -12
   OnClose = FormClose
   OnShow = FormShow
   inline SynEdit1: TSynEdit
