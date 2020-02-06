@@ -27,7 +27,7 @@ uses
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls,
   SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils, LazUTF8, SingleInstance,
   udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder, uMacroEditor,
-  SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, lclintf, jsontools, umacroplayback, LMessages;
+  SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, lclintf, jsontools, umacroplayback, iconloader, LMessages;
 
 type
 
@@ -43,7 +43,6 @@ type
     actCloseBefore: TAction;
     actCloseAfter: TAction;
     actFindLongestLine: TAction;
-    actDarkIconTheme: TAction;
     actFullScreen: TAction;
     actFileNameToClipboard: TAction;
     actMacroSave: TAction;
@@ -73,7 +72,6 @@ type
     actLowerCase: TAction;
     ExportRTFToClipBoard: TAction;
     ExportRTFToFile: TAction;
-    imgListDark: TImageList;
     MenuItem28: TMenuItem;
     MenuItem29: TMenuItem;
     MenuItem53: TMenuItem;
@@ -105,7 +103,6 @@ type
     MenuItem97: TMenuItem;
     N5: TMenuItem;
     MenuItem94: TMenuItem;
-    MenuItem95: TMenuItem;
     N4: TMenuItem;
     MenuItem91: TMenuItem;
     MenuItem92: TMenuItem;
@@ -253,7 +250,6 @@ type
     procedure actCloseAllExceptThisExecute(Sender: TObject);
     procedure actCloseBeforeExecute(Sender: TObject);
     procedure ActCompressSpacesExecute(Sender: TObject);
-    procedure actDarkIconThemeExecute(Sender: TObject);
     procedure actFileNameToClipboardExecute(Sender: TObject);
     procedure actFindLongestLineExecute(Sender: TObject);
     procedure actFontExecute(Sender: TObject);
@@ -358,6 +354,7 @@ type
 
     function EditorAvalaible: boolean; inline;
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
+    procedure LoadImageList;
     procedure mnuLangClick(Sender: TObject);
     procedure mnuThemeClick(Sender: TObject);
     procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
@@ -365,7 +362,6 @@ type
     procedure NewEditor(Editor: TEditor);
     procedure RecentMacroEvent(Sender: TObject; const AFileName: string; const AData: TObject);
     procedure ServerReceivedParams(Sender: TBaseSingleInstance; aParams: TStringList);
-    procedure SetIconTheme(Dark: boolean);
     procedure ShowTabs(Sender: TObject);
     Procedure SetupSaveDialog(SaveMode: TSaveMode);
     procedure SynMacroRecListChange(Sender: TObject);
@@ -634,14 +630,6 @@ begin
     TEditorTabSheet(EditorFactory.Pages[i]).Editor.Gutter.Visible := actShowRowNumber.Checked;
 
   ConfigObj.ShowRowNumber:=actShowRowNumber.Checked;
-
-end;
-
-procedure TfMain.actDarkIconThemeExecute(Sender: TObject);
-begin
-  actDarkIconTheme.Checked := not actDarkIconTheme.Checked;
-  SetIconTheme(actDarkIconTheme.Checked);
-  ConfigObj.AppSettings.Dark:=actDarkIconTheme.Checked;
 
 end;
 
@@ -1050,26 +1038,6 @@ begin
   ShowOnTop;
 end;
 
-Procedure TfMain.SetIconTheme(Dark: boolean);
-begin
-  if Dark then
-    begin
-      ActionList.Images := imgListDark;
-      MainToolbar.Images := imgListDark;
-      mnuMain.Images := imgListDark;
-      pumEdit.Images := imgListDark;
-      pumTabs.Images := imgListDark;
-    end
-  else
-    begin
-      ActionList.Images := imgList;
-      MainToolbar.Images := imgList;
-      mnuMain.Images := imgList;
-      pumEdit.Images := imgList;
-      pumTabs.Images := imgList;
-    end;
-end;
-
 procedure TfMain.FormCreate(Sender: TObject);
 var
   i: integer;
@@ -1081,6 +1049,9 @@ var
   ParamList: TstringList;
 
 begin
+
+  LoadImageList;
+
   Application.SingleInstance.OnServerReceivedParams := @ServerReceivedParams;
   MRU := TMRUMenuManager.Create(Self);
   MRU.MenuItem := mnuOpenRecent;
@@ -1088,7 +1059,6 @@ begin
   MRU.MaxRecent := 15;
   MRU.Recent.Clear;
   actShowRowNumber.Checked:=ConfigObj.ShowRowNumber;
-  actDarkIconTheme.Checked:=ConfigObj.AppSettings.DarkIconTheme;
 
   ConfigObj.ReadStrings('Recent', 'Files', MRU.Recent);
   MRU.ShowRecentFiles;
@@ -1119,8 +1089,6 @@ begin
   SynMacroRec.Macros.MacroNames(Macros.Recent);
   Macros.ShowRecentFiles;
   SynMacroRec.OnListChange := @SynMacroRecListChange;
-
-  SetIconTheme(ConfigObj.AppSettings.DarkIconTheme);
 
   //// move close button to right
   //tbbCloseAll.Align := alRight;
@@ -1190,6 +1158,43 @@ end;
 procedure TfMain.FormDeactivate(Sender: TObject);
 begin
   //ActionList.State := asSuspended;
+end;
+
+procedure TfMain.LoadImageList;
+var
+  s:TResourceStream;
+  iconRender: TIconRenderer;
+{$R ovotextfont.res}
+
+begin
+  S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
+  imgList.BeginUpdate;
+  imgList.Clear;
+  imgList.Height := MulDiv(24, Screen.PixelsPerInch, 96);
+  imgList.Width := imgList.Height;
+
+  iconRender:= TIconRenderer.Create(S);
+  iconRender.Color := GetSysColor(COLOR_BTNTEXT);
+  iconRender.SetSize(24, 22);
+  iconRender.AddToImageList(imglist, [$41,$42,$43,$44,$45,$46,$47,$48,$49,
+                                      $4a,$4b,$4c,$4f,$4e,$4f,$50,$51,$52,
+                                      $53,$54,$55,$56,$57,$58,$59,$5a,$61,
+                                      $62,$63,$64,$65,$66,$67,$68,$69,$6a,
+                                      $6b,$6c,$6d]);
+
+  imgList.EndUpdate;
+  dmMain.imgBookMark.BeginUpdate;
+  dmMain.imgBookMark.Clear;
+  dmMain.imgBookMark.Height := MulDiv(24, Screen.PixelsPerInch, 96);
+  dmMain.imgBookMark.Width := imgList.Height;
+
+  iconRender.Color := GetSysColor(COLOR_HIGHLIGHT);
+  iconRender.SetSize(24, 18);
+  iconRender.AddToImageList(dmMain.imgBookMark, [$30,$31,$32,$33,$34,
+                                                 $35,$36,$37,$38,$39, $2E]);
+
+
+  dmMain.imgBookMark.EndUpdate;
 end;
 
 procedure TfMain.mnuLangClick(Sender: TObject);

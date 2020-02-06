@@ -260,7 +260,7 @@ begin
   multicaret.DefaultColumnSelectMode := mcmCancelOnCaretMove;
 
   bm := TBitmap.Create;
-  dmMain.imgIcons.GetBitmap(0, bm);
+  dmMain.imgBookMark.GetBitmap(10, bm);
   SyncEdit := TSynPluginSyncroEdit.Create(self);
   SyncEdit.Editor := self;
   SyncEdit.GutterGlyph.Assign(bm);
@@ -344,7 +344,6 @@ begin
         MessageDlg(RSError, Format(RSCannotSave, [fFileName, Error, SysErrorMessage(Error)]), mtError, [mbRetry, mbCancel, mbIgnore], 0)
       end
     else raise;
-
 
   end;
   DoOnStatusChange([]);
@@ -1024,7 +1023,7 @@ begin
     r := TabRect(i);
     h := (r.Bottom - r.Bottom - r.Top - 16) div 2;
     h2 := 16 + h;
-    Images.Draw(c, r.Right - h2, r.Top + h, 7);
+    Images.DrawForPPI(c, r.Right - h2, r.Top + h, 7,16,Screen.PixelsPerInch,1);
   end;
   c.Free;
 end;

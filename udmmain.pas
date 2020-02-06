@@ -25,7 +25,7 @@ interface
 uses
   Classes, SysUtils, Forms, Dialogs, Controls,
   SupportFuncs, SynEditHighlighter, SynExportHTML, Graphics, config,
-  Stringcostants, SynExportRTF;
+  SynExportRTF;
 
 
 type
@@ -33,7 +33,6 @@ type
   { TdmMain }
 
   TdmMain = class(TDataModule)
-    imgIcons: TImageList;
     imgBookMark: TImageList;
   private
     fRTFExporter : TSynExporterRTF;
