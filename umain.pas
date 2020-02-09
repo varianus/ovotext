@@ -1185,14 +1185,13 @@ begin
   imgList.EndUpdate;
   dmMain.imgBookMark.BeginUpdate;
   dmMain.imgBookMark.Clear;
-  dmMain.imgBookMark.Height := MulDiv(24, Screen.PixelsPerInch, 96);
-  dmMain.imgBookMark.Width := imgList.Height;
+  dmMain.imgBookMark.Height := MulDiv(16, Screen.PixelsPerInch, 96);
+  dmMain.imgBookMark.Width := dmMain.imgBookMark.Height;
 
   iconRender.Color := GetSysColor(COLOR_HIGHLIGHT);
-  iconRender.SetSize(24, 18);
+  iconRender.SetSize(16, 16);
   iconRender.AddToImageList(dmMain.imgBookMark, [$30,$31,$32,$33,$34,
-                                                 $35,$36,$37,$38,$39, $2E]);
-
+                                                 $35,$36,$37,$38,$39,$3a]);
 
   dmMain.imgBookMark.EndUpdate;
 end;
