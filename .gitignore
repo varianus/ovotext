@@ -52,10 +52,11 @@ ovotext
 *.projdata
 *.tvsconfig
 *.dsk
-
+/bin
 # Delphi history and backups
 lib/
 backup/
 *.~*
 *.bak
 /.project
+
