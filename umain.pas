@@ -1448,6 +1448,7 @@ begin
         Scale96ToForm(GetValueDef('MainForm/RestoredWidth', RestoredWidth)),
         Scale96ToForm(GetValueDef('MainForm/RestoredHeight', RestoredHeight)));
       WindowState := wsMaximized;
+      Application.ProcessMessages;
       WindowState := wsMaximized;
     end
     else
