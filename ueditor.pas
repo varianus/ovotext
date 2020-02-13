@@ -155,9 +155,9 @@ type
     procedure DoCheckFileChanges;
     procedure ReloadHighLighters;
     procedure ChangeOptions(Option: TSynEditorOption; Add: boolean);
-    {$IF LCL_FULLVERSION>=2000400}
-    function TabRect(AIndex: Integer): TRect; reintroduce;
-    {$ENDIF}
+    //{$IF LCL_FULLVERSION>=2000400}
+    //function TabRect(AIndex: Integer): TRect; reintroduce;
+    //{$ENDIF}
     {$IFDEF NEEDCLOSEBTN}
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: integer); override;
     procedure PaintWindow(DC: HDC); override;
@@ -1046,20 +1046,20 @@ begin
 
 end;
 
-{$IF LCL_FULLVERSION>=2000400}
-
-function TEditorFactory.TabRect(AIndex: Integer): TRect;
-var
-  ORect: TRect;
-begin
-  Result := inherited TabRect(AIndex);
-  ORect:= self.BoundsRect;
-  Result.Top := Result.Top - Orect.Top;
-  Result.Bottom := Result.Bottom - Orect.Top;
-  Result.Left := Result.Left - Orect.Left;
-  Result.Right := Result.Right - Orect.Left;
-end;
-{$ENDIF}
+//{$IF LCL_FULLVERSION>=2000400}
+//
+//function TEditorFactory.TabRect(AIndex: Integer): TRect;
+//var
+//  ORect: TRect;
+//begin
+//  Result := inherited TabRect(AIndex);
+//  ORect:= self.BoundsRect;
+//  Result.Top := Result.Top - Orect.Top;
+//  Result.Bottom := Result.Bottom - Orect.Top;
+//  Result.Left := Result.Left - Orect.Left;
+//  Result.Right := Result.Right - Orect.Left;
+//end;
+//{$ENDIF}
 
 
 
