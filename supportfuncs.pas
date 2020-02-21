@@ -74,7 +74,9 @@ const
   SQLKEYWORDMAX = 21;
 
 var
-  sqlKeyWord: array[1..SQLKEYWORDMAX] of string = (' INNER JOIN', ' LEFT JOIN', ' RIGHT JOIN', ' WHERE', ' LEFT OUTER JOIN', ' GROUP BY', ' ORDER BY', ' HAVING', ' FROM', ' SELECT', ' AND', 'FOR', ' INSERT INTO', ' OR', ' UPDATE', ' SET', ' DELETE', ' ALTER ', ' JOIN', ' DROP', ' VALUES');
+  sqlKeyWord: array[1..SQLKEYWORDMAX] of string = (' INNER JOIN', ' LEFT JOIN', ' RIGHT JOIN', ' WHERE', ' LEFT OUTER JOIN', ' GROUP BY',
+                                                   ' ORDER BY', ' HAVING', ' FROM', ' SELECT', ' AND', ' FOR', ' INSERT INTO', ' OR',
+                                                   ' UPDATE', ' SET', ' DELETE', ' ALTER ', ' JOIN', ' DROP', ' VALUES');
 
 function DecodeExtendedSearch(S: string): string;
 const
