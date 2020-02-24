@@ -35,6 +35,12 @@ type
 
   TSaveMode = (smText, smRTF, smHTML);
 
+  TFileTreeNode = class ( TTreeNode)
+    public
+      FullPath: string;
+      isDir:    boolean;
+  end;
+
   TfMain = class(TForm)
     actFont: TAction;
     actFullNameToClipBoard: TAction;
@@ -132,6 +138,7 @@ type
     mnuNone: TMenuItem;
     mnuLanguage: TMenuItem;
     mnuTabs: TMenuItem;
+    pnlLeft: TPanel;
     pumTabs: TPopupMenu;
     PrintDialog1: TPrintDialog;
     SortAscending: TAction;
@@ -304,6 +311,10 @@ type
     procedure FileReloadExecute(Sender: TObject);
     procedure FileSaveAsAccept(Sender: TObject);
     procedure FileSaveExecute(Sender: TObject);
+    procedure FilesTreeCreateNodeClass(Sender: TCustomTreeView; var NodeClass: TTreeNodeClass);
+    procedure FilesTreeDblClick(Sender: TObject);
+    procedure FilesTreeGetImageIndex(Sender: TObject; Node: TTreeNode);
+    procedure FilesTreeGetSelectedIndex(Sender: TObject; Node: TTreeNode);
     procedure FindDialogClose(Sender: TObject; var CloseAction:TCloseAction);
     procedure FontDialogApplyClicked(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -348,6 +359,7 @@ type
     ReplaceDialog: TCustomReplaceDialog;
     rect: TRect;
     ws : TWindowState;
+    CurrentPath: String;
 
     function AskFileName(Editor: TEditor): boolean;
     procedure ContextPopup(Sender: TObject; MousePos: TPoint;
@@ -355,6 +367,7 @@ type
 
     function EditorAvalaible: boolean; inline;
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
+    procedure LoadDir(Path: string);
     procedure LoadImageList;
     procedure mnuLangClick(Sender: TObject);
     procedure mnuThemeClick(Sender: TObject);
@@ -1154,6 +1167,8 @@ begin
   if EditorFactory.PageCount = 0 then
     FileNew.Execute;
 
+//  LoadDir('c:\source\ovotext\');
+
 end;
 
 procedure TfMain.FormDeactivate(Sender: TObject);
@@ -1771,5 +1786,108 @@ begin
     end;
 
 end;
+
+procedure TfMain.LoadDir(Path:string);
+var
+  DirList: TstringList;
+  FileList :TstringList;
+  i,j: integer;
+  NodeDir, NodeFile: TFileTreeNode;
+begin
+  DirList:=TStringList.Create;
+  FileList:=TStringList.Create;
+  FileList.OwnsObjects := true;
+  CurrentPath:=IncludeTrailingPathDelimiter(Path);
+  try
+    FilesTree.Items.Clear;
+    BuildFolderList(CurrentPath, DirList);
+    DirList.Sort;
+    for i := 0 to DirList.Count -1 do
+      begin
+        NodeDir:=TFileTreeNode(FilesTree.items.AddChild(Nil, ExtractFileName(DirList[i])));
+        NodeDir.FullPath:=DirList[i];
+        NodeDir.isDir:=True;;
+        FileList.Clear;
+        BuildFileList(IncludeTrailingPathDelimiter(DirList[i])+AllFilesMask,
+                       faAnyFile, FileList, False);
+        FileList.Sort;
+
+        for j := 0 to FileList.Count -1 do
+          begin
+            NodeFile:=TFileTreeNode(FilesTree.items.AddChild(NodeDir, ExtractFileName(FileList[j])));
+            NodeFile.FullPath:=FileList[j];
+            NodeFile.isDir:=False;
+          end;
+      end;
+    FileList.Clear;
+    BuildFileList(IncludeTrailingPathDelimiter(CurrentPath)+AllFilesMask,
+                   faAnyFile, FileList, False);
+    FileList.Sort;
+
+    for j := 0 to FileList.Count -1 do
+      begin
+        NodeFile:=TFileTreeNode(FilesTree.items.AddChild(nil, ExtractFileName(FileList[j])));
+        NodeFile.FullPath:=FileList[j];
+        NodeFile.isDir:=False;
+      end;
+
+  finally
+    DirList.Free;;
+    FileList.Free;
+  end;
+
+//  if PathHistory.IndexOf(Path) < 0 then
+//     PathIndex := PathHistory.Add(Path);
+
+end;
+
+procedure TfMain.FilesTreeCreateNodeClass(Sender: TCustomTreeView;
+  var NodeClass: TTreeNodeClass);
+begin
+  NodeClass:= TFileTreeNode;
+end;
+
+procedure TfMain.FilesTreeDblClick(Sender: TObject);
+var
+  Node: TFileTreeNode;
+begin
+  Node := TFileTreeNode(FilesTree.Selected);
+  if Node = nil then
+     exit;
+
+  if Node.isDir then
+     LoadDir(Node.FullPath)
+  else
+     begin
+        EditorFactory.AddEditor(Node.FullPath);
+     end;
+
+end;
+
+procedure TfMain.FilesTreeGetImageIndex(Sender: TObject; Node: TTreeNode);
+var
+  myNode: TFileTreeNode;
+begin
+  myNode := TFileTreeNode(Node);
+  if myNode = nil then
+     exit;
+
+  if (myNode.isDir) then
+    myNode.ImageIndex := 7
+  else
+    myNode.ImageIndex := 2;
+
+end;
+
+procedure TfMain.FilesTreeGetSelectedIndex(Sender: TObject; Node: TTreeNode);
+var
+  myNode: TFileTreeNode;
+begin
+  myNode := TFileTreeNode(Node);
+  if myNode = nil then
+     exit;
+  myNode.SelectedIndex:=myNode.ImageIndex;
+end;
+
 
 end.
