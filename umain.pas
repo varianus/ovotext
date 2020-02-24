@@ -72,6 +72,7 @@ type
     actLowerCase: TAction;
     ExportRTFToClipBoard: TAction;
     ExportRTFToFile: TAction;
+    FilesTree: TTreeView;
     MenuItem28: TMenuItem;
     MenuItem29: TMenuItem;
     MenuItem53: TMenuItem;
