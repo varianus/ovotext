@@ -1207,7 +1207,10 @@ begin
   iconRender.Color := GetSysColor(COLOR_HIGHLIGHT);
   iconRender.SetSize(16, 16);
   iconRender.AddToImageList(dmMain.imgBookMark, [$30,$31,$32,$33,$34,
-                                                 $35,$36,$37,$38,$39,$3a]);
+                                                 $35,$36,$37,$38,$39,
+                                                 $3a]);
+  iconRender.Color := GetSysColor(COLOR_BTNTEXT);
+  iconRender.AddToImageList(dmMain.imgBookMark, [$3b,$3c]);
 
   dmMain.imgBookMark.EndUpdate;
 end;
@@ -1873,9 +1876,9 @@ begin
      exit;
 
   if (myNode.isDir) then
-    myNode.ImageIndex := 7
+    myNode.ImageIndex := 11
   else
-    myNode.ImageIndex := 2;
+    myNode.ImageIndex := 12;
 
 end;
 
