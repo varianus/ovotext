@@ -53,6 +53,7 @@ type
     actFileNameToClipboard: TAction;
     actMacroSave: TAction;
     actShowRowNumber: TAction;
+    actShowToolbar: TAction;
     actJSONCompact: TAction;
     actZoomIn: TAction;
     actZoomOut: TAction;
@@ -107,6 +108,7 @@ type
     MenuItem88: TMenuItem;
     MenuItem89: TMenuItem;
     MenuItem90: TMenuItem;
+    MenuItem95: TMenuItem;
     MenuItem97: TMenuItem;
     N5: TMenuItem;
     MenuItem94: TMenuItem;
@@ -229,6 +231,7 @@ type
     SearchFindNext: TAction;
     SearchReplace: TAction;
     lbMessage: TStaticText;
+    splLeftBar: TSplitter;
     StatusBar: TStatusBar;
     MainToolbar: TToolBar;
     ToolButton1: TToolButton;
@@ -278,6 +281,7 @@ type
     procedure actPrintExecute(Sender: TObject);
     procedure actQuoteExecute(Sender: TObject);
     procedure actShowRowNumberExecute(Sender: TObject);
+    procedure actShowToolbarExecute(Sender: TObject);
     procedure actSQLPrettyPrintExecute(Sender: TObject);
     procedure actTabToSpaceExecute(Sender: TObject);
     procedure actToggleSpecialCharExecute(Sender: TObject);
@@ -644,6 +648,14 @@ begin
     TEditorTabSheet(EditorFactory.Pages[i]).Editor.Gutter.Visible := actShowRowNumber.Checked;
 
   ConfigObj.ShowRowNumber:=actShowRowNumber.Checked;
+
+end;
+
+procedure TfMain.actShowToolbarExecute(Sender: TObject);
+begin
+  actShowToolbar.Checked := not actShowToolbar.Checked;
+  ConfigObj.ShowToolbar := actShowToolbar.Checked;
+  MainToolbar.Visible := ConfigObj.ShowToolbar;
 
 end;
 
@@ -1073,6 +1085,7 @@ begin
   MRU.MaxRecent := 15;
   MRU.Recent.Clear;
   actShowRowNumber.Checked:=ConfigObj.ShowRowNumber;
+  actShowToolbar.Checked:=ConfigObj.ShowToolbar;
 
   ConfigObj.ReadStrings('Recent', 'Files', MRU.Recent);
   MRU.ShowRecentFiles;
@@ -1167,7 +1180,7 @@ begin
   if EditorFactory.PageCount = 0 then
     FileNew.Execute;
 
-//  LoadDir('c:\source\ovotext\');
+  LoadDir('c:\source\ovotext\');
 
 end;
 
@@ -1859,7 +1872,7 @@ begin
      exit;
 
   if Node.isDir then
-     LoadDir(Node.FullPath)
+    exit//  LoadDir(Node.FullPath)
   else
      begin
         EditorFactory.AddEditor(Node.FullPath);

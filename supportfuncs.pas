@@ -839,6 +839,7 @@ begin
         for IndexMask := 0 to MaskList.Count - 1 do
           if (SearchRec.Name <> '.') and (SearchRec.Name <> '..') and
             ((SearchRec.Attr and Attr) = (SearchRec.Attr and faAnyFile)) and
+            ((searchrec.Attr and faDirectory) <> faDirectory) and
             IsFileNameMatch(SearchRec.Name, MaskList.Strings[IndexMask], False) then
           begin
             List.Add(Directory + SearchRec.Name);

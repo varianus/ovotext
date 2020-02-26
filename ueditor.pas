@@ -191,7 +191,7 @@ begin
     FSheet.Caption := ExtractFileName(fFileName)
 {$IFDEF NEEDCLOSEBTN}
      // reserve spaces for emulated close button
-      + '     '
+      + Space(6)
 {$ENDIF}
     ;
   end
@@ -798,7 +798,7 @@ begin
     Sheet.Caption := Format(RSNewFile, [fUntitledCounter])
 {$IFDEF NEEDCLOSEBTN}
 // reserve spaces for emulated close button
-      + '     '
+      + Space(6)
 {$ENDIF}
     ;
     Result.FUntitled := True;
@@ -997,7 +997,7 @@ var
 begin
   if Button = mbLeft then
   begin
-    i := indexoftabat(Point(X, Y));
+    i := IndexOfTabAt(Point(X, Y));
     r := TabRect(i);
     h := (r.Bottom - r.Top);
     if (X > r.right - h) and (Y > r.bottom - h) then
@@ -1013,17 +1013,19 @@ var
   r: TRect;
   i, h, h2: integer;
   c: Tcanvas;
+  offs:integer;
 begin
   inherited PaintWindow(DC);
   c := TCanvas.Create;
   c.Handle := dc;
+  offs := Scale96ToScreen(16);
 
   for i := 0 to PageCount - 1 do
   begin
     r := TabRect(i);
-    h := (r.Bottom - r.Bottom - r.Top - 16) div 2;
-    h2 := 16 + h;
-    Images.DrawForPPI(c, r.Right - h2, r.Top + h, 7,16,Screen.PixelsPerInch,1);
+    h := (r.Bottom - r.Top - offs) div 2;
+    h2 := offs + h;
+    Images.DrawForPPI(c, r.Right - h2, r.Top + h, 7, 16, Screen.PixelsPerInch,1);
   end;
   c.Free;
 end;
