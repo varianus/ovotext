@@ -62,7 +62,6 @@ object fMain: TfMain
     ButtonHeight = 26
     ButtonWidth = 28
     Images = imgList
-    ImagesWidth = 24
     TabOrder = 1
     object ToolButton1: TToolButton
       Left = 1

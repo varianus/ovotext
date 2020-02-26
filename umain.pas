@@ -1199,6 +1199,7 @@ begin
   S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
   imgList.BeginUpdate;
   imgList.Clear;
+  imgList.Scaled :=false;;
   imgList.Height := MulDiv(24, Screen.PixelsPerInch, 96);
   imgList.Width := imgList.Height;
 
