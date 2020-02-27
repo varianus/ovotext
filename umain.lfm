@@ -227,6 +227,7 @@ object fMain: TfMain
       TabOrder = 0
       OnCreateNodeClass = FilesTreeCreateNodeClass
       OnDblClick = FilesTreeDblClick
+      OnExpanding = FilesTreeExpanding
       OnGetImageIndex = FilesTreeGetImageIndex
       OnGetSelectedIndex = FilesTreeGetSelectedIndex
       Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]

@@ -317,6 +317,7 @@ type
     procedure FileSaveExecute(Sender: TObject);
     procedure FilesTreeCreateNodeClass(Sender: TCustomTreeView; var NodeClass: TTreeNodeClass);
     procedure FilesTreeDblClick(Sender: TObject);
+    procedure FilesTreeExpanding(Sender: TObject; Node: TTreeNode; var AllowExpansion: Boolean);
     procedure FilesTreeGetImageIndex(Sender: TObject; Node: TTreeNode);
     procedure FilesTreeGetSelectedIndex(Sender: TObject; Node: TTreeNode);
     procedure FindDialogClose(Sender: TObject; var CloseAction:TCloseAction);
@@ -371,6 +372,7 @@ type
 
     function EditorAvalaible: boolean; inline;
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
+    procedure ExpandNode(NodeDir: TFileTreeNode; const Path: string);
     procedure LoadDir(Path: string);
     procedure LoadImageList;
     procedure mnuLangClick(Sender: TObject);
@@ -1805,36 +1807,31 @@ begin
 end;
 
 procedure TfMain.LoadDir(Path:string);
+begin
+  FilesTree.Items.Clear;
+  ExpandNode(nil,Path);
+end;
+
+procedure TfMain.ExpandNode(NodeDir: TFileTreeNode; const Path:string);
 var
   DirList: TstringList;
   FileList :TstringList;
   i,j: integer;
-  NodeDir, NodeFile: TFileTreeNode;
+  NewNode: TFileTreeNode;
 begin
   DirList:=TStringList.Create;
   FileList:=TStringList.Create;
   FileList.OwnsObjects := true;
   CurrentPath:=IncludeTrailingPathDelimiter(Path);
   try
-    FilesTree.Items.Clear;
     BuildFolderList(CurrentPath, DirList);
     DirList.Sort;
     for i := 0 to DirList.Count -1 do
       begin
-        NodeDir:=TFileTreeNode(FilesTree.items.AddChild(Nil, ExtractFileName(DirList[i])));
-        NodeDir.FullPath:=DirList[i];
-        NodeDir.isDir:=True;;
-        FileList.Clear;
-        BuildFileList(IncludeTrailingPathDelimiter(DirList[i])+AllFilesMask,
-                       faAnyFile, FileList, False);
-        FileList.Sort;
-
-        for j := 0 to FileList.Count -1 do
-          begin
-            NodeFile:=TFileTreeNode(FilesTree.items.AddChild(NodeDir, ExtractFileName(FileList[j])));
-            NodeFile.FullPath:=FileList[j];
-            NodeFile.isDir:=False;
-          end;
+        NewNode:=TFileTreeNode(FilesTree.items.AddChild(NodeDir, ExtractFileName(DirList[i])));
+        NewNode.FullPath:=DirList[i];
+        NewNode.isDir:=True;
+        NewNode.HasChildren := true;
       end;
     FileList.Clear;
     BuildFileList(IncludeTrailingPathDelimiter(CurrentPath)+AllFilesMask,
@@ -1843,13 +1840,13 @@ begin
 
     for j := 0 to FileList.Count -1 do
       begin
-        NodeFile:=TFileTreeNode(FilesTree.items.AddChild(nil, ExtractFileName(FileList[j])));
-        NodeFile.FullPath:=FileList[j];
-        NodeFile.isDir:=False;
+        NewNode:=TFileTreeNode(FilesTree.items.AddChild(NodeDir, ExtractFileName(FileList[j])));
+        NewNode.FullPath:=FileList[j];
+        NewNode.isDir:=False;
       end;
 
   finally
-    DirList.Free;;
+    DirList.Free;
     FileList.Free;
   end;
 
@@ -1873,11 +1870,24 @@ begin
      exit;
 
   if Node.isDir then
-    exit//  LoadDir(Node.FullPath)
+    exit
   else
      begin
         EditorFactory.AddEditor(Node.FullPath);
      end;
+
+end;
+
+procedure TfMain.FilesTreeExpanding(Sender: TObject; Node: TTreeNode; var AllowExpansion: Boolean);
+var
+  myNode: TFileTreeNode;
+begin
+  myNode := TFileTreeNode(Node);
+  if myNode = nil then
+     exit;
+
+  if (myNode.isDir) then
+    ExpandNode(MyNode, myNode.FullPath);
 
 end;
 
