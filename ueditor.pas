@@ -29,7 +29,7 @@ interface
 uses
   Classes, SysUtils, Controls, Dialogs, ComCtrls, LCLProc, LCLType,
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,
-  SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds, SynEditStrConst,
+  SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds,
   SynEditMouseCmds, SynEditLines, Stringcostants, Forms, Graphics, Config, udmmain,
   uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils,
   ReplaceDialog, SupportFuncs, LCLVersion;
@@ -139,6 +139,10 @@ type
     procedure OnFileChange(Sender: TObject; FileName: TFileName; Data: Pointer; State: TFWStateChange);
   protected
     procedure DoChange; override;
+    procedure DragDrop(Source: TObject; X, Y: Integer); override;
+    procedure DragOver(Source: TObject; X,Y: Integer; State: TDragState;
+                       var Accept: Boolean); override;
+
   public
     property CurrentEditor: TEditor read GetCurrentEditor;
     property OnStatusChange: TStatusChangeEvent read FonStatusChange write FOnStatusChange;
@@ -158,8 +162,8 @@ type
     //{$IF LCL_FULLVERSION>=2000400}
     //function TabRect(AIndex: Integer): TRect; reintroduce;
     //{$ENDIF}
-    {$IFDEF NEEDCLOSEBTN}
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: integer); override;
+    {$IFDEF NEEDCLOSEBTN}
     procedure PaintWindow(DC: HDC); override;
     {$ENDIF}
     constructor Create(AOwner: TComponent); override;
@@ -715,6 +719,31 @@ begin
   TEditorTabSheet(ActivePage).Editor.SetFocus;
 end;
 
+procedure TEditorFactory.DragDrop(Source: TObject; X, Y: Integer);
+var
+  r:TRect;
+  i:Integer;
+begin
+  inherited DragDrop(Source, X, Y);
+  if (Source is TPageControl) then
+   for i := 0 to PageCount - 1 do
+   begin
+     r := TabRect(i);
+     if r.Contains(Point(X, Y)) then
+     begin
+       if ActivePage.PageIndex <> i then
+         ActivePage.PageIndex := i;
+       Exit;
+     end;
+   end;
+end;
+
+procedure TEditorFactory.DragOver(Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
+begin
+  inherited DragOver(Source, X, Y, State, Accept);
+  if (Source is TPageControl) then Accept := True;
+end;
+
 procedure TEditorFactory.DoCloseTabClicked(APage: TCustomPage);
 begin
   inherited DoCloseTabClicked(APage);
@@ -989,7 +1018,6 @@ begin
 
 end;
 
-{$IFDEF NEEDCLOSEBTN}
 procedure TEditorFactory.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: integer);
 var
   r: TRect;
@@ -998,16 +1026,21 @@ begin
   if Button = mbLeft then
   begin
     i := IndexOfTabAt(Point(X, Y));
+    {$IFDEF NEEDCLOSEBTN}
     r := TabRect(i);
     h := (r.Bottom - r.Top);
     if (X > r.right - h) and (Y > r.bottom - h) then
       begin
        CloseEditor(TEditorTabSheet(Page[i]).Editor);
        Invalidate;
-      end;
+      end
+    else
+    {$ENDIF}
+      BeginDrag(False, 20);
   end;
 end;
 
+{$IFDEF NEEDCLOSEBTN}
 procedure TEditorFactory.PaintWindow(DC: HDC);
 var
   r: TRect;

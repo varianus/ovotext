@@ -28,9 +28,9 @@ uses
   Forms, DefaultTranslator, singleinstance,
   printer4lazarus, SynEditPrintExtProcs,
   //projects unit
-  umain, uabout, udmmain, Stringcostants, SupportFuncs, config,
-  uCheckFileChange, udglgoto,  simplemrumanager, uMacroEditor, uActionMacro,
-  uReplaceMacro, uMacroRecorder, ReplaceDialog, LazLogger, SimpleSingleInstance, JsonTools, umacroplayback, iconloader;
+  umain, uabout, udmmain, Stringcostants, SupportFuncs, config, uCheckFileChange, udglgoto, simplemrumanager,
+  uMacroEditor, uActionMacro, uReplaceMacro, uMacroRecorder, ReplaceDialog, LazLogger,
+  SimpleSingleInstance, JsonTools, umacroplayback, iconloader;
 
 {$R *.res}
 begin
