@@ -51,6 +51,9 @@ type
     actFindLongestLine: TAction;
     actFullScreen: TAction;
     actFileNameToClipboard: TAction;
+    FileCloseFolder: TAction;
+    FileReloadFolder: TAction;
+    FileOpenFolder: TAction;
     actMacroSave: TAction;
     actShowRowNumber: TAction;
     actShowToolbar: TAction;
@@ -109,6 +112,7 @@ type
     MenuItem89: TMenuItem;
     MenuItem90: TMenuItem;
     MenuItem95: TMenuItem;
+    MenuItem96: TMenuItem;
     MenuItem97: TMenuItem;
     N5: TMenuItem;
     MenuItem94: TMenuItem;
@@ -143,6 +147,7 @@ type
     pnlLeft: TPanel;
     pumTabs: TPopupMenu;
     PrintDialog1: TPrintDialog;
+    SelectDirectoryDialog1: TSelectDirectoryDialog;
     SortAscending: TAction;
     actPrint: TAction;
     SortDescending: TAction;
@@ -234,6 +239,7 @@ type
     splLeftBar: TSplitter;
     StatusBar: TStatusBar;
     MainToolbar: TToolBar;
+    ToolBar1: TToolBar;
     ToolButton1: TToolButton;
     ToolButton10: TToolButton;
     ToolButton11: TToolButton;
@@ -247,6 +253,9 @@ type
     ToolButton19: TToolButton;
     ToolButton2: TToolButton;
     ToolButton20: TToolButton;
+    ToolButton21: TToolButton;
+    ToolButton22: TToolButton;
+    ToolButton23: TToolButton;
     ToolButton3: TToolButton;
     tbbClose: TToolButton;
     tbbCloseAll: TToolButton;
@@ -280,6 +289,8 @@ type
     procedure actPathToClipboardExecute(Sender: TObject);
     procedure actPrintExecute(Sender: TObject);
     procedure actQuoteExecute(Sender: TObject);
+    procedure FileCloseFolderExecute(Sender: TObject);
+    procedure FileReloadFolderExecute(Sender: TObject);
     procedure actShowRowNumberExecute(Sender: TObject);
     procedure actShowToolbarExecute(Sender: TObject);
     procedure actSQLPrettyPrintExecute(Sender: TObject);
@@ -312,6 +323,7 @@ type
     procedure FileNewExecute(Sender: TObject);
     procedure FileOpenAccept(Sender: TObject);
     procedure FileOpenBeforeExecute(Sender: TObject);
+    procedure FileOpenFolderExecute(Sender: TObject);
     procedure FileReloadExecute(Sender: TObject);
     procedure FileSaveAsAccept(Sender: TObject);
     procedure FileSaveExecute(Sender: TObject);
@@ -640,6 +652,17 @@ begin
   Ed.TextOperation(@QuotedStr, [tomLines]);
 end;
 
+procedure TfMain.FileCloseFolderExecute(Sender: TObject);
+begin
+  pnlLeft.Visible := false;
+  splLeftBar.Visible := false;
+end;
+
+procedure TfMain.FileReloadFolderExecute(Sender: TObject);
+begin
+  //
+end;
+
 procedure TfMain.actShowRowNumberExecute(Sender: TObject);
 var
   i: Integer;
@@ -965,6 +988,17 @@ begin
 
 end;
 
+procedure TfMain.FileOpenFolderExecute(Sender: TObject);
+begin
+  if SelectDirectoryDialog1.Execute then
+    begin
+      LoadDir(SelectDirectoryDialog1.FileName);
+      pnlLeft.Visible := true;
+      splLeftBar.Visible := true;
+    end;
+
+end;
+
 procedure TfMain.FileReloadExecute(Sender: TObject);
 var
   Ed: TEditor;
@@ -1182,7 +1216,8 @@ begin
   if EditorFactory.PageCount = 0 then
     FileNew.Execute;
 
-  LoadDir('c:\source\ovotext\');
+  pnlLeft.Visible := false;
+  splLeftBar.Visible := false;
 
 end;
 
@@ -1208,11 +1243,15 @@ begin
   iconRender:= TIconRenderer.Create(S);
   iconRender.Color := GetSysColor(COLOR_BTNTEXT);
   iconRender.SetSize(24, 22);
-  iconRender.AddToImageList(imglist, [$41,$42,$43,$44,$45,$46,$47,$48,$49,
-                                      $4a,$4b,$4c,$4f,$4e,$4f,$50,$51,$52,
-                                      $53,$54,$55,$56,$57,$58,$59,$5a,$61,
-                                      $62,$63,$64,$65,$66,$67,$68,$69,$6a,
-                                      $6b,$6c,$6d]);
+  iconRender.AddToImageList(imglist, [$41,$42,$43,$44,$45,  //0.. 4
+                                      $46,$47,$48,$49,$4a,  // .. 9
+                                      $4b,$4c,$4f,$4e,$4f,  // ..14
+                                      $50,$51,$52,$53,$54,  // ..19
+                                      $55,$56,$57,$58,$59,  // ..24
+                                      $5a,$61,$62,$63,$64,  // ..29
+                                      $65,$66,$67,$68,$69,  // ..34
+                                      $6a,$6b,$6c,$6d,$3b,  // ..39
+                                      $3c,$5b]);
 
   imgList.EndUpdate;
   dmMain.imgBookMark.BeginUpdate;

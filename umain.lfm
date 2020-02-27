@@ -212,8 +212,8 @@ object fMain: TfMain
     TabOrder = 3
     object FilesTree: TTreeView
       Left = 1
-      Height = 619
-      Top = 1
+      Height = 591
+      Top = 29
       Width = 187
       Align = alClient
       DragMode = dmAutomatic
@@ -231,6 +231,30 @@ object fMain: TfMain
       OnGetImageIndex = FilesTreeGetImageIndex
       OnGetSelectedIndex = FilesTreeGetSelectedIndex
       Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+    end
+    object ToolBar1: TToolBar
+      Left = 1
+      Height = 28
+      Top = 1
+      Width = 187
+      Caption = 'ToolBar1'
+      Images = imgList
+      TabOrder = 1
+      object ToolButton21: TToolButton
+        Left = 1
+        Top = 2
+        Action = FileOpenFolder
+      end
+      object ToolButton22: TToolButton
+        Left = 29
+        Top = 2
+        Action = FileReloadFolder
+      end
+      object ToolButton23: TToolButton
+        Left = 52
+        Top = 2
+        Action = FileCloseFolder
+      end
     end
   end
   object splLeftBar: TSplitter
@@ -264,6 +288,9 @@ object fMain: TfMain
       object mnuCleanRecent: TMenuItem
         Caption = 'Clean recent file list'
         OnClick = mnuCleanRecentClick
+      end
+      object MenuItem96: TMenuItem
+        Action = FileOpenFolder
       end
       object MenuItem83: TMenuItem
         Action = FileReload
@@ -595,8 +622,8 @@ object fMain: TfMain
     Top = 176
   end
   object PrintDialog1: TPrintDialog
-    Left = 256
-    Top = 170
+    Left = 248
+    Top = 176
   end
   object pumTabs: TPopupMenu
     Images = imgList
@@ -1094,5 +1121,27 @@ object fMain: TfMain
       Caption = 'File Name only'
       OnExecute = actFileNameToClipboardExecute
     end
+    object FileReloadFolder: TAction
+      Category = 'File'
+      Caption = 'Reload Folder'
+      ImageIndex = 22
+      OnExecute = FileReloadFolderExecute
+    end
+    object FileOpenFolder: TAction
+      Category = 'File'
+      Caption = 'Open Folder…'
+      ImageIndex = 39
+      OnExecute = FileOpenFolderExecute
+    end
+    object FileCloseFolder: TAction
+      Category = 'File'
+      Caption = 'Close Folder'
+      ImageIndex = 41
+      OnExecute = FileCloseFolderExecute
+    end
+  end
+  object SelectDirectoryDialog1: TSelectDirectoryDialog
+    Left = 248
+    Top = 251
   end
 end
