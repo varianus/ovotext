@@ -1,7 +1,7 @@
 object fMain: TfMain
-  Left = 2140
+  Left = 2311
   Height = 716
-  Top = 135
+  Top = 141
   Width = 945
   AllowDropFiles = True
   Caption = 'OvoText'
@@ -251,7 +251,7 @@ object fMain: TfMain
         Action = FileReloadFolder
       end
       object ToolButton23: TToolButton
-        Left = 52
+        Left = 57
         Top = 2
         Action = FileCloseFolder
       end
@@ -637,6 +637,9 @@ object fMain: TfMain
     end
     object MenuItem97: TMenuItem
       Action = actFileNameToClipboard
+    end
+    object MenuItem98: TMenuItem
+      Action = FileBrowseFolder
     end
     object N1: TMenuItem
       Caption = '-'
@@ -1138,6 +1141,11 @@ object fMain: TfMain
       Caption = 'Close Folder'
       ImageIndex = 41
       OnExecute = FileCloseFolderExecute
+    end
+    object FileBrowseFolder: TAction
+      Category = 'File'
+      Caption = 'Browse Folder'
+      OnExecute = FileBrowseFolderExecute
     end
   end
   object SelectDirectoryDialog1: TSelectDirectoryDialog

@@ -51,6 +51,7 @@ type
     actFindLongestLine: TAction;
     actFullScreen: TAction;
     actFileNameToClipboard: TAction;
+    FileBrowseFolder: TAction;
     FileCloseFolder: TAction;
     FileReloadFolder: TAction;
     FileOpenFolder: TAction;
@@ -114,6 +115,7 @@ type
     MenuItem95: TMenuItem;
     MenuItem96: TMenuItem;
     MenuItem97: TMenuItem;
+    MenuItem98: TMenuItem;
     N5: TMenuItem;
     MenuItem94: TMenuItem;
     N4: TMenuItem;
@@ -289,6 +291,7 @@ type
     procedure actPathToClipboardExecute(Sender: TObject);
     procedure actPrintExecute(Sender: TObject);
     procedure actQuoteExecute(Sender: TObject);
+    procedure FileBrowseFolderExecute(Sender: TObject);
     procedure FileCloseFolderExecute(Sender: TObject);
     procedure FileReloadFolderExecute(Sender: TObject);
     procedure actShowRowNumberExecute(Sender: TObject);
@@ -376,7 +379,7 @@ type
     ReplaceDialog: TCustomReplaceDialog;
     rect: TRect;
     ws : TWindowState;
-    CurrentPath: String;
+    BrowsingPath: string;
 
     function AskFileName(Editor: TEditor): boolean;
     procedure ContextPopup(Sender: TObject; MousePos: TPoint;
@@ -552,6 +555,7 @@ begin
   actFullNameToClipBoard.Enabled := Avail and not ed.Untitled;
   actFileNameToClipboard.Enabled := Avail and not ed.Untitled;
   actPathToClipboard.Enabled := Avail and not ed.Untitled;
+  FileBrowseFolder.Enabled := Avail and not ed.Untitled;
   ExportHtmlToFile.Enabled:= Avail;
   ExportRTFToFile.Enabled:= Avail;
   actGoTo.Enabled := Avail and (ed.Lines.Count > 0);
@@ -652,6 +656,14 @@ begin
   Ed.TextOperation(@QuotedStr, [tomLines]);
 end;
 
+procedure TfMain.FileBrowseFolderExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  Ed := EditorFactory.CurrentEditor;
+  LoadDir(ExtractFileDir(Ed.FileName));
+end;
+
 procedure TfMain.FileCloseFolderExecute(Sender: TObject);
 begin
   pnlLeft.Visible := false;
@@ -660,7 +672,7 @@ end;
 
 procedure TfMain.FileReloadFolderExecute(Sender: TObject);
 begin
-  //
+  LoadDir(BrowsingPath);
 end;
 
 procedure TfMain.actShowRowNumberExecute(Sender: TObject);
@@ -993,8 +1005,6 @@ begin
   if SelectDirectoryDialog1.Execute then
     begin
       LoadDir(SelectDirectoryDialog1.FileName);
-      pnlLeft.Visible := true;
-      splLeftBar.Visible := true;
     end;
 
 end;
@@ -1847,6 +1857,9 @@ end;
 
 procedure TfMain.LoadDir(Path:string);
 begin
+  pnlLeft.Visible := true;
+  splLeftBar.Visible := true;
+  BrowsingPath := Path;
   FilesTree.Items.Clear;
   ExpandNode(nil,Path);
 end;
@@ -1856,6 +1869,7 @@ var
   DirList: TstringList;
   FileList :TstringList;
   i,j: integer;
+  CurrentPath: String;
   NewNode: TFileTreeNode;
 begin
   DirList:=TStringList.Create;
