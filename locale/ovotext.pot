@@ -119,6 +119,10 @@ msgstr ""
 msgid "Select a new name for macro"
 msgstr ""
 
+#: stringcostants.rsmacrosaving
+msgid "Select a name for macro"
+msgstr ""
+
 #: stringcostants.rsnewfile
 #, object-pascal-format
 msgid "<new   %d>"
@@ -287,65 +291,6 @@ msgstr ""
 msgid "Column number"
 msgstr ""
 
-#: tfabout.blicense.caption
-msgid "&License"
-msgstr ""
-
-#: tfabout.caption
-msgid "About"
-msgstr ""
-
-#: tfabout.label1.caption
-msgctxt "tfabout.label1.caption"
-msgid "OvoText"
-msgstr ""
-
-#: tfabout.label11.caption
-msgid "Icons are from "
-msgstr ""
-
-#: tfabout.label2.caption
-msgctxt "tfabout.label2.caption"
-msgid "Version"
-msgstr ""
-
-#: tfabout.label3.caption
-msgid "Author : Marco Caselli"
-msgstr ""
-
-#: tfabout.label4.caption
-msgid "Another text editor"
-msgstr ""
-
-#: tfabout.label5.caption
-msgid "Lazarus"
-msgstr ""
-
-#: tfabout.label6.caption
-msgid "Home Page"
-msgstr ""
-
-#: tfabout.label7.caption
-msgid "FPC"
-msgstr ""
-
-#: tfabout.label8.caption
-msgid "Build Date"
-msgstr ""
-
-#: tfabout.lhomepage.caption
-msgid "https://github.com/varianus/ovotext"
-msgstr ""
-
-#: tfabout.lhomepage2.caption
-msgid "https://github.com/KDE/breeze-icons"
-msgstr ""
-
-#: tfabout.lversion.caption
-msgctxt "tfabout.lversion.caption"
-msgid "Version"
-msgstr ""
-
 #: tfmacroeditor.btndelete.caption
 msgctxt "tfmacroeditor.btndelete.caption"
 msgid "Delete"
@@ -426,8 +371,8 @@ msgctxt "tfmain.actcompressspaces.hint"
 msgid "Reduce multiple spaces"
 msgstr ""
 
-#: tfmain.actdarkicontheme.caption
-msgid "Dark Icon Theme"
+#: tfmain.actfilenametoclipboard.caption
+msgid "File Name only"
 msgstr ""
 
 #: tfmain.actfindlongestline.caption
@@ -511,6 +456,10 @@ msgstr ""
 msgid "Begin macro recording"
 msgstr ""
 
+#: tfmain.actmacrosave.caption
+msgid "Save current recorded macro"
+msgstr ""
+
 #: tfmain.actmacrostop.caption
 msgid "Stop"
 msgstr ""
@@ -540,6 +489,10 @@ msgstr ""
 
 #: tfmain.actshowrownumber.caption
 msgid "Show row numbers"
+msgstr ""
+
+#: tfmain.actshowtoolbar.caption
+msgid "Show toolbar"
 msgstr ""
 
 #: tfmain.actsqlprettyprint.caption
@@ -700,6 +653,10 @@ msgstr ""
 msgid "Close all tab"
 msgstr ""
 
+#: tfmain.fileclosefolder.caption
+msgid "Close Folder"
+msgstr ""
+
 #: tfmain.fileexit.caption
 msgid "Exit"
 msgstr ""
@@ -726,9 +683,17 @@ msgstr ""
 msgid "Open file"
 msgstr ""
 
+#: tfmain.fileopenfolder.caption
+msgid "Open Folder…"
+msgstr ""
+
 #: tfmain.filereload.caption
 msgctxt "tfmain.filereload.caption"
 msgid "Reload"
+msgstr ""
+
+#: tfmain.filereloadfolder.caption
+msgid "Reload Folder"
 msgstr ""
 
 #: tfmain.filesave.caption
