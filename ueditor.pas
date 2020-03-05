@@ -139,7 +139,6 @@ type
     procedure OnFileChange(Sender: TObject; FileName: TFileName; Data: Pointer; State: TFWStateChange);
   protected
     procedure DoChange; override;
-    procedure DragDrop(Source: TObject; X, Y: Integer); override;
     procedure DragOver(Source: TObject; X,Y: Integer; State: TDragState;
                        var Accept: Boolean); override;
 
@@ -150,6 +149,7 @@ type
     property OnNewEditor: TOnEditorEvent read FOnNewEditor write SetOnNewEditor;
     //--//
     procedure DoCloseTabClicked(APage: TCustomPage); override;
+    procedure DragDrop(Source: TObject; X, Y: Integer); override;
     function AddEditor(FileName: TFilename = ''): TEditor;
     function CloseEditor(Editor: TEditor; Force: boolean = False): boolean;
     function CloseAll(KeepCurrent:boolean=false): boolean;
