@@ -29,7 +29,7 @@ interface
 uses
   Classes, SysUtils, Controls, Dialogs, ComCtrls, LCLProc, LCLType,
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,
-  SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds, SynEditStrConst,
+  SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds,
   SynEditMouseCmds, SynEditLines, Stringcostants, Forms, Graphics, Config, udmmain,
   uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils,
   ReplaceDialog, SupportFuncs, LCLVersion;
@@ -139,6 +139,9 @@ type
     procedure OnFileChange(Sender: TObject; FileName: TFileName; Data: Pointer; State: TFWStateChange);
   protected
     procedure DoChange; override;
+    procedure DragOver(Source: TObject; X,Y: Integer; State: TDragState;
+                       var Accept: Boolean); override;
+
   public
     property CurrentEditor: TEditor read GetCurrentEditor;
     property OnStatusChange: TStatusChangeEvent read FonStatusChange write FOnStatusChange;
@@ -146,6 +149,7 @@ type
     property OnNewEditor: TOnEditorEvent read FOnNewEditor write SetOnNewEditor;
     //--//
     procedure DoCloseTabClicked(APage: TCustomPage); override;
+    procedure DragDrop(Source: TObject; X, Y: Integer); override;
     function AddEditor(FileName: TFilename = ''): TEditor;
     function CloseEditor(Editor: TEditor; Force: boolean = False): boolean;
     function CloseAll(KeepCurrent:boolean=false): boolean;
@@ -155,11 +159,11 @@ type
     procedure DoCheckFileChanges;
     procedure ReloadHighLighters;
     procedure ChangeOptions(Option: TSynEditorOption; Add: boolean);
-    {$IF LCL_FULLVERSION>=2000400}
-    function TabRect(AIndex: Integer): TRect; reintroduce;
-    {$ENDIF}
-    {$IFDEF NEEDCLOSEBTN}
+    //{$IF LCL_FULLVERSION>=2000400}
+    //function TabRect(AIndex: Integer): TRect; reintroduce;
+    //{$ENDIF}
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: integer); override;
+    {$IFDEF NEEDCLOSEBTN}
     procedure PaintWindow(DC: HDC); override;
     {$ENDIF}
     constructor Create(AOwner: TComponent); override;
@@ -191,7 +195,7 @@ begin
     FSheet.Caption := ExtractFileName(fFileName)
 {$IFDEF NEEDCLOSEBTN}
      // reserve spaces for emulated close button
-      + '     '
+      + Space(6)
 {$ENDIF}
     ;
   end
@@ -260,7 +264,7 @@ begin
   multicaret.DefaultColumnSelectMode := mcmCancelOnCaretMove;
 
   bm := TBitmap.Create;
-  dmMain.imgIcons.GetBitmap(0, bm);
+  dmMain.imgBookMark.GetBitmap(10, bm);
   SyncEdit := TSynPluginSyncroEdit.Create(self);
   SyncEdit.Editor := self;
   SyncEdit.GutterGlyph.Assign(bm);
@@ -344,7 +348,6 @@ begin
         MessageDlg(RSError, Format(RSCannotSave, [fFileName, Error, SysErrorMessage(Error)]), mtError, [mbRetry, mbCancel, mbIgnore], 0)
       end
     else raise;
-
 
   end;
   DoOnStatusChange([]);
@@ -716,6 +719,31 @@ begin
   TEditorTabSheet(ActivePage).Editor.SetFocus;
 end;
 
+procedure TEditorFactory.DragDrop(Source: TObject; X, Y: Integer);
+var
+  r:TRect;
+  i:Integer;
+begin
+  inherited DragDrop(Source, X, Y);
+  if (Source is TPageControl) then
+   for i := 0 to PageCount - 1 do
+   begin
+     r := TabRect(i);
+     if r.Contains(Point(X, Y)) then
+     begin
+       if ActivePage.PageIndex <> i then
+         ActivePage.PageIndex := i;
+       Exit;
+     end;
+   end;
+end;
+
+procedure TEditorFactory.DragOver(Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
+begin
+  inherited DragOver(Source, X, Y, State, Accept);
+  if (Source is TPageControl) then Accept := True;
+end;
+
 procedure TEditorFactory.DoCloseTabClicked(APage: TCustomPage);
 begin
   inherited DoCloseTabClicked(APage);
@@ -770,9 +798,12 @@ begin
   end;
 
   Sheet := TEditorTabSheet.Create(Self);
+  Sheet.DoubleBuffered := DoubleBuffered;
   Sheet.PageControl := Self;
 
   Result := TEditor.Create(Sheet);
+  Result.DoubleBuffered := DoubleBuffered;
+
   Result.Font.Assign(ConfigObj.Font);
   DefaultAttr := ConfigObj.ReadFontAttributes('Schema/Default/Text/', FontAttributes());
 
@@ -799,7 +830,7 @@ begin
     Sheet.Caption := Format(RSNewFile, [fUntitledCounter])
 {$IFDEF NEEDCLOSEBTN}
 // reserve spaces for emulated close button
-      + '     '
+      + Space(6)
 {$ENDIF}
     ;
     Result.FUntitled := True;
@@ -990,7 +1021,6 @@ begin
 
 end;
 
-{$IFDEF NEEDCLOSEBTN}
 procedure TEditorFactory.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: integer);
 var
   r: TRect;
@@ -998,33 +1028,40 @@ var
 begin
   if Button = mbLeft then
   begin
-    i := indexoftabat(Point(X, Y));
+    i := IndexOfTabAt(Point(X, Y));
+    {$IFDEF NEEDCLOSEBTN}
     r := TabRect(i);
     h := (r.Bottom - r.Top);
     if (X > r.right - h) and (Y > r.bottom - h) then
       begin
        CloseEditor(TEditorTabSheet(Page[i]).Editor);
        Invalidate;
-      end;
+      end
+    else
+    {$ENDIF}
+      BeginDrag(False, 20);
   end;
 end;
 
+{$IFDEF NEEDCLOSEBTN}
 procedure TEditorFactory.PaintWindow(DC: HDC);
 var
   r: TRect;
   i, h, h2: integer;
   c: Tcanvas;
+  offs:integer;
 begin
   inherited PaintWindow(DC);
   c := TCanvas.Create;
   c.Handle := dc;
+  offs := Scale96ToScreen(16);
 
   for i := 0 to PageCount - 1 do
   begin
     r := TabRect(i);
-    h := (r.Bottom - r.Bottom - r.Top - 16) div 2;
-    h2 := 16 + h;
-    Images.Draw(c, r.Right - h2, r.Top + h, 7);
+    h := (r.Bottom - r.Top - offs) div 2;
+    h2 := offs + h;
+    Images.DrawForPPI(c, r.Right - h2, r.Top + h, 7, 16, Screen.PixelsPerInch,1);
   end;
   c.Free;
 end;
@@ -1047,26 +1084,28 @@ begin
 
 end;
 
-{$IF LCL_FULLVERSION>=2000400}
-
-function TEditorFactory.TabRect(AIndex: Integer): TRect;
-var
-  ORect: TRect;
-begin
-  Result := inherited TabRect(AIndex);
-  ORect:= self.BoundsRect;
-  Result.Top := Result.Top - Orect.Top;
-  Result.Bottom := Result.Bottom - Orect.Top;
-  Result.Left := Result.Left - Orect.Left;
-  Result.Right := Result.Right - Orect.Left;
-end;
-{$ENDIF}
+//{$IF LCL_FULLVERSION>=2000400}
+//
+//function TEditorFactory.TabRect(AIndex: Integer): TRect;
+//var
+//  ORect: TRect;
+//begin
+//  Result := inherited TabRect(AIndex);
+//  ORect:= self.BoundsRect;
+//  Result.Top := Result.Top - Orect.Top;
+//  Result.Bottom := Result.Bottom - Orect.Top;
+//  Result.Left := Result.Left - Orect.Left;
+//  Result.Right := Result.Right - Orect.Left;
+//end;
+//{$ENDIF}
 
 
 
 constructor TEditorFactory.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  DoubleBuffered := true;
+  //Style :=  tsFlatButtons;
   FWatcher := TFileWatcher.Create;
   FWatcher.OnFileStateChange := @OnFileChange;
   fUntitledCounter := 0;

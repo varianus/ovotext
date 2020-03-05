@@ -27,13 +27,19 @@ uses
   ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls,
   SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils, LazUTF8, SingleInstance,
   udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder, uMacroEditor,
-  SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, lclintf, jsontools, umacroplayback, LMessages;
+  SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, lclintf, jsontools, umacroplayback, iconloader, LMessages;
 
 type
 
   { TfMain }
 
   TSaveMode = (smText, smRTF, smHTML);
+
+  TFileTreeNode = class ( TTreeNode)
+    public
+      FullPath: string;
+      isDir:    boolean;
+  end;
 
   TfMain = class(TForm)
     actFont: TAction;
@@ -43,11 +49,15 @@ type
     actCloseBefore: TAction;
     actCloseAfter: TAction;
     actFindLongestLine: TAction;
-    actDarkIconTheme: TAction;
     actFullScreen: TAction;
     actFileNameToClipboard: TAction;
+    FileBrowseFolder: TAction;
+    FileCloseFolder: TAction;
+    FileReloadFolder: TAction;
+    FileOpenFolder: TAction;
     actMacroSave: TAction;
     actShowRowNumber: TAction;
+    actShowToolbar: TAction;
     actJSONCompact: TAction;
     actZoomIn: TAction;
     actZoomOut: TAction;
@@ -73,7 +83,7 @@ type
     actLowerCase: TAction;
     ExportRTFToClipBoard: TAction;
     ExportRTFToFile: TAction;
-    imgListDark: TImageList;
+    FilesTree: TTreeView;
     MenuItem28: TMenuItem;
     MenuItem29: TMenuItem;
     MenuItem53: TMenuItem;
@@ -102,10 +112,12 @@ type
     MenuItem88: TMenuItem;
     MenuItem89: TMenuItem;
     MenuItem90: TMenuItem;
+    MenuItem95: TMenuItem;
+    MenuItem96: TMenuItem;
     MenuItem97: TMenuItem;
+    MenuItem98: TMenuItem;
     N5: TMenuItem;
     MenuItem94: TMenuItem;
-    MenuItem95: TMenuItem;
     N4: TMenuItem;
     MenuItem91: TMenuItem;
     MenuItem92: TMenuItem;
@@ -134,8 +146,10 @@ type
     mnuNone: TMenuItem;
     mnuLanguage: TMenuItem;
     mnuTabs: TMenuItem;
+    pnlLeft: TPanel;
     pumTabs: TPopupMenu;
     PrintDialog1: TPrintDialog;
+    SelectDirectoryDialog1: TSelectDirectoryDialog;
     SortAscending: TAction;
     actPrint: TAction;
     SortDescending: TAction;
@@ -224,8 +238,10 @@ type
     SearchFindNext: TAction;
     SearchReplace: TAction;
     lbMessage: TStaticText;
+    splLeftBar: TSplitter;
     StatusBar: TStatusBar;
     MainToolbar: TToolBar;
+    ToolBar1: TToolBar;
     ToolButton1: TToolButton;
     ToolButton10: TToolButton;
     ToolButton11: TToolButton;
@@ -239,6 +255,9 @@ type
     ToolButton19: TToolButton;
     ToolButton2: TToolButton;
     ToolButton20: TToolButton;
+    ToolButton21: TToolButton;
+    ToolButton22: TToolButton;
+    ToolButton23: TToolButton;
     ToolButton3: TToolButton;
     tbbClose: TToolButton;
     tbbCloseAll: TToolButton;
@@ -253,7 +272,6 @@ type
     procedure actCloseAllExceptThisExecute(Sender: TObject);
     procedure actCloseBeforeExecute(Sender: TObject);
     procedure ActCompressSpacesExecute(Sender: TObject);
-    procedure actDarkIconThemeExecute(Sender: TObject);
     procedure actFileNameToClipboardExecute(Sender: TObject);
     procedure actFindLongestLineExecute(Sender: TObject);
     procedure actFontExecute(Sender: TObject);
@@ -273,7 +291,11 @@ type
     procedure actPathToClipboardExecute(Sender: TObject);
     procedure actPrintExecute(Sender: TObject);
     procedure actQuoteExecute(Sender: TObject);
+    procedure FileBrowseFolderExecute(Sender: TObject);
+    procedure FileCloseFolderExecute(Sender: TObject);
+    procedure FileReloadFolderExecute(Sender: TObject);
     procedure actShowRowNumberExecute(Sender: TObject);
+    procedure actShowToolbarExecute(Sender: TObject);
     procedure actSQLPrettyPrintExecute(Sender: TObject);
     procedure actTabToSpaceExecute(Sender: TObject);
     procedure actToggleSpecialCharExecute(Sender: TObject);
@@ -304,9 +326,15 @@ type
     procedure FileNewExecute(Sender: TObject);
     procedure FileOpenAccept(Sender: TObject);
     procedure FileOpenBeforeExecute(Sender: TObject);
+    procedure FileOpenFolderExecute(Sender: TObject);
     procedure FileReloadExecute(Sender: TObject);
     procedure FileSaveAsAccept(Sender: TObject);
     procedure FileSaveExecute(Sender: TObject);
+    procedure FilesTreeCreateNodeClass(Sender: TCustomTreeView; var NodeClass: TTreeNodeClass);
+    procedure FilesTreeDblClick(Sender: TObject);
+    procedure FilesTreeExpanding(Sender: TObject; Node: TTreeNode; var AllowExpansion: Boolean);
+    procedure FilesTreeGetImageIndex(Sender: TObject; Node: TTreeNode);
+    procedure FilesTreeGetSelectedIndex(Sender: TObject; Node: TTreeNode);
     procedure FindDialogClose(Sender: TObject; var CloseAction:TCloseAction);
     procedure FontDialogApplyClicked(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -351,6 +379,7 @@ type
     ReplaceDialog: TCustomReplaceDialog;
     rect: TRect;
     ws : TWindowState;
+    BrowsingPath: string;
 
     function AskFileName(Editor: TEditor): boolean;
     procedure ContextPopup(Sender: TObject; MousePos: TPoint;
@@ -358,6 +387,9 @@ type
 
     function EditorAvalaible: boolean; inline;
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
+    procedure ExpandNode(NodeDir: TFileTreeNode; const Path: string);
+    procedure LoadDir(Path: string);
+    procedure LoadImageList;
     procedure mnuLangClick(Sender: TObject);
     procedure mnuThemeClick(Sender: TObject);
     procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
@@ -365,7 +397,6 @@ type
     procedure NewEditor(Editor: TEditor);
     procedure RecentMacroEvent(Sender: TObject; const AFileName: string; const AData: TObject);
     procedure ServerReceivedParams(Sender: TBaseSingleInstance; aParams: TStringList);
-    procedure SetIconTheme(Dark: boolean);
     procedure ShowTabs(Sender: TObject);
     Procedure SetupSaveDialog(SaveMode: TSaveMode);
     procedure SynMacroRecListChange(Sender: TObject);
@@ -524,6 +555,7 @@ begin
   actFullNameToClipBoard.Enabled := Avail and not ed.Untitled;
   actFileNameToClipboard.Enabled := Avail and not ed.Untitled;
   actPathToClipboard.Enabled := Avail and not ed.Untitled;
+  FileBrowseFolder.Enabled := Avail and not ed.Untitled;
   ExportHtmlToFile.Enabled:= Avail;
   ExportRTFToFile.Enabled:= Avail;
   actGoTo.Enabled := Avail and (ed.Lines.Count > 0);
@@ -624,6 +656,25 @@ begin
   Ed.TextOperation(@QuotedStr, [tomLines]);
 end;
 
+procedure TfMain.FileBrowseFolderExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  Ed := EditorFactory.CurrentEditor;
+  LoadDir(ExtractFileDir(Ed.FileName));
+end;
+
+procedure TfMain.FileCloseFolderExecute(Sender: TObject);
+begin
+  pnlLeft.Visible := false;
+  splLeftBar.Visible := false;
+end;
+
+procedure TfMain.FileReloadFolderExecute(Sender: TObject);
+begin
+  LoadDir(BrowsingPath);
+end;
+
 procedure TfMain.actShowRowNumberExecute(Sender: TObject);
 var
   i: Integer;
@@ -637,11 +688,11 @@ begin
 
 end;
 
-procedure TfMain.actDarkIconThemeExecute(Sender: TObject);
+procedure TfMain.actShowToolbarExecute(Sender: TObject);
 begin
-  actDarkIconTheme.Checked := not actDarkIconTheme.Checked;
-  SetIconTheme(actDarkIconTheme.Checked);
-  ConfigObj.AppSettings.Dark:=actDarkIconTheme.Checked;
+  actShowToolbar.Checked := not actShowToolbar.Checked;
+  ConfigObj.ShowToolbar := actShowToolbar.Checked;
+  MainToolbar.Visible := ConfigObj.ShowToolbar;
 
 end;
 
@@ -949,6 +1000,15 @@ begin
 
 end;
 
+procedure TfMain.FileOpenFolderExecute(Sender: TObject);
+begin
+  if SelectDirectoryDialog1.Execute then
+    begin
+      LoadDir(SelectDirectoryDialog1.FileName);
+    end;
+
+end;
+
 procedure TfMain.FileReloadExecute(Sender: TObject);
 var
   Ed: TEditor;
@@ -1050,26 +1110,6 @@ begin
   ShowOnTop;
 end;
 
-Procedure TfMain.SetIconTheme(Dark: boolean);
-begin
-  if Dark then
-    begin
-      ActionList.Images := imgListDark;
-      MainToolbar.Images := imgListDark;
-      mnuMain.Images := imgListDark;
-      pumEdit.Images := imgListDark;
-      pumTabs.Images := imgListDark;
-    end
-  else
-    begin
-      ActionList.Images := imgList;
-      MainToolbar.Images := imgList;
-      mnuMain.Images := imgList;
-      pumEdit.Images := imgList;
-      pumTabs.Images := imgList;
-    end;
-end;
-
 procedure TfMain.FormCreate(Sender: TObject);
 var
   i: integer;
@@ -1081,6 +1121,9 @@ var
   ParamList: TstringList;
 
 begin
+
+  LoadImageList;
+
   Application.SingleInstance.OnServerReceivedParams := @ServerReceivedParams;
   MRU := TMRUMenuManager.Create(Self);
   MRU.MenuItem := mnuOpenRecent;
@@ -1088,7 +1131,7 @@ begin
   MRU.MaxRecent := 15;
   MRU.Recent.Clear;
   actShowRowNumber.Checked:=ConfigObj.ShowRowNumber;
-  actDarkIconTheme.Checked:=ConfigObj.AppSettings.DarkIconTheme;
+  actShowToolbar.Checked:=ConfigObj.ShowToolbar;
 
   ConfigObj.ReadStrings('Recent', 'Files', MRU.Recent);
   MRU.ShowRecentFiles;
@@ -1119,8 +1162,6 @@ begin
   SynMacroRec.Macros.MacroNames(Macros.Recent);
   Macros.ShowRecentFiles;
   SynMacroRec.OnListChange := @SynMacroRecListChange;
-
-  SetIconTheme(ConfigObj.AppSettings.DarkIconTheme);
 
   //// move close button to right
   //tbbCloseAll.Align := alRight;
@@ -1185,11 +1226,58 @@ begin
   if EditorFactory.PageCount = 0 then
     FileNew.Execute;
 
+  pnlLeft.Visible := false;
+  splLeftBar.Visible := false;
+
 end;
 
 procedure TfMain.FormDeactivate(Sender: TObject);
 begin
   //ActionList.State := asSuspended;
+end;
+
+procedure TfMain.LoadImageList;
+var
+  s:TResourceStream;
+  iconRender: TIconRenderer;
+{$R ovotextfont.res}
+
+begin
+  S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
+  imgList.BeginUpdate;
+  imgList.Clear;
+  imgList.Scaled :=false;;
+  imgList.Height := MulDiv(24, Screen.PixelsPerInch, 96);
+  imgList.Width := imgList.Height;
+
+  iconRender:= TIconRenderer.Create(S);
+  iconRender.Color := GetSysColor(COLOR_BTNTEXT);
+  iconRender.SetSize(24, 22);
+  iconRender.AddToImageList(imglist, [$41,$42,$43,$44,$45,  //0.. 4
+                                      $46,$47,$48,$49,$4a,  // .. 9
+                                      $4b,$4c,$4f,$4e,$4f,  // ..14
+                                      $50,$51,$52,$53,$54,  // ..19
+                                      $55,$56,$57,$58,$59,  // ..24
+                                      $5a,$61,$62,$63,$64,  // ..29
+                                      $65,$66,$67,$68,$69,  // ..34
+                                      $6a,$6b,$6c,$6d,$3b,  // ..39
+                                      $3c,$5b]);
+
+  imgList.EndUpdate;
+  dmMain.imgBookMark.BeginUpdate;
+  dmMain.imgBookMark.Clear;
+  dmMain.imgBookMark.Height := MulDiv(16, Screen.PixelsPerInch, 96);
+  dmMain.imgBookMark.Width := dmMain.imgBookMark.Height;
+
+  iconRender.Color := GetSysColor(COLOR_HIGHLIGHT);
+  iconRender.SetSize(16, 16);
+  iconRender.AddToImageList(dmMain.imgBookMark, [$30,$31,$32,$33,$34,
+                                                 $35,$36,$37,$38,$39,
+                                                 $3a]);
+  iconRender.Color := GetSysColor(COLOR_BTNTEXT);
+  iconRender.AddToImageList(dmMain.imgBookMark, [$3b,$3c]);
+
+  dmMain.imgBookMark.EndUpdate;
 end;
 
 procedure TfMain.mnuLangClick(Sender: TObject);
@@ -1766,5 +1854,120 @@ begin
     end;
 
 end;
+
+procedure TfMain.LoadDir(Path:string);
+begin
+  pnlLeft.Visible := true;
+  splLeftBar.Visible := true;
+  BrowsingPath := Path;
+  FilesTree.Items.Clear;
+  ExpandNode(nil,Path);
+end;
+
+procedure TfMain.ExpandNode(NodeDir: TFileTreeNode; const Path:string);
+var
+  DirList: TstringList;
+  FileList :TstringList;
+  i,j: integer;
+  CurrentPath: String;
+  NewNode: TFileTreeNode;
+begin
+  DirList:=TStringList.Create;
+  FileList:=TStringList.Create;
+  FileList.OwnsObjects := true;
+  CurrentPath:=IncludeTrailingPathDelimiter(Path);
+  try
+    BuildFolderList(CurrentPath, DirList);
+    DirList.Sort;
+    for i := 0 to DirList.Count -1 do
+      begin
+        NewNode:=TFileTreeNode(FilesTree.items.AddChild(NodeDir, ExtractFileName(DirList[i])));
+        NewNode.FullPath:=DirList[i];
+        NewNode.isDir:=True;
+        NewNode.HasChildren := true;
+      end;
+    FileList.Clear;
+    BuildFileList(IncludeTrailingPathDelimiter(CurrentPath)+AllFilesMask,
+                   faAnyFile, FileList, False);
+    FileList.Sort;
+
+    for j := 0 to FileList.Count -1 do
+      begin
+        NewNode:=TFileTreeNode(FilesTree.items.AddChild(NodeDir, ExtractFileName(FileList[j])));
+        NewNode.FullPath:=FileList[j];
+        NewNode.isDir:=False;
+      end;
+
+  finally
+    DirList.Free;
+    FileList.Free;
+  end;
+
+//  if PathHistory.IndexOf(Path) < 0 then
+//     PathIndex := PathHistory.Add(Path);
+
+end;
+
+procedure TfMain.FilesTreeCreateNodeClass(Sender: TCustomTreeView;
+  var NodeClass: TTreeNodeClass);
+begin
+  NodeClass:= TFileTreeNode;
+end;
+
+procedure TfMain.FilesTreeDblClick(Sender: TObject);
+var
+  Node: TFileTreeNode;
+begin
+  Node := TFileTreeNode(FilesTree.Selected);
+  if Node = nil then
+     exit;
+
+  if Node.isDir then
+    exit
+  else
+     begin
+        EditorFactory.AddEditor(Node.FullPath);
+     end;
+
+end;
+
+procedure TfMain.FilesTreeExpanding(Sender: TObject; Node: TTreeNode; var AllowExpansion: Boolean);
+var
+  myNode: TFileTreeNode;
+begin
+  myNode := TFileTreeNode(Node);
+  if myNode = nil then
+     exit;
+
+  if (myNode.isDir) then
+    ExpandNode(MyNode, myNode.FullPath);
+
+end;
+
+procedure TfMain.FilesTreeGetImageIndex(Sender: TObject; Node: TTreeNode);
+var
+  myNode: TFileTreeNode;
+begin
+  myNode := TFileTreeNode(Node);
+  if myNode = nil then
+     exit;
+
+  if (myNode.isDir) then
+    myNode.ImageIndex := 11
+  else
+    myNode.ImageIndex := 12;
+
+end;
+
+procedure TfMain.FilesTreeGetSelectedIndex(Sender: TObject; Node: TTreeNode);
+var
+  myNode: TFileTreeNode;
+begin
+  myNode := TFileTreeNode(Node);
+  if myNode = nil then
+     exit;
+  myNode.SelectedIndex:=myNode.ImageIndex;
+end;
+
 
 end.

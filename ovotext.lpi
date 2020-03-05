@@ -174,10 +174,10 @@
         <PackageName Value="LazUtils"/>
       </Item1>
       <Item2>
-        <PackageName Value="sparta_generics"/>
+        <PackageName Value="Printer4Lazarus"/>
       </Item2>
       <Item3>
-        <PackageName Value="Printer4Lazarus"/>
+        <PackageName Value="sparta_generics"/>
       </Item3>
       <Item4>
         <PackageName Value="FCL"/>

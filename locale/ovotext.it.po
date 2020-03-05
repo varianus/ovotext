@@ -1,10 +1,10 @@
-# varianus <marcocas@gmail.com>, 2019.
+# varianus <marcocas@gmail.com>, 2019, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2019-12-05 19:15+0100\n"
+"PO-Revision-Date: 2020-03-01 17:30+0100\n"
 "Last-Translator: Marco Caselli <marcocas@gmail.com>\n"
 "Language-Team: Marco Caselli\n"
 "Language: it\n"
@@ -145,6 +145,10 @@ msgstr "Elimina macro \"%s\" ?"
 #: stringcostants.rsmacronewname
 msgid "Select a new name for macro"
 msgstr "Seleziona un nuovo nome per la macro"
+
+#: stringcostants.rsmacrosaving
+msgid "Select a name for macro"
+msgstr "Seleziona un nome per la macro"
 
 #: stringcostants.rsnewfile
 #, object-pascal-format
@@ -330,65 +334,6 @@ msgstr "Numero linea"
 msgid "Column number"
 msgstr "Numero colonna"
 
-#: tfabout.blicense.caption
-msgid "&License"
-msgstr "&Licenza"
-
-#: tfabout.caption
-msgid "About"
-msgstr "Informazioni su"
-
-#: tfabout.label1.caption
-msgctxt "tfabout.label1.caption"
-msgid "OvoText"
-msgstr "OvoText"
-
-#: tfabout.label11.caption
-msgid "Icons are from "
-msgstr "Icone prese da "
-
-#: tfabout.label2.caption
-msgctxt "tfabout.label2.caption"
-msgid "Version"
-msgstr "Versione"
-
-#: tfabout.label3.caption
-msgid "Author : Marco Caselli"
-msgstr "Autore : Marco Caselli"
-
-#: tfabout.label4.caption
-msgid "Another text editor"
-msgstr "Un altro editor di testo"
-
-#: tfabout.label5.caption
-msgid "Lazarus"
-msgstr "Lazarus"
-
-#: tfabout.label6.caption
-msgid "Home Page"
-msgstr "Sito Web"
-
-#: tfabout.label7.caption
-msgid "FPC"
-msgstr "FPC"
-
-#: tfabout.label8.caption
-msgid "Build Date"
-msgstr "Data Build"
-
-#: tfabout.lhomepage.caption
-msgid "https://github.com/varianus/ovotext"
-msgstr "https://github.com/varianus/ovotext"
-
-#: tfabout.lhomepage2.caption
-msgid "https://github.com/KDE/breeze-icons"
-msgstr "https://github.com/KDE/breeze-icons"
-
-#: tfabout.lversion.caption
-msgctxt "tfabout.lversion.caption"
-msgid "Version"
-msgstr "Versione"
-
 #: tfmacroeditor.btndelete.caption
 msgctxt "tfmacroeditor.btndelete.caption"
 msgid "Delete"
@@ -469,9 +414,9 @@ msgctxt "tfmain.actcompressspaces.hint"
 msgid "Reduce multiple spaces"
 msgstr "Rimuovi spazi multipli"
 
-#: tfmain.actdarkicontheme.caption
-msgid "Dark Icon Theme"
-msgstr "Icone per tema scuro"
+#: tfmain.actfilenametoclipboard.caption
+msgid "File Name only"
+msgstr "Solo Nome File"
 
 #: tfmain.actfindlongestline.caption
 msgid "Find Longest Line"
@@ -554,6 +499,10 @@ msgstr "Registra"
 msgid "Begin macro recording"
 msgstr "Inizia registrazione macro"
 
+#: tfmain.actmacrosave.caption
+msgid "Save current recorded macro"
+msgstr "Salva la macro registrata"
+
 #: tfmain.actmacrostop.caption
 msgid "Stop"
 msgstr "Stop"
@@ -584,6 +533,10 @@ msgstr "Metti fra apici"
 #: tfmain.actshowrownumber.caption
 msgid "Show row numbers"
 msgstr "Mostra numeri di linea"
+
+#: tfmain.actshowtoolbar.caption
+msgid "Show toolbar"
+msgstr "Mostra toolbar"
 
 #: tfmain.actsqlprettyprint.caption
 msgid "Beautify SQL"
@@ -743,6 +696,10 @@ msgstr "Chiudi Tutto"
 msgid "Close all tab"
 msgstr "Chiudi tutte le schede"
 
+#: tfmain.fileclosefolder.caption
+msgid "Close Folder"
+msgstr "Chiudi cartella"
+
 #: tfmain.fileexit.caption
 msgid "Exit"
 msgstr "Esci"
@@ -769,10 +726,18 @@ msgstr "&Apri…"
 msgid "Open file"
 msgstr "Apri file"
 
+#: tfmain.fileopenfolder.caption
+msgid "Open Folder…"
+msgstr "Apri cartella…"
+
 #: tfmain.filereload.caption
 msgctxt "tfmain.filereload.caption"
 msgid "Reload"
 msgstr "Ricarica"
+
+#: tfmain.filereloadfolder.caption
+msgid "Reload Folder"
+msgstr "Ricarica Cartella"
 
 #: tfmain.filesave.caption
 msgctxt "tfmain.filesave.caption"

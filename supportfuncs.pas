@@ -50,6 +50,7 @@ function CompactXML(const S: string): string;
 function FormatJson(const S: string): string;
 function CompactJson(const S: string): string;
 function FormatSQL(const S: string): string;
+function BuildFolderList(const Path: string; const List: TStrings): boolean;
 function BuildFileList(const Path: string; const Attr: integer; const List: TStrings; Recurring: boolean): boolean;
 function DecodeExtendedSearch(S: string): string;
 
@@ -752,6 +753,50 @@ begin
     Result := StrMatches(AnsiUpperCase(Mask), AnsiUpperCase(FileName));
 end;
 
+function BuildFolderList(const Path: string; const List: TStrings): boolean;
+var
+  SearchRec: TSearchRec;
+  Directory: string;
+begin
+  Assert(List <> nil);
+  {* extract the Directory *}
+  Directory := ExtractFileDir(Path);
+
+  {* files can be searched in the current directory *}
+  if Directory <> '' then
+    begin
+       Directory := IncludeTrailingPathDelimiter(Directory);
+    end;
+
+  {* search all files in the directory *}
+  Result := FindFirstUTF8(Directory + AllFilesMask, faDirectory, SearchRec) = 0;
+
+  List.BeginUpdate;
+  try
+    while Result do
+      begin
+        if (SearchRec.Name <> '.') and
+           (SearchRec.Name <> '..') and
+           ((SearchRec.Attr and faDirectory) = faDirectory)  then
+          begin
+          List.Add(Directory + SearchRec.Name);
+          end;
+
+      case FindNextUTF8(SearchRec) of
+        0: ;
+        2: //ERROR_NO_MORE_FILES:
+          Break;
+        else
+          Result := False;
+        end;
+      end;
+  finally
+    FindCloseUTF8(SearchRec);
+    List.EndUpdate;
+  end;
+end;
+
+
 function BuildFileList(const Path: string; const Attr: integer; const List: TStrings; Recurring: boolean): boolean;
 var
   SearchRec: TSearchRec;
@@ -794,6 +839,7 @@ begin
         for IndexMask := 0 to MaskList.Count - 1 do
           if (SearchRec.Name <> '.') and (SearchRec.Name <> '..') and
             ((SearchRec.Attr and Attr) = (SearchRec.Attr and faAnyFile)) and
+            ((searchrec.Attr and faDirectory) <> faDirectory) and
             IsFileNameMatch(SearchRec.Name, MaskList.Strings[IndexMask], False) then
           begin
             List.Add(Directory + SearchRec.Name);

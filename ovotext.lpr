@@ -28,12 +28,11 @@ uses
   Forms, DefaultTranslator, singleinstance,
   printer4lazarus, SynEditPrintExtProcs,
   //projects unit
-  umain, uabout, udmmain, Stringcostants, SupportFuncs, config,
-  uCheckFileChange, udglgoto,  simplemrumanager, uMacroEditor, uActionMacro,
-  uReplaceMacro, uMacroRecorder, ReplaceDialog, LazLogger, SimpleSingleInstance, JsonTools, umacroplayback;
+  umain, uabout, udmmain, Stringcostants, SupportFuncs, config, uCheckFileChange, udglgoto, simplemrumanager,
+  uMacroEditor, uActionMacro, uReplaceMacro, uMacroRecorder, ReplaceDialog, LazLogger,
+  SimpleSingleInstance, JsonTools, umacroplayback, iconloader;
 
 {$R *.res}
-
 begin
   Application.SingleInstanceClass:= DefaultSingleInstanceClass;
   Application.SingleInstanceEnabled:= True;
