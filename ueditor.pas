@@ -798,9 +798,12 @@ begin
   end;
 
   Sheet := TEditorTabSheet.Create(Self);
+  Sheet.DoubleBuffered := DoubleBuffered;
   Sheet.PageControl := Self;
 
   Result := TEditor.Create(Sheet);
+  Result.DoubleBuffered := DoubleBuffered;
+
   Result.Font.Assign(ConfigObj.Font);
   DefaultAttr := ConfigObj.ReadFontAttributes('Schema/Default/Text/', FontAttributes());
 
@@ -1101,6 +1104,8 @@ end;
 constructor TEditorFactory.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  DoubleBuffered := true;
+  //Style :=  tsFlatButtons;
   FWatcher := TFileWatcher.Create;
   FWatcher.OnFileStateChange := @OnFileChange;
   fUntitledCounter := 0;
