@@ -5,7 +5,7 @@ object fMain: TfMain
   Width = 945
   AllowDropFiles = True
   Caption = 'OvoText'
-  ClientHeight = 689
+  ClientHeight = 696
   ClientWidth = 945
   Font.Height = -12
   Menu = mnuMain
@@ -24,8 +24,8 @@ object fMain: TfMain
   Visible = True
   object StatusBar: TStatusBar
     Left = 0
-    Height = 19
-    Top = 670
+    Height = 23
+    Top = 673
     Width = 945
     Panels = <    
       item
@@ -203,16 +203,16 @@ object fMain: TfMain
   end
   object pnlLeft: TPanel
     Left = 0
-    Height = 618
+    Height = 621
     Top = 52
     Width = 189
     Align = alLeft
-    ClientHeight = 618
+    ClientHeight = 621
     ClientWidth = 189
     TabOrder = 3
     object FilesTree: TTreeView
       Left = 1
-      Height = 588
+      Height = 591
       Top = 29
       Width = 187
       Align = alClient
@@ -258,7 +258,7 @@ object fMain: TfMain
   end
   object splLeftBar: TSplitter
     Left = 189
-    Height = 618
+    Height = 621
     Top = 52
     Width = 5
   end
@@ -436,6 +436,9 @@ object fMain: TfMain
         Caption = 'Others'
         object MenuItem71: TMenuItem
           Action = actQuote
+        end
+        object MenuItem99: TMenuItem
+          Action = actUnQuote
         end
       end
       object MenuItem68: TMenuItem
@@ -980,7 +983,7 @@ object fMain: TfMain
     object actQuote: TAction
       Tag = 1
       Category = 'Tools'
-      Caption = 'Quote'
+      Caption = 'Quote lines'
       OnExecute = actQuoteExecute
     end
     object actJSONPrettyPrint: TAction
@@ -1145,6 +1148,11 @@ object fMain: TfMain
       Category = 'File'
       Caption = 'Browse Folder'
       OnExecute = FileBrowseFolderExecute
+    end
+    object actUnQuote: TAction
+      Category = 'Tools'
+      Caption = 'Unquote lines'
+      OnExecute = actUnQuoteExecute
     end
   end
   object SelectDirectoryDialog1: TSelectDirectoryDialog
