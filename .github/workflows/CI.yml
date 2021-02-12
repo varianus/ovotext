@@ -20,21 +20,21 @@ jobs:
             LAZ_VER: 2.0.6
             LAZ_OPT: "--os=win32 --cpu=i386"
             ARTIFACT: "ovotext.exe"
-            lazbuild: "c:/lazarus/lazbuild.exe":  
+            lazbuild: "c:/lazarus/lazbuild.exe"  
 
           - os: windows-latest
             name: Windows 64
             LAZ_VER: 2.0.6
             LAZ_OPT: "--os=win64 --cpu=x86_64"
             ARTIFACT: "ovotext.exe"
-            lazbuild: "c:/lazarus/lazbuild.exe":  
+            lazbuild: "c:/lazarus/lazbuild.exe"  
 
           - os: ubuntu-latest
             name: Linux 64
             LAZ_VER: 2.0.6
             LAZ_OPT: "--os=linux --cpu=x86_64"
             ARTIFACT: "ovotext"
-            lazbuild: "lazbuild":  
+            lazbuild: "lazbuild"  
 
     steps:
     - uses: actions/checkout@v1
