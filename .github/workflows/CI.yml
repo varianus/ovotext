@@ -20,18 +20,21 @@ jobs:
             LAZ_VER: 2.0.6
             LAZ_OPT: "--os=win32 --cpu=i386"
             ARTIFACT: "ovotext.exe"
+            lazbuild: "c:/lazarus/lazbuild.exe":  
 
           - os: windows-latest
             name: Windows 64
             LAZ_VER: 2.0.6
             LAZ_OPT: "--os=win64 --cpu=x86_64"
             ARTIFACT: "ovotext.exe"
+            lazbuild: "c:/lazarus/lazbuild.exe":  
 
           - os: ubuntu-latest
             name: Linux 64
             LAZ_VER: 2.0.6
             LAZ_OPT: "--os=linux --cpu=x86_64"
             ARTIFACT: "ovotext"
+            lazbuild: "lazbuild":  
 
     steps:
     - uses: actions/checkout@v1
@@ -74,8 +77,7 @@ jobs:
                 os.system('wget --progress=dot:mega -P "%s" %s' % (LAZ_DOWNLOAD_DIR, asset))
             if OS_NAME == 'Windows':
                  # Add Lazarus directory to PATH
-                 if os.system('echo ::add-path::C:\\Lazarus\\') != 0:
-                     return False
+                 os.environ['PATH'] += os.pathsep + 'C:/lazarus/;'
                  # Install all .exe files
                  process_file = lambda f: (not f.endswith('.exe')) or os.system('%s /VERYSILENT /DIR="C:\Lazarus"' % (f)) == 0
             elif OS_NAME == 'Linux':
@@ -100,5 +102,5 @@ jobs:
         sys.exit(int(not main()))
     - name: Build OvoText
       run: |
-         lazbuild ${{ env.LAZ_OPT }} --build-mode=Release "ovotext.lpi"
+         ${{ matrix.config.lazbuild }}  ${{ env.LAZ_OPT }} --build-mode=Release "ovotext.lpi"
      
