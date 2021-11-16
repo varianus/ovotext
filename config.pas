@@ -44,7 +44,10 @@ uses
   SynHighlighterSml, SynHighlighterIDL, SynHighlighterCobol, SynHighlighterGWS,
   SynHighlighterAsm, SynHighlighterLua, SynHighlighterFortran,
   SynHighlighterProlog, SynHighlighterRC, SynHighlighterR,
-  SynHighlighterMD;
+  SynHighlighterMD,
+  // from Pinote Editor
+  MySEHighlighterGO, MySEHighlighterRust
+  ;
 
 type
   RHighlighter = record
@@ -54,7 +57,7 @@ type
   end;
 
 const
-  HIGHLIGHTERCOUNT = 49;
+  HIGHLIGHTERCOUNT = 51;
   ARHighlighter: array [0..HIGHLIGHTERCOUNT - 1] of RHighlighter = (
     (HLClass: TSynAWKSyn; Filter: SYNS_FilterAWK; HL: nil),
     (HLClass: TSynBaanSyn; Filter: SYNS_FilterBaan; HL: nil),
@@ -69,6 +72,7 @@ const
     (HLClass: TSynFortranSyn; Filter: SYNS_FilterFortran; HL: nil),
     (HLClass: TSynFoxproSyn; Filter: SYNS_FilterFoxpro; HL: nil),
     (HLClass: TSynDmlSyn; Filter: SYNS_FilterGembase; HL: nil),
+    (HLClass: TMySEHighlighterGo; Filter: SYNS_FilterGO; HL: nil),
     (HLClass: TSynGWScriptSyn; Filter: SYNS_FilterGWS; HL: nil),
     (HLClass: TSynHaskellSyn; Filter: SYNS_FilterHaskell; HL: nil),
     (HLClass: TSynHP48Syn; Filter: SYNS_FilterHP48; HL: nil),
@@ -96,6 +100,7 @@ const
     (HLClass: TSynRSyn; Filter: SYNS_FilterR; HL: nil),
     (HLClass: TSynRCSyn; Filter: SYNS_FilterRC; HL: nil),
     (HLClass: TSynRubySyn; Filter: SYNS_FilterRuby; HL: nil),
+    (HLClass: TMySEHighlighterRust; Filter: SYNS_FilterRust; HL: nil),
     (HLClass: TSynSQLSyn; Filter: SYNS_FilterSQL; HL: nil),
     (HLClass: TSynSMLSyn; Filter: SYNS_FilterSML; HL: nil),
     (HLClass: TSynTclTkSyn; Filter: SYNS_FilterTclTk; HL: nil),
@@ -104,7 +109,8 @@ const
     (HLClass: TSynVBSyn; Filter: SYNS_FilterVisualBASIC; HL: nil),
     (HLClass: TSynVrml97Syn; Filter: SYNS_FilterVrml97; HL: nil),
     (HLClass: TSynAsmSyn; Filter: SYNS_FilterX86Asm; HL: nil),
-    (HLClass: TSynXMLSyn; Filter: SYNS_FilterXML; HL: nil));
+    (HLClass: TSynXMLSyn; Filter: SYNS_FilterXML; HL: nil)
+     );
 
 
 type
