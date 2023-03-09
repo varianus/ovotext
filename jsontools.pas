@@ -133,6 +133,8 @@ type
     function Add(const Name: string; B: Boolean): TJsonNode; overload;
     function Add(const Name: string; const N: Double): TJsonNode; overload;
     function Add(const Name: string; const S: string): TJsonNode; overload;
+    { Convert to an array and add an item }
+    function Add: TJsonNode; overload;
     { Delete a child node by index or name }
     procedure Delete(Index: Integer); overload;
     procedure Delete(const Name: string); overload;
@@ -145,6 +147,8 @@ type
     function Child(Index: Integer): TJsonNode; overload;
     { Get a child node by name. If no node is found nil will be returned. }
     function Child(const Name: string): TJsonNode; overload;
+    { Search for a node using a path string and return true if exists }
+    function Exists(const Path: string): Boolean;
     { Search for a node using a path string }
     function Find(const Path: string; AllowCreate:boolean=false): TJsonNode;
     { Search for a node using a path string, if found return AsString value, else default value }
@@ -200,7 +204,7 @@ function JsonStringValidate(const S: string): Boolean;
 function JsonStringEncode(const S: string): string;
 { JsonStringEncode converts a json string to a pascal string }
 function JsonStringDecode(const S: string): string;
-{ JsonStringEncode converts a json string to xml }
+{ JsonToXml converts a json string to xml }
 function JsonToXml(const S: string): string;
 
 implementation
@@ -340,15 +344,15 @@ begin
             T.Kind := tkError;
             Exit(False);
           end;
-      end;
-    until C^ in [#0, #10, #13, '"'];
-    if C^ = '"' then
+      end
+      else if C^ = '"' then
     begin
       Inc(C);
       T.Tail := C;
       T.Kind := tkString;
       Exit(True);
     end;
+    until C^ in [#0, #10, #13];
     T.Tail := C;
     T.Kind := tkError;
     Exit(False);
@@ -891,6 +895,11 @@ begin
   FValue := FloatToStr(Value, JsonSettings);
 end;
 
+function TJsonNode.Add: TJsonNode;
+begin
+  Result := AsArray.Add('');
+end;
+
 function TJsonNode.Add(Kind: TJsonNodeKind; const Name, Value: string): TJsonNode;
 var
   S: string;
@@ -966,6 +975,7 @@ begin
   N := Child(Index);
   if N <> nil then
   begin
+    N.Free;
     FList.Delete(Index);
     if FList.Count = 0 then
     begin
@@ -982,6 +992,7 @@ begin
   N := Child(Name);
   if N <> nil then
   begin
+    N.Free;
     FList.Remove(N);
     if FList.Count = 0 then
     begin
@@ -1037,6 +1048,11 @@ begin
       if N.FName = Name then
         Exit(N);
     end;
+end;
+
+function TJsonNode.Exists(const Path: string): Boolean;
+begin
+  Result := Find(Path) <> nil;
 end;
 
 function TJsonNode.Find(const Path: string; AllowCreate:boolean=false): TJsonNode;
@@ -1543,4 +1559,3 @@ initialization
   JsonSettings := DefaultFormatSettings;
   JsonSettings.DecimalSeparator := '.';
 end.
-
