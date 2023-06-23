@@ -210,7 +210,7 @@ uses
 {$IFDEF SYN_CLX}
   QSynEditStrConst;
 {$ELSE}
-  SynEditStrConst;
+  SynEditStrConst, SynEditStrConstExtra;
 {$ENDIF}
 
 const
@@ -954,4 +954,4 @@ initialization
 {$IFNDEF SYN_CPPB_1}
   RegisterPlaceableHighlighter(TSynSMLSyn);
 {$ENDIF}
-end.
+end.

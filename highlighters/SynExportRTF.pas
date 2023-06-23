@@ -88,7 +88,7 @@ implementation
 
 uses
   SysUtils,
-  SynEditStrConst;
+  SynEditStrConst,SynEditStrConstExtra;
 
 { TSynExporterRTF }
 

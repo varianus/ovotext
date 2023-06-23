@@ -191,7 +191,7 @@ type
 implementation
 
 uses
-  SynEditStrConst;
+  SynEditStrConst,SynEditStrConstExtra;
 
 var
   Identifiers: array[#0..#255] of ByteBool;
@@ -969,4 +969,4 @@ initialization
   MakeIdentTable;
   RegisterPlaceableHighlighter(TSynModelicaSyn);
 
-end.
+end.

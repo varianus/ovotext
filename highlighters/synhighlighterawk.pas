@@ -147,7 +147,7 @@ type
 implementation
 
 uses
-  SynEditStrConst;
+  SynEditStrConst, SynEditStrConstExtra;
 
 procedure TSynAWKSyn.MakeSyntaxList;
 begin
@@ -610,4 +610,4 @@ end;
 initialization
   RegisterPlaceableHighlighter(TSynAWKSyn);
 
-end.
+end.
