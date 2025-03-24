@@ -32,7 +32,7 @@ uses
   SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds,
   SynEditMouseCmds, SynEditLines, Stringcostants, Forms, Graphics, Config, udmmain,
   uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils,
-  ReplaceDialog, SupportFuncs, LCLVersion;
+  ReplaceDialog, SupportFuncs, LCLVersion, lazutilities;
 
 type
 
@@ -121,8 +121,6 @@ type
     property Editor: TEditor read FEditor;
     //--//
   end;
-
-
 
   TEditorFactory = class(TPageControl)
   private

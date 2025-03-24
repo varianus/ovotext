@@ -59,7 +59,7 @@ type
 
     function GetState: TSynMacroState;
     procedure pRecordActions(AAction: TBasicAction; var Handled: Boolean);
-    procedure MacroListChange(ASender: TObject; constref AItem: TMacro; AAction: TCollectionNotification);
+    procedure MacroListChange(ASender: TObject; const AItem: TMacro; AAction: TCollectionNotification);
     procedure pRecordSearchReplace(Sender: TObject; const ASearch, AReplace: string; AOptions: TMySynSearchOptions);
     procedure SynMacroRecStateChange(Sender: TObject);
     procedure SynMacroRecUserCommand(aSender: TCustomSynMacroRecorder; aCmd: TSynEditorCommand; var aEvent: TSynMacroEvent);
@@ -224,7 +224,7 @@ begin
   end;
 end;
 
-procedure TMacroRecorder.MacroListChange(ASender: TObject; constref AItem: TMacro; AAction: TCollectionNotification);
+procedure TMacroRecorder.MacroListChange(ASender: TObject; const AItem: TMacro; AAction: TCollectionNotification);
 begin
   if Assigned(fOnListChange) then
      fOnListChange(self);
