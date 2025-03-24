@@ -5,10 +5,12 @@ object fMain: TfMain
   Width = 945
   AllowDropFiles = True
   Caption = 'OvoText'
-  ClientHeight = 696
+  ClientHeight = 716
   ClientWidth = 945
   Font.Height = -12
   Menu = mnuMain
+  Position = poOwnerFormCenter
+  Visible = True
   OnActivate = FormActivate
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
@@ -19,13 +21,10 @@ object fMain: TfMain
   OnResize = FormResize
   OnShow = FormShow
   OnWindowStateChange = FormWindowStateChange
-  Position = poOwnerFormCenter
-  LCLVersion = '2.1.0.0'
-  Visible = True
   object StatusBar: TStatusBar
     Left = 0
     Height = 23
-    Top = 673
+    Top = 693
     Width = 945
     Panels = <    
       item
@@ -203,16 +202,16 @@ object fMain: TfMain
   end
   object pnlLeft: TPanel
     Left = 0
-    Height = 621
+    Height = 641
     Top = 52
     Width = 189
     Align = alLeft
-    ClientHeight = 621
+    ClientHeight = 641
     ClientWidth = 189
     TabOrder = 3
     object FilesTree: TTreeView
       Left = 1
-      Height = 591
+      Height = 611
       Top = 29
       Width = 187
       Align = alClient
@@ -225,12 +224,12 @@ object fMain: TfMain
       RowSelect = True
       ScrollBars = ssAutoBoth
       TabOrder = 0
+      Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
       OnCreateNodeClass = FilesTreeCreateNodeClass
       OnDblClick = FilesTreeDblClick
       OnExpanding = FilesTreeExpanding
       OnGetImageIndex = FilesTreeGetImageIndex
       OnGetSelectedIndex = FilesTreeGetSelectedIndex
-      Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
     end
     object ToolBar1: TToolBar
       Left = 1
@@ -258,7 +257,7 @@ object fMain: TfMain
   end
   object splLeftBar: TSplitter
     Left = 189
-    Height = 621
+    Height = 641
     Top = 52
     Width = 5
   end
@@ -371,8 +370,17 @@ object fMain: TfMain
       object MenuItem41: TMenuItem
         Caption = '-'
       end
-      object MenuItem46: TMenuItem
-        Action = actFullNameToClipBoard
+      object MenuItem100: TMenuItem
+        Caption = 'Send to clipboard'
+        object MenuItem46: TMenuItem
+          Action = actFullNameToClipBoard
+        end
+        object MenuItem101: TMenuItem
+          Action = actPathToClipboard
+        end
+        object MenuItem102: TMenuItem
+          Action = actFileNameToClipboard
+        end
       end
       object MenuItem47: TMenuItem
         Caption = '-'
@@ -696,32 +704,32 @@ object fMain: TfMain
       Caption = '&Cut'
       Hint = 'Cut'
       ImageIndex = 26
-      OnExecute = EditCutExecute
       ShortCut = 16472
+      OnExecute = EditCutExecute
     end
     object EditCopy: TEditCopy
       Category = 'Edit'
       Caption = '&Copy'
       Hint = 'Copy'
       ImageIndex = 25
-      OnExecute = EditCopyExecute
       ShortCut = 16451
+      OnExecute = EditCopyExecute
     end
     object EditPaste: TEditPaste
       Category = 'Edit'
       Caption = '&Paste'
       Hint = 'Paste'
       ImageIndex = 27
-      OnExecute = EditPasteExecute
       ShortCut = 16470
+      OnExecute = EditPasteExecute
     end
     object EditSelectAll: TEditSelectAll
       Category = 'Edit'
       Caption = 'Select &all'
       Hint = 'Select all'
       ImageIndex = 23
-      OnExecute = EditSelectAllExecute
       ShortCut = 16449
+      OnExecute = EditSelectAllExecute
     end
     object EditUndo: TEditUndo
       Category = 'Edit'
@@ -736,32 +744,32 @@ object fMain: TfMain
       Caption = '&Search…'
       Hint = 'Search for text'
       ImageIndex = 15
-      OnExecute = SearchFindExecute
       ShortCut = 16454
+      OnExecute = SearchFindExecute
     end
     object SearchReplace: TAction
       Category = 'Search'
       Caption = '&Replace…'
       Hint = 'Search and Replace'
       ImageIndex = 16
-      OnExecute = SearchReplaceExecute
       ShortCut = 16466
+      OnExecute = SearchReplaceExecute
     end
     object SearchFindPrevious: TAction
       Category = 'Search'
       Caption = '&Find Previous'
       Hint = 'Find Previous'
       ImageIndex = 18
-      OnExecute = SearchFindPreviousExecute
       ShortCut = 8306
+      OnExecute = SearchFindPreviousExecute
     end
     object SearchFindNext: TAction
       Category = 'Search'
       Caption = 'Find next'
       Hint = 'Find next occ'
       ImageIndex = 17
-      OnExecute = SearchFindNextExecute
       ShortCut = 114
+      OnExecute = SearchFindNextExecute
     end
     object FileOpen: TFileOpen
       Category = 'File'
@@ -786,8 +794,8 @@ object fMain: TfMain
       Enabled = False
       Hint = 'Redo'
       ImageIndex = 21
-      OnExecute = EditRedoExecute
       ShortCut = 24666
+      OnExecute = EditRedoExecute
     end
     object EditDelete: TEditDelete
       Category = 'Edit'
@@ -801,8 +809,8 @@ object fMain: TfMain
       DisableIfNoHandler = False
       Hint = 'New'
       ImageIndex = 1
-      OnExecute = FileNewExecute
       ShortCut = 16462
+      OnExecute = FileNewExecute
     end
     object FileClose: TAction
       Category = 'File'
@@ -810,8 +818,8 @@ object fMain: TfMain
       DisableIfNoHandler = False
       Hint = 'Close current tab'
       ImageIndex = 7
-      OnExecute = FileCloseExecute
       ShortCut = 16499
+      OnExecute = FileCloseExecute
     end
     object FileCloseAll: TAction
       Category = 'File'
@@ -827,8 +835,8 @@ object fMain: TfMain
       DisableIfNoHandler = False
       Hint = 'Save'
       ImageIndex = 3
-      OnExecute = FileSaveExecute
       ShortCut = 16467
+      OnExecute = FileSaveExecute
     end
     object actFont: TAction
       Category = 'Settings'
@@ -977,8 +985,8 @@ object fMain: TfMain
       Tag = 1
       Category = 'PrettyPrint'
       Caption = 'Beautify  XML'
-      OnExecute = actXMLPrettyPrintExecute
       ShortCut = 57432
+      OnExecute = actXMLPrettyPrintExecute
     end
     object actQuote: TAction
       Tag = 1
@@ -990,8 +998,8 @@ object fMain: TfMain
       Tag = 1
       Category = 'PrettyPrint'
       Caption = 'Beautify JSON'
-      OnExecute = actJSONPrettyPrintExecute
       ShortCut = 57418
+      OnExecute = actJSONPrettyPrintExecute
     end
     object actXMLCompact: TAction
       Tag = 1
@@ -1003,8 +1011,8 @@ object fMain: TfMain
       Tag = 1
       Category = 'PrettyPrint'
       Caption = 'Beautify SQL'
-      OnExecute = actSQLPrettyPrintExecute
       ShortCut = 57427
+      OnExecute = actSQLPrettyPrintExecute
     end
     object actPathToClipboard: TAction
       Category = 'Filename'
@@ -1080,20 +1088,23 @@ object fMain: TfMain
     object actZoomIn: TAction
       Category = 'Navigation'
       Caption = 'Zoom In'
-      OnExecute = actZoomInExecute
+      ImageIndex = 36
       ShortCut = 16491
+      OnExecute = actZoomInExecute
     end
     object actZoomOut: TAction
       Category = 'Navigation'
       Caption = 'Zoom Out'
-      OnExecute = actZoomOutExecute
+      ImageIndex = 33
       ShortCut = 16493
+      OnExecute = actZoomOutExecute
     end
     object actZoomReset: TAction
       Category = 'Navigation'
       Caption = 'Zoom Reset'
-      OnExecute = actZoomResetExecute
+      ImageIndex = 38
       ShortCut = 16480
+      OnExecute = actZoomResetExecute
     end
     object actJSONCompact: TAction
       Category = 'PrettyPrint'
@@ -1113,8 +1124,8 @@ object fMain: TfMain
     object actFullScreen: TAction
       Category = 'Settings'
       Caption = 'Toggle Fullscreen'
-      OnExecute = actFullScreenExecute
       ShortCut = 122
+      OnExecute = actFullScreenExecute
     end
     object actMacroSave: TAction
       Category = 'Macro'

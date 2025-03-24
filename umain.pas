@@ -85,8 +85,12 @@ type
     ExportRTFToClipBoard: TAction;
     ExportRTFToFile: TAction;
     FilesTree: TTreeView;
+    MenuItem100: TMenuItem;
+    MenuItem101: TMenuItem;
+    MenuItem102: TMenuItem;
     MenuItem28: TMenuItem;
     MenuItem29: TMenuItem;
+    MenuItem46: TMenuItem;
     MenuItem53: TMenuItem;
     MenuItem54: TMenuItem;
     MenuItem55: TMenuItem;
@@ -215,7 +219,6 @@ type
     MenuItem43: TMenuItem;
     MenuItem44: TMenuItem;
     MenuItem45: TMenuItem;
-    MenuItem46: TMenuItem;
     MenuItem47: TMenuItem;
     MenuItem48: TMenuItem;
     MenuItem49: TMenuItem;
@@ -1275,15 +1278,15 @@ begin
   iconRender:= TIconRenderer.Create(S);
   iconRender.Color := GetSysColor(COLOR_BTNTEXT);
   iconRender.SetSize(24, 22);
-  iconRender.AddToImageList(imglist, [$41,$42,$43,$44,$45,  //0.. 4
-                                      $46,$47,$48,$49,$4a,  // .. 9
-                                      $4b,$4c,$4f,$4e,$4f,  // ..14
-                                      $50,$51,$52,$53,$54,  // ..19
-                                      $55,$56,$57,$58,$59,  // ..24
-                                      $5a,$61,$62,$63,$64,  // ..29
-                                      $65,$66,$67,$68,$69,  // ..34
-                                      $6a,$6b,$6c,$6d,$3b,  // ..39
-                                      $3c,$5b]);
+  iconRender.AddToImageList(imglist, [$41,$42,$43,$44,$45,  // 0.. 4  A B C D E
+                                      $46,$47,$48,$49,$4a,  // 5.. 9  F G H I J
+                                      $4b,$4c,$4d,$4e,$4f,  //10..14  K L M N O
+                                      $50,$51,$52,$53,$54,  //15..19  P Q R S T
+                                      $55,$56,$57,$58,$59,  //20..24  U V W X Y
+                                      $5a,$61,$62,$63,$64,  //25..29  Z a b c d
+                                      $65,$66,$67,$68,$69,  //30..34  e f g h i
+                                      $6a,$6b,$6c,$6d,$3b,  //31..39  j k l m ;
+                                      $3c,$5b]);            //40..41  < [
 
   imgList.EndUpdate;
   dmMain.imgBookMark.BeginUpdate;
