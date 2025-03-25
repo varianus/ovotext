@@ -11,10 +11,11 @@ object CustomReplaceDialog: TCustomReplaceDialog
   Constraints.MinWidth = 480
   Font.Height = -12
   KeyPreview = True
-  OnClose = FormClose
-  OnCreate = FormCreate
   PopupMode = pmAuto
   Position = poMainFormCenter
+  LCLVersion = '4.99.0.0'
+  OnClose = FormClose
+  OnCreate = FormCreate
   object TextLabel: TLabel
     Left = 16
     Height = 15
@@ -192,8 +193,8 @@ object CustomReplaceDialog: TCustomReplaceDialog
     Top = 38
     Width = 89
     Caption = 'Replace With'
-    OnChange = cbReplaceChange
     TabOrder = 2
+    OnChange = cbReplaceChange
   end
   object EditFind: TComboBox
     AnchorSideTop.Side = asrCenter
@@ -205,8 +206,8 @@ object CustomReplaceDialog: TCustomReplaceDialog
     AutoComplete = True
     AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
     ItemHeight = 15
-    OnKeyDown = EditFindKeyDown
     TabOrder = 1
+    OnKeyDown = EditFindKeyDown
   end
   object EditReplace: TComboBox
     AnchorSideLeft.Side = asrBottom

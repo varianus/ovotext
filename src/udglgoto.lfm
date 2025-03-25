@@ -8,6 +8,7 @@ object dlgGoTo: TdlgGoTo
   ClientHeight = 149
   ClientWidth = 250
   Font.Height = -12
+  LCLVersion = '4.99.0.0'
   OnShow = FormShow
   object seLine: TSpinEdit
     Left = 139
@@ -16,9 +17,9 @@ object dlgGoTo: TdlgGoTo
     Width = 98
     Alignment = taRightJustify
     MaxValue = 1
-    OnChange = seLineChange
     TabOrder = 0
     Value = 1
+    OnChange = seLineChange
   end
   object Label1: TLabel
     Left = 16

@@ -9,6 +9,7 @@ object FMacroEditor: TFMacroEditor
   Constraints.MinHeight = 340
   Constraints.MinWidth = 250
   Font.Height = -12
+  LCLVersion = '4.99.0.0'
   OnClose = FormClose
   OnShow = FormShow
   inline SynEdit1: TSynEdit
@@ -536,8 +537,8 @@ object FMacroEditor: TFMacroEditor
         BorderSpacing.Top = 6
         BorderSpacing.Right = 6
         Caption = 'Rename'
-        OnClick = btnRenameClick
         TabOrder = 0
+        OnClick = btnRenameClick
       end
       object btnPlay: TButton
         AnchorSideLeft.Control = pnlButtons
@@ -557,8 +558,8 @@ object FMacroEditor: TFMacroEditor
         BorderSpacing.Right = 6
         BorderSpacing.Bottom = 6
         Caption = 'Playback macro'
-        OnClick = btnPlayClick
         TabOrder = 2
+        OnClick = btnPlayClick
       end
       object btnRecord: TButton
         AnchorSideLeft.Control = pnlButtons
@@ -578,8 +579,8 @@ object FMacroEditor: TFMacroEditor
         BorderSpacing.Right = 6
         BorderSpacing.Bottom = 6
         Caption = 'Record macro'
-        OnClick = btnRecordClick
         TabOrder = 3
+        OnClick = btnRecordClick
       end
       object btnRecordStop: TButton
         AnchorSideLeft.Control = pnlButtons
@@ -600,8 +601,8 @@ object FMacroEditor: TFMacroEditor
         BorderSpacing.Right = 6
         BorderSpacing.Bottom = 6
         Caption = 'Stop recording'
-        OnClick = btnRecordStopClick
         TabOrder = 4
+        OnClick = btnRecordStopClick
       end
       object btnDelete: TButton
         AnchorSideLeft.Control = pnlButtons
@@ -620,8 +621,8 @@ object FMacroEditor: TFMacroEditor
         BorderSpacing.Top = 6
         BorderSpacing.Right = 6
         Caption = 'Delete'
-        OnClick = btnDeleteClick
         TabOrder = 1
+        OnClick = btnDeleteClick
       end
       object PanelRepeat: TPanel
         AnchorSideLeft.Control = pnlButtons
@@ -641,8 +642,8 @@ object FMacroEditor: TFMacroEditor
         BorderSpacing.Right = 6
         BevelOuter = bvNone
         BorderStyle = bsSingle
-        ClientHeight = 71
-        ClientWidth = 109
+        ClientHeight = 75
+        ClientWidth = 113
         TabOrder = 5
         object edRepeat: TSpinEdit
           AnchorSideLeft.Control = PanelRepeat
@@ -678,8 +679,8 @@ object FMacroEditor: TFMacroEditor
           BorderSpacing.Right = 3
           BorderSpacing.Bottom = 3
           Caption = 'Repeat'
-          OnChange = chkRepeatChange
           TabOrder = 1
+          OnChange = chkRepeatChange
         end
         object cbRepeatUntilEof: TCheckBox
           AnchorSideTop.Control = edRepeat
@@ -691,8 +692,8 @@ object FMacroEditor: TFMacroEditor
           BorderSpacing.Left = 9
           BorderSpacing.Top = 4
           Caption = 'until end of file'
-          OnChange = cbRepeatUntilEofChange
           TabOrder = 2
+          OnChange = cbRepeatUntilEofChange
         end
       end
     end

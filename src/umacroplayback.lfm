@@ -8,6 +8,7 @@ object fMacroPlayBack: TfMacroPlayBack
   ClientWidth = 326
   Font.Height = -12
   KeyPreview = True
+  LCLVersion = '4.99.0.0'
   object Label2: TLabel
     AnchorSideLeft.Control = edRepeat
     AnchorSideLeft.Side = asrBottom

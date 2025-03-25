@@ -7,9 +7,10 @@ object fAbout: TfAbout
   ClientHeight = 346
   ClientWidth = 398
   Font.Height = -12
+  Position = poMainFormCenter
+  LCLVersion = '4.99.0.0'
   OnClose = FormClose
   OnShow = FormShow
-  Position = poMainFormCenter
   object Image1: TImage
     Left = 0
     Height = 108
@@ -1486,9 +1487,9 @@ object fAbout: TfAbout
     AutoSize = False
     Caption = 'OvoText'
     Font.Height = 34
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label2: TLabel
     Left = 68
@@ -1499,9 +1500,9 @@ object fAbout: TfAbout
     AutoSize = False
     Caption = 'Version'
     Font.Height = 18
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object lVersion: TLabel
     Left = 137
@@ -1512,9 +1513,9 @@ object fAbout: TfAbout
     Caption = 'Version'
     Font.Height = 18
     Font.Style = [fsBold]
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label3: TLabel
     Left = 138
@@ -1524,9 +1525,9 @@ object fAbout: TfAbout
     AutoSize = False
     Caption = 'Author : Marco Caselli'
     Font.Height = 14
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label4: TLabel
     Left = 138
@@ -1536,9 +1537,9 @@ object fAbout: TfAbout
     AutoSize = False
     Caption = 'Another text editor'
     Font.Height = 16
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label6: TLabel
     Left = 16
@@ -1549,9 +1550,9 @@ object fAbout: TfAbout
     AutoSize = False
     Caption = 'Home Page'
     Font.Height = 18
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object lHomePage: TLabel
     Left = 135
@@ -1562,12 +1563,12 @@ object fAbout: TfAbout
     Caption = 'https://github.com/varianus/ovotext'
     Font.Color = clBlue
     Font.Height = 18
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
     OnMouseDown = lHomePageMouseDown
     OnMouseEnter = lHomePageMouseEnter
     OnMouseLeave = lHomePageMouseLeave
-    OptimalFill = True
   end
   object bClose: TBitBtn
     Left = 298
@@ -1596,9 +1597,9 @@ object fAbout: TfAbout
     Width = 59
     AutoSize = False
     Font.Height = 14
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label7: TLabel
     Left = 68
@@ -1609,9 +1610,9 @@ object fAbout: TfAbout
     AutoSize = False
     Caption = 'FPC'
     Font.Height = 14
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object lbFPCVersion: TLabel
     Left = 137
@@ -1620,9 +1621,9 @@ object fAbout: TfAbout
     Width = 59
     AutoSize = False
     Font.Height = 14
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label5: TLabel
     Left = 68
@@ -1633,9 +1634,9 @@ object fAbout: TfAbout
     AutoSize = False
     Caption = 'Lazarus'
     Font.Height = 14
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label8: TLabel
     Left = 68
@@ -1646,9 +1647,9 @@ object fAbout: TfAbout
     AutoSize = False
     Caption = 'Build Date'
     Font.Height = 14
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object lbBuildDate: TLabel
     Left = 137
@@ -1657,9 +1658,9 @@ object fAbout: TfAbout
     Width = 59
     AutoSize = False
     Font.Height = 14
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object lbEngine: TLabel
     Left = 335
@@ -1668,9 +1669,9 @@ object fAbout: TfAbout
     Width = 115
     AutoSize = False
     Font.Height = 14
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label11: TLabel
     Left = 23
@@ -1681,9 +1682,9 @@ object fAbout: TfAbout
     AutoSize = False
     Caption = 'Icons are from '
     Font.Height = 18
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object lHomePage2: TLabel
     Left = 135
@@ -1694,11 +1695,11 @@ object fAbout: TfAbout
     Caption = 'https://github.com/KDE/breeze-icons'
     Font.Color = clBlue
     Font.Height = 18
+    OptimalFill = True
     ParentColor = False
     ParentFont = False
     OnMouseDown = lHomePageMouseDown
     OnMouseEnter = lHomePageMouseEnter
     OnMouseLeave = lHomePageMouseLeave
-    OptimalFill = True
   end
 end
