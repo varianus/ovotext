@@ -20,11 +20,12 @@
 {$I codegen.inc}
 {$modeswitch ADVANCEDRECORDS}
 unit Config;
+
 interface
 
 uses
-  Classes, SysUtils, Graphics, JsonTools,  dom,
-  LResources, FGL, SupportFuncs, Stringcostants,
+  Classes, SysUtils, Graphics, JsonTools, Generics.Collections, dom,
+  LResources, SupportFuncs, Stringcostants,
   SynEditHighlighter, SynEditStrConst, SynEditStrConstExtra,
   // included with Lazarus
   SynHighlighterPas,
@@ -110,13 +111,13 @@ const
     (HLClass: TSynVrml97Syn; Filter: SYNS_FilterVrml97; HL: nil),
     (HLClass: TSynAsmSyn; Filter: SYNS_FilterX86Asm; HL: nil),
     (HLClass: TSynXMLSyn; Filter: SYNS_FilterXML; HL: nil)
-     );
+    );
 
 
 type
 
-  THighLighterList = specialize TFPGMap<string, integer>;
-  TStringDictionary = specialize TFPGMap<string, string>;
+  THighLighterList = specialize TFastHashMap<string, integer>;
+  TStringDictionary = specialize TFastHashMap<string, string>;
 
 
 
@@ -147,12 +148,12 @@ type
     FShowRowNumber: boolean;
     FShowToolbar: boolean;
     ResourcesPath: string;
-//    fXMLConfigExtended: TXMLConfigExtended;
+    //    fXMLConfigExtended: TXMLConfigExtended;
     fConfigHolder: TJsonNode;
     fColorSchema: TJsonNode;
     fSchemaName: string;
     fThemesList: TStringDictionary;
-    fAttributeAliases : TStringDictionary;
+    fAttributeAliases: TStringDictionary;
 
 
     function GetBackGroundColor: TColor;
@@ -183,12 +184,12 @@ type
     function getHighLighter(Index: integer): TSynCustomHighlighter; overload;
     destructor Destroy; override;
     function GetFiters: string;
-    Procedure SetTheme(Index: integer);
+    procedure SetTheme(Index: string);
 
     // -- //
     property ThemeList: TStringDictionary read fThemesList;
     property Dirty: boolean read FDirty write SetDirty;
-    property ConfigHolder: TJsonNode read  fConfigHolder;
+    property ConfigHolder: TJsonNode read fConfigHolder;
     property ConfigDir: string read fConfigDir;
     property ConfigFile: string read FConfigFile;
     property Font: TFont read FFont write SetFont;
@@ -210,9 +211,9 @@ uses
   Fileutil, lclproc, typinfo,
   // only for default font !
   Synedit
-{$ifdef Darwin}
+  {$ifdef Darwin}
   , MacOSAll
-{$endif}  ;
+  {$endif}  ;
 
 var
   FConfigObj: TConfig;
@@ -223,14 +224,14 @@ const
   ResourceSubDirectory = 'Resources';
 
 const
- {$ifdef UNIX}
+  {$ifdef UNIX}
   DefaultDirectory = '/usr/share/ovotext/';
   {$DEFINE NEEDCFGSUBDIR}
- {$endif}
+  {$endif}
 
- {$ifdef DARWIN}
+  {$ifdef DARWIN}
   BundleResourcesDirectory = '/Contents/Resources/';
- {$endif}
+  {$endif}
 
   SectionGeneral = 'General';
 
@@ -291,16 +292,16 @@ constructor TConfig.Create;
 begin
   FFont := Tfont.Create;
   FConfigFile := GetAppConfigFile(False
-{$ifdef NEEDCFGSUBDIR}
+    {$ifdef NEEDCFGSUBDIR}
     , True
-{$ENDIF}
+    {$ENDIF}
     );
 
-  FConfigFile := ChangeFileExt(FConfigFile,'.json');
+  FConfigFile := ChangeFileExt(FConfigFile, '.json');
   fConfigDir := GetConfigDir;
   fConfigHolder := TJsonNode.Create;
   if FileExists(FConfigFile) then
-   fConfigHolder.LoadFromFile(FConfigFile);
+    fConfigHolder.LoadFromFile(FConfigFile);
 
   fHighlighters := THighlighterList.Create;
   fThemesList := TStringDictionary.Create;
@@ -350,15 +351,14 @@ var
   i: integer;
   AttrName: string;
   AttrPath: string;
-  AttributeAlias :string;
+  AttributeAlias: string;
   DefaultAttrib: TFontAttributes;
-  style : TFontStyles;
+  style: TFontStyles;
 const
   DefaultPath = 'Schema/DefaultLang/';
-
 begin
-   if FAppSettings.ColorSchema = '' then
-     exit;
+  if FAppSettings.ColorSchema = '' then
+    exit;
 
   DefaultAttrib := ReadFontAttributes('Schema/Default/Text/', FontAttributes());
   AttrPath := 'Schema/' + CleanupName(Highlighter.GetLanguageName) + '/';
@@ -369,16 +369,14 @@ begin
     if Assigned(FcolorSchema.find(AttrPath + AttrName + '/')) then
       SetAttribute(AttrPath + AttrName + '/', Highlighter.Attribute[i], DefaultAttrib)
     else
-      begin
-      if fAttributeAliases.TryGetData(AttrName, AttributeAlias) then
-        SetAttribute(DefaultPath + AttributeAlias+ '/', Highlighter.Attribute[i], DefaultAttrib)
-      else
-        begin
-          Style := Highlighter.Attribute[i].Style;
-          SetAttribute(DefaultPath + AttrName + '/', Highlighter.Attribute[i], DefaultAttrib);
-          Highlighter.Attribute[i].Style :=  style;
-        end
-      end
+    if fAttributeAliases.TryGetValue(AttrName, AttributeAlias) then
+      SetAttribute(DefaultPath + AttributeAlias + '/', Highlighter.Attribute[i], DefaultAttrib)
+    else
+    begin
+      Style := Highlighter.Attribute[i].Style;
+      SetAttribute(DefaultPath + AttrName + '/', Highlighter.Attribute[i], DefaultAttrib);
+      Highlighter.Attribute[i].Style := style;
+    end;
   end;
 
 end;
@@ -387,14 +385,9 @@ function TConfig.getHighLighter(Extension: string): TSynCustomHighlighter;
 var
   tmp: integer;
   idx: integer;
-
 begin
-  tmp := fHighlighters.IndexOf(lowercase(Extension));
-  if tmp > -1 then
-  begin
-    idx := fHighlighters.Data[tmp];
-    Result := getHighLighter(idx);
-  end
+  if fHighlighters.TryGetValue(LowerCase(Extension), idx) then
+    Result := getHighLighter(idx)
   else
     Result := nil;
 
@@ -420,17 +413,18 @@ begin
 
 end;
 
-procedure TConfig.SetTheme(Index: integer);
+procedure TConfig.SetTheme(Index: string);
 var
-  i: Integer;
+  Data: string;
+  i: integer;
 begin
-
-  fColorSchema.LoadFromFile(ThemeList.Data[Index]);
-  FAppSettings.ColorSchema := ThemeList.Data[Index];
-  Dirty := TRUE;
+  Data := ThemeList.Items[Index];
+  fColorSchema.LoadFromFile(Data);
+  FAppSettings.ColorSchema := Data;
+  Dirty := True;
   for i := 0 to HIGHLIGHTERCOUNT - 1 do
-   if Assigned(ARHighlighter[i].HL) then
-     InitializeHighlighter(ARHighlighter[i].HL);
+    if Assigned(ARHighlighter[i].HL) then
+      InitializeHighlighter(ARHighlighter[i].HL);
 
 end;
 
@@ -439,6 +433,7 @@ procedure TConfig.LoadHighlighters;
 var
   i, j: integer;
   filter: string;
+  Ext: string;
   stList: TStringList;
 begin
 
@@ -453,7 +448,12 @@ begin
       stList := TStringList.Create;
       StrToStrings(filter, ';', stList, False);
       for j := 0 to stList.Count - 1 do
-        fHighlighters.Add(ExtractFileExt(stList[j]), i);
+      begin
+        Ext := ExtractFileExt(stList[j]);
+        if not fHighlighters.ContainsKey(Ext) then
+          fHighlighters.Add(Ext, i);
+      end;
+
       stList.Free;
     end;
   end;
@@ -466,7 +466,6 @@ var
   I: integer;
   Doc: TJsonNode;
   SchemaName: string;
-
 begin
   fThemesList.Clear;
   FileList := TStringList.Create;
@@ -478,7 +477,7 @@ begin
   begin
     try
       Doc := TJsonNode.Create();
-      doc.LoadFromFile( FileList[i]);
+      doc.LoadFromFile(FileList[i]);
       SchemaName := doc.GetValueDef('Schema/Name', '');
       if SchemaName <> '' then
         fThemesList.Add(SchemaName, FileList[i]);
@@ -505,43 +504,43 @@ begin
   //fAttributeAliases.Add('Space','');
   //fAttributeAliases.Add('Identifier','');
   //Alias
-  fAttributeAliases.Add('Key','Reserved_word');
-  fAttributeAliases.Add('Attribute_Value','String');
-  fAttributeAliases.Add('Attribute_Name','Text');
-  fAttributeAliases.Add('CDATA_Section','Assembler');
-  fAttributeAliases.Add('DOCTYPE_Section','Directive');
-  fAttributeAliases.Add('Element_Name','Reserved_word');
-  fAttributeAliases.Add('Entity_Reference','Reserved_word');
-  fAttributeAliases.Add('Namespace_Attribute_Name','Text');
-  fAttributeAliases.Add('Namespace_Attribute_Value','String');
-  fAttributeAliases.Add('Processing_Instruction','Assembler');
-  fAttributeAliases.Add('ASP','Assembler');
-  fAttributeAliases.Add('Escape_ampersand','Special');
-  fAttributeAliases.Add('Unknown_word','Error');
-  fAttributeAliases.Add('Value','Text');
-  fAttributeAliases.Add('Preprocessor','Directive');
-  fAttributeAliases.Add('Pragma','Directive');
-  fAttributeAliases.Add('Variable','Identifier');
-  fAttributeAliases.Add('Documentation','Space');
-  fAttributeAliases.Add('Bullet','Directive');
-  fAttributeAliases.Add('Subheading','Directive');
-  fAttributeAliases.Add('Monospace','Assembler');
-  fAttributeAliases.Add('Code','Assembler');
+  fAttributeAliases.Add('Key', 'Reserved_word');
+  fAttributeAliases.Add('Attribute_Value', 'String');
+  fAttributeAliases.Add('Attribute_Name', 'Text');
+  fAttributeAliases.Add('CDATA_Section', 'Assembler');
+  fAttributeAliases.Add('DOCTYPE_Section', 'Directive');
+  fAttributeAliases.Add('Element_Name', 'Reserved_word');
+  fAttributeAliases.Add('Entity_Reference', 'Reserved_word');
+  fAttributeAliases.Add('Namespace_Attribute_Name', 'Text');
+  fAttributeAliases.Add('Namespace_Attribute_Value', 'String');
+  fAttributeAliases.Add('Processing_Instruction', 'Assembler');
+  fAttributeAliases.Add('ASP', 'Assembler');
+  fAttributeAliases.Add('Escape_ampersand', 'Special');
+  fAttributeAliases.Add('Unknown_word', 'Error');
+  fAttributeAliases.Add('Value', 'Text');
+  fAttributeAliases.Add('Preprocessor', 'Directive');
+  fAttributeAliases.Add('Pragma', 'Directive');
+  fAttributeAliases.Add('Variable', 'Identifier');
+  fAttributeAliases.Add('Documentation', 'Space');
+  fAttributeAliases.Add('Bullet', 'Directive');
+  fAttributeAliases.Add('Subheading', 'Directive');
+  fAttributeAliases.Add('Monospace', 'Assembler');
+  fAttributeAliases.Add('Code', 'Assembler');
 
 end;
 
 destructor TConfig.Destroy;
 var
-  i: Integer;
+  i: integer;
 begin
   SaveConfig;
-  fConfigHolder.SaveToFile(FConfigFile, true);
+  fConfigHolder.SaveToFile(FConfigFile, True);
   fConfigHolder.Free;
   fColorSchema.Free;
   FFont.Free;
   fHighlighters.Free;
   fThemesList.Free;
-  fAttributeAliases.free;
+  fAttributeAliases.Free;
   for i := 0 to HIGHLIGHTERCOUNT - 1 do
     ARHighlighter[i].HL.Free;
 
@@ -553,17 +552,17 @@ begin
   if not FDirty then
     Exit;
 
-  fConfigHolder.Find(SectionUnix + '/' + IdentResourcesPath, true).AsString := ResourcesPath;
-  fConfigHolder.Find('Application/CloseWithLastTab', true).AsBoolean := FAppSettings.CloseWithLastTab;
-  fConfigHolder.Find('Application/ColorSchema/Name', true).AsString := FAppSettings.ColorSchema;
+  fConfigHolder.Find(SectionUnix + '/' + IdentResourcesPath, True).AsString := ResourcesPath;
+  fConfigHolder.Find('Application/CloseWithLastTab', True).AsBoolean := FAppSettings.CloseWithLastTab;
+  fConfigHolder.Find('Application/ColorSchema/Name', True).AsString := FAppSettings.ColorSchema;
 
-  fConfigHolder.Find('Editor/Font/Name', true).AsString := FFont.Name;
-  fConfigHolder.Find('Editor/Font/Size', true).AsInteger := FFont.Size;
-  fConfigHolder.Find('Editor/ShowRowNumber', true).AsBoolean := FShowRowNumber;
-  fConfigHolder.Find('Editor/ShowToolbar', true).AsBoolean := FShowToolbar;
+  fConfigHolder.Find('Editor/Font/Name', True).AsString := FFont.Name;
+  fConfigHolder.Find('Editor/Font/Size', True).AsInteger := FFont.Size;
+  fConfigHolder.Find('Editor/ShowRowNumber', True).AsBoolean := FShowRowNumber;
+  fConfigHolder.Find('Editor/ShowToolbar', True).AsBoolean := FShowToolbar;
 
 
-  FDirty := false;
+  FDirty := False;
 end;
 
 procedure TConfig.ReadConfig;
@@ -596,15 +595,13 @@ end;
 function TConfig.ReadStrings(Section: string; Name: string; Values: TStrings): integer;
 var
   Node: TJsonNode;
-  i: Integer;
+  i: integer;
 begin
   Values.Clear;
   Node := fConfigHolder.find(Section + '/' + Name);
   if Assigned(Node) then
-    begin
-      for i := 0 to node.Count -1 do
-       Values.Add(Node.Child(i).AsString);
-    end;
+    for i := 0 to node.Count - 1 do
+      Values.Add(Node.Child(i).AsString);
 
   Result := Values.Count;
 end;
@@ -613,23 +610,23 @@ end;
 procedure TConfig.WriteStrings(Section: string; Name: string; Values: TStrings);
 var
   Node: TJsonNode;
-  i: Integer;
+  i: integer;
 begin
   Node := fConfigHolder.find(Section + '/' + Name);
   if Assigned(Node) then
-    begin
-     Node.Clear;
-     for i := 0 to Values.Count -1 do
-       node.Add('',Values[i]);
-    end
+  begin
+    Node.Clear;
+    for i := 0 to Values.Count - 1 do
+      node.Add('', Values[i]);
+  end
   else
-    begin
-      Node := fConfigHolder.find(Section + '/' + Name, true);  // fConfigHolder.Add(APath, nkArray);
-      node.Kind:=nkArray;
-      for i := 0 to Values.Count -1 do
-        node.Add('',Values[i]);
+  begin
+    Node := fConfigHolder.find(Section + '/' + Name, True);  // fConfigHolder.Add(APath, nkArray);
+    node.Kind := nkArray;
+    for i := 0 to Values.Count - 1 do
+      node.Add('', Values[i]);
 
-    end;
+  end;
 end;
 
 function TConfig.GetBackGroundColor: TColor;
@@ -652,8 +649,8 @@ end;
 
 procedure TConfig.SetShowRowNumber(AValue: boolean);
 begin
-  if FShowRowNumber=AValue then Exit;
-  FShowRowNumber:=AValue;
+  if FShowRowNumber = AValue then Exit;
+  FShowRowNumber := AValue;
   FDirty := True;
 end;
 
@@ -707,7 +704,7 @@ begin
 
   if not ColorToIdent(Value, tmp) then
     tmp := '$' + IntToHex(Value, 8);
-  fConfigHolder.Find(Section + '/' + Ident, true).AsString := tmp;
+  fConfigHolder.Find(Section + '/' + Ident, True).AsString := tmp;
 end;
 
 procedure TConfig.Flush;
@@ -716,15 +713,15 @@ begin
 end;
 
 function TConfig.GetResourcesPath: string;
-{$ifdef DARWIN}
+  {$ifdef DARWIN}
 var
   pathRef: CFURLRef;
   pathCFStr: CFStringRef;
   pathStr: shortstring;
-{$endif}
+  {$endif}
 begin
-{$ifdef UNIX}
-{$ifdef DARWIN}
+  {$ifdef UNIX}
+  {$ifdef DARWIN}
   pathRef := CFBundleCopyBundleURL(CFBundleGetMainBundle());
   pathCFStr := CFURLCopyFileSystemPath(pathRef, kCFURLPOSIXPathStyle);
   CFStringGetPascalString(pathCFStr, @pathStr, 255, CFStringGetSystemEncoding());
@@ -732,14 +729,14 @@ begin
   CFRelease(pathCFStr);
 
   Result := pathStr + BundleResourcesDirectory;
-{$else}
+  {$else}
   Result := DefaultDirectory;
-{$endif}
-{$endif}
+  {$endif}
+  {$endif}
 
-{$ifdef WINDOWS}
+  {$ifdef WINDOWS}
   Result := ExtractFilePath(ExtractFilePath(ParamStr(0))) + ResourceSubDirectory + PathDelim;
-{$endif}
+  {$endif}
 
 end;
 

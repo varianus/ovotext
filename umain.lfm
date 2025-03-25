@@ -10,6 +10,7 @@ object fMain: TfMain
   Font.Height = -12
   Menu = mnuMain
   Position = poOwnerFormCenter
+  LCLVersion = '4.99.0.0'
   Visible = True
   OnActivate = FormActivate
   OnClose = FormClose
@@ -84,7 +85,7 @@ object fMain: TfMain
     end
     object ToolButton5: TToolButton
       Left = 29
-      Height = 26
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
@@ -115,7 +116,7 @@ object fMain: TfMain
     end
     object ToolButton12: TToolButton
       Left = 235
-      Height = 26
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
@@ -136,19 +137,19 @@ object fMain: TfMain
     end
     object tbbSepClose: TToolButton
       Left = 146
-      Height = 26
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
     object ToolButton4: TToolButton
       Left = 296
-      Height = 26
+      Height = 8
       Top = 2
       Style = tbsSeparator
     end
     object ToolButton11: TToolButton
       Left = 360
-      Height = 26
+      Height = 8
       Top = 2
       Style = tbsSeparator
     end
@@ -179,7 +180,7 @@ object fMain: TfMain
     end
     object ToolButton20: TToolButton
       Left = 396
-      Height = 26
+      Height = 8
       Top = 2
       Style = tbsSeparator
     end

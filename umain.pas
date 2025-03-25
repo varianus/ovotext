@@ -1141,7 +1141,7 @@ var
   mnuLang: TMenuItem;
   mnuTheme: TmenuItem;
   CurrLetter: string;
-  SaveLetter: string;
+  SaveLetter, Key: string;
   CurrMenu: TMenuItem;
   ParamList: TstringList;
 
@@ -1226,14 +1226,13 @@ begin
     CurrMenu.Add(mnuLang);
   end;
 
-  for i := 0 to ConfigObj.ThemeList.Count - 1 do
+  for Key in  ConfigObj.ThemeList.Keys do
   begin
     mnuTheme := TMenuItem.Create(Self);
-    mnuTheme.Caption := ConfigObj.ThemeList.Keys[i];
+    mnuTheme.Caption := Key;
     mnuTheme.RadioItem := true;
-    if ConfigObj.ThemeList.Data[i] = ConfigObj.AppSettings.ColorSchema then
+    if ConfigObj.ThemeList.Items[key] = ConfigObj.AppSettings.ColorSchema then
       mnuTheme.Checked := true;
-    mnuTheme.Tag := i;
     mnuTheme.OnClick:=@mnuThemeClick;
     mnuThemes.Add(mnuTheme);
   end;
@@ -1330,14 +1329,11 @@ begin
 end;
 
 procedure TfMain.mnuThemeClick(Sender: TObject);
-var
-  idx: integer;
 begin
-  idx := TMenuItem(Sender).Tag;
   TMenuItem(Sender).Checked := true;
   try
     Screen.Cursor := crHourGlass;
-    ConfigObj.SetTheme(idx);
+    ConfigObj.SetTheme(TMenuItem(Sender).Caption);
     EditorFactory.ReloadHighLighters;
   finally
     Screen.Cursor :=  crDefault;

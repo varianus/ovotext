@@ -23,7 +23,7 @@ unit uCheckFileChange;
 interface
 
 uses
-  Classes, SysUtils, fgl;
+  Classes, SysUtils, Generics.Collections;
 
 type
 
@@ -50,7 +50,7 @@ type
     procedure Reset;
   end;
 
-  TWatchList = specialize TFPGMap<String,TFileWatch>;
+  TWatchList = specialize TFastObjectHashMap<String,TFileWatch>;
 
   TFileWatcher = class
   private
@@ -153,7 +153,7 @@ procedure TFileWatcher.AddFile(FileName: TFileName; Data: Pointer);
 var
   tmpFW: TFileWatch;
 begin
-  if WatchList.IndexOf(FileName) > -1 then
+  if WatchList.ContainsKey(FileName) then
     exit;
 
   tmpFW := TFileWatch.Create(FileName, Data);
@@ -162,39 +162,30 @@ begin
 end;
 
 procedure TFileWatcher.RemoveFile(FileName: TFileName);
-var
-  idx : Integer;
 begin
-  idx := WatchList.IndexOf(FileName);
-  if idx >= 0 then
-    begin
-      WatchList.Data[idx].Free;
-      WatchList.Delete(idx);
-    end;
+  WatchList.Remove(FileName);
 end;
 
 procedure TFileWatcher.Update(FileName: TFileName);
 var
-  idx : Integer;
+  Data : TFileWatch;
 begin
-  idx := WatchList.IndexOf(FileName);
-  if idx >= 0 then
-    begin
-      WatchList.Data[idx].Reset;
-    end;
 
+  if WatchList.TryGetValue(FileName, Data) then
+    Data.Reset;
 end;
 
 procedure TFileWatcher.CheckFiles;
 var
   fState: TFWStateChange;
   i: integer;
+  Data : specialize TPair<string,TFileWatch>;
 begin
-  for i := 0 to WatchList.Count -1 do
+  for Data in WatchList do
     begin
-       fState := WatchList.Data[i].CheckFile;
-       if (fState <> fwscNone) and Assigned(FOnFileStateChange) then
-         FOnFileStateChange(Self, WatchList.Keys[I], WatchList.Data[i].FData, fState);
+      fState := Data.Value.CheckFile;
+      if (fState <> fwscNone) and Assigned(FOnFileStateChange) then
+        FOnFileStateChange(Self, Data.Key, Data.Value, fState);
 
     end;
 end;
@@ -205,14 +196,8 @@ begin
 end;
 
 destructor TFileWatcher.Destroy;
-var
-  i:integer;
 begin
-  For i := WatchList.Count -1 downto 0 do
-    begin
-       WatchList.Data[i].Free;
-       WatchList.Remove(WatchList.keys[i]);
-    end;
+  WatchList.Clear;
   WatchList.Free;
 end;
 

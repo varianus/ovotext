@@ -30,7 +30,7 @@ uses
   //projects unit
   umain, uabout, udmmain, Stringcostants, SupportFuncs, config, uCheckFileChange, udglgoto, simplemrumanager,
   uMacroEditor, uActionMacro, uReplaceMacro, uMacroRecorder, ReplaceDialog, LazLogger,
-  SimpleSingleInstance, JsonTools, umacroplayback, iconloader, lazexperts;
+  SimpleSingleInstance, JsonTools, umacroplayback, iconloader;
 
 {$R *.res}
 begin
