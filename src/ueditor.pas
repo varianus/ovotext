@@ -32,7 +32,7 @@ uses
   SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds,
   SynEditMouseCmds, SynEditLines, Stringcostants, Forms, Graphics, Config, udmmain,
   uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils,
-  ReplaceDialog, SupportFuncs, LCLVersion, lazutilities;
+  ReplaceDialog, SupportFuncs, JsonTools, LCLVersion, lazutilities;
 
 type
 
@@ -154,6 +154,8 @@ type
     function CloseAfter: boolean;
     function CloseBefore: boolean;
     function SaveAll: boolean;
+    Procedure SaveSession;
+    Procedure RestoreSession;
     procedure DoCheckFileChanges;
     procedure ReloadHighLighters;
     procedure ChangeOptions(Option: TSynEditorOption; Add: boolean);
@@ -941,6 +943,37 @@ begin
       break;
     end;
 
+end;
+
+procedure TEditorFactory.SaveSession;
+var
+  OutName: String;
+  Node, Files, Data : TJsonNode;
+  i: Integer;
+  Editor: TEditor;
+
+begin
+  OutName := ConfigObj.ConfigDir+'session.sav';
+  Node := TJsonNode.Create;
+  Files:= Node.Add('Files',nkArray);
+  for i:= 0 to PageCount -1 do
+    begin
+      Editor:= TEditorTabSheet(Pages[i]).Editor;
+      Data := Files.Add('Data');
+      Data.Add('File',Editor.FileName);
+      Data.Add('Row',Editor.CaretY);
+      Data.Add('Col',Editor.CaretX);
+    end;
+  Node.SaveToFile(OutName, true);
+  Node.free;
+
+end;
+
+procedure TEditorFactory.RestoreSession;
+var
+  InName: String;
+begin
+  InName := ConfigObj.ConfigDir+'session.sav';
 end;
 
 procedure TEditorFactory.DoCheckFileChanges;

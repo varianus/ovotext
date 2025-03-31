@@ -51,6 +51,7 @@ type
     actFindLongestLine: TAction;
     actFullScreen: TAction;
     actFileNameToClipboard: TAction;
+    actSaveSession: TAction;
     actUnQuote: TAction;
     FileBrowseFolder: TAction;
     FileCloseFolder: TAction;
@@ -88,6 +89,7 @@ type
     MenuItem100: TMenuItem;
     MenuItem101: TMenuItem;
     MenuItem102: TMenuItem;
+    MenuItem103: TMenuItem;
     MenuItem28: TMenuItem;
     MenuItem29: TMenuItem;
     MenuItem46: TMenuItem;
@@ -296,6 +298,7 @@ type
     procedure actPathToClipboardExecute(Sender: TObject);
     procedure actPrintExecute(Sender: TObject);
     procedure actQuoteExecute(Sender: TObject);
+    procedure actSaveSessionExecute(Sender: TObject);
     procedure actUnQuoteExecute(Sender: TObject);
     procedure FileBrowseFolderExecute(Sender: TObject);
     procedure FileCloseFolderExecute(Sender: TObject);
@@ -677,6 +680,11 @@ begin
 
   Ed := EditorFactory.CurrentEditor;
   Ed.TextOperation(@QuotedStr, [tomLines]);
+end;
+
+procedure TfMain.actSaveSessionExecute(Sender: TObject);
+begin
+  EditorFactory.SaveSession;
 end;
 
 function ExtractQuotedStr(const S: string): string;
