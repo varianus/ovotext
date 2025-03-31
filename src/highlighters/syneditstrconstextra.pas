@@ -202,7 +202,7 @@ ResourceString
   SYNS_FilterDiff            = 'Diff Files (*.diff)|*.diff';
   SYNS_FilterJSON            = 'Json Files (*.json)|*.json';
   SYNS_FilterX86Asm          = 'x86 Assembly Files (*.asm)|*.asm';
-  SYNS_FilterPascal          = 'Pascal Files (*.pas;*.pp;*.dpr;*.dpk;*.inc)|*.pas;*.pp;*.dpr;*.dpk;*.inc';
+  SYNS_FilterPascal          = 'Pascal Files (*.pas;*.pp;*.lpr;*.dpr;*.dpk;*.lpk;*.inc)|*.pas;*.pp;*.lpr;*.dpr;*.dpk;*.lpk;*.inc';
   SYNS_FilterHP48            = 'HP48 Files (*.s;*.sou;*.a;*.hp)|*.s;*.sou;*.a;*.hp';
   SYNS_FilterCAClipper       = 'CA-Clipper Files (*.prg;*.ch;*.inc)|*.prg;*.ch;*.inc';
   SYNS_FilterCORBAIDL        = 'CORBA IDL Files (*.idl)|*.idl';
