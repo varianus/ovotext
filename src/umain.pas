@@ -518,7 +518,7 @@ begin
     exit;
 
   Ed := EditorFactory.CurrentEditor;
-  SendMessage(ed.Handle, LM_COPY, 0, 0);
+  Ed.CommandProcessor(ecCopy,'',nil);
 end;
 
 procedure TfMain.EditCutExecute(Sender: TObject);
@@ -529,7 +529,7 @@ begin
     exit;
 
   Ed := EditorFactory.CurrentEditor;
-  SendMessage(ed.Handle, LM_CUT, 0, 0);
+  Ed.CommandProcessor(ecCut,'',nil);
 end;
 
 procedure TfMain.EditPasteExecute(Sender: TObject);
@@ -540,7 +540,7 @@ begin
     exit;
 
   Ed := EditorFactory.CurrentEditor;
-  SendMessage(ed.Handle, LM_PASTE, 0, 0);
+  Ed.CommandProcessor(ecPaste,'',nil);
 end;
 
 procedure TfMain.ContextPopup(Sender: TObject; MousePos: TPoint; var Handled: boolean);
