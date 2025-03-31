@@ -8,7 +8,7 @@ ARCH=$(./get_architecture.sh )
 
 bash $BASE/buildlinux.sh
 
-PROG_VER=$(sed -e "s/[^0-9.a-zA-Z]//g" $BASE/version.inc)
+PROG_VER=$(sed -e "s/[^0-9.a-zA-Z]//g" $BASE/src/version.inc)
 BIN_DIR=$BASE/bin/linux
 DEBSRCDIR=$BASE/packages/debian/
 PACKAGES_DIR=$BASE/packages
@@ -23,7 +23,7 @@ copylanguage()
 {
 $MKDIR $DEBSRCDIR/usr/share/locale/$1
 $MKDIR $DEBSRCDIR/usr/share/locale/$1/LC_MESSAGES
-$INSTALLFILE  $BASE/language/ovotext.$1.po $DEBSRCDIR/usr/share/locale/$1/LC_MESSAGES/ovotext.po
+$INSTALLFILE  $BASE/src/locale/ovotext.$1.po $DEBSRCDIR/usr/share/locale/$1/LC_MESSAGES/ovotext.po
 }
 
 

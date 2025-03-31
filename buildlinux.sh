@@ -26,11 +26,11 @@ if [ ! "$CONFIG_PATH" = "" ]; then
 fi
 
 # clean build files
-rm -Rf $BASE/lib/*
+rm -Rf $BASE/src/lib/*
 
 rm -Rf $BASE/linux
 #
-$LAZARUS_DIR/lazbuild -B -r $PCP --build-mode=Release $BASE/ovotext.lpi $DC_ARCH
+$LAZARUS_DIR/lazbuild -B -r $PCP --build-mode=Release $BASE/src/ovotext.lpi $DC_ARCH
 strip --strip-all $BASE/bin/linux/ovotext
 
 echo $NONE > $BASE/extrafpc.cfg
