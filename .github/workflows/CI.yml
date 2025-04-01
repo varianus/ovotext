@@ -102,5 +102,5 @@ jobs:
         sys.exit(int(not main()))
     - name: Build OvoText
       run: |
-         ${{ matrix.config.lazbuild }}  ${{ env.LAZ_OPT }} --build-mode=Release "ovotext.lpi"
+         ${{ matrix.config.lazbuild }}  ${{ env.LAZ_OPT }} --build-mode=Release "src/ovotext.lpi"
      
