@@ -17,6 +17,9 @@
         <DpiAware Value="True"/>
       </XPManifest>
       <Icon Value="0"/>
+      <Resources Count="1">
+        <Resource_0 FileName="ovotextfont.ttf" Type="RCDATA" ResourceName="OVOFONT"/>
+      </Resources>
     </General>
     <i18n>
       <EnableI18N Value="True"/>

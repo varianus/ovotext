@@ -38,7 +38,7 @@ begin
   Application.SingleInstanceEnabled:= True;
   TSimpleSingleInstance(Application.SingleInstance).DefaultMessage := '--show';
   Application.Initialize;
-  Application.Scaled := True;
+  Application.Scaled:=True;
   if Application.SingleInstance.StartResult <> siClient then
     begin
       Application.CreateForm(TdmMain, dmMain);

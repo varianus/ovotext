@@ -1287,7 +1287,6 @@ procedure TfMain.LoadImageList;
 var
   s: TResourceStream;
   iconRender: TIconRenderer;
-  {$R ovotextfont.res}
 begin
   S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
   ImgList.BeginUpdate;
