@@ -21,7 +21,7 @@
 unit ueditor;
 
 {$IFDEF WINDOWS}
-  {$DEFINE NEEDCLOSEBTN}
+{$DEFINE NEEDCLOSEBTN}
 {$ENDIF}
 
 interface
@@ -47,7 +47,7 @@ const
   DefaultOperationLevel = [tomSelection, tomLines];
 
 var
-  LineEndings : array[TSynLinesFileLineEndType] of string = (lineending,'',#13#10,#13,#10);
+  LineEndings: array[TSynLinesFileLineEndType] of string = (lineending, '', #13#10, #13, #10);
 
 type
   TTextOperation = function(const Param: string): string;
@@ -58,7 +58,7 @@ type
 
   TOnBeforeClose = procedure(Editor: TEditor; var Cancel: boolean) of object;
   TOnEditorEvent = procedure(Editor: TEditor) of object;
-  TOnSearchReplaceEvent= procedure (Sender:TObject; const ASearch, AReplace: string; AOptions: TMySynSearchOptions) of object;
+  TOnSearchReplaceEvent = procedure(Sender: TObject; const ASearch, AReplace: string; AOptions: TMySynSearchOptions) of object;
 
   TEditor = class(TSynEdit)
   private
@@ -70,9 +70,9 @@ type
     MultiCaret: TSynPluginMultiCaret;
     SyncEdit: TSynPluginSyncroEdit;
     fOldDiskEncoding: string;
-    FDiskEncoding: String;
-    fDiskLineEndingType : TSynLinesFileLineEndType;
-    fOldDiskLineEndingType : TSynLinesFileLineEndType;
+    FDiskEncoding: string;
+    fDiskLineEndingType: TSynLinesFileLineEndType;
+    fOldDiskLineEndingType: TSynLinesFileLineEndType;
     procedure CreateDefaultGutterParts;
     procedure GetDialogPosition(AWidth, AHeight: integer; out _Left, _Top: integer);
     function GetDiskEncoding: string;
@@ -98,7 +98,7 @@ type
     // -- File handling//
     property FileName: TFileName read FFileName write SetFileName;
     property Untitled: boolean read FUntitled write SetUntitled;
-    property DiskEncoding:string read GetDiskEncoding write SetDiskEncoding;
+    property DiskEncoding: string read GetDiskEncoding write SetDiskEncoding;
     property LineEndingType: TSynLinesFileLineEndType read GetLineEndingType write SetLineEndingType;
     procedure LoadFromFile(AFileName: TFileName);
     procedure Sort(Ascending: boolean);
@@ -137,8 +137,8 @@ type
     procedure OnFileChange(Sender: TObject; FileName: TFileName; Data: Pointer; State: TFWStateChange);
   protected
     procedure DoChange; override;
-    procedure DragOver(Source: TObject; X,Y: Integer; State: TDragState;
-                       var Accept: Boolean); override;
+    procedure DragOver(Source: TObject; X, Y: integer; State: TDragState;
+      var Accept: boolean); override;
 
   public
     property CurrentEditor: TEditor read GetCurrentEditor;
@@ -147,15 +147,15 @@ type
     property OnNewEditor: TOnEditorEvent read FOnNewEditor write SetOnNewEditor;
     //--//
     procedure DoCloseTabClicked(APage: TCustomPage); override;
-    procedure DragDrop(Source: TObject; X, Y: Integer); override;
+    procedure DragDrop(Source: TObject; X, Y: integer); override;
     function AddEditor(FileName: TFilename = ''): TEditor;
     function CloseEditor(Editor: TEditor; Force: boolean = False): boolean;
-    function CloseAll(KeepCurrent:boolean=false): boolean;
+    function CloseAll(KeepCurrent: boolean = False): boolean;
     function CloseAfter: boolean;
     function CloseBefore: boolean;
     function SaveAll: boolean;
-    Procedure SaveSession;
-    Procedure RestoreSession;
+    procedure SaveSession;
+    procedure RestoreSession;
     procedure DoCheckFileChanges;
     procedure ReloadHighLighters;
     procedure ChangeOptions(Option: TSynEditorOption; Add: boolean);
@@ -193,10 +193,10 @@ begin
     FUntitled := False;
     Highlighter := ConfigObj.getHighLighter(ExtractFileExt(fFileName));
     FSheet.Caption := ExtractFileName(fFileName)
-{$IFDEF NEEDCLOSEBTN}
-     // reserve spaces for emulated close button
+      {$IFDEF NEEDCLOSEBTN}
+      // reserve spaces for emulated close button
       + Space(6)
-{$ENDIF}
+    {$ENDIF}
     ;
   end
   else
@@ -207,7 +207,7 @@ end;
 procedure TEditor.SetLineEndingType(AValue: TSynLinesFileLineEndType);
 begin
   fDiskLineEndingType := AValue;
-  Modified := true;
+  Modified := True;
 end;
 
 procedure TEditor.SetOnSearcReplace(AValue: TOnSearchReplaceEvent);
@@ -236,13 +236,13 @@ constructor TEditor.Create(AOwner: TComponent);
 var
   bm: TBitmap;
 
-  procedure DeleteKeyStroke(keys:TSynEditKeyStrokes;Code: word; SS: TShiftState);
+  procedure DeleteKeyStroke(keys: TSynEditKeyStrokes; Code: word; SS: TShiftState);
   var
-   id : Integer;
+    id: integer;
   begin
-      id := keys.FindKeycode(code,ss);
-      if id <> - 1 then
-        keys.Delete(id);
+    id := keys.FindKeycode(code, ss);
+    if id <> -1 then
+      keys.Delete(id);
   end;
 
 begin
@@ -252,12 +252,12 @@ begin
   Options := Options + [eoAltSetsColumnMode];
   MouseOptions := MouseOptions + [emCtrlWheelZoom, emRightMouseMovesCursor];
 
-  DeleteKeyStroke(Keystrokes,ord('N'),[ssCtrl]);
+  DeleteKeyStroke(Keystrokes, Ord('N'), [ssCtrl]);
 
   CreateDefaultGutterParts;
 
   multicaret := TSynPluginMultiCaret.Create(self);
-  DeleteKeyStroke(MultiCaret.KeyStrokes,ord('N'),[ssCtrl]);
+  DeleteKeyStroke(MultiCaret.KeyStrokes, Ord('N'), [ssCtrl]);
 
   multicaret.EnableWithColumnSelection := True;
   multicaret.DefaultMode := mcmMoveAllCarets;
@@ -269,7 +269,7 @@ begin
   SyncEdit.Editor := self;
   SyncEdit.GutterGlyph.Assign(bm);
   SyncEdit.CaseSensitive := False;
-  Gutter.Visible:= ConfigObj.ShowRowNumber;
+  Gutter.Visible := ConfigObj.ShowRowNumber;
 
   OnReplaceText := @OnReplace;
 
@@ -294,35 +294,38 @@ begin
   TextBetweenPoints[Point(1, 1), PhysicalToLogicalPos(Point(Length(Lines[Lines.Count - 1]) + 1, Lines.Count))] := NewText;
 end;
 
-function TEditor.GuessLineEndType(AString: string) : TSynLinesFileLineEndType;
+function TEditor.GuessLineEndType(AString: string): TSynLinesFileLineEndType;
 var
-  i: Integer;
+  i: integer;
 begin
-  result := sfleSystem;
+  Result := sfleSystem;
   i := 1;
-  while i <= length(AString) do begin
-    if AString[i] in [#10,#13] then begin
-      if AString[i]=#10 then result := sfleLf
-      else if (i < length(AString)) and (AString[i+1]=#10) then result := sfleCrLf
-      else result := sfleCr;
+  while i <= length(AString) do
+  begin
+    if AString[i] in [#10, #13] then
+    begin
+      if AString[i] = #10 then Result := sfleLf
+      else if (i < length(AString)) and (AString[i + 1] = #10) then Result := sfleCrLf
+      else
+        Result := sfleCr;
       break;
     end;
-    inc(i);
+    Inc(i);
   end;
 end;
 
 procedure TEditor.LoadFromFile(AFileName: TFileName);
 var
   fStream: TFileStream;
-  s: RawByteString='';
+  s: rawbytestring = '';
   wSize: integer;
-  b:boolean;
-  Error: Integer;
+  b: boolean;
+  Error: integer;
 begin
   SetFileName(AFileName);
   fStream := nil;
   try
-    fStream := TFileStream.Create(FFileName, fmOpenRead,fmShareDenyNone);
+    fStream := TFileStream.Create(FFileName, fmOpenRead, fmShareDenyNone);
 
     wSize := fStream.Size;
     SetLength(s, wSize);
@@ -330,30 +333,31 @@ begin
       fStream.Read(s[1], wSize);
     FDiskEncoding := NormalizeEncoding(GuessEncoding(s));
 
-    S := ConvertEncodingToUTF8(s,FDiskEncoding, b);
+    S := ConvertEncodingToUTF8(s, FDiskEncoding, b);
 
-    fDiskLineEndingType:=GuessLineEndType(S);
+    fDiskLineEndingType := GuessLineEndType(S);
     if fDiskLineEndingType = sfleSystem then
-      fDiskLineEndingType:=GuessLineEndType(LineEnding);
+      fDiskLineEndingType := GuessLineEndType(LineEnding);
     Lines.Text := S;
 
     fOldDiskEncoding := FDiskEncoding;
     fOldDiskLineEndingType := fDiskLineEndingType;
 
 
-  Except
+  except
     on e: EFOpenError do
-      begin
-        Error := GetLastOSError;
-        MessageDlg(RSError, Format(RSCannotSave, [fFileName, Error, SysErrorMessage(Error)]), mtError, [mbRetry, mbCancel, mbIgnore], 0)
-      end
-    else raise;
+    begin
+      Error := GetLastOSError;
+      MessageDlg(RSError, Format(RSCannotSave, [fFileName, Error, SysErrorMessage(Error)]), mtError, [mbRetry, mbCancel, mbIgnore], 0);
+    end
+    else
+      raise;
 
   end;
   DoOnStatusChange([]);
 
   if Assigned(fStream) then
-    fStream.free;
+    fStream.Free;
 
 end;
 
@@ -374,38 +378,38 @@ end;
 function TEditor.SaveAs(AFileName: TFileName): boolean;
 var
   Retry: boolean;
-  s: RawByteString='';
+  s: rawbytestring = '';
   fStream: TFileStream;
   b: boolean;
   Error: integer;
 begin
   repeat
     Retry := False;
+  try
+    if FFileName <> EmptyStr then
+      TEditorFactory(Sheet.Owner).FWatcher.RemoveFile(FFileName);
+    SetFileName(AFileName);
+    s := Lines.Text;
+
+    if fDiskLineEndingType <> GuessLineEndType(LineEnding) then
+      s := ChangeLineEndings(s, LineEndings[fDiskLineEndingType]);
+
+    if FDiskEncoding <> EncodingUTF8 then
+      s := ConvertEncodingFromUTF8(S, FDiskEncoding, b);
+
+    fStream := TFileStream.Create(FFileName, fmOpenWrite + fmCreate, fmShareExclusive);
     try
-      if FFileName <> EmptyStr then
-        TEditorFactory(Sheet.Owner).FWatcher.RemoveFile(FFileName);
-      SetFileName(AFileName);
-      s:= Lines.Text;
-
-      if fDiskLineEndingType <> GuessLineEndType(LineEnding) then
-        s:= ChangeLineEndings(s,LineEndings[fDiskLineEndingType]);
-
-      if FDiskEncoding <> EncodingUTF8 then
-        s:= ConvertEncodingFromUTF8(S, FDiskEncoding, b);
-
-      fStream:= TFileStream.Create(FFileName, fmOpenWrite+fmCreate , fmShareExclusive);
-      try
-        fStream.Write(S[1], Length(s));
-      finally
-        FreeAndNil(fStream);
-      end;
-      TEditorFactory(Sheet.Owner).FWatcher.AddFile(FFileName, Self);
-      Result := True;
-      FUntitled := False;
-      Modified := False;
-    except
-      Result := False;
+      fStream.Write(S[1], Length(s));
+    finally
+      FreeAndNil(fStream);
     end;
+    TEditorFactory(Sheet.Owner).FWatcher.AddFile(FFileName, Self);
+    Result := True;
+    FUntitled := False;
+    Modified := False;
+  except
+    Result := False;
+  end;
 
     if not Result then
     begin
@@ -427,21 +431,19 @@ var
 begin
   repeat
     Retry := False;
-    try
-      fs := TFileStream.Create(AFileName, fmCreate);
-      fs.Free;
-      Result := True;
-    except
-      Result := False;
-    end;
+  try
+    fs := TFileStream.Create(AFileName, fmCreate);
+    fs.Free;
+    Result := True;
+  except
+    Result := False;
+  end;
 
     if not Result then
-    begin
       case MessageDlg(RSError, Format(RSCannotCreate, [AFileName]), mtError, [mbRetry, mbAbort], 0) of
         mrAbort: Result := False;
         mrRetry: Retry := True;
       end;
-    end;
   until not Retry;
 
 end;
@@ -472,7 +474,6 @@ begin
 
     end;
     fwscDeleted:
-    begin
       if MessageDlg(RSReload, Format(RSKeepDeleted, [FileName]), mtConfirmation, [mbYes, mbNo], 0) = mrYes then
       begin
         ed.Modified := True;
@@ -480,7 +481,6 @@ begin
       end
       else
         CloseEditor(Ed, True);
-    end;
   end;
   FWatcher.Update(FileName);
 end;
@@ -521,19 +521,19 @@ end;
 
 function TEditor.GetDiskEncoding: string;
 begin
-   //if FDiskEncoding = EncodingUCS2LE then
-   //  Result := 'UTF16LE'
-   //else
-   //if FDiskEncoding = EncodingUCS2BE then
-   //  Result := 'UTF16BE'
-   //else
-   Result := FDiskEncoding;
+  //if FDiskEncoding = EncodingUCS2LE then
+  //  Result := 'UTF16LE'
+  //else
+  //if FDiskEncoding = EncodingUCS2BE then
+  //  Result := 'UTF16BE'
+  //else
+  Result := FDiskEncoding;
 
 end;
 
 function TEditor.GetLineEndingType: TSynLinesFileLineEndType;
 begin
-  result := fDiskLineEndingType;
+  Result := fDiskLineEndingType;
 end;
 
 procedure TEditor.QuickSort(L, R: integer; CompareFn: TStringsSortCompare);
@@ -603,9 +603,7 @@ begin
     BeginUpdate(True);
     try
       for i := 0 to Lines.Count - 1 do
-      begin
         SetLineText(i, Operation(Lines[i]));
-      end;
 
     finally
       EndUpdate;
@@ -658,29 +656,30 @@ procedure TEditor.OnReplace(Sender: TObject; const ASearch, AReplace:
 
   function Shorten(const s: string): string;
   const
-    MAX_LEN=300;
+    MAX_LEN = 300;
   begin
-    Result:=s;
-    if Length(Result)>MAX_LEN then
-      Result:=LeftStr(Result, MAX_LEN)+'...';
+    Result := s;
+    if Length(Result) > MAX_LEN then
+      Result := LeftStr(Result, MAX_LEN) + '...';
   end;
 
-var a,x,y:integer;
-  AText:AnsiString;
+var
+  a, x, y: integer;
+  AText: ansistring;
 begin
 
-  AText:=Format(lisUEReplaceThisOccurrenceOfWith,[Shorten(ASearch),LineEnding,Shorten(AReplace)]);
+  AText := Format(lisUEReplaceThisOccurrenceOfWith, [Shorten(ASearch), LineEnding, Shorten(AReplace)]);
 
-  GetDialogPosition(300,150,X,Y);
-  a:=MessageDlgPos(AText,mtconfirmation,
-            [mbYes,mbYesToAll,mbNo,mbCancel],0,X,Y);
+  GetDialogPosition(300, 150, X, Y);
+  a := MessageDlgPos(AText, mtConfirmation,
+    [mbYes, mbYesToAll, mbNo, mbCancel], 0, X, Y);
 
   case a of
-    mrYes:   _Action :=raReplace;
-    mrNo :   _Action :=raSkip;
-    mrAll,mrYesToAll: _Action :=raReplaceAll;
-  else
-    _Action:=raCancel;
+    mrYes: _Action := raReplace;
+    mrNo: _Action := raSkip;
+    mrAll, mrYesToAll: _Action := raReplaceAll;
+    else
+      _Action := raCancel;
   end;
 end;
 
@@ -719,26 +718,26 @@ begin
   TEditorTabSheet(ActivePage).Editor.SetFocus;
 end;
 
-procedure TEditorFactory.DragDrop(Source: TObject; X, Y: Integer);
+procedure TEditorFactory.DragDrop(Source: TObject; X, Y: integer);
 var
-  r:TRect;
-  i:Integer;
+  r: TRect;
+  i: integer;
 begin
   inherited DragDrop(Source, X, Y);
   if (Source is TPageControl) then
-   for i := 0 to PageCount - 1 do
-   begin
-     r := TabRect(i);
-     if r.Contains(Point(X, Y)) then
-     begin
-       if ActivePage.PageIndex <> i then
-         ActivePage.PageIndex := i;
-       Exit;
-     end;
-   end;
+    for i := 0 to PageCount - 1 do
+    begin
+      r := TabRect(i);
+      if r.Contains(Point(X, Y)) then
+      begin
+        if ActivePage.PageIndex <> i then
+          ActivePage.PageIndex := i;
+        Exit;
+      end;
+    end;
 end;
 
-procedure TEditorFactory.DragOver(Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
+procedure TEditorFactory.DragOver(Source: TObject; X, Y: integer; State: TDragState; var Accept: boolean);
 begin
   inherited DragOver(Source, X, Y, State, Accept);
   if (Source is TPageControl) then Accept := True;
@@ -759,7 +758,7 @@ var
   i: integer;
   DefaultAttr: TFontAttributes;
 begin
-  result := nil;
+  Result := nil;
   if FileName <> EmptyStr then
   begin
     // do not reopen same file
@@ -774,13 +773,11 @@ begin
     end;
 
     if (FileName <> EmptyStr) and not FileExists(FileName) then
-    begin
       case MessageDlg('', format(RSAskFileCreation, [FileName]), mtConfirmation, [mbYes, mbNo], 0) of
         mrNo: Exit;
         mrYes: if not CreateEmptyFile(FileName) then
             Exit;
       end;
-    end;
 
     // try to reuse an empty sheet
     for i := 0 to PageCount - 1 do
@@ -791,6 +788,7 @@ begin
         Sheet.Editor.LoadFromfile(FileName);
         FWatcher.AddFile(FileName, Sheet.Editor);
         ActivePageIndex := i;
+        Result := Sheet.Editor;
         exit;
       end;
     end;
@@ -828,10 +826,10 @@ begin
   if FileName = EmptyStr then
   begin
     Sheet.Caption := Format(RSNewFile, [fUntitledCounter])
-{$IFDEF NEEDCLOSEBTN}
-// reserve spaces for emulated close button
+      {$IFDEF NEEDCLOSEBTN}
+      // reserve spaces for emulated close button
       + Space(6)
-{$ENDIF}
+    {$ENDIF}
     ;
     Result.FUntitled := True;
     Inc(fUntitledCounter);
@@ -880,23 +878,23 @@ begin
 
 end;
 
-function TEditorFactory.CloseAll(KeepCurrent:boolean=false): boolean;
+function TEditorFactory.CloseAll(KeepCurrent: boolean = False): boolean;
 var
   i: integer;
 begin
   Result := True;
   for i := PageCount - 1 downto 0 do
+  begin
+    if KeepCurrent and (I = ActivePageIndex) then
+      continue;
+
+    if not CloseEditor(TEditorTabSheet(Pages[i]).Editor) then
     begin
-      if KeepCurrent and (I = ActivePageIndex) then
-        continue;
-
-      if not CloseEditor(TEditorTabSheet(Pages[i]).Editor) then
-      begin
-        Result := False;
-        break;
-      end;
-
+      Result := False;
+      break;
     end;
+
+  end;
 end;
 
 function TEditorFactory.CloseBefore: boolean;
@@ -905,13 +903,10 @@ var
 begin
   Result := True;
   for i := ActivePageIndex - 1 downto 0 do
+    if not CloseEditor(TEditorTabSheet(Pages[i]).Editor) then
     begin
-      if not CloseEditor(TEditorTabSheet(Pages[i]).Editor) then
-      begin
-        Result := False;
-        break;
-      end;
-
+      Result := False;
+      break;
     end;
 end;
 
@@ -921,13 +916,10 @@ var
 begin
   Result := True;
   for i := PageCount - 1 downto ActivePageIndex + 1 do
+    if not CloseEditor(TEditorTabSheet(Pages[i]).Editor) then
     begin
-      if not CloseEditor(TEditorTabSheet(Pages[i]).Editor) then
-      begin
-        Result := False;
-        break;
-      end;
-
+      Result := False;
+      break;
     end;
 end;
 
@@ -947,33 +939,57 @@ end;
 
 procedure TEditorFactory.SaveSession;
 var
-  OutName: String;
-  Node, Files, Data : TJsonNode;
-  i: Integer;
+  OutName: string;
+  Node, Files, Data: TJsonNode;
+  i: integer;
   Editor: TEditor;
-
 begin
-  OutName := ConfigObj.ConfigDir+'session.sav';
+  OutName := ConfigObj.ConfigDir + 'session.sav';
   Node := TJsonNode.Create;
-  Files:= Node.Add('Files',nkArray);
-  for i:= 0 to PageCount -1 do
-    begin
-      Editor:= TEditorTabSheet(Pages[i]).Editor;
-      Data := Files.Add('Data');
-      Data.Add('File',Editor.FileName);
-      Data.Add('Row',Editor.CaretY);
-      Data.Add('Col',Editor.CaretX);
-    end;
-  Node.SaveToFile(OutName, true);
-  Node.free;
+  Files := Node.Add('Files', nkArray);
+  for i := 0 to PageCount - 1 do
+  begin
+    Editor := TEditorTabSheet(Pages[i]).Editor;
+    Data := Files.Add('Data');
+    Data.Add('File', Editor.FileName);
+    Data.Add('Row', Editor.CaretY);
+    Data.Add('Col', Editor.CaretX);
+  end;
+  Node.SaveToFile(OutName, True);
+  Node.Free;
 
 end;
 
 procedure TEditorFactory.RestoreSession;
 var
-  InName: String;
+  InName: string;
+  Node, Files, Data: TJsonNode;
+  i, X, Y: integer;
+  Editor: TEditor;
 begin
-  InName := ConfigObj.ConfigDir+'session.sav';
+  InName := ConfigObj.ConfigDir + 'session.sav';
+  Node := TJsonNode.Create;
+  try
+    try
+      Node.LoadFromFile(InName);
+      Files := Node.Child('Files');
+      for i := 0 to Files.Count - 1 do
+      begin
+        Data := Files.Child(i);
+        Editor := AddEditor(Data.Child('File').AsString);
+        X := Data.Child('Col').AsInteger;
+        Y := Data.Child('Row').AsInteger;
+        Editor.CaretXY := Point(X, Y);
+      end;
+
+    except
+      ShowMessage('Error Restoring Session');
+    end;
+
+  finally
+    Node.Free;
+  end;
+
 end;
 
 procedure TEditorFactory.DoCheckFileChanges;
@@ -981,19 +997,19 @@ begin
   FWatcher.CheckFiles;
 end;
 
-procedure TEditorFactory.ChangeOptions(Option: TSynEditorOption; Add:boolean);
+procedure TEditorFactory.ChangeOptions(Option: TSynEditorOption; Add: boolean);
 var
- i: integer;
- ed: TEditor;
+  i: integer;
+  ed: TEditor;
 begin
-    for i := PageCount - 1 downto 0 do
-    begin
-      ed := TEditorTabSheet(Pages[i]).Editor;
-      if Add then
-        ed.Options := ed.Options + [Option]
-      else
-        ed.Options := ed.Options - [Option];
-    end;
+  for i := PageCount - 1 downto 0 do
+  begin
+    ed := TEditorTabSheet(Pages[i]).Editor;
+    if Add then
+      ed.Options := ed.Options + [Option]
+    else
+      ed.Options := ed.Options - [Option];
+  end;
 end;
 
 procedure TEditorFactory.ReloadHighLighters;
@@ -1064,12 +1080,12 @@ begin
     r := TabRect(i);
     h := (r.Bottom - r.Top);
     if (X > r.right - h) and (Y > r.bottom - h) then
-      begin
-       CloseEditor(TEditorTabSheet(Page[i]).Editor);
-       Invalidate;
-      end
+    begin
+      CloseEditor(TEditorTabSheet(Page[i]).Editor);
+      Invalidate;
+    end
     else
-    {$ENDIF}
+      {$ENDIF}
       BeginDrag(False, 20);
   end;
 end;
@@ -1080,7 +1096,7 @@ var
   r: TRect;
   i, h, h2: integer;
   c: Tcanvas;
-  offs:integer;
+  offs: integer;
 begin
   inherited PaintWindow(DC);
   c := TCanvas.Create;
@@ -1092,7 +1108,7 @@ begin
     r := TabRect(i);
     h := (r.Bottom - r.Top - offs) div 2;
     h2 := offs + h;
-    Images.DrawForPPI(c, r.Right - h2, r.Top + h, 7, 16, Screen.PixelsPerInch,1);
+    Images.DrawForPPI(c, r.Right - h2, r.Top + h, 7, 16, Screen.PixelsPerInch, 1);
   end;
   c.Free;
 end;
@@ -1102,7 +1118,6 @@ end;
 procedure TEditorFactory.ShowHintEvent(Sender: TObject; HintInfo: PHintInfo);
 var
   Tab: integer;
-
 begin
   if (PageCount = 0) or (HintInfo = nil) then
     Exit;
@@ -1116,7 +1131,7 @@ begin
 end;
 
 //{$IF LCL_FULLVERSION>=2000400}
-//
+
 //function TEditorFactory.TabRect(AIndex: Integer): TRect;
 //var
 //  ORect: TRect;
@@ -1135,7 +1150,7 @@ end;
 constructor TEditorFactory.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  DoubleBuffered := true;
+  DoubleBuffered := True;
   //Style :=  tsFlatButtons;
   FWatcher := TFileWatcher.Create;
   FWatcher.OnFileStateChange := @OnFileChange;
