@@ -51,6 +51,7 @@ type
     actFindLongestLine: TAction;
     actFullScreen: TAction;
     actFileNameToClipboard: TAction;
+    actLoadSession: TAction;
     actSaveSession: TAction;
     actUnQuote: TAction;
     FileBrowseFolder: TAction;
@@ -90,6 +91,7 @@ type
     MenuItem101: TMenuItem;
     MenuItem102: TMenuItem;
     MenuItem103: TMenuItem;
+    MenuItem104: TMenuItem;
     MenuItem28: TMenuItem;
     MenuItem29: TMenuItem;
     MenuItem46: TMenuItem;
@@ -286,6 +288,7 @@ type
     procedure actFullScreenExecute(Sender: TObject);
     procedure actGoToExecute(Sender: TObject);
     procedure actJSONCompactExecute(Sender: TObject);
+    procedure actLoadSessionExecute(Sender: TObject);
     procedure actMacroManagerExecute(Sender: TObject);
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
     procedure actJSONPrettyPrintExecute(Sender: TObject);
@@ -973,6 +976,11 @@ begin
   Ed.TextOperation(@CompactJson, [tomFullText]);
 end;
 
+procedure TfMain.actLoadSessionExecute(Sender: TObject);
+begin
+  EditorFactory.RestoreSession;
+end;
+
 procedure TfMain.actMacroManagerExecute(Sender: TObject);
 begin
   ShowMacroEditor(SynMacroRec);
@@ -1299,15 +1307,16 @@ begin
   iconRender := TIconRenderer.Create(S);
   iconRender.Color := GetSysColor(COLOR_BTNTEXT);
   iconRender.SetSize(24, 22);
-  iconRender.AddToImageList(imglist, [$41, $42, $43, $44, $45,  // 0.. 4  A B C D E
+  iconRender.AddToImageList(imglist, [
+    $41, $42, $43, $44, $45,  // 0.. 4  A B C D E
     $46, $47, $48, $49, $4a,  // 5.. 9  F G H I J
     $4b, $4c, $4d, $4e, $4f,  //10..14  K L M N O
     $50, $51, $52, $53, $54,  //15..19  P Q R S T
     $55, $56, $57, $58, $59,  //20..24  U V W X Y
     $5a, $61, $62, $63, $64,  //25..29  Z a b c d
     $65, $66, $67, $68, $69,  //30..34  e f g h i
-    $6a, $6b, $6c, $6d, $3b,  //31..39  j k l m ;
-    $3c, $5b]);            //40..41  < [
+    $6a, $6b, $6c, $6d, $6E   //31..39  j k l m n
+    $3b, $3c, $5b]);          //40..42  ; < [
 
   ImgList.EndUpdate;
   dmMain.imgBookMark.BeginUpdate;
