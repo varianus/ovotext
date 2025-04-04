@@ -334,6 +334,65 @@ msgstr "Numero linea"
 msgid "Column number"
 msgstr "Numero colonna"
 
+#: tfabout.blicense.caption
+msgid "&License"
+msgstr "&Licenza"
+
+#: tfabout.caption
+msgid "About"
+msgstr "Informazioni"
+
+#: tfabout.label1.caption
+msgctxt "tfabout.label1.caption"
+msgid "OvoText"
+msgstr "OvoText"
+
+#: tfabout.label11.caption
+msgid "Icons are from "
+msgstr "Le icone provengono da "
+
+#: tfabout.label2.caption
+msgctxt "tfabout.label2.caption"
+msgid "Version"
+msgstr "Versione"
+
+#: tfabout.label3.caption
+msgid "Author : Marco Caselli"
+msgstr "Autore : Marco Caselli"
+
+#: tfabout.label4.caption
+msgid "Another text editor"
+msgstr "Un altro editor testuale"
+
+#: tfabout.label5.caption
+msgid "Lazarus"
+msgstr "Lazarus"
+
+#: tfabout.label6.caption
+msgid "Home Page"
+msgstr ""
+
+#: tfabout.label7.caption
+msgid "FPC"
+msgstr ""
+
+#: tfabout.label8.caption
+msgid "Build Date"
+msgstr ""
+
+#: tfabout.lhomepage.caption
+msgid "https://github.com/varianus/ovotext"
+msgstr ""
+
+#: tfabout.lhomepage2.caption
+msgid "https://github.com/KDE/breeze-icons"
+msgstr ""
+
+#: tfabout.lversion.caption
+msgctxt "tfabout.lversion.caption"
+msgid "Version"
+msgstr "Versione"
+
 #: tfmacroeditor.btndelete.caption
 msgctxt "tfmacroeditor.btndelete.caption"
 msgid "Delete"
@@ -466,6 +525,10 @@ msgstr "Formatta JSON"
 msgid "None"
 msgstr "Nessuno"
 
+#: tfmain.actloadsession.caption
+msgid "Load Session"
+msgstr ""
+
 #: tfmain.actlowercase.caption
 msgid "lowercase"
 msgstr "minuscolo"
@@ -527,10 +590,12 @@ msgid "Print"
 msgstr "Stampa"
 
 #: tfmain.actquote.caption
-#, fuzzy
-#| msgid "Quote"
 msgid "Quote lines"
 msgstr "Metti fra apici"
+
+#: tfmain.actsavesession.caption
+msgid "Save Session"
+msgstr ""
 
 #: tfmain.actshowrownumber.caption
 msgid "Show row numbers"
@@ -688,7 +753,7 @@ msgstr "Salva come RTF"
 
 #: tfmain.filebrowsefolder.caption
 msgid "Browse Folder"
-msgstr ""
+msgstr "Sfoglia cartella"
 
 #: tfmain.fileclose.caption
 msgid "Close"

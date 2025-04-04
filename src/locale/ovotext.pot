@@ -291,6 +291,65 @@ msgstr ""
 msgid "Column number"
 msgstr ""
 
+#: tfabout.blicense.caption
+msgid "&License"
+msgstr ""
+
+#: tfabout.caption
+msgid "About"
+msgstr ""
+
+#: tfabout.label1.caption
+msgctxt "tfabout.label1.caption"
+msgid "OvoText"
+msgstr ""
+
+#: tfabout.label11.caption
+msgid "Icons are from "
+msgstr ""
+
+#: tfabout.label2.caption
+msgctxt "tfabout.label2.caption"
+msgid "Version"
+msgstr ""
+
+#: tfabout.label3.caption
+msgid "Author : Marco Caselli"
+msgstr ""
+
+#: tfabout.label4.caption
+msgid "Another text editor"
+msgstr ""
+
+#: tfabout.label5.caption
+msgid "Lazarus"
+msgstr ""
+
+#: tfabout.label6.caption
+msgid "Home Page"
+msgstr ""
+
+#: tfabout.label7.caption
+msgid "FPC"
+msgstr ""
+
+#: tfabout.label8.caption
+msgid "Build Date"
+msgstr ""
+
+#: tfabout.lhomepage.caption
+msgid "https://github.com/varianus/ovotext"
+msgstr ""
+
+#: tfabout.lhomepage2.caption
+msgid "https://github.com/KDE/breeze-icons"
+msgstr ""
+
+#: tfabout.lversion.caption
+msgctxt "tfabout.lversion.caption"
+msgid "Version"
+msgstr ""
+
 #: tfmacroeditor.btndelete.caption
 msgctxt "tfmacroeditor.btndelete.caption"
 msgid "Delete"
@@ -423,6 +482,10 @@ msgstr ""
 msgid "None"
 msgstr ""
 
+#: tfmain.actloadsession.caption
+msgid "Load Session"
+msgstr ""
+
 #: tfmain.actlowercase.caption
 msgid "lowercase"
 msgstr ""
@@ -485,6 +548,10 @@ msgstr ""
 
 #: tfmain.actquote.caption
 msgid "Quote lines"
+msgstr ""
+
+#: tfmain.actsavesession.caption
+msgid "Save Session"
 msgstr ""
 
 #: tfmain.actshowrownumber.caption
