@@ -39,6 +39,8 @@ resourcestring
   RSNormalText = 'Normal text file';
   RSAllFile = 'All files';
   RSError = 'Error';
+  RSMonitoring = 'Monitoring';
+  RSAskSave = 'File %s have been modified. Do you want to save changes before monitoring?';
   RSReload = 'Reload';
   RSNewFile = '<new   %d>';
   RSStatusBarPos = 'Line: %d  Col:%d';

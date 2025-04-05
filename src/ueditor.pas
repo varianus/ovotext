@@ -63,6 +63,7 @@ type
   TEditor = class(TSynEdit)
   private
     FFileName: TFilename;
+    fMonitoring: boolean;
     FOnSearchReplace: TOnSearchReplaceEvent;
     FSheet: TEditorTabSheet;
     FUntitled: boolean;
@@ -100,6 +101,7 @@ type
     property Untitled: boolean read FUntitled write SetUntitled;
     property DiskEncoding:string read GetDiskEncoding write SetDiskEncoding;
     property LineEndingType: TSynLinesFileLineEndType read GetLineEndingType write SetLineEndingType;
+    property Monitoring: boolean read fMonitoring;
     procedure LoadFromFile(AFileName: TFileName);
     procedure Sort(Ascending: boolean);
     procedure TextOperation(Operation: TTextOperation; const Level: TTextOperationLevel = DefaultOperationLevel);
@@ -107,6 +109,8 @@ type
     procedure PopPos;
     function Save: boolean;
     function SaveAs(AFileName: TFileName): boolean;
+    Procedure StartMonitoring;
+    Procedure StopMonitoring;
   end;
 
   { TEditorTabSheet }
@@ -272,7 +276,7 @@ begin
   Gutter.Visible:= ConfigObj.ShowRowNumber;
 
   OnReplaceText := @OnReplace;
-
+  fMonitoring:=False;
   bm.Free;
 end;
 
@@ -420,6 +424,31 @@ begin
 
 end;
 
+procedure TEditor.StartMonitoring;
+begin
+  if Modified then
+    begin
+       case MessageDlg(RSMonitoring, Format(RSAskSave, [fFileName]), mtConfirmation, mbYesNoCancel, 0) of
+        mrCancel: Exit;
+        mrYes: Save;
+        mrNo: ;
+       end;
+    end;
+
+  FMonitoring := true;
+  LoadFromFile(FileName);
+  ReadOnly:= True;
+  Modified := False;
+  ScrollBy(0, MaxInt);
+
+end;
+
+procedure TEditor.StopMonitoring;
+begin
+  fMonitoring:=False;
+  ReadOnly := False;
+end;
+
 function TEditorFactory.CreateEmptyFile(AFileName: TFileName): boolean;
 var
   fs: TFileStream;
@@ -455,6 +484,8 @@ begin
   case State of
     fwscModified:
     begin
+      if fMonitoring then
+        exit;
       if ed.Modified then
         dlgText := RSReloadModified
       else
@@ -473,6 +504,9 @@ begin
     end;
     fwscDeleted:
     begin
+      if Ed.Monitoring then
+        Ed.StopMonitoring;
+
       if MessageDlg(RSReload, Format(RSKeepDeleted, [FileName]), mtConfirmation, [mbYes, mbNo], 0) = mrYes then
       begin
         ed.Modified := True;
