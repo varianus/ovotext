@@ -30,8 +30,8 @@ uses
   Classes, SysUtils, Controls, Dialogs, ComCtrls, LCLProc, LCLType,
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,
   SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds,
-  SynEditMouseCmds, SynEditLines, Stringcostants, Forms, Graphics, Config, udmmain,
-  uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils,
+  SynEditMouseCmds, SynEditLines, SynEditWrappedView, Stringcostants, Forms, Graphics, Config, udmmain,
+  uCheckFileChange, SynEditHighlighter, LazSynEditText, Clipbrd, LConvEncoding, LazStringUtils,
   ReplaceDialog, SupportFuncs, JsonTools, LCLVersion, lazutilities;
 
 type
@@ -67,12 +67,14 @@ type
     FSheet: TEditorTabSheet;
     FUntitled: boolean;
     fCaretPos: TPoint;
+    FWordWrap: boolean;
     MultiCaret: TSynPluginMultiCaret;
     SyncEdit: TSynPluginSyncroEdit;
     fOldDiskEncoding: string;
     FDiskEncoding: string;
     fDiskLineEndingType: TSynLinesFileLineEndType;
     fOldDiskLineEndingType: TSynLinesFileLineEndType;
+    WordWrapper: TLazSynEditLineWrapPlugin;
     procedure CreateDefaultGutterParts;
     procedure GetDialogPosition(AWidth, AHeight: integer; out _Left, _Top: integer);
     function GetDiskEncoding: string;
@@ -86,6 +88,7 @@ type
     procedure SetOnSearcReplace(AValue: TOnSearchReplaceEvent);
     procedure SetText(NewText: string);
     procedure SetUntitled(AValue: boolean);
+    procedure SetWordWrap(AValue: boolean);
   protected
     procedure SetHighlighter(const Value: TSynCustomHighlighter); override;
   public
@@ -100,6 +103,7 @@ type
     property Untitled: boolean read FUntitled write SetUntitled;
     property DiskEncoding: string read GetDiskEncoding write SetDiskEncoding;
     property LineEndingType: TSynLinesFileLineEndType read GetLineEndingType write SetLineEndingType;
+    property WordWrap: boolean read FWordWrap write SetWordWrap;
     procedure LoadFromFile(AFileName: TFileName);
     procedure Sort(Ascending: boolean);
     procedure TextOperation(Operation: TTextOperation; const Level: TTextOperationLevel = DefaultOperationLevel);
@@ -224,6 +228,16 @@ begin
   FUntitled := AValue;
   if FUntitled then
     FFileName := EmptyStr;
+end;
+
+procedure TEditor.SetWordWrap(AValue: boolean);
+begin
+  if FWordWrap = AValue then Exit;
+  FWordWrap := AValue;
+  if FWordWrap then
+    WordWrapper := TLazSynEditLineWrapPlugin.Create(self)
+  else
+    WordWrapper.Free;
 end;
 
 procedure TEditor.SetHighlighter(const Value: TSynCustomHighlighter);

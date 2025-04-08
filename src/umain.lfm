@@ -23,8 +23,8 @@ object fMain: TfMain
   OnWindowStateChange = FormWindowStateChange
   object StatusBar: TStatusBar
     Left = 0
-    Height = 23
-    Top = 693
+    Height = 28
+    Top = 688
     Width = 945
     Panels = <    
       item
@@ -202,16 +202,16 @@ object fMain: TfMain
   end
   object pnlLeft: TPanel
     Left = 0
-    Height = 641
+    Height = 636
     Top = 52
     Width = 189
     Align = alLeft
-    ClientHeight = 641
+    ClientHeight = 636
     ClientWidth = 189
     TabOrder = 3
     object FilesTree: TTreeView
       Left = 1
-      Height = 611
+      Height = 606
       Top = 29
       Width = 187
       Align = alClient
@@ -257,7 +257,7 @@ object fMain: TfMain
   end
   object splLeftBar: TSplitter
     Left = 189
-    Height = 641
+    Height = 636
     Top = 52
     Width = 5
   end
@@ -499,6 +499,9 @@ object fMain: TfMain
       end
       object N5: TMenuItem
         Caption = '-'
+      end
+      object MenuItem104: TMenuItem
+        Action = actWordWrap
       end
       object MenuItem28: TMenuItem
         Action = actShowRowNumber
@@ -842,7 +845,7 @@ object fMain: TfMain
       OnExecute = FileSaveExecute
     end
     object actFont: TAction
-      Category = 'Settings'
+      Category = 'View'
       Caption = 'Select Font'
       DisableIfNoHandler = False
       Hint = 'Select Font'
@@ -1083,7 +1086,7 @@ object fMain: TfMain
       OnExecute = actMacroManagerExecute
     end
     object actToggleSpecialChar: TAction
-      Category = 'Settings'
+      Category = 'View'
       Caption = 'Toggle Special Char'
       ImageIndex = 30
       OnExecute = actToggleSpecialCharExecute
@@ -1115,17 +1118,17 @@ object fMain: TfMain
       OnExecute = actJSONCompactExecute
     end
     object actShowRowNumber: TAction
-      Category = 'Settings'
+      Category = 'View'
       Caption = 'Show row numbers'
       OnExecute = actShowRowNumberExecute
     end
     object actShowToolbar: TAction
-      Category = 'Settings'
+      Category = 'View'
       Caption = 'Show toolbar'
       OnExecute = actShowToolbarExecute
     end
     object actFullScreen: TAction
-      Category = 'Settings'
+      Category = 'View'
       Caption = 'Toggle Fullscreen'
       ShortCut = 122
       OnExecute = actFullScreenExecute
@@ -1172,6 +1175,11 @@ object fMain: TfMain
       Category = 'File'
       Caption = 'Save Session'
       OnExecute = actSaveSessionExecute
+    end
+    object actWordWrap: TAction
+      Category = 'View'
+      Caption = 'Wrap long lines'
+      OnExecute = actWordWrapExecute
     end
   end
   object SelectDirectoryDialog1: TSelectDirectoryDialog
