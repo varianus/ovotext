@@ -51,6 +51,7 @@ type
     actFindLongestLine: TAction;
     actFullScreen: TAction;
     actFileNameToClipboard: TAction;
+    actWordWrap: TAction;
     actLoadSession: TAction;
     actSaveSession: TAction;
     actUnQuote: TAction;
@@ -303,6 +304,7 @@ type
     procedure actQuoteExecute(Sender: TObject);
     procedure actSaveSessionExecute(Sender: TObject);
     procedure actUnQuoteExecute(Sender: TObject);
+    procedure actWordWrapExecute(Sender: TObject);
     procedure FileBrowseFolderExecute(Sender: TObject);
     procedure FileCloseFolderExecute(Sender: TObject);
     procedure FileReloadFolderExecute(Sender: TObject);
@@ -585,11 +587,14 @@ begin
   actFileNameToClipboard.Enabled := Avail and not ed.Untitled;
   actPathToClipboard.Enabled := Avail and not ed.Untitled;
   FileBrowseFolder.Enabled := Avail and not ed.Untitled;
+  actWordwrap.Checked := Avail and ed.WordWrap;
   ExportHtmlToFile.Enabled := Avail;
   ExportRTFToFile.Enabled := Avail;
   actGoTo.Enabled := Avail and (ed.Lines.Count > 0);
   actCloseAfter.Enabled := EditorFactory.PageCount > EditorFactory.PageIndex;
   actCloseBefore.Enabled := EditorFactory.PageIndex > 0;
+
+
 
   actMacroRecord.Enabled   := SynMacroRec.State <> msRecording;
   actMacroStop.Enabled     := SynMacroRec.State = msRecording;
@@ -707,6 +712,16 @@ begin
 
   Ed := EditorFactory.CurrentEditor;
   Ed.TextOperation(@ExtractQuotedStr, [tomLines]);
+end;
+
+procedure TfMain.actWordWrapExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+  Ed := EditorFactory.CurrentEditor;
+  ed.WordWrap := not Ed.WordWrap;
 end;
 
 procedure TfMain.FileBrowseFolderExecute(Sender: TObject);

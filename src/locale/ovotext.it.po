@@ -80,6 +80,11 @@ msgstr ""
 "\"%s\"\n"
 "non esiste. Vuoi crearlo?"
 
+#: stringcostants.rsasksave
+#, object-pascal-format
+msgid "File %s have been modified. Do you want to save changes before monitoring?"
+msgstr ""
+
 #: stringcostants.rscannotcreate
 #, object-pascal-format
 msgid ""
@@ -149,6 +154,10 @@ msgstr "Seleziona un nuovo nome per la macro"
 #: stringcostants.rsmacrosaving
 msgid "Select a name for macro"
 msgstr "Seleziona un nome per la macro"
+
+#: stringcostants.rsmonitoring
+msgid "Monitoring"
+msgstr ""
 
 #: stringcostants.rsnewfile
 #, object-pascal-format
@@ -649,6 +658,10 @@ msgstr ""
 #: tfmain.actuppercase.caption
 msgid "UPPERCASE"
 msgstr "MAIUSCOLO"
+
+#: tfmain.actwordwrap.caption
+msgid "Wrap long lines"
+msgstr ""
 
 #: tfmain.actxmlcompact.caption
 msgid "Compact XML"
