@@ -365,7 +365,7 @@ begin
 
   for i := 0 to Highlighter.AttrCount - 1 do
   begin
-    AttrName := CleanupName(Highlighter.Attribute[i].Name);
+    AttrName := CleanupName(Highlighter.Attribute[i].Caption);
     if Assigned(FcolorSchema.find(AttrPath + AttrName + '/')) then
       SetAttribute(AttrPath + AttrName + '/', Highlighter.Attribute[i], DefaultAttrib)
     else

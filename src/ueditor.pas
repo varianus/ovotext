@@ -27,12 +27,11 @@ unit ueditor;
 interface
 
 uses
-  Classes, SysUtils, Controls, Dialogs, ComCtrls, LCLProc, LCLType,
-  SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,
-  SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds,
-  SynEditMouseCmds, SynEditLines, SynEditWrappedView, Stringcostants, Forms, Graphics, Config, udmmain,
-  uCheckFileChange, SynEditHighlighter, LazSynEditText, Clipbrd, LConvEncoding, LazStringUtils,
-  ReplaceDialog, SupportFuncs, JsonTools, LCLVersion, lazutilities;
+  Classes, SysUtils, Controls, Dialogs, ComCtrls, LCLProc, LCLType, SynEditTypes, SynEdit, SynGutter, SynGutterMarks,
+  SynGutterLineNumber, SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds, SynEditMouseCmds, SynEditLines,
+  SynEditWrappedView, Stringcostants, Forms, Graphics, Config, udmmain, uCheckFileChange, SynEditHighlighter,
+  LazSynEditText, SynPluginSyncronizedEditBase, Clipbrd, LConvEncoding, LazStringUtils, ReplaceDialog, SupportFuncs,
+  JsonTools, LCLVersion, lazutilities;
 
 type
 
@@ -286,7 +285,7 @@ begin
   SyncEdit := TSynPluginSyncroEdit.Create(self);
   SyncEdit.Editor := self;
   SyncEdit.GutterGlyph.Assign(bm);
-  SyncEdit.CaseSensitive := False;
+  SyncEdit.ScanModes :=  [spssNoCase, spssWithCase, spssCtxNoCase, spssCtxWithCase];
   Gutter.Visible := ConfigObj.ShowRowNumber;
 
   OnReplaceText := @OnReplace;

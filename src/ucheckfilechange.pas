@@ -47,7 +47,7 @@ type
   public
     constructor Create(FileName: TFilename; Data:Pointer = nil);
     function CheckFile: TFWStateChange;
-    procedure Reset;
+    procedure ResetInfo;
   end;
 
   TWatchList = specialize TFastObjectHashMap<String,TFileWatch>;
@@ -94,7 +94,7 @@ constructor TFileWatch.Create(FileName: TFilename; Data:Pointer= nil);
 begin
   FFileName := FileName;
   FData:=Data;
-  Reset;
+  ResetInfo;
 end;
 
 function TFileWatch.CheckFile: TFWStateChange;
@@ -136,7 +136,7 @@ begin
 
 end;
 
-procedure TFileWatch.Reset;
+procedure TFileWatch.ResetInfo;
 begin
   FileInfo := GetFileInfo(FFileName);
 end;
@@ -172,7 +172,7 @@ var
 begin
 
   if WatchList.TryGetValue(FileName, Data) then
-    Data.Reset;
+    Data.ResetInfo;
 end;
 
 procedure TFileWatcher.CheckFiles;

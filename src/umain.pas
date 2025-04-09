@@ -1710,7 +1710,7 @@ begin
 
   if (scSelection in Changes) then
     StatusBar.Panels[2].Text :=
-      Format(RSStatusBarSel, [Editor.SelEnd - Editor.SelStart]);
+      Format(RSStatusBarSel, [length(Editor.SelText)]);
 
   if (scModified in Changes) then
     if Editor.Modified then
