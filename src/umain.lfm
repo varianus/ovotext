@@ -23,8 +23,8 @@ object fMain: TfMain
   OnWindowStateChange = FormWindowStateChange
   object StatusBar: TStatusBar
     Left = 0
-    Height = 28
-    Top = 688
+    Height = 23
+    Top = 693
     Width = 945
     Panels = <    
       item
@@ -202,16 +202,16 @@ object fMain: TfMain
   end
   object pnlLeft: TPanel
     Left = 0
-    Height = 636
+    Height = 641
     Top = 52
     Width = 189
     Align = alLeft
-    ClientHeight = 636
+    ClientHeight = 641
     ClientWidth = 189
     TabOrder = 3
     object FilesTree: TTreeView
       Left = 1
-      Height = 606
+      Height = 611
       Top = 29
       Width = 187
       Align = alClient
@@ -257,7 +257,7 @@ object fMain: TfMain
   end
   object splLeftBar: TSplitter
     Left = 189
-    Height = 636
+    Height = 641
     Top = 52
     Width = 5
   end
@@ -312,8 +312,14 @@ object fMain: TfMain
       object MenuItem50: TMenuItem
         Action = FileSaveAll
       end
+      object Separator1: TMenuItem
+        Caption = '-'
+      end
       object MenuItem103: TMenuItem
         Action = actSaveSession
+      end
+      object MenuItem105: TMenuItem
+        Action = actLoadSession
       end
       object MenuItem48: TMenuItem
         Caption = '-'
@@ -1175,6 +1181,11 @@ object fMain: TfMain
       Category = 'File'
       Caption = 'Save Session'
       OnExecute = actSaveSessionExecute
+    end
+    object actLoadSession: TAction
+      Category = 'File'
+      Caption = 'Load Session'
+      OnExecute = actLoadSessionExecute
     end
     object actWordWrap: TAction
       Category = 'View'

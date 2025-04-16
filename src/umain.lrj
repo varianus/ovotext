@@ -132,5 +132,6 @@
 {"hash":224707570,"name":"tfmain.filebrowsefolder.caption","sourcebytes":[66,114,111,119,115,101,32,70,111,108,100,101,114],"value":"Browse Folder"},
 {"hash":189415987,"name":"tfmain.actunquote.caption","sourcebytes":[85,110,113,117,111,116,101,32,108,105,110,101,115],"value":"Unquote lines"},
 {"hash":206723342,"name":"tfmain.actsavesession.caption","sourcebytes":[83,97,118,101,32,83,101,115,115,105,111,110],"value":"Save Session"},
+{"hash":218098190,"name":"tfmain.actloadsession.caption","sourcebytes":[76,111,97,100,32,83,101,115,115,105,111,110],"value":"Load Session"},
 {"hash":22382595,"name":"tfmain.actwordwrap.caption","sourcebytes":[87,114,97,112,32,108,111,110,103,32,108,105,110,101,115],"value":"Wrap long lines"}
 ]}

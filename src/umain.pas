@@ -92,6 +92,7 @@ type
     MenuItem102: TMenuItem;
     MenuItem103: TMenuItem;
     MenuItem104: TMenuItem;
+    MenuItem105: TMenuItem;
     MenuItem28: TMenuItem;
     MenuItem29: TMenuItem;
     MenuItem46: TMenuItem;
@@ -160,6 +161,7 @@ type
     pumTabs: TPopupMenu;
     PrintDialog1: TPrintDialog;
     SelectDirectoryDialog1: TSelectDirectoryDialog;
+    Separator1: TMenuItem;
     SortAscending: TAction;
     actPrint: TAction;
     SortDescending: TAction;
@@ -1329,7 +1331,7 @@ begin
     $55, $56, $57, $58, $59,  //20..24  U V W X Y
     $5a, $61, $62, $63, $64,  //25..29  Z a b c d
     $65, $66, $67, $68, $69,  //30..34  e f g h i
-    $6a, $6b, $6c, $6d, $6E   //31..39  j k l m n
+    $6a, $6b, $6c, $6d, $6E,  //31..39  j k l m n
     $3b, $3c, $5b]);          //40..42  ; < [
 
   ImgList.EndUpdate;
