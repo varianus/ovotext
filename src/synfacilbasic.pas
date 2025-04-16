@@ -12,7 +12,7 @@ unit SynFacilBasic;
 interface
 uses
   SysUtils, Classes, SynEditHighlighter, strutils, Graphics, DOM, LCLIntf,
-  LCLProc, SynEditHighlighterFoldBase, SynEditTypes;
+  LCLProc, SynEditHighlighterFoldBase, LazEditTextAttributes, SynEditTypes;
 
 type
   ///////// Definiciones para manejo de tokens por contenido ///////////
