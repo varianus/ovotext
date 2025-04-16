@@ -147,6 +147,7 @@ type
     FFont: TFont;
     FShowRowNumber: boolean;
     FShowToolbar: boolean;
+    FWrapLines: boolean;
     ResourcesPath: string;
     //    fXMLConfigExtended: TXMLConfigExtended;
     fConfigHolder: TJsonNode;
@@ -162,6 +163,7 @@ type
     procedure SetFont(AValue: TFont);
     procedure SetShowRowNumber(AValue: boolean);
     procedure SetShowToolbar(AValue: boolean);
+    procedure SetWrapLines(AValue: boolean);
     procedure WriteColor(const Section, Ident: string; const Value: TColor);
     procedure InitializeHighlighter(Highlighter: TSynCustomHighlighter);
     procedure FontAttribToAttribute(Attribute: TSynHighlighterAttributes; Attrib: TFontAttributes);
@@ -194,6 +196,7 @@ type
     property ConfigFile: string read FConfigFile;
     property Font: TFont read FFont write SetFont;
     property ShowRowNumber: boolean read FShowRowNumber write SetShowRowNumber;
+    property WrapLines: boolean read FWrapLines write SetWrapLines;
     property ShowToolbar: boolean read FShowToolbar write SetShowToolbar;
     property AppSettings: RAppSettings read FAppSettings write FAppSettings;
     property BackGroundColor: TColor read GetBackGroundColor;
@@ -560,6 +563,7 @@ begin
   fConfigHolder.Find('Editor/Font/Size', True).AsInteger := FFont.Size;
   fConfigHolder.Find('Editor/ShowRowNumber', True).AsBoolean := FShowRowNumber;
   fConfigHolder.Find('Editor/ShowToolbar', True).AsBoolean := FShowToolbar;
+  fConfigHolder.Find('Editor/WrapLines', True).AsBoolean := FWrapLines;
 
 
   FDirty := False;
@@ -588,6 +592,7 @@ begin
 
   FShowRowNumber := fConfigHolder.GetValueDef('Editor/ShowRowNumber', True);
   FShowToolbar := fConfigHolder.GetValueDef('Editor/ShowToolbar', True);
+  FWrapLines := fConfigHolder.GetValueDef('Editor/WrapLines', False);
 
   FDirty := False;
 end;
@@ -658,6 +663,13 @@ procedure TConfig.SetShowToolbar(AValue: boolean);
 begin
   if FShowToolbar = AValue then Exit;
   FShowToolbar := AValue;
+  FDirty := True;
+end;
+
+procedure TConfig.SetWrapLines(AValue: boolean);
+begin
+  if FWrapLines = AValue then Exit;
+  FWrapLines := AValue;
   FDirty := True;
 end;
 

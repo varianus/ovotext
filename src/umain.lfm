@@ -507,7 +507,7 @@ object fMain: TfMain
         Caption = '-'
       end
       object MenuItem104: TMenuItem
-        Action = actWordWrap
+        Action = actWrapLines
       end
       object MenuItem28: TMenuItem
         Action = actShowRowNumber
@@ -1187,10 +1187,10 @@ object fMain: TfMain
       Caption = 'Load Session'
       OnExecute = actLoadSessionExecute
     end
-    object actWordWrap: TAction
+    object actWrapLines: TAction
       Category = 'View'
       Caption = 'Wrap long lines'
-      OnExecute = actWordWrapExecute
+      OnExecute = actWrapLinesExecute
     end
   end
   object SelectDirectoryDialog1: TSelectDirectoryDialog

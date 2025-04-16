@@ -651,7 +651,8 @@ msgstr ""
 msgid "UPPERCASE"
 msgstr "MAIUSCOLO"
 
-#: tfmain.actwordwrap.caption
+#: tfmain.actwraplines.caption
+msgctxt "tfmain.actwraplines.caption"
 msgid "Wrap long lines"
 msgstr ""
 

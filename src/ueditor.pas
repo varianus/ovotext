@@ -284,6 +284,7 @@ begin
   SyncEdit.GutterGlyph.Assign(bm);
   SyncEdit.CaseSensitive := False;
   Gutter.Visible := ConfigObj.ShowRowNumber;
+  WordWrap := ConfigObj.WrapLines;
 
   OnReplaceText := @OnReplace;
 
