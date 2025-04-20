@@ -1,5 +1,6 @@
 {"version":1,"strings":[
 {"hash":114601124,"name":"tfmain.caption","sourcebytes":[79,118,111,84,101,120,116],"value":"OvoText"},
+{"hash":151863748,"name":"tfmain.toolbutton24.caption","sourcebytes":[84,111,111,108,66,117,116,116,111,110,50,52],"value":"ToolButton24"},
 {"hash":63628709,"name":"tfmain.lbmessage.caption","sourcebytes":[108,98,77,101,115,115,97,103,101],"value":"lbMessage"},
 {"hash":315429,"name":"tfmain.menuitem1.caption","sourcebytes":[70,105,108,101],"value":"File"},
 {"hash":139726590,"name":"tfmain.mnuopenrecent.caption","sourcebytes":[79,112,101,110,32,82,101,99,101,110,116,32,46,46,46],"value":"Open Recent ..."},
@@ -133,5 +134,7 @@
 {"hash":189415987,"name":"tfmain.actunquote.caption","sourcebytes":[85,110,113,117,111,116,101,32,108,105,110,101,115],"value":"Unquote lines"},
 {"hash":206723342,"name":"tfmain.actsavesession.caption","sourcebytes":[83,97,118,101,32,83,101,115,115,105,111,110],"value":"Save Session"},
 {"hash":218098190,"name":"tfmain.actloadsession.caption","sourcebytes":[76,111,97,100,32,83,101,115,115,105,111,110],"value":"Load Session"},
-{"hash":22382595,"name":"tfmain.actwraplines.caption","sourcebytes":[87,114,97,112,32,108,111,110,103,32,108,105,110,101,115],"value":"Wrap long lines"}
+{"hash":22382595,"name":"tfmain.actwraplines.caption","sourcebytes":[87,114,97,112,32,108,111,110,103,32,108,105,110,101,115],"value":"Wrap long lines"},
+{"hash":11782679,"name":"tfmain.actmonitoring.caption","sourcebytes":[77,111,110,105,116,111,114,105,110,103],"value":"Monitoring"},
+{"hash":233295849,"name":"tfmain.actmonitoring.hint","sourcebytes":[77,111,110,105,116,111,114,105,110,103,32,40,116,97,105,108,32,45,102,41],"value":"Monitoring (tail -f)"}
 ]}

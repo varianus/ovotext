@@ -80,6 +80,11 @@ msgstr ""
 "\"%s\"\n"
 "non esiste. Vuoi crearlo?"
 
+#: stringcostants.rsasksave
+#, object-pascal-format
+msgid "File %s have been modified. Do you want to save changes before monitoring?"
+msgstr ""
+
 #: stringcostants.rscannotcreate
 #, object-pascal-format
 msgid ""
@@ -149,6 +154,11 @@ msgstr "Seleziona un nuovo nome per la macro"
 #: stringcostants.rsmacrosaving
 msgid "Select a name for macro"
 msgstr "Seleziona un nome per la macro"
+
+#: stringcostants.rsmonitoring
+msgctxt "stringcostants.rsmonitoring"
+msgid "Monitoring"
+msgstr ""
 
 #: stringcostants.rsnewfile
 #, object-pascal-format
@@ -574,6 +584,15 @@ msgstr "Stop"
 msgctxt "tfmain.actmacrostop.hint"
 msgid "Stop recording"
 msgstr "Ferma registrazione"
+
+#: tfmain.actmonitoring.caption
+msgctxt "tfmain.actmonitoring.caption"
+msgid "Monitoring"
+msgstr ""
+
+#: tfmain.actmonitoring.hint
+msgid "Monitoring (tail -f)"
+msgstr ""
 
 #: tfmain.actpathtoclipboard.caption
 msgid "File Path to clipboard"
@@ -1023,4 +1042,8 @@ msgstr "Ordinamento Discendente"
 msgctxt "tfmain.sortdescending.hint"
 msgid "Sort Descending"
 msgstr "Ordinamento Discendente"
+
+#: tfmain.toolbutton24.caption
+msgid "ToolButton24"
+msgstr ""
 

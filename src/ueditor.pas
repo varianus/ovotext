@@ -63,6 +63,7 @@ type
   TEditor = class(TSynEdit)
   private
     FFileName: TFilename;
+    fMonitoring: boolean;
     FOnSearchReplace: TOnSearchReplaceEvent;
     FSheet: TEditorTabSheet;
     FUntitled: boolean;
@@ -74,8 +75,11 @@ type
     FDiskEncoding: string;
     fDiskLineEndingType: TSynLinesFileLineEndType;
     fOldDiskLineEndingType: TSynLinesFileLineEndType;
+    FilePos: int64;
+    IncompleteLine: boolean;
     WordWrapper: TLazSynEditLineWrapPlugin;
     procedure CreateDefaultGutterParts;
+    procedure PartialReload;
     procedure GetDialogPosition(AWidth, AHeight: integer; out _Left, _Top: integer);
     function GetDiskEncoding: string;
     function GetLineEndingType: TSynLinesFileLineEndType;
@@ -104,6 +108,7 @@ type
     property DiskEncoding: string read GetDiskEncoding write SetDiskEncoding;
     property LineEndingType: TSynLinesFileLineEndType read GetLineEndingType write SetLineEndingType;
     property WordWrap: boolean read FWordWrap write SetWordWrap;
+    property Monitoring: boolean read fMonitoring;
     procedure LoadFromFile(AFileName: TFileName);
     procedure Sort(Ascending: boolean);
     procedure TextOperation(Operation: TTextOperation; const Level: TTextOperationLevel = DefaultOperationLevel);
@@ -111,6 +116,8 @@ type
     procedure PopPos;
     function Save: boolean;
     function SaveAs(AFileName: TFileName): boolean;
+    procedure StartMonitoring;
+    procedure StopMonitoring;
   end;
 
   { TEditorTabSheet }
@@ -167,6 +174,8 @@ type
     //function TabRect(AIndex: Integer): TRect; reintroduce;
     //{$ENDIF}
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: integer); override;
+    Procedure StartMonitoring(Editor: TEditor);
+    Procedure StopMonitoring(Editor:TEditor);
     {$IFDEF NEEDCLOSEBTN}
     procedure PaintWindow(DC: HDC); override;
     {$ENDIF}
@@ -230,6 +239,71 @@ begin
     FFileName := EmptyStr;
 end;
 
+procedure TEditor.PartialReload;
+var
+  fStream: TFileStream;
+  wSize, i, j: int64;
+  buffer: array[0..1023] of ansichar;
+  LineEndingCount: integer;
+  BytesRead: longint;
+  LineBuffer: string;
+begin
+    fStream := TFileStream.Create(FFileName, fmOpenRead, fmShareDenyNone);
+    try
+      wSize := fStream.Size;
+
+      if wSize < FilePos then
+        FilePos := 0;
+
+      fStream.Seek(FilePos, fsFromBeginning);
+      BeginUpdate(false);
+      while fStream.Position < wSize do
+      begin
+        BytesRead := fStream.Read(buffer, SizeOf(buffer));
+        j := 0;
+        i := 0;
+        while i <= (BytesRead - 1) do
+        begin
+          if (Buffer[I] = #10) or (Buffer[I] = #13) then
+          begin
+            LineEndingCount := 0;
+            if LineEndingType = sfleCrLf then
+            begin
+              Inc(LineEndingCount);
+              Inc(i);
+            end;
+            LineBuffer := Copy(buffer, j+1, i - j - LineEndingCount);
+            Inc(i);
+            if IncompleteLine then
+            begin
+              Lines[Lines.Count - 1] := Lines[Lines.Count - 1] + LineBuffer;
+              IncompleteLine := False;
+            end
+            else
+              Lines.Add(LineBuffer);
+            j := i + LineEndingCount;
+          end
+          else
+            Inc(i);
+        end;
+        if j <> i then
+        begin
+          LineBuffer := Copy(buffer, j+1, i);
+          Lines.Add(LineBuffer);
+          IncompleteLine := True;
+        end;
+      end;
+
+      FilePos := FStream.Position;
+      SetCaretY(maxint);
+      EndUpdate;
+    finally
+      fStream.Free;
+    end;
+
+end;
+
+
 procedure TEditor.SetWordWrap(AValue: boolean);
 begin
   if FWordWrap = AValue then Exit;
@@ -287,7 +361,7 @@ begin
   WordWrap := ConfigObj.WrapLines;
 
   OnReplaceText := @OnReplace;
-
+  fMonitoring   := False;
   bm.Free;
 end;
 
@@ -333,7 +407,6 @@ procedure TEditor.LoadFromFile(AFileName: TFileName);
 var
   fStream: TFileStream;
   s: rawbytestring = '';
-  wSize: integer;
   b: boolean;
   Error: integer;
 begin
@@ -342,10 +415,10 @@ begin
   try
     fStream := TFileStream.Create(FFileName, fmOpenRead, fmShareDenyNone);
 
-    wSize := fStream.Size;
-    SetLength(s, wSize);
-    if wSize > 0 then
-      fStream.Read(s[1], wSize);
+    FilePos := fStream.Size;
+    SetLength(s, FilePos);
+    if FilePos > 0 then
+      fStream.Read(s[1], FilePos);
     FDiskEncoding := NormalizeEncoding(GuessEncoding(s));
 
     S := ConvertEncodingToUTF8(s, FDiskEncoding, b);
@@ -418,8 +491,8 @@ begin
     finally
       FreeAndNil(fStream);
     end;
-    TEditorFactory(Sheet.Owner).FWatcher.AddFile(FFileName, Self);
-    Result := True;
+    TEditorFactory(Sheet.Owner).FWatcher.AddFile(FFileName, fwsOnDemand, Self);
+    Result    := True;
     FUntitled := False;
     Modified := False;
   except
@@ -436,6 +509,34 @@ begin
       end;
     end;
   until not Retry;
+
+end;
+
+procedure TEditor.StartMonitoring;
+begin
+  if Modified then
+  begin
+    case MessageDlg(RSMonitoring, Format(RSAskSave, [fFileName]), mtConfirmation, mbYesNoCancel, 0) of
+      mrCancel:
+        Exit;
+      mrYes:
+        Save;
+      mrNo: ;
+    end;
+  end;
+
+  FMonitoring := True;
+  LoadFromFile(FileName);
+  ReadOnly := True;
+  Modified := False;
+  ScrollBy(0, MaxInt);
+end;
+
+procedure TEditor.StopMonitoring;
+begin
+  fMonitoring := False;
+  ReadOnly    := False;
+  IncompleteLine := False;
 
 end;
 
@@ -472,6 +573,8 @@ begin
   case State of
     fwscModified:
     begin
+      if ed.Monitoring then
+        exit;
       if ed.Modified then
         dlgText := RSReloadModified
       else
@@ -489,6 +592,10 @@ begin
 
     end;
     fwscDeleted:
+    begin
+      if Ed.Monitoring then
+        Ed.StopMonitoring;
+
       if MessageDlg(RSReload, Format(RSKeepDeleted, [FileName]), mtConfirmation, [mbYes, mbNo], 0) = mrYes then
       begin
         ed.Modified := True;
@@ -496,6 +603,7 @@ begin
       end
       else
         CloseEditor(Ed, True);
+    end;
   end;
   FWatcher.Update(FileName);
 end;
@@ -801,7 +909,7 @@ begin
       if (Sheet.Editor.Untitled) and not Sheet.Editor.Modified then
       begin
         Sheet.Editor.LoadFromfile(FileName);
-        FWatcher.AddFile(FileName, Sheet.Editor);
+        FWatcher.AddFile(FileName, fwsOnDemand, Sheet.Editor);
         ActivePageIndex := i;
         Result := Sheet.Editor;
         exit;
@@ -853,7 +961,7 @@ begin
   else
   begin
     Result.LoadFromfile(FileName);
-    FWatcher.AddFile(FileName, Result);
+    FWatcher.AddFile(FileName, fwsOnDemand, Result);
   end;
 
   ActivePage := Sheet;
@@ -1103,6 +1211,20 @@ begin
       {$ENDIF}
       BeginDrag(False, 20);
   end;
+end;
+
+procedure TEditorFactory.StartMonitoring(Editor: TEditor);
+begin
+  FWatcher.RemoveFile(Editor.FileName);
+  editor.StartMonitoring;
+//  TFileSystemWatcher.AddWatch(editor.FileName,[wfFileNameChange, wfAttributesChange], @Onmonitoring ,Editor);
+end;
+
+procedure TEditorFactory.StopMonitoring(Editor: TEditor);
+begin
+//  TFileSystemWatcher.RemoveWatch(Editor.FileName, @OnMonitoring);
+  editor.StopMonitoring;
+  FWatcher.AddFile(Editor.FileName, fwsOnDemand, Editor);
 end;
 
 {$IFDEF NEEDCLOSEBTN}
