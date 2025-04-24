@@ -574,7 +574,10 @@ begin
     fwscModified:
     begin
       if ed.Monitoring then
-        exit;
+        begin
+          Ed.PartialReload;
+          exit;
+        end;
       if ed.Modified then
         dlgText := RSReloadModified
       else
