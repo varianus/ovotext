@@ -21,9 +21,9 @@
 program ovotext;
 
 uses
-  {$IFDEF UNIX}{$IFDEF UseCThreads}
+  {$IFDEF UNIX}
   cthreads,
-  {$ENDIF}{$ENDIF}
+  {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, DefaultTranslator, singleinstance,
   printer4lazarus, SynEditPrintExtProcs,

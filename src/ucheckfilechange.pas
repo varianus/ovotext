@@ -38,6 +38,7 @@ type
   TFWStateEvent = procedure(Sender: TObject; FileName: TFileName; Data: Pointer; State: TFWStateChange) of object;
 
   TFWStrategy = (fwsOnDemand, fwsRealTime);
+  TWatcherThread = class;
 
   { TFileWatcher }
   TFileWatch = class
@@ -57,9 +58,12 @@ type
   TWatchList = specialize TFastObjectHashMap<string, TFileWatch>;
 
   TFileWatcher = class
+  private
+    procedure EnsureMonitor;
   protected
     WatchList: TWatchList;
     FOnFileStateChange: TFWStateEvent;
+    Monitor: TWatcherThread;
     procedure SetOnFileStateChange(AValue: TFWStateEvent);
   public
     procedure AddFile(const FileName: TFileName; Strategy: TFWStrategy; Data: Pointer);
@@ -81,9 +85,14 @@ type
   { TWatcherThread }
   TWatcherThread = class(TThread)
   type
+
+    { TPath }
+
     TPath = class
       RefCount: integer;
       Handle: Thandle;
+      Path: string;
+      constructor Create;
     end;
 
     TPaths = specialize TFastObjectHashMap<string, TPath>;
@@ -109,7 +118,7 @@ type
     procedure StartMonitoringPath(aPath: string; Data: TPath); virtual; abstract;
     procedure StopMonitoringPath(aPath: string; Data: TPath); virtual; abstract;
     procedure DoMonitor; virtual; abstract;
-    procedure TriggerTeminateEvent; virtual; abstract;
+    procedure TriggerTerminateEvent; virtual; abstract;
   public
     procedure Execute; override;
     function AddWatch(aWatch: TFileWatch): integer;
@@ -117,16 +126,19 @@ type
     procedure SyncDoWatcherEvent;
     constructor Create(MasterList: TFileWatcher);
     destructor Destroy; override;
+    procedure Terminate;
 
   end;
 
 implementation
 
-{ TWatcherThread }
+uses monitoringthread;
+
+  { TWatcherThread }
 
 procedure TWatcherThread.Execute;
 begin
-
+  DoMonitor;
 end;
 
 function TWatcherThread.AddWatch(aWatch: TFileWatch): integer;
@@ -144,7 +156,8 @@ begin
       exit;
     end;
 
-    Data := TPath.Create;
+    Data      := TPath.Create;
+    Data.Path := aPath;
     Paths.Add(aPath, Data);
     StartMonitoringPath(aPath, Data);
   finally
@@ -173,7 +186,7 @@ begin
       if Paths.Count = 0 then
       begin
         Terminate;
-        TriggerTeminateEvent;
+        TriggerTerminateEvent;
       end;
     end;
   finally
@@ -211,6 +224,21 @@ begin
   inherited Destroy;
 end;
 
+procedure TWatcherThread.Terminate;
+begin
+  inherited Terminate;
+  TriggerTerminateEvent;
+
+end;
+
+{ TWatcherThread.TPath }
+
+constructor TWatcherThread.TPath.Create;
+begin
+  RefCount := 0;
+  Handle   := feInvalidHandle;
+end;
+
 { TFileWatch }
 
 function TFileWatch.GetFileInfo(const FileName: string): TFileInfo;
@@ -242,7 +270,7 @@ function TFileWatch.CheckFile: TFWStateChange;
 var
   wFileInfo: TFileInfo;
 begin
-  Result := fwscNone;
+  Result    := fwscNone;
   wFileInfo := GetFileInfo(FFileName);
 
   try
@@ -303,8 +331,17 @@ begin
 end;
 
 procedure TFileWatcher.RemoveFile(const FileName: TFileName);
+var
+  Data: TFileWatch;
 begin
-  WatchList.Remove(FileName);
+
+  if WatchList.TryGetValue(FileName, Data) then
+  begin
+    if Data.FStrategy = fwsRealTime then
+      Monitor.RemoveWatch(Data);
+    WatchList.Remove(FileName);
+  end;
+
 end;
 
 procedure TFileWatcher.Update(const FileName: TFileName);
@@ -333,13 +370,26 @@ begin
     if Data.FStrategy = Strategy then
       exit;
     case Strategy of
-      fwsOnDemand: ;
-      fwsRealTime: ;
+      fwsOnDemand:
+      begin
+        Monitor.RemoveWatch(Data);
+      end;
+      fwsRealTime:
+      begin
+        EnsureMonitor;
+        Monitor.AddWatch(Data);
+      end;
     end;
-
 
     Data.FStrategy := Strategy;
   end;
+end;
+
+procedure TFileWatcher.EnsureMonitor;
+begin
+  if not Assigned(Monitor) then
+    Monitor := TPlatformMonitoring.Create(Self);
+
 end;
 
 procedure TFileWatcher.CheckFiles;

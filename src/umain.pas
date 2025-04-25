@@ -597,7 +597,7 @@ begin
   if actMonitoring.Checked then
     actMonitoring.ImageIndex:= 43
   else
-    actMonitoring.ImageIndex:= 38;
+    actMonitoring.ImageIndex:= 39;
 
   ExportHtmlToFile.Enabled := Avail;
   ExportRTFToFile.Enabled := Avail;

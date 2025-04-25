@@ -1218,16 +1218,14 @@ end;
 
 procedure TEditorFactory.StartMonitoring(Editor: TEditor);
 begin
-  FWatcher.RemoveFile(Editor.FileName);
   editor.StartMonitoring;
-//  TFileSystemWatcher.AddWatch(editor.FileName,[wfFileNameChange, wfAttributesChange], @Onmonitoring ,Editor);
+  FWatcher.ChangeStrategy(Editor.FileName, fwsRealTime);
 end;
 
 procedure TEditorFactory.StopMonitoring(Editor: TEditor);
 begin
-//  TFileSystemWatcher.RemoveWatch(Editor.FileName, @OnMonitoring);
+  FWatcher.ChangeStrategy(Editor.FileName, fwsOnDemand);
   editor.StopMonitoring;
-  FWatcher.AddFile(Editor.FileName, fwsOnDemand, Editor);
 end;
 
 {$IFDEF NEEDCLOSEBTN}

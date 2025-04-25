@@ -18,7 +18,7 @@ type
   protected
     function Init: boolean; override;
     procedure Cleanup; override;
-    procedure TriggerTeminateEvent; override;
+    procedure TriggerTerminateEvent; override;
     procedure DoMonitor; override;
     procedure StartMonitoringPath(aPath: string; Data: TPath); override;
     procedure StopMonitoringPath(aPath: string; Data: TPath); override;
@@ -68,7 +68,7 @@ begin
 
 end;
 
-procedure TPlatformMonitoring.TriggerTeminateEvent;
+procedure TPlatformMonitoring.TriggerTerminateEvent;
 var
   buf: char;
 begin
@@ -94,9 +94,9 @@ var
   buf: pchar = nil;
   ev, v: pinotify_event;
   fds: array[0..1] of tpollfd;
-  pData: pointer;
+  pData: TFileWatch;
   ret: cint;
-  Data: TPath;
+  ActivePath: TPath;
 begin
   if (FNotifyHandle = feInvalidHandle) or
     (FEventPipe[0] = -1) or
@@ -147,17 +147,17 @@ begin
       begin
         ev := pinotify_event(buf + p);
 
-        for Data in Paths.Values do
+        for ActivePath in Paths.Values do
         begin
-          if ev^.wd = Data.Handle then
+          if ev^.wd = ActivePath.Handle then
           begin
             with FCurrentEventData do
             begin
               FileName := StrPas(PChar(@ev^.Name));
-              Data := FMasterList.GetWatch(Filename);
+              pData := FMasterList.GetWatch(IncludeTrailingPathDelimiter(ActivePath.path)+ Filename);
               if not Assigned(pData) then
                 Continue;
-
+              Data := pData.Data;
               // IN_MOVED_FROM is converted to FileDelete.
               // IN_MOVED_TO is converted to FileCreate.
               // There is no guarantee we will receive as sequence of
