@@ -580,8 +580,9 @@ begin
   EditUndo.Enabled := Avail and Ed.CanUndo;
   FileSave.Enabled := Avail and Ed.Modified;
   FileReload.Enabled := Avail and not Ed.Untitled;
-  EditCopy.Enabled := Avail and ed.SelAvail;
-  EditCut.Enabled := Avail and ed.SelAvail;
+  EditCopy.Enabled := Avail and ed.SelAvail and ed.Focused;
+  EditCut.Enabled := Avail and ed.SelAvail and ed.Focused;
+  EditPaste.Enabled := Avail and ed.SelAvail and ed.Focused;
   ExportHtmlToClipBoard.Enabled := Avail and ed.SelAvail;
   ExportRTFToClipBoard.Enabled := Avail and ed.SelAvail;
   actFullNameToClipBoard.Enabled := Avail and not ed.Untitled;
