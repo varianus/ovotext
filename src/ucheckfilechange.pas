@@ -23,7 +23,7 @@ unit uCheckFileChange;
 interface
 
 uses
-  Classes, SysUtils, Forms, Generics.Collections, syncobjs;
+  Classes, SysUtils, Forms, Generics.Collections, syncobjs, platformpath;
 
 type
 
@@ -85,25 +85,13 @@ type
   { TWatcherThread }
   TWatcherThread = class(TThread)
   type
-
-    { TPath }
-
-    TPath = class
-      RefCount: integer;
-      Handle: Thandle;
-      Path: string;
-      constructor Create;
-    end;
-
-    TPaths = specialize TFastObjectHashMap<string, TPath>;
-
+    TPaths = specialize TFastObjectHashMap<string, TPlatformPath>;
     REventData = record
       Filename: string;
       NewName: string;
       Event: TFWStateChange;
       Data: pointer;
     end;
-
 
 
   private
@@ -115,8 +103,8 @@ type
     FMasterList: TFileWatcher;
     function Init: boolean; virtual; abstract;
     procedure Cleanup; virtual; abstract;
-    procedure StartMonitoringPath(aPath: string; Data: TPath); virtual; abstract;
-    procedure StopMonitoringPath(aPath: string; Data: TPath); virtual; abstract;
+    procedure StartMonitoringPath(aPath: string; Data: TPlatformPath); virtual; abstract;
+    procedure StopMonitoringPath(aPath: string; Data: TPlatformPath); virtual; abstract;
     procedure DoMonitor; virtual; abstract;
     procedure TriggerTerminateEvent; virtual; abstract;
   public
@@ -144,7 +132,7 @@ end;
 function TWatcherThread.AddWatch(aWatch: TFileWatch): integer;
 var
   aPath: string;
-  Data: TPath;
+  Data: TPlatformPath;
 begin
   lock.Acquire;
   try
@@ -156,7 +144,7 @@ begin
       exit;
     end;
 
-    Data      := TPath.Create;
+    Data      := TPlatformPath.Create;
     Data.Path := aPath;
     Paths.Add(aPath, Data);
     StartMonitoringPath(aPath, Data);
@@ -169,7 +157,7 @@ end;
 function TWatcherThread.RemoveWatch(aWatch: TFileWatch): integer;
 var
   aPath: string;
-  Data: TPath;
+  Data: TPlatformPath;
 begin
   lock.Acquire;
   try
@@ -229,14 +217,6 @@ begin
   inherited Terminate;
   TriggerTerminateEvent;
 
-end;
-
-{ TWatcherThread.TPath }
-
-constructor TWatcherThread.TPath.Create;
-begin
-  RefCount := 0;
-  Handle   := feInvalidHandle;
 end;
 
 { TFileWatch }

@@ -5,7 +5,7 @@ unit monitoringthread;
 interface
 
 uses
-  Classes, SysUtils, uCheckFileChange, BaseUnix, Linux;
+  Classes, SysUtils, uCheckFileChange, BaseUnix, Linux, platformpath;
 
 type
 
@@ -20,8 +20,8 @@ type
     procedure Cleanup; override;
     procedure TriggerTerminateEvent; override;
     procedure DoMonitor; override;
-    procedure StartMonitoringPath(aPath: string; Data: TPath); override;
-    procedure StopMonitoringPath(aPath: string; Data: TPath); override;
+    procedure StartMonitoringPath(aPath: string; Data: TPlatformPath); override;
+    procedure StopMonitoringPath(aPath: string; Data: TPlatformPath); override;
 
   end;
 
@@ -96,7 +96,7 @@ var
   fds: array[0..1] of tpollfd;
   pData: TFileWatch;
   ret: cint;
-  ActivePath: TPath;
+  ActivePath: TPlatformPath;
 begin
   if (FNotifyHandle = feInvalidHandle) or
     (FEventPipe[0] = -1) or
@@ -239,7 +239,7 @@ begin
 
 end;
 
-procedure TPlatformMonitoring.StartMonitoringPath(aPath: string; Data: TPath);
+procedure TPlatformMonitoring.StartMonitoringPath(aPath: string; Data: TPlatformPath);
 var
   hNotifyFilter: cuint32 = IN_DELETE_SELF or IN_MOVE_SELF;
 begin
@@ -253,7 +253,7 @@ begin
   end;
 end;
 
-procedure TPlatformMonitoring.StopMonitoringPath(aPath: string; Data: TPath);
+procedure TPlatformMonitoring.StopMonitoringPath(aPath: string; Data: TPlatformPath);
 begin
   if Data.Handle <> feInvalidHandle then
   begin
