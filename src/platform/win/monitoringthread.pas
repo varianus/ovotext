@@ -66,6 +66,8 @@ begin
     if GetQueuedCompletionStatus(FCompletionPort, BytesTransferred, CompletionKey, aOverlapped, INFINITE) then
     begin
       // Retrieve the buffer from the OVERLAPPED structure
+      IF BytesTransferred = 0 THEN
+        Continue;
       aPath := TPlatformPath(CompletionKey);
       Buffer := pbyte(APath.Buffer);
       NotifyInfo := PFILE_NOTIFY_INFORMATION(Buffer);
