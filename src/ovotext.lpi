@@ -43,7 +43,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="highlighters;printing;platform\unix"/>
+            <OtherUnitFiles Value="highlighters;printing;platform\$SrcOS($(TargetOS))"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -83,7 +83,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="highlighters;printing;platform\unix"/>
+            <OtherUnitFiles Value="highlighters;printing;platform\$SrcOS($(TargetOS))"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -122,7 +122,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="highlighters;printing;platform\unix"/>
+            <OtherUnitFiles Value="highlighters;printing;platform\$SrcOS($(TargetOS))"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -190,7 +190,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="25">
+    <Units Count="23">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -318,14 +318,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit22>
-      <Unit23>
-        <Filename Value="platform\unix\monitoringthread.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit23>
-      <Unit24>
-        <Filename Value="platform\unix\platformpath.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit24>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -336,7 +328,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="highlighters;printing;platform\unix"/>
+      <OtherUnitFiles Value="highlighters;printing;platform\$SrcOS($(TargetOS))"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>

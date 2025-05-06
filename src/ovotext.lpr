@@ -31,7 +31,7 @@ uses
   umain, uabout, udmmain, Stringcostants, SupportFuncs, config,
   uCheckFileChange, udglgoto, simplemrumanager, uMacroEditor, uActionMacro,
   uReplaceMacro, uMacroRecorder, ReplaceDialog, LazLogger, SimpleSingleInstance,
-  JsonTools, umacroplayback, iconloader, monitoringthread, platformpath;
+  JsonTools, umacroplayback, iconloader;
 
 {$R *.res}
 begin
@@ -39,7 +39,7 @@ begin
   Application.SingleInstanceEnabled:= True;
   TSimpleSingleInstance(Application.SingleInstance).DefaultMessage := '--show';
   Application.Initialize;
-  Application.Scaled:=True;
+  Application.Scaled := True;
   if Application.SingleInstance.StartResult <> siClient then
     begin
       Application.CreateForm(TdmMain, dmMain);
