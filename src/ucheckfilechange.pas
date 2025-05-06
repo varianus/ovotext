@@ -384,7 +384,7 @@ begin
     begin
       fState := Data.Value.CheckFile;
       if (fState <> fwscNone) and Assigned(FOnFileStateChange) then
-        FOnFileStateChange(Self, Data.Key, Data.Value, fState);
+        FOnFileStateChange(Self, Data.Key, Data.Value.Data, fState);
     end;
   end;
 end;
