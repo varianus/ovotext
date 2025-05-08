@@ -281,7 +281,7 @@ begin
             end
             else
               Lines.Add(LineBuffer);
-            j := i + LineEndingCount;
+            j := i;
           end
           else
             Inc(i);
