@@ -38,6 +38,7 @@ end;
 procedure TPlatformMonitoring.Cleanup;
 begin
   CloseHandle(FCompletionPort);
+  FCompletionPort := 0;
 end;
 
 procedure TerminateProc(dwParam: ULONG_PTR); stdcall;
@@ -46,8 +47,7 @@ end;
 
 procedure TPlatformMonitoring.TriggerTerminateEvent;
 begin
-  QueueUserAPC(@TerminateProc, Self.Handle, ULONG_PTR(Self));
-
+  PostQueuedCompletionStatus(fCompletionPort, 0, 0, Nil);
 end;
 
 procedure TPlatformMonitoring.DoMonitor;

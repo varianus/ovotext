@@ -65,6 +65,7 @@ type
     FOnFileStateChange: TFWStateEvent;
     Monitor: TWatcherThread;
     procedure SetOnFileStateChange(AValue: TFWStateEvent);
+    Procedure TerminatedEvent(Aobject: Tobject);
   public
     procedure AddFile(const FileName: TFileName; Strategy: TFWStrategy; Data: Pointer);
     procedure RemoveFile(const FileName: TFileName);
@@ -136,14 +137,12 @@ var
 begin
   lock.Acquire;
   try
-
     aPath := ExtractFilePath(aWatch.FFileName);
     if Paths.TryGetValue(aPath, Data) then
     begin
       Data.RefCount := Data.RefCount + 1;
       exit;
     end;
-
     Data      := TPlatformPath.Create;
     Data.Path := aPath;
     Paths.Add(aPath, Data);
@@ -207,8 +206,8 @@ end;
 destructor TWatcherThread.Destroy;
 begin
   Cleanup;
-  lock.Free;
   Paths.Free;
+  lock.Free;
   inherited Destroy;
 end;
 
@@ -297,6 +296,11 @@ begin
   FOnFileStateChange := AValue;
 end;
 
+procedure TFileWatcher.TerminatedEvent(Aobject: Tobject);
+begin
+  Monitor := nil;
+end;
+
 procedure TFileWatcher.AddFile(const FileName: TFileName;
   Strategy: TFWStrategy; Data: Pointer);
 var
@@ -353,6 +357,7 @@ begin
       fwsOnDemand:
       begin
         Monitor.RemoveWatch(Data);
+        Data.Reset;
       end;
       fwsRealTime:
       begin
@@ -368,7 +373,10 @@ end;
 procedure TFileWatcher.EnsureMonitor;
 begin
   if not Assigned(Monitor) then
-    Monitor := TPlatformMonitoring.Create(Self);
+    begin
+      Monitor := TPlatformMonitoring.Create(Self);
+      Monitor.OnTerminate := @TerminatedEvent;
+    end;
 
 end;
 
