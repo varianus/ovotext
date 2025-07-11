@@ -21,16 +21,17 @@
 program ovotext;
 
 uses
-  {$IFDEF UNIX}{$IFDEF UseCThreads}
+  {$IFDEF UNIX}
   cthreads,
-  {$ENDIF}{$ENDIF}
+  {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, DefaultTranslator, singleinstance,
   printer4lazarus, SynEditPrintExtProcs,
   //projects unit
-  umain, uabout, udmmain, Stringcostants, SupportFuncs, config, uCheckFileChange, udglgoto, simplemrumanager,
-  uMacroEditor, uActionMacro, uReplaceMacro, uMacroRecorder, ReplaceDialog, LazLogger,
-  SimpleSingleInstance, JsonTools, umacroplayback, iconloader;
+  umain, uabout, udmmain, Stringcostants, SupportFuncs, config,
+  uCheckFileChange, udglgoto, simplemrumanager, uMacroEditor, uActionMacro,
+  uReplaceMacro, uMacroRecorder, ReplaceDialog, LazLogger, SimpleSingleInstance,
+  JsonTools, umacroplayback, iconloader;
 
 {$R *.res}
 begin
@@ -38,7 +39,7 @@ begin
   Application.SingleInstanceEnabled:= True;
   TSimpleSingleInstance(Application.SingleInstance).DefaultMessage := '--show';
   Application.Initialize;
-  Application.Scaled:=True;
+  Application.Scaled := True;
   if Application.SingleInstance.StartResult <> siClient then
     begin
       Application.CreateForm(TdmMain, dmMain);

@@ -10,6 +10,7 @@ object fMain: TfMain
   Font.Height = -12
   Menu = mnuMain
   Position = poOwnerFormCenter
+  ShowHint = True
   Visible = True
   OnActivate = FormActivate
   OnClose = FormClose
@@ -61,6 +62,8 @@ object fMain: TfMain
     ButtonHeight = 26
     ButtonWidth = 28
     Images = imgList
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 1
     object ToolButton1: TToolButton
       Left = 1
@@ -158,17 +161,17 @@ object fMain: TfMain
       Action = actMacroRecord
     end
     object ToolButton16: TToolButton
-      Left = 432
+      Left = 440
       Top = 2
       Action = actMacroStop
     end
     object ToolButton17: TToolButton
-      Left = 460
+      Left = 468
       Top = 2
       Action = actMacroPlayBack
     end
     object ToolButton18: TToolButton
-      Left = 488
+      Left = 496
       Top = 2
       Action = actMacroPlaybackMulti
     end
@@ -182,6 +185,18 @@ object fMain: TfMain
       Height = 26
       Top = 2
       Style = tbsSeparator
+    end
+    object ToolButton24: TToolButton
+      Left = 432
+      Height = 26
+      Top = 2
+      Caption = 'ToolButton24'
+      Style = tbsSeparator
+    end
+    object ToolButton25: TToolButton
+      Left = 524
+      Top = 2
+      Action = actMonitoring
     end
   end
   object lbMessage: TStaticText
@@ -1191,6 +1206,13 @@ object fMain: TfMain
       Category = 'View'
       Caption = 'Wrap long lines'
       OnExecute = actWrapLinesExecute
+    end
+    object actMonitoring: TAction
+      Category = 'File'
+      Caption = 'Monitoring'
+      Hint = 'Monitoring (tail -f)'
+      ImageIndex = 39
+      OnExecute = actMonitoringExecute
     end
   end
   object SelectDirectoryDialog1: TSelectDirectoryDialog

@@ -23,113 +23,260 @@ unit uCheckFileChange;
 interface
 
 uses
-  Classes, SysUtils, Generics.Collections;
+  Classes, SysUtils, Forms, Generics.Collections, syncobjs, platformpath;
 
 type
 
   TFileInfo = record
-    Exists : Boolean;
-    Time : Longint;
-    Size : Int64;
+    Exists: boolean;
+    Time: longint;
+    Size: int64;
   end;
 
-  TFWStateChange = (fwscNone, fwscDeleted, fwscModified);
+  TFWStateChange = (fwscNone, fwscDeleted, fwscModified, fwscRenamed);
 
-  TFWStateEvent = procedure (Sender: TObject; FileName :TFileName; Data:Pointer; State:TFWStateChange) of object;
+  TFWStateEvent = procedure(Sender: TObject; FileName: TFileName; Data: Pointer; State: TFWStateChange) of object;
+
+  TFWStrategy = (fwsOnDemand, fwsRealTime);
+  TWatcherThread = class;
 
   { TFileWatcher }
   TFileWatch = class
   private
-    FFileName: String;
+    FFileName: string;
     FileInfo: TFileInfo;
-    FData:Pointer;
+    FData: Pointer;
+    FStrategy: TFWStrategy;
     function GetFileInfo(const FileName: string): TFileInfo;
   public
-    constructor Create(FileName: TFilename; Data:Pointer = nil);
+    property Data: Pointer read FData;
+    constructor Create(AFileName: TFilename; Strategy: TFWStrategy; AData: Pointer = nil);
     function CheckFile: TFWStateChange;
     procedure Reset;
   end;
 
-  TWatchList = specialize TFastObjectHashMap<String,TFileWatch>;
+  TWatchList = specialize TFastObjectHashMap<string, TFileWatch>;
 
   TFileWatcher = class
   private
+    procedure EnsureMonitor;
+  protected
     WatchList: TWatchList;
     FOnFileStateChange: TFWStateEvent;
+    Monitor: TWatcherThread;
     procedure SetOnFileStateChange(AValue: TFWStateEvent);
+    Procedure TerminatedEvent(Aobject: Tobject);
   public
-    Procedure AddFile(FileName:TFileName; Data:Pointer);
-    Procedure RemoveFile(FileName:TFileName);
-    Procedure Update(FileName:TFileName);
+    procedure AddFile(const FileName: TFileName; Strategy: TFWStrategy; Data: Pointer);
+    procedure RemoveFile(const FileName: TFileName);
+    procedure Update(const FileName: TFileName);
+    function GetWatch(const FileName: TFileName): TFileWatch;
+    procedure ChangeStrategy(const FileName: TFileName; Strategy: TFWStrategy);
+
     procedure CheckFiles;
-    Property  OnFileStateChange: TFWStateEvent read FOnFileStateChange write SetOnFileStateChange;
+    property OnFileStateChange: TFWStateEvent read FOnFileStateChange write SetOnFileStateChange;
 
     constructor Create;
     destructor Destroy; override;
 
   end;
 
+type
+
+  { TWatcherThread }
+  TWatcherThread = class(TThread)
+  type
+    TPaths = specialize TFastObjectHashMap<string, TPlatformPath>;
+    REventData = record
+      Filename: string;
+      NewName: string;
+      Event: TFWStateChange;
+      Data: pointer;
+    end;
+
+
+  private
+    procedure DoWatcherEvent;
+  protected
+    lock: TCriticalSection;
+    Paths: TPaths;
+    FCurrentEventData: REventData;
+    FMasterList: TFileWatcher;
+    function Init: boolean; virtual; abstract;
+    procedure Cleanup; virtual; abstract;
+    procedure StartMonitoringPath(aPath: string; Data: TPlatformPath); virtual; abstract;
+    procedure StopMonitoringPath(aPath: string; Data: TPlatformPath); virtual; abstract;
+    procedure DoMonitor; virtual; abstract;
+    procedure TriggerTerminateEvent; virtual; abstract;
+  public
+    procedure Execute; override;
+    function AddWatch(aWatch: TFileWatch): integer;
+    function RemoveWatch(aWatch: TFileWatch): integer;
+    procedure SyncDoWatcherEvent;
+    constructor Create(MasterList: TFileWatcher);
+    destructor Destroy; override;
+    procedure Terminate;
+
+  end;
 
 implementation
+
+uses monitoringthread;
+
+  { TWatcherThread }
+
+procedure TWatcherThread.Execute;
+begin
+  DoMonitor;
+end;
+
+function TWatcherThread.AddWatch(aWatch: TFileWatch): integer;
+var
+  aPath: string;
+  Data: TPlatformPath;
+begin
+  lock.Acquire;
+  try
+    aPath := ExtractFilePath(aWatch.FFileName);
+    if Paths.TryGetValue(aPath, Data) then
+    begin
+      Data.RefCount := Data.RefCount + 1;
+      exit;
+    end;
+    Data      := TPlatformPath.Create;
+    Data.Path := aPath;
+    Paths.Add(aPath, Data);
+    StartMonitoringPath(aPath, Data);
+  finally
+    lock.Release;
+  end;
+
+end;
+
+function TWatcherThread.RemoveWatch(aWatch: TFileWatch): integer;
+var
+  aPath: string;
+  Data: TPlatformPath;
+begin
+  lock.Acquire;
+  try
+    aPath := ExtractFilePath(aWatch.FFileName);
+    if not Paths.TryGetValue(aPath, Data) then
+      exit;
+
+    if Data.RefCount > 1 then
+      Data.RefCount := Data.RefCount - 1
+    else
+    begin
+      StopMonitoringPath(aPath, Data);
+      Paths.Remove(aPath);
+      if Paths.Count = 0 then
+      begin
+        Terminate;
+        TriggerTerminateEvent;
+      end;
+    end;
+  finally
+    lock.Release;
+  end;
+
+end;
+
+procedure TWatcherThread.SyncDoWatcherEvent;
+begin
+  if not Application.Terminated then
+    Synchronize(@DoWatcherEvent);
+
+end;
+
+procedure TWatcherThread.DoWatcherEvent;
+begin
+  FMasterList.OnFileStateChange(FMasterList, FCurrentEventData.Filename, FCurrentEventData.Data, FCurrentEventData.Event);
+end;
+
+constructor TWatcherThread.Create(MasterList: TFileWatcher);
+begin
+  FMasterList := MasterList;
+  Lock  := TCriticalSection.Create;
+  Paths := TPaths.Create([doOwnsValues]);
+  Init;
+  inherited Create(False);
+end;
+
+destructor TWatcherThread.Destroy;
+begin
+  Cleanup;
+  Paths.Free;
+  lock.Free;
+  inherited Destroy;
+end;
+
+procedure TWatcherThread.Terminate;
+begin
+  inherited Terminate;
+  TriggerTerminateEvent;
+
+end;
 
 { TFileWatch }
 
 function TFileWatch.GetFileInfo(const FileName: string): TFileInfo;
-Var
-  Info : TSearchRec;
-  A : Integer;
-
+var
+  Info: TSearchRec;
+  A: integer;
 begin
-  A:=0;
-  Result.Exists := FindFirst(FileName,A,Info)=0;
+  A := 0;
+  Result.Exists := FindFirst(FileName, A, Info) = 0;
   if Result.Exists then
-    begin
-      result.Time:=Info.Time;
-      result.Size:=Info.Size;
-      FindClose(Info);
-    end;
+  begin
+    Result.Time := Info.Time;
+    Result.Size := Info.Size;
+    FindClose(Info);
+  end;
 end;
 
-constructor TFileWatch.Create(FileName: TFilename; Data:Pointer= nil);
+constructor TFileWatch.Create(AFileName: TFilename; Strategy: TFWStrategy;
+  AData: Pointer);
 begin
-  FFileName := FileName;
-  FData:=Data;
-  Reset;
+  FFileName := AFileName;
+  FData     := AData;
+  FStrategy := Strategy;
+  if Strategy = fwsOnDemand then
+    Reset;
 end;
 
 function TFileWatch.CheckFile: TFWStateChange;
 var
-  wFileInfo : TFileInfo;
+  wFileInfo: TFileInfo;
 begin
-  Result := fwscNone;
-
-  wFileInfo:= GetFileInfo(FFileName);
+  Result    := fwscNone;
+  wFileInfo := GetFileInfo(FFileName);
 
   try
     if not wFileInfo.Exists then
+    begin
+      if FileInfo.Exists then
       begin
-        if FileInfo.Exists then
-          begin
-            result := fwscDeleted;
-            exit;
-          end
-      end
-    else
-      begin
-        if not FileInfo.Exists then
-          begin
-            result := fwscModified;
-            exit;
-          end
+        Result := fwscDeleted;
+        exit;
       end;
-
-   if wFileInfo.Exists and
-      ((wFileInfo.Size <> FileInfo.Size) or
-       (wFileInfo.Time <> FileInfo.Time))
-    then
+    end
+    else
+    begin
+      if not FileInfo.Exists then
       begin
         Result := fwscModified;
+        exit;
       end;
+    end;
+
+    if wFileInfo.Exists and
+      ((wFileInfo.Size <> FileInfo.Size) or
+      (wFileInfo.Time <> FileInfo.Time))
+    then
+    begin
+      Result := fwscModified;
+    end;
   finally
     FileInfo := wFileInfo;
   end;
@@ -145,49 +292,109 @@ end;
 
 procedure TFileWatcher.SetOnFileStateChange(AValue: TFWStateEvent);
 begin
-  if FOnFileStateChange=AValue then Exit;
-  FOnFileStateChange:=AValue;
+  if FOnFileStateChange = AValue then Exit;
+  FOnFileStateChange := AValue;
 end;
 
-procedure TFileWatcher.AddFile(FileName: TFileName; Data: Pointer);
+procedure TFileWatcher.TerminatedEvent(Aobject: Tobject);
+begin
+  Monitor := nil;
+end;
+
+procedure TFileWatcher.AddFile(const FileName: TFileName;
+  Strategy: TFWStrategy; Data: Pointer);
 var
   tmpFW: TFileWatch;
 begin
   if WatchList.ContainsKey(FileName) then
     exit;
 
-  tmpFW := TFileWatch.Create(FileName, Data);
+  tmpFW := TFileWatch.Create(FileName, Strategy, Data);
   WatchList.Add(FileName, tmpFW);
 
 end;
 
-procedure TFileWatcher.RemoveFile(FileName: TFileName);
+procedure TFileWatcher.RemoveFile(const FileName: TFileName);
+var
+  Data: TFileWatch;
 begin
-  WatchList.Remove(FileName);
+
+  if WatchList.TryGetValue(FileName, Data) then
+  begin
+    if Data.FStrategy = fwsRealTime then
+      Monitor.RemoveWatch(Data);
+    WatchList.Remove(FileName);
+  end;
+
 end;
 
-procedure TFileWatcher.Update(FileName: TFileName);
+procedure TFileWatcher.Update(const FileName: TFileName);
 var
-  Data : TFileWatch;
+  Data: TFileWatch;
 begin
 
   if WatchList.TryGetValue(FileName, Data) then
     Data.Reset;
 end;
 
+function TFileWatcher.GetWatch(const FileName: TFileName): TFileWatch;
+begin
+  if not WatchList.TryGetValue(FileName, Result) then
+    Result := nil;
+end;
+
+procedure TFileWatcher.ChangeStrategy(const FileName: TFileName;
+  Strategy: TFWStrategy);
+var
+  Data: TFileWatch;
+begin
+
+  if WatchList.TryGetValue(FileName, Data) then
+  begin
+    if Data.FStrategy = Strategy then
+      exit;
+    case Strategy of
+      fwsOnDemand:
+      begin
+        Monitor.RemoveWatch(Data);
+        Data.Reset;
+      end;
+      fwsRealTime:
+      begin
+        EnsureMonitor;
+        Monitor.AddWatch(Data);
+      end;
+    end;
+
+    Data.FStrategy := Strategy;
+  end;
+end;
+
+procedure TFileWatcher.EnsureMonitor;
+begin
+  if not Assigned(Monitor) then
+    begin
+      Monitor := TPlatformMonitoring.Create(Self);
+      Monitor.OnTerminate := @TerminatedEvent;
+    end;
+
+end;
+
 procedure TFileWatcher.CheckFiles;
 var
   fState: TFWStateChange;
   i: integer;
-  Data : specialize TPair<string,TFileWatch>;
+  Data: specialize TPair<string, TFileWatch>;
 begin
   for Data in WatchList do
+  begin
+    if Data.Value.FStrategy = fwsOnDemand then
     begin
       fState := Data.Value.CheckFile;
       if (fState <> fwscNone) and Assigned(FOnFileStateChange) then
-        FOnFileStateChange(Self, Data.Key, Data.Value.FData, fState);
-
+        FOnFileStateChange(Self, Data.Key, Data.Value.Data, fState);
     end;
+  end;
 end;
 
 constructor TFileWatcher.Create;
@@ -203,4 +410,3 @@ end;
 
 
 end.
-
