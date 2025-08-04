@@ -50,6 +50,7 @@ type
     actFindLongestLine: TAction;
     actFullScreen: TAction;
     actFileNameToClipboard: TAction;
+    actRemoveEmpty: TAction;
     actMonitoring: TAction;
     actWrapLines: TAction;
     actLoadSession: TAction;
@@ -94,12 +95,14 @@ type
     MenuItem103: TMenuItem;
     MenuItem104: TMenuItem;
     MenuItem105: TMenuItem;
+    MenuItem106: TMenuItem;
+    MenuItem107: TMenuItem;
+    MenuItem108: TMenuItem;
+    MenuItem109: TMenuItem;
+    MenuItem110: TMenuItem;
     MenuItem28: TMenuItem;
     MenuItem29: TMenuItem;
     MenuItem46: TMenuItem;
-    MenuItem53: TMenuItem;
-    MenuItem54: TMenuItem;
-    MenuItem55: TMenuItem;
     MenuItem56: TMenuItem;
     MenuItem57: TMenuItem;
     MenuItem58: TMenuItem;
@@ -163,9 +166,10 @@ type
     PrintDialog1: TPrintDialog;
     SelectDirectoryDialog1: TSelectDirectoryDialog;
     Separator1: TMenuItem;
-    SortAscending: TAction;
+    Separator2: TMenuItem;
+    actSortAscending: TAction;
     actPrint: TAction;
-    SortDescending: TAction;
+    actSortDescending: TAction;
     FileSaveAll: TAction;
     actTrimTrailing: TAction;
     actTrim: TAction;
@@ -307,6 +311,7 @@ type
     procedure actPathToClipboardExecute(Sender: TObject);
     procedure actPrintExecute(Sender: TObject);
     procedure actQuoteExecute(Sender: TObject);
+    procedure actRemoveEmptyExecute(Sender: TObject);
     procedure actSaveSessionExecute(Sender: TObject);
     procedure actUnQuoteExecute(Sender: TObject);
     procedure actWrapLinesExecute(Sender: TObject);
@@ -382,8 +387,8 @@ type
     procedure SearchFindNextExecute(Sender: TObject);
     procedure SearchFindPreviousExecute(Sender: TObject);
     procedure SearchReplaceExecute(Sender: TObject);
-    procedure SortAscendingExecute(Sender: TObject);
-    procedure SortDescendingExecute(Sender: TObject);
+    procedure actSortAscendingExecute(Sender: TObject);
+    procedure actSortDescendingExecute(Sender: TObject);
     procedure actUpperCaseExecute(Sender: TObject);
     procedure StatusBarResize(Sender: TObject);
   private
@@ -708,6 +713,26 @@ begin
 
   Ed := EditorFactory.CurrentEditor;
   Ed.TextOperation(@QuotedStr, [tomLines]);
+end;
+
+procedure TfMain.actRemoveEmptyExecute(Sender: TObject);
+var
+  Ed: TEditor;
+  i: Integer;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  ed.BeginUpdate(True);
+  for i:= Ed.Lines.Count -1 downto 0 do
+     if Ed.Lines[i] = '' then
+       begin
+         ed.CaretX := i;
+         ed.ExecuteCommand(ecDeleteLine,' ',nil);
+       end;
+  ed.EndUpdate();
+  //
 end;
 
 procedure TfMain.actSaveSessionExecute(Sender: TObject);
@@ -1208,6 +1233,7 @@ var
   SaveLetter, Key: string;
   CurrMenu: TMenuItem;
   ParamList: TStringList;
+  HighList: TStringList;
 begin
 
   LoadImageList;
@@ -1271,24 +1297,38 @@ begin
   end;
   {$ENDIF}
 
-  SaveLetter := '';
-  for i := 0 to HIGHLIGHTERCOUNT - 1 do
-  begin
-    mnuLang     := TMenuItem.Create(Self);
-    mnuLang.Caption := ARHighlighter[i].HLClass.GetLanguageName;
-    mnuLang.Tag := i;
-    mnuLang.OnClick := @mnuLangClick;
-    CurrLetter  := UpperCase(Copy(mnuLang.Caption, 1, 1));
-    if SaveLetter <> CurrLetter then
+  HighList := TStringList.Create;
+  try
+    for i := 0 to HIGHLIGHTERCOUNT - 1 do
+     begin
+       HighList.AddObject(ARHighlighter[i].HLClass.GetLanguageName,  TObject(PtrUInt(i)));
+     end;
+
+    HighList.Sort;
+
+    SaveLetter := '';
+    for i := 0 to HIGHLIGHTERCOUNT - 1 do
     begin
-      SaveLetter := CurrLetter;
-      CurrMenu   := TMenuItem.Create(Self);
-      CurrMenu.Caption := CurrLetter;
-      mnuLanguage.Add(CurrMenu);
+      mnuLang     := TMenuItem.Create(Self);
+      mnuLang.Caption := HighList[i];
+      mnuLang.Tag := UIntPtr(HighList.Objects[i]);
+      mnuLang.OnClick := @mnuLangClick;
+      CurrLetter  := UpperCase(Copy(mnuLang.Caption, 1, 1));
+      if SaveLetter <> CurrLetter then
+      begin
+        SaveLetter := CurrLetter;
+        CurrMenu   := TMenuItem.Create(Self);
+        CurrMenu.Caption := CurrLetter;
+        mnuLanguage.Add(CurrMenu);
+      end;
+
+      CurrMenu.Add(mnuLang);
     end;
 
-    CurrMenu.Add(mnuLang);
+  finally
+    HighList.Free;
   end;
+
 
   for Key in ConfigObj.ThemeList.Keys do
   begin
@@ -1854,7 +1894,7 @@ begin
 end;
 
 
-procedure TfMain.SortAscendingExecute(Sender: TObject);
+procedure TfMain.actSortAscendingExecute(Sender: TObject);
 var
   Ed: TEditor;
 begin
@@ -1870,7 +1910,7 @@ begin
 
 end;
 
-procedure TfMain.SortDescendingExecute(Sender: TObject);
+procedure TfMain.actSortDescendingExecute(Sender: TObject);
 var
   Ed: TEditor;
 begin

@@ -569,6 +569,10 @@ msgstr ""
 msgid "Quote lines"
 msgstr ""
 
+#: tfmain.actremoveempty.caption
+msgid "Remove empty lines"
+msgstr ""
+
 #: tfmain.actsavesession.caption
 msgid "Save Session"
 msgstr ""
@@ -579,6 +583,26 @@ msgstr ""
 
 #: tfmain.actshowtoolbar.caption
 msgid "Show toolbar"
+msgstr ""
+
+#: tfmain.actsortascending.caption
+msgctxt "tfmain.actsortascending.caption"
+msgid "Sort Ascending"
+msgstr ""
+
+#: tfmain.actsortascending.hint
+msgctxt "tfmain.actsortascending.hint"
+msgid "Sort Ascending"
+msgstr ""
+
+#: tfmain.actsortdescending.caption
+msgctxt "tfmain.actsortdescending.caption"
+msgid "Sort Descending"
+msgstr ""
+
+#: tfmain.actsortdescending.hint
+msgctxt "tfmain.actsortdescending.hint"
+msgid "Sort Descending"
 msgstr ""
 
 #: tfmain.actsqlprettyprint.caption
@@ -845,6 +869,10 @@ msgstr ""
 msgid "Send to clipboard"
 msgstr ""
 
+#: tfmain.menuitem106.caption
+msgid "Lines Operation"
+msgstr ""
+
 #: tfmain.menuitem3.caption
 msgid "Help"
 msgstr ""
@@ -859,10 +887,6 @@ msgstr ""
 
 #: tfmain.menuitem52.caption
 msgid "Navigation"
-msgstr ""
-
-#: tfmain.menuitem53.caption
-msgid "Sort"
 msgstr ""
 
 #: tfmain.menuitem59.caption
@@ -978,26 +1002,6 @@ msgstr ""
 
 #: tfmain.searchreplace.hint
 msgid "Search and Replace"
-msgstr ""
-
-#: tfmain.sortascending.caption
-msgctxt "tfmain.sortascending.caption"
-msgid "Sort Ascending"
-msgstr ""
-
-#: tfmain.sortascending.hint
-msgctxt "tfmain.sortascending.hint"
-msgid "Sort Ascending"
-msgstr ""
-
-#: tfmain.sortdescending.caption
-msgctxt "tfmain.sortdescending.caption"
-msgid "Sort Descending"
-msgstr ""
-
-#: tfmain.sortdescending.hint
-msgctxt "tfmain.sortdescending.hint"
-msgid "Sort Descending"
 msgstr ""
 
 #: tfmain.toolbutton24.caption
