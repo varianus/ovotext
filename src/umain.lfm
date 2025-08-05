@@ -409,25 +409,6 @@ object fMain: TfMain
       object MenuItem47: TMenuItem
         Caption = '-'
       end
-      object mnuLineEndings: TMenuItem
-        Caption = 'Convert line endings'
-        OnClick = mnuLineEndingsClick
-        object mnuCRLF: TMenuItem
-          Caption = 'Windows (CR+LF)'
-          RadioItem = True
-          OnClick = mnuCRLFClick
-        end
-        object mnuLF: TMenuItem
-          Caption = 'Linux (LF)'
-          RadioItem = True
-          OnClick = mnuLFClick
-        end
-        object mnuCR: TMenuItem
-          Caption = 'Mac (CR)'
-          RadioItem = True
-          OnClick = mnuCRClick
-        end
-      end
       object MenuItem39: TMenuItem
         Caption = 'Spaces operations'
         object MenuItem44: TMenuItem
@@ -446,13 +427,41 @@ object fMain: TfMain
           Action = actTabToSpace
         end
       end
-      object MenuItem53: TMenuItem
-        Caption = 'Sort'
-        object MenuItem54: TMenuItem
-          Action = SortAscending
+      object MenuItem106: TMenuItem
+        Caption = 'Lines Operation'
+        object MenuItem109: TMenuItem
+          Action = actSortAscending
         end
-        object MenuItem55: TMenuItem
-          Action = SortDescending
+        object MenuItem110: TMenuItem
+          Action = actSortDescending
+        end
+        object MenuItem107: TMenuItem
+          Action = actRemoveEmpty
+        end
+        object MenuItem108: TMenuItem
+          Action = actFindLongestLine
+        end
+      end
+      object Separator2: TMenuItem
+        Caption = '-'
+      end
+      object mnuLineEndings: TMenuItem
+        Caption = 'Convert line endings'
+        OnClick = mnuLineEndingsClick
+        object mnuCRLF: TMenuItem
+          Caption = 'Windows (CR+LF)'
+          RadioItem = True
+          OnClick = mnuCRLFClick
+        end
+        object mnuLF: TMenuItem
+          Caption = 'Linux (LF)'
+          RadioItem = True
+          OnClick = mnuLFClick
+        end
+        object mnuCR: TMenuItem
+          Caption = 'Mac (CR)'
+          RadioItem = True
+          OnClick = mnuCRClick
         end
       end
       object MenuItem59: TMenuItem
@@ -936,23 +945,23 @@ object fMain: TfMain
       ImageIndex = 9
       OnExecute = actPrintExecute
     end
-    object SortAscending: TAction
+    object actSortAscending: TAction
       Tag = 1
       Category = 'Tools'
       Caption = 'Sort Ascending'
       DisableIfNoHandler = False
       Hint = 'Sort Ascending'
       ImageIndex = 13
-      OnExecute = SortAscendingExecute
+      OnExecute = actSortAscendingExecute
     end
-    object SortDescending: TAction
+    object actSortDescending: TAction
       Tag = 1
       Category = 'Tools'
       Caption = 'Sort Descending'
       DisableIfNoHandler = False
       Hint = 'Sort Descending'
       ImageIndex = 14
-      OnExecute = SortDescendingExecute
+      OnExecute = actSortDescendingExecute
     end
     object actLanguageNone: TAction
       Caption = 'None'
@@ -1213,6 +1222,11 @@ object fMain: TfMain
       Hint = 'Monitoring (tail -f)'
       ImageIndex = 39
       OnExecute = actMonitoringExecute
+    end
+    object actRemoveEmpty: TAction
+      Category = 'Tools'
+      Caption = 'Remove empty lines'
+      OnExecute = actRemoveEmptyExecute
     end
   end
   object SelectDirectoryDialog1: TSelectDirectoryDialog

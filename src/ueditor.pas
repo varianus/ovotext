@@ -356,7 +356,8 @@ begin
   SyncEdit := TSynPluginSyncroEdit.Create(self);
   SyncEdit.Editor := self;
   SyncEdit.GutterGlyph.Assign(bm);
-  SyncEdit.CaseSensitive := False;
+
+//  SyncEdit.CaseSensitive := False;
   Gutter.Visible := ConfigObj.ShowRowNumber;
   WordWrap := ConfigObj.WrapLines;
 
@@ -416,6 +417,9 @@ begin
     fStream := TFileStream.Create(FFileName, fmOpenRead, fmShareDenyNone);
 
     FilePos := fStream.Size;
+    if FilePos > 20 * 1024 *1024 then
+      Highlighter := nil;
+
     SetLength(s, FilePos);
     if FilePos > 0 then
       fStream.Read(s[1], FilePos);

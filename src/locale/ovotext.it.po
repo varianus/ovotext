@@ -612,6 +612,10 @@ msgstr "Stampa"
 msgid "Quote lines"
 msgstr "Metti fra apici"
 
+#: tfmain.actremoveempty.caption
+msgid "Remove empty lines"
+msgstr ""
+
 #: tfmain.actsavesession.caption
 msgid "Save Session"
 msgstr ""
@@ -623,6 +627,30 @@ msgstr "Mostra numeri di linea"
 #: tfmain.actshowtoolbar.caption
 msgid "Show toolbar"
 msgstr "Mostra toolbar"
+
+#: tfmain.actsortascending.caption
+#, fuzzy
+msgctxt "tfmain.actsortascending.caption"
+msgid "Sort Ascending"
+msgstr "Ordinamento Crescente"
+
+#: tfmain.actsortascending.hint
+#, fuzzy
+msgctxt "tfmain.actsortascending.hint"
+msgid "Sort Ascending"
+msgstr "Ordinamento Crescente"
+
+#: tfmain.actsortdescending.caption
+#, fuzzy
+msgctxt "tfmain.actsortdescending.caption"
+msgid "Sort Descending"
+msgstr "Ordinamento Discendente"
+
+#: tfmain.actsortdescending.hint
+#, fuzzy
+msgctxt "tfmain.actsortdescending.hint"
+msgid "Sort Descending"
+msgstr "Ordinamento Discendente"
 
 #: tfmain.actsqlprettyprint.caption
 msgid "Beautify SQL"
@@ -888,6 +916,10 @@ msgstr "File"
 msgid "Send to clipboard"
 msgstr ""
 
+#: tfmain.menuitem106.caption
+msgid "Lines Operation"
+msgstr ""
+
 #: tfmain.menuitem3.caption
 msgid "Help"
 msgstr "Aiuto"
@@ -903,10 +935,6 @@ msgstr "Operazioni sugli spazi"
 #: tfmain.menuitem52.caption
 msgid "Navigation"
 msgstr "Navigazione"
-
-#: tfmain.menuitem53.caption
-msgid "Sort"
-msgstr "Ordina"
 
 #: tfmain.menuitem59.caption
 msgid "Text Case"
@@ -1022,26 +1050,6 @@ msgstr "&Sostituisci…"
 #: tfmain.searchreplace.hint
 msgid "Search and Replace"
 msgstr "Cerca e Sostituisce"
-
-#: tfmain.sortascending.caption
-msgctxt "tfmain.sortascending.caption"
-msgid "Sort Ascending"
-msgstr "Ordinamento Crescente"
-
-#: tfmain.sortascending.hint
-msgctxt "tfmain.sortascending.hint"
-msgid "Sort Ascending"
-msgstr "Ordinamento Crescente"
-
-#: tfmain.sortdescending.caption
-msgctxt "tfmain.sortdescending.caption"
-msgid "Sort Descending"
-msgstr "Ordinamento Discendente"
-
-#: tfmain.sortdescending.hint
-msgctxt "tfmain.sortdescending.hint"
-msgid "Sort Descending"
-msgstr "Ordinamento Discendente"
 
 #: tfmain.toolbutton24.caption
 msgid "ToolButton24"
