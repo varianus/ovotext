@@ -820,6 +820,7 @@ object fMain: TfMain
     object FileSaveAs: TFileSaveAs
       Category = 'File'
       Caption = 'Save as…'
+      Dialog.Options = [ofOverwritePrompt, ofEnableSizing, ofViewDetail]
       Hint = 'Save as '
       ImageIndex = 5
       OnAccept = FileSaveAsAccept
