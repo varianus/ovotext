@@ -1,0 +1,46 @@
+object fKeys: TfKeys
+  Left = 300
+  Height = 493
+  Top = 250
+  Width = 500
+  Caption = 'Keystrokes table'
+  ClientHeight = 493
+  ClientWidth = 500
+  LCLVersion = '4.99.0.0'
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 453
+    Width = 488
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    ShowButtons = [pbClose]
+  end
+  object grdCommands: TStringGrid
+    Left = 0
+    Height = 447
+    Top = 0
+    Width = 500
+    Align = alClient
+    ColCount = 2
+    Columns = <    
+      item
+        Title.Caption = 'Command'
+        Width = 300
+      end    
+      item
+        Title.Caption = 'Shortcut'
+        Width = 150
+      end>
+    FixedCols = 0
+    ScrollBars = ssBoth
+    TabOrder = 0
+  end
+end

@@ -118,6 +118,7 @@ type
     function SaveAs(AFileName: TFileName): boolean;
     procedure StartMonitoring;
     procedure StopMonitoring;
+    property KeyStrokes;
   end;
 
   { TEditorTabSheet }

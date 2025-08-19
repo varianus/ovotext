@@ -1,0 +1,5 @@
+{"version":1,"strings":[
+{"hash":264512997,"name":"tfkeys.caption","sourcebytes":[75,101,121,115,116,114,111,107,101,115,32,116,97,98,108,101],"value":"Keystrokes table"},
+{"hash":174340100,"name":"tfkeys.grdcommands.columns[0].title.caption","sourcebytes":[67,111,109,109,97,110,100],"value":"Command"},
+{"hash":258584404,"name":"tfkeys.grdcommands.columns[1].title.caption","sourcebytes":[83,104,111,114,116,99,117,116],"value":"Shortcut"}
+]}

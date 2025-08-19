@@ -23,11 +23,11 @@ unit umain;
 interface
 
 uses
-  Classes, SysUtils, Math, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ActnList, Menus, ComCtrls, StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls,
-  SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils, LazUTF8, SingleInstance,
-  udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder, uMacroEditor,
-  SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, lclintf, jsontools, umacroplayback, iconloader, LMessages;
+  Classes, SysUtils, Math, FileUtil, LResources, Forms, Controls, Graphics, Dialogs, ActnList, Menus, ComCtrls,
+  StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls, SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils,
+  LazUTF8, SingleInstance, udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder,
+  uMacroEditor, SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, lclintf, jsontools, umacroplayback, iconloader,
+  uKeys, LMessages;
 
 type
 
@@ -50,6 +50,7 @@ type
     actFindLongestLine: TAction;
     actFullScreen: TAction;
     actFileNameToClipboard: TAction;
+    actKeyStrokes: TAction;
     actRemoveEmpty: TAction;
     actMonitoring: TAction;
     actWrapLines: TAction;
@@ -297,6 +298,7 @@ type
     procedure actFullScreenExecute(Sender: TObject);
     procedure actGoToExecute(Sender: TObject);
     procedure actJSONCompactExecute(Sender: TObject);
+    procedure actKeyStrokesExecute(Sender: TObject);
     procedure actLoadSessionExecute(Sender: TObject);
     procedure actMacroManagerExecute(Sender: TObject);
     procedure ActionListUpdate(AAction: TBasicAction; var Handled: boolean);
@@ -472,9 +474,9 @@ var
 begin
   Ed := EditorFactory.CurrentEditor;
 
-  dmMain.HTMLExporter.Highlighter  := Ed.Highlighter;
+  dmMain.HTMLExporter.Highlighter := Ed.Highlighter;
   dmMain.HTMLExporter.ExportAsText := True;
-  dmMain.HTMLExporter.Options      := [heoFragmentOnly];
+  dmMain.HTMLExporter.Options := [heoFragmentOnly];
   dmMain.HTMLExporter.ExportRange(ed.Lines, ed.BlockBegin, ed.BlockEnd);
   dmMain.HTMLExporter.CopyToClipboard;
 
@@ -488,9 +490,9 @@ begin
   SetupSaveDialog(smHTML);
   if SaveDialog.Execute then
   begin
-    dmMain.HTMLExporter.Highlighter  := Ed.Highlighter;
+    dmMain.HTMLExporter.Highlighter := Ed.Highlighter;
     dmMain.HTMLExporter.ExportAsText := True;
-    dmMain.HTMLExporter.Options      := [heoDoctype, heoCharset];
+    dmMain.HTMLExporter.Options := [heoDoctype, heoCharset];
     dmMain.HTMLExporter.ExportAll(ed.Lines);
     dmMain.HTMLExporter.SaveToFile(SaveDialog.FileName);
   end;
@@ -570,7 +572,7 @@ begin
 
   if EditorFactory.ActivePageIndex > -1 then
   begin
-    Handled  := True;
+    Handled := True;
     MousePos := EditorFactory.ClientToScreen(MousePos);
     pumTabs.PopupComponent := EditorFactory.CurrentEditor;
     pumTabs.PopUp(MousePos.X, MousePos.Y);
@@ -584,7 +586,7 @@ var
   ed: TEditor;
 begin
   Avail := EditorAvalaible;
-  Ed    := EditorFactory.CurrentEditor;
+  Ed := EditorFactory.CurrentEditor;
   EditRedo.Enabled := Avail and Ed.CanRedo;
   EditUndo.Enabled := Avail and Ed.CanUndo;
   FileSave.Enabled := Avail and Ed.Modified;
@@ -601,9 +603,9 @@ begin
   actMonitoring.Enabled := Avail and not ed.Untitled;
   actMonitoring.Checked := Avail and ed.Monitoring;
   if actMonitoring.Checked then
-    actMonitoring.ImageIndex:= 43
+    actMonitoring.ImageIndex := 43
   else
-    actMonitoring.ImageIndex:= 39;
+    actMonitoring.ImageIndex := 39;
 
   ExportHtmlToFile.Enabled := Avail;
   ExportRTFToFile.Enabled := Avail;
@@ -718,21 +720,21 @@ end;
 procedure TfMain.actRemoveEmptyExecute(Sender: TObject);
 var
   Ed: TEditor;
-  i: Integer;
+  i: integer;
 begin
   if not EditorAvalaible then
     exit;
 
   Ed := EditorFactory.CurrentEditor;
   ed.BeginUpdate(True);
-  for i:= Ed.Lines.Count -1 downto 0 do
-     if Ed.Lines[i] = '' then
-       begin
-         ed.CaretX := i;
-         ed.ExecuteCommand(ecDeleteLine,' ',nil);
-       end;
+  for i := Ed.Lines.Count - 1 downto 0 do
+    if Ed.Lines[i] = '' then
+    begin
+      ed.CaretX := i;
+      ed.ExecuteCommand(ecDeleteLine, ' ', nil);
+    end;
   ed.EndUpdate();
-  //
+
 end;
 
 procedure TfMain.actSaveSessionExecute(Sender: TObject);
@@ -744,7 +746,7 @@ function ExtractQuotedStr(const S: string): string;
 var
   tmp: pchar;
 begin
-  tmp    := PChar(trim(s));
+  tmp := PChar(trim(s));
   Result := AnsiExtractQuotedStr(tmp, '''');
 end;
 
@@ -782,7 +784,7 @@ end;
 
 procedure TfMain.FileCloseFolderExecute(Sender: TObject);
 begin
-  pnlLeft.Visible    := False;
+  pnlLeft.Visible := False;
   splLeftBar.Visible := False;
 end;
 
@@ -807,8 +809,8 @@ end;
 procedure TfMain.actShowToolbarExecute(Sender: TObject);
 begin
   actShowToolbar.Checked := not actShowToolbar.Checked;
-  ConfigObj.ShowToolbar  := actShowToolbar.Checked;
-  MainToolbar.Visible    := ConfigObj.ShowToolbar;
+  ConfigObj.ShowToolbar := actShowToolbar.Checked;
+  MainToolbar.Visible := ConfigObj.ShowToolbar;
 
 end;
 
@@ -993,7 +995,7 @@ begin
 
   if WindowState <> wsFullScreen then
   begin
-    ws   := WindowState;
+    ws := WindowState;
     rect := BoundsRect;
     MainToolbar.Visible := False;
     Menu := nil;
@@ -1037,6 +1039,22 @@ begin
 
   Ed := EditorFactory.CurrentEditor;
   Ed.TextOperation(@CompactJson, [tomFullText]);
+end;
+
+procedure TfMain.actKeyStrokesExecute(Sender: TObject);
+var
+  Ed: TEditor;
+begin
+  if not EditorAvalaible then
+    exit;
+
+  Ed := EditorFactory.CurrentEditor;
+  with TfKeys.Create(self) do
+  begin
+    Initialize(ed.Keystrokes);
+    ShowModal;
+    Free;
+  end;
 end;
 
 procedure TfMain.actLoadSessionExecute(Sender: TObject);
@@ -1245,17 +1263,17 @@ begin
   MRU.MaxRecent := 15;
   MRU.Recent.Clear;
   actShowRowNumber.Checked := ConfigObj.ShowRowNumber;
-  actShowToolbar.Checked   := ConfigObj.ShowToolbar;
-  actWrapLines.Checked     := ConfigObj.WrapLines;
+  actShowToolbar.Checked := ConfigObj.ShowToolbar;
+  actWrapLines.Checked := ConfigObj.WrapLines;
 
   ConfigObj.ReadStrings('Recent', 'Files', MRU.Recent);
   MRU.ShowRecentFiles;
   ReplaceDialog := TCustomReplaceDialog.Create(self);
   with ReplaceDialog do
   begin
-    OnClose   := @FindDialogClose;
+    OnClose := @FindDialogClose;
     //      Options := [ssoReplace, ssoEntireScope];
-    OnFind    := @ReplaceDialogFind;
+    OnFind := @ReplaceDialogFind;
     OnReplace := @ReplaceDialogReplace;
   end;
 
@@ -1269,7 +1287,7 @@ begin
   EditorFactory.Parent := self;
 
   SynMacroRec := TMacroRecorder.Create(EditorFactory);
-  Macros      := TMRUMenuManager.Create(Self);
+  Macros := TMRUMenuManager.Create(Self);
   Macros.MenuItem := mnuSavedMacros;
   Macros.OnRecentFile := @RecentMacroEvent;
   Macros.MaxRecent := 15;
@@ -1300,24 +1318,22 @@ begin
   HighList := TStringList.Create;
   try
     for i := 0 to HIGHLIGHTERCOUNT - 1 do
-     begin
-       HighList.AddObject(ARHighlighter[i].HLClass.GetLanguageName,  TObject(PtrUInt(i)));
-     end;
+      HighList.AddObject(ARHighlighter[i].HLClass.GetLanguageName, TObject(PtrUInt(i)));
 
     HighList.Sort;
 
     SaveLetter := '';
     for i := 0 to HIGHLIGHTERCOUNT - 1 do
     begin
-      mnuLang     := TMenuItem.Create(Self);
+      mnuLang := TMenuItem.Create(Self);
       mnuLang.Caption := HighList[i];
       mnuLang.Tag := UIntPtr(HighList.Objects[i]);
       mnuLang.OnClick := @mnuLangClick;
-      CurrLetter  := UpperCase(Copy(mnuLang.Caption, 1, 1));
+      CurrLetter := UpperCase(Copy(mnuLang.Caption, 1, 1));
       if SaveLetter <> CurrLetter then
       begin
         SaveLetter := CurrLetter;
-        CurrMenu   := TMenuItem.Create(Self);
+        CurrMenu := TMenuItem.Create(Self);
         CurrMenu.Caption := CurrLetter;
         mnuLanguage.Add(CurrMenu);
       end;
@@ -1337,7 +1353,7 @@ begin
     mnuTheme.RadioItem := True;
     if ConfigObj.ThemeList.Items[key] = ConfigObj.AppSettings.ColorSchema then
       mnuTheme.Checked := True;
-    mnuTheme.OnClick   := @mnuThemeClick;
+    mnuTheme.OnClick := @mnuThemeClick;
     mnuThemes.Add(mnuTheme);
   end;
 
@@ -1354,7 +1370,7 @@ begin
   if EditorFactory.PageCount = 0 then
     FileNew.Execute;
 
-  pnlLeft.Visible    := False;
+  pnlLeft.Visible := False;
   splLeftBar.Visible := False;
 
 end;
@@ -1373,9 +1389,8 @@ begin
   ImgList.BeginUpdate;
   ImgList.Clear;
   ImgList.Scaled := False;
-  ;
   ImgList.Height := MulDiv(24, Screen.PixelsPerInch, 96);
-  ImgList.Width  := ImgList.Height;
+  ImgList.Width := ImgList.Height;
 
   iconRender := TIconRenderer.Create(S);
   iconRender.Color := GetSysColor(COLOR_BTNTEXT);
@@ -1395,19 +1410,21 @@ begin
   iconRender.AddToImageList(imglist, [$6E]);  //43
 
   ImgList.EndUpdate;
+
   dmMain.imgBookMark.BeginUpdate;
   dmMain.imgBookMark.Clear;
   dmMain.imgBookMark.Height := MulDiv(16, Screen.PixelsPerInch, 96);
-  dmMain.imgBookMark.Width  := dmMain.imgBookMark.Height;
+  dmMain.imgBookMark.Width := dmMain.imgBookMark.Height;
 
   iconRender.Color := GetSysColor(COLOR_HIGHLIGHT);
   iconRender.SetSize(16, 16);
   iconRender.AddToImageList(dmMain.imgBookMark, [$30, $31, $32, $33, $34,
     $35, $36, $37, $38, $39, $3a]);   // 0 1 2 3 4 5 6 7 8 9
   iconRender.Color := GetSysColor(COLOR_BTNTEXT);
-  iconRender.AddToImageList(dmMain.imgBookMark, [$3b, $3c]);  //
+  iconRender.AddToImageList(dmMain.imgBookMark, [$3b, $3c]);
 
   dmMain.imgBookMark.EndUpdate;
+
 end;
 
 procedure TfMain.mnuLangClick(Sender: TObject);
@@ -1553,12 +1570,12 @@ begin
     sfleCrLf:
       mnuCRLF.Checked := True;
     sfleLf:
-      mnuLF.Checked   := True;
+      mnuLF.Checked := True;
     sfleCr:
-      mnuCR.Checked   := True;
+      mnuCR.Checked := True;
   end;
-  mnuCR.Enabled   := not mnuCR.Checked;
-  mnuLF.Enabled   := not mnuLF.Checked;
+  mnuCR.Enabled := not mnuCR.Checked;
+  mnuLF.Enabled := not mnuLF.Checked;
   mnuCRLF.Enabled := not mnuCRLF.Checked;
 
 end;
@@ -1608,19 +1625,19 @@ begin
     smText:
     begin
       SaveDialog.DefaultExt := '.txt';
-      SaveDialog.Filter     := ConfigObj.GetFiters;
+      SaveDialog.Filter := ConfigObj.GetFiters;
     end;
     smRTF:
     begin
       SaveDialog.DefaultExt := '.rtf';
-      SaveDialog.Filter     := 'RTF Files (*.rtf)|*.rtf';
-      SaveDialog.Title      := 'Export as RTF File';
+      SaveDialog.Filter := 'RTF Files (*.rtf)|*.rtf';
+      SaveDialog.Title := 'Export as RTF File';
     end;
     smHTML:
     begin
       SaveDialog.DefaultExt := '.html';
-      SaveDialog.Filter     := 'HTML Files (*.htm*)|*.htm*';
-      SaveDialog.Title      := 'Export as HTML File';
+      SaveDialog.Filter := 'HTML Files (*.htm*)|*.htm*';
+      SaveDialog.Title := 'Export as HTML File';
     end;
   end;
 end;
@@ -1635,14 +1652,14 @@ procedure TfMain.SaveConfig;
 begin
   with ConfigObj.ConfigHolder do
   begin
-    Find('MainForm/NormalLeft', True).AsInteger   := ScaleFormTo96(Left);
-    Find('MainForm/NormalTop', True).AsInteger    := ScaleFormTo96(Top);
-    Find('MainForm/NormalWidth', True).AsInteger  := ScaleFormTo96(Width);
+    Find('MainForm/NormalLeft', True).AsInteger := ScaleFormTo96(Left);
+    Find('MainForm/NormalTop', True).AsInteger := ScaleFormTo96(Top);
+    Find('MainForm/NormalWidth', True).AsInteger := ScaleFormTo96(Width);
     Find('MainForm/NormalHeight', True).AsInteger := ScaleFormTo96(Height);
 
-    Find('MainForm/RestoredLeft', True).AsInteger   := ScaleFormTo96(RestoredLeft);
-    Find('MainForm/RestoredTop', True).AsInteger    := ScaleFormTo96(RestoredTop);
-    Find('MainForm/RestoredWidth', True).AsInteger  := ScaleFormTo96(RestoredWidth);
+    Find('MainForm/RestoredLeft', True).AsInteger := ScaleFormTo96(RestoredLeft);
+    Find('MainForm/RestoredTop', True).AsInteger := ScaleFormTo96(RestoredTop);
+    Find('MainForm/RestoredWidth', True).AsInteger := ScaleFormTo96(RestoredWidth);
     Find('MainForm/RestoredHeight', True).AsInteger := ScaleFormTo96(RestoredHeight);
 
     Find('MainForm/WindowState', True).AsInteger := integer(WindowState);
@@ -1661,7 +1678,7 @@ begin
     if LastWindowState = wsMaximized then
     begin
       WindowState := wsNormal;
-      BoundsRect  := Bounds(Scale96ToForm(GetValueDef('MainForm/RestoredLeft', RestoredLeft)),
+      BoundsRect := Bounds(Scale96ToForm(GetValueDef('MainForm/RestoredLeft', RestoredLeft)),
         Scale96ToForm(GetValueDef('MainForm/RestoredTop', RestoredTop)), Scale96ToForm(
         GetValueDef('MainForm/RestoredWidth', RestoredWidth)), Scale96ToForm(
         GetValueDef('MainForm/RestoredHeight', RestoredHeight)));
@@ -1672,7 +1689,7 @@ begin
     else
     begin
       WindowState := wsNormal;
-      BoundsRect  := Bounds(Scale96ToForm(GetValueDef('MainForm/NormalLeft', Left)),
+      BoundsRect := Bounds(Scale96ToForm(GetValueDef('MainForm/NormalLeft', Left)),
         Scale96ToForm(GetValueDef('MainForm/NormalTop', Top)), Scale96ToForm(GetValueDef('MainForm/NormalWidth', Width)),
         Scale96ToForm(GetValueDef('MainForm/NormalHeight', Height)));
     end;
@@ -1689,7 +1706,7 @@ begin
 
   for i := 0 to EditorFactory.PageCount - 1 do
   begin
-    mnuitem     := TMenuItem.Create(mnuTabs);
+    mnuitem := TMenuItem.Create(mnuTabs);
     mnuitem.Caption := EditorFactory.Pages[i].Caption;
     mnuitem.Tag := i;
     mnuitem.OnClick := @ShowTabs;
@@ -1703,7 +1720,7 @@ var
   ed: TEditor;
   Options: TMySynSearchOptions;
 begin
-  ed      := EditorFactory.CurrentEditor;
+  ed := EditorFactory.CurrentEditor;
   Options := ReplaceDialog.Options;
   Exclude(Options, ssoReplace);
   if ssoExtended in Options then
@@ -1721,17 +1738,17 @@ var
   Options: TMySynSearchOptions;
 begin
 
-  ed      := EditorFactory.CurrentEditor;
+  ed := EditorFactory.CurrentEditor;
   Options := ReplaceDialog.Options;
 
   if ssoExtended in Options then
   begin
-    FindText    := DecodeExtendedSearch(ReplaceDialog.FindText);
+    FindText := DecodeExtendedSearch(ReplaceDialog.FindText);
     ReplaceText := DecodeExtendedSearch(ReplaceDialog.ReplaceText);
   end
   else
   begin
-    FindText    := ReplaceDialog.FindText;
+    FindText := ReplaceDialog.FindText;
     ReplaceText := ReplaceDialog.ReplaceText;
   end;
 
@@ -2002,8 +2019,8 @@ var
   CurrentPath: string;
   NewNode: TFileTreeNode;
 begin
-  DirList     := TStringList.Create;
-  FileList    := TStringList.Create;
+  DirList := TStringList.Create;
+  FileList := TStringList.Create;
   FileList.OwnsObjects := True;
   CurrentPath := IncludeTrailingPathDelimiter(Path);
   try

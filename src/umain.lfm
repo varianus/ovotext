@@ -1,14 +1,18 @@
 object fMain: TfMain
   Left = 973
-  Height = 716
+  Height = 696
   Top = 141
   Width = 945
   AllowDropFiles = True
   Caption = 'OvoText'
-  ClientHeight = 716
+  ClientHeight = 696
   ClientWidth = 945
+  Color = 3487029
+  DoubleBuffered = True
+  Font.Color = 16119285
   Font.Height = -12
   Menu = mnuMain
+  ParentDoubleBuffered = False
   Position = poOwnerFormCenter
   ShowHint = True
   Visible = True
@@ -25,7 +29,7 @@ object fMain: TfMain
   object StatusBar: TStatusBar
     Left = 0
     Height = 23
-    Top = 693
+    Top = 673
     Width = 945
     Panels = <    
       item
@@ -190,7 +194,6 @@ object fMain: TfMain
       Left = 432
       Height = 26
       Top = 2
-      Caption = 'ToolButton24'
       Style = tbsSeparator
     end
     object ToolButton25: TToolButton
@@ -217,16 +220,17 @@ object fMain: TfMain
   end
   object pnlLeft: TPanel
     Left = 0
-    Height = 641
+    Height = 621
     Top = 52
     Width = 189
     Align = alLeft
-    ClientHeight = 641
+    ClientHeight = 621
     ClientWidth = 189
+    ParentBackground = False
     TabOrder = 3
     object FilesTree: TTreeView
       Left = 1
-      Height = 611
+      Height = 591
       Top = 29
       Width = 187
       Align = alClient
@@ -272,7 +276,7 @@ object fMain: TfMain
   end
   object splLeftBar: TSplitter
     Left = 189
-    Height = 641
+    Height = 621
     Top = 52
     Width = 5
   end
@@ -1228,6 +1232,12 @@ object fMain: TfMain
       Category = 'Tools'
       Caption = 'Remove empty lines'
       OnExecute = actRemoveEmptyExecute
+    end
+    object actKeyStrokes: TAction
+      Category = 'View'
+      Caption = 'Cheat Sheet'
+      ShortCut = 112
+      OnExecute = actKeyStrokesExecute
     end
   end
   object SelectDirectoryDialog1: TSelectDirectoryDialog
