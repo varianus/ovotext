@@ -83,7 +83,7 @@ msgstr ""
 #: stringcostants.rsasksave
 #, object-pascal-format
 msgid "File %s have been modified. Do you want to save changes before monitoring?"
-msgstr ""
+msgstr "Il file %s è stato modificato. Vuoi salvare le modifiche prima di monitorarlo?"
 
 #: stringcostants.rscannotcreate
 #, object-pascal-format
@@ -158,7 +158,7 @@ msgstr "Seleziona un nome per la macro"
 #: stringcostants.rsmonitoring
 msgctxt "stringcostants.rsmonitoring"
 msgid "Monitoring"
-msgstr ""
+msgstr "Monitoraggio"
 
 #: stringcostants.rsnewfile
 #, object-pascal-format
@@ -380,28 +380,40 @@ msgstr "Lazarus"
 
 #: tfabout.label6.caption
 msgid "Home Page"
-msgstr ""
+msgstr "Home Page"
 
 #: tfabout.label7.caption
 msgid "FPC"
-msgstr ""
+msgstr "FPC"
 
 #: tfabout.label8.caption
 msgid "Build Date"
-msgstr ""
+msgstr "Data Costruzione"
 
 #: tfabout.lhomepage.caption
 msgid "https://github.com/varianus/ovotext"
-msgstr ""
+msgstr "https://github.com/varianus/ovotext"
 
 #: tfabout.lhomepage2.caption
 msgid "https://github.com/KDE/breeze-icons"
-msgstr ""
+msgstr "https://github.com/KDE/breeze-icons"
 
 #: tfabout.lversion.caption
 msgctxt "tfabout.lversion.caption"
 msgid "Version"
 msgstr "Versione"
+
+#: tfkeys.caption
+msgid "Keystrokes table"
+msgstr "Tabella sequenze tasti"
+
+#: tfkeys.grdcommands.columns[0].title.caption
+msgid "Command"
+msgstr "Comando"
+
+#: tfkeys.grdcommands.columns[1].title.caption
+msgid "Shortcut"
+msgstr "Scorciatoia"
 
 #: tfmacroeditor.btndelete.caption
 msgctxt "tfmacroeditor.btndelete.caption"
@@ -531,13 +543,17 @@ msgstr "Compatta JSON"
 msgid "Beautify JSON"
 msgstr "Formatta JSON"
 
+#: tfmain.actkeystrokes.caption
+msgid "Cheat Sheet"
+msgstr "Guida rapida tasti"
+
 #: tfmain.actlanguagenone.caption
 msgid "None"
 msgstr "Nessuno"
 
 #: tfmain.actloadsession.caption
 msgid "Load Session"
-msgstr ""
+msgstr "Carica Sessione"
 
 #: tfmain.actlowercase.caption
 msgid "lowercase"
@@ -588,11 +604,11 @@ msgstr "Ferma registrazione"
 #: tfmain.actmonitoring.caption
 msgctxt "tfmain.actmonitoring.caption"
 msgid "Monitoring"
-msgstr ""
+msgstr "Monitoraggio"
 
 #: tfmain.actmonitoring.hint
 msgid "Monitoring (tail -f)"
-msgstr ""
+msgstr "Monitora (tail -f)"
 
 #: tfmain.actpathtoclipboard.caption
 msgid "File Path to clipboard"
@@ -614,11 +630,11 @@ msgstr "Metti fra apici"
 
 #: tfmain.actremoveempty.caption
 msgid "Remove empty lines"
-msgstr ""
+msgstr "Rimuovi linee vuote"
 
 #: tfmain.actsavesession.caption
 msgid "Save Session"
-msgstr ""
+msgstr "Salva sessione"
 
 #: tfmain.actshowrownumber.caption
 msgid "Show row numbers"
@@ -692,7 +708,7 @@ msgstr "Rimuovi gli spazi finali"
 
 #: tfmain.actunquote.caption
 msgid "Unquote lines"
-msgstr ""
+msgstr "Rimuovi virgolette"
 
 #: tfmain.actuppercase.caption
 msgid "UPPERCASE"
@@ -701,7 +717,7 @@ msgstr "MAIUSCOLO"
 #: tfmain.actwraplines.caption
 msgctxt "tfmain.actwraplines.caption"
 msgid "Wrap long lines"
-msgstr ""
+msgstr "A capo automatico"
 
 #: tfmain.actxmlcompact.caption
 msgid "Compact XML"
@@ -914,11 +930,11 @@ msgstr "File"
 
 #: tfmain.menuitem100.caption
 msgid "Send to clipboard"
-msgstr ""
+msgstr "Invia a clipboard"
 
 #: tfmain.menuitem106.caption
 msgid "Lines Operation"
-msgstr ""
+msgstr "Operazioni sulle linee"
 
 #: tfmain.menuitem3.caption
 msgid "Help"
@@ -1050,8 +1066,4 @@ msgstr "&Sostituisci…"
 #: tfmain.searchreplace.hint
 msgid "Search and Replace"
 msgstr "Cerca e Sostituisce"
-
-#: tfmain.toolbutton24.caption
-msgid "ToolButton24"
-msgstr ""
 

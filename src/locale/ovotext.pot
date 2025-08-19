@@ -360,6 +360,18 @@ msgctxt "tfabout.lversion.caption"
 msgid "Version"
 msgstr ""
 
+#: tfkeys.caption
+msgid "Keystrokes table"
+msgstr ""
+
+#: tfkeys.grdcommands.columns[0].title.caption
+msgid "Command"
+msgstr ""
+
+#: tfkeys.grdcommands.columns[1].title.caption
+msgid "Shortcut"
+msgstr ""
+
 #: tfmacroeditor.btndelete.caption
 msgctxt "tfmacroeditor.btndelete.caption"
 msgid "Delete"
@@ -486,6 +498,10 @@ msgstr ""
 
 #: tfmain.actjsonprettyprint.caption
 msgid "Beautify JSON"
+msgstr ""
+
+#: tfmain.actkeystrokes.caption
+msgid "Cheat Sheet"
 msgstr ""
 
 #: tfmain.actlanguagenone.caption
