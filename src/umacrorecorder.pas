@@ -267,7 +267,6 @@ end;
 
 function TMacroRecorder.LoadMacros: integer;
 var
-  NewCount: LongInt;
   NewMacro: TMacro;
   ArrayNode: TJsonNode;
   MacroNode: TJsonNode;

@@ -26,7 +26,7 @@ interface
 uses
   Classes, SysUtils, Graphics, JsonTools, Generics.Collections, dom,
   LResources, SupportFuncs, Stringcostants,
-  SynEditHighlighter, SynEditStrConst, SynEditStrConstExtra,
+  SynEditHighlighter, SynEditStrConst, SynEditStrConstExtra,  LazEditTextAttributes,
   // included with Lazarus
   SynHighlighterPas,
   SynHighlighterCpp, SynHighlighterJava, SynHighlighterPerl, SynHighlighterHTML,
@@ -166,10 +166,10 @@ type
     procedure SetWrapLines(AValue: boolean);
     procedure WriteColor(const Section, Ident: string; const Value: TColor);
     procedure InitializeHighlighter(Highlighter: TSynCustomHighlighter);
-    procedure FontAttribToAttribute(Attribute: TSynHighlighterAttributes; Attrib: TFontAttributes);
+    procedure FontAttribToAttribute(Attribute: TLazEditTextAttribute; Attrib: TFontAttributes);
     procedure LoadHighlighters;
     procedure LoadThemes;
-    procedure SetAttribute(AttrName: string; Attribute: TSynHighlighterAttributes; DefaultAttrib: TFontAttributes);
+    procedure SetAttribute(AttrName: string; Attribute: TLazEditTextAttribute; DefaultAttrib: TFontAttributes);
 
   public
     constructor Create;
@@ -331,7 +331,7 @@ begin
 end;
 
 
-procedure TConfig.FontAttribToAttribute(Attribute: TSynHighlighterAttributes; Attrib: TFontAttributes);
+procedure TConfig.FontAttribToAttribute(Attribute: TLazEditTextAttribute; Attrib: TFontAttributes);
 begin
   Attribute.Foreground := Attrib.Foreground;
   Attribute.Background := Attrib.Background;
@@ -339,7 +339,7 @@ begin
 
 end;
 
-procedure TConfig.SetAttribute(AttrName: string; Attribute: TSynHighlighterAttributes; DefaultAttrib: TFontAttributes);
+procedure TConfig.SetAttribute(AttrName: string; Attribute: TLazEditTextAttribute; DefaultAttrib: TFontAttributes);
 var
   tmpAttribs: TFontAttributes;
 begin

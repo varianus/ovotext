@@ -86,7 +86,7 @@ unit SynEditPrint;
 interface
 
 uses
-  LCLType, SysUtils, Classes, Graphics, Printers, SynEdit, SynEditPrintTypes,
+  LCLType, SysUtils, Classes, Graphics, Printers, SynEdit, SynEditPrintTypes, LazEditTextAttributes,
   SynEditPrintHeaderFooter, SynEditPrinterInfo, SynEditPrintMargins,
   SynEditMiscProcs, SynEditPrintExtProcs, SynEditHighlighter;
 
@@ -476,7 +476,7 @@ procedure TSynEditPrint.TextOut(Text: string; AList: TList);
 var
   Token: string;
   TokenPos: Integer;
-  Attr: TSynHighlighterAttributes;
+  Attr: TLazEditTextAttribute;
   AColor: TColor;
   TokenStart: Integer;
   LCount: Integer;
