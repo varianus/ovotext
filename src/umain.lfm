@@ -15,6 +15,7 @@ object fMain: TfMain
   ParentDoubleBuffered = False
   Position = poOwnerFormCenter
   ShowHint = True
+  LCLVersion = '4.99.0.0'
   Visible = True
   OnActivate = FormActivate
   OnClose = FormClose
@@ -91,7 +92,7 @@ object fMain: TfMain
     end
     object ToolButton5: TToolButton
       Left = 29
-      Height = 26
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
@@ -122,7 +123,7 @@ object fMain: TfMain
     end
     object ToolButton12: TToolButton
       Left = 235
-      Height = 26
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
@@ -143,19 +144,19 @@ object fMain: TfMain
     end
     object tbbSepClose: TToolButton
       Left = 146
-      Height = 26
+      Height = 5
       Top = 2
       Style = tbsDivider
     end
     object ToolButton4: TToolButton
       Left = 296
-      Height = 26
+      Height = 8
       Top = 2
       Style = tbsSeparator
     end
     object ToolButton11: TToolButton
       Left = 360
-      Height = 26
+      Height = 8
       Top = 2
       Style = tbsSeparator
     end
@@ -186,13 +187,13 @@ object fMain: TfMain
     end
     object ToolButton20: TToolButton
       Left = 396
-      Height = 26
+      Height = 8
       Top = 2
       Style = tbsSeparator
     end
     object ToolButton24: TToolButton
       Left = 432
-      Height = 26
+      Height = 8
       Top = 2
       Style = tbsSeparator
     end
@@ -438,6 +439,12 @@ object fMain: TfMain
         end
         object MenuItem110: TMenuItem
           Action = actSortDescending
+        end
+        object MenuItem53: TMenuItem
+          Action = actCustomSort
+        end
+        object Separator3: TMenuItem
+          Caption = '-'
         end
         object MenuItem107: TMenuItem
           Action = actRemoveEmpty
@@ -1238,6 +1245,11 @@ object fMain: TfMain
       Caption = 'Cheat Sheet'
       ShortCut = 112
       OnExecute = actKeyStrokesExecute
+    end
+    object actCustomSort: TAction
+      Category = 'Tools'
+      Caption = 'Custom sort....'
+      OnExecute = actCustomSortExecute
     end
   end
   object SelectDirectoryDialog1: TSelectDirectoryDialog

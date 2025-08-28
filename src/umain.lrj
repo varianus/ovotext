@@ -137,5 +137,6 @@
 {"hash":11782679,"name":"tfmain.actmonitoring.caption","sourcebytes":[77,111,110,105,116,111,114,105,110,103],"value":"Monitoring"},
 {"hash":233295849,"name":"tfmain.actmonitoring.hint","sourcebytes":[77,111,110,105,116,111,114,105,110,103,32,40,116,97,105,108,32,45,102,41],"value":"Monitoring (tail -f)"},
 {"hash":161154483,"name":"tfmain.actremoveempty.caption","sourcebytes":[82,101,109,111,118,101,32,101,109,112,116,121,32,108,105,110,101,115],"value":"Remove empty lines"},
-{"hash":101711940,"name":"tfmain.actkeystrokes.caption","sourcebytes":[67,104,101,97,116,32,83,104,101,101,116],"value":"Cheat Sheet"}
+{"hash":101711940,"name":"tfmain.actkeystrokes.caption","sourcebytes":[67,104,101,97,116,32,83,104,101,101,116],"value":"Cheat Sheet"},
+{"hash":203738734,"name":"tfmain.actcustomsort.caption","sourcebytes":[67,117,115,116,111,109,32,115,111,114,116,46,46,46,46],"value":"Custom sort...."}
 ]}

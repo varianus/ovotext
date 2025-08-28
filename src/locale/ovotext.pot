@@ -301,6 +301,58 @@ msgstr ""
 msgid "Column number"
 msgstr ""
 
+#: tdlgsort.buttonpanel1.okbutton.caption
+msgid "Sort"
+msgstr ""
+
+#: tdlgsort.caption
+msgid "dlgSort"
+msgstr ""
+
+#: tdlgsort.cbnumeric.caption
+msgid "Sort any value that looks like a number as if it were a number"
+msgstr ""
+
+#: tdlgsort.cbquotechar.text
+msgid "\""
+msgstr ""
+
+#: tdlgsort.cgdelimiters.caption
+msgid "Delimiters"
+msgstr ""
+
+#: tdlgsort.edchar.text
+msgid " "
+msgstr ""
+
+#: tdlgsort.label1.caption
+msgid "Begin"
+msgstr ""
+
+#: tdlgsort.label2.caption
+msgid "End"
+msgstr ""
+
+#: tdlgsort.label3.caption
+msgid "Column"
+msgstr ""
+
+#: tdlgsort.label4.caption
+msgid "Quoting char"
+msgstr ""
+
+#: tdlgsort.rbcolumnmode.caption
+msgid "Sort on fixed columns"
+msgstr ""
+
+#: tdlgsort.rbdelimitedmode.caption
+msgid "Sort delimited text (CSV)"
+msgstr ""
+
+#: tdlgsort.rgorder.caption
+msgid "Order"
+msgstr ""
+
 #: tfabout.blicense.caption
 msgid "&License"
 msgstr ""
@@ -450,6 +502,10 @@ msgstr ""
 #: tfmain.actcompressspaces.hint
 msgctxt "tfmain.actcompressspaces.hint"
 msgid "Reduce multiple spaces"
+msgstr ""
+
+#: tfmain.actcustomsort.caption
+msgid "Custom sort...."
 msgstr ""
 
 #: tfmain.actfilenametoclipboard.caption
@@ -1018,9 +1074,5 @@ msgstr ""
 
 #: tfmain.searchreplace.hint
 msgid "Search and Replace"
-msgstr ""
-
-#: tfmain.toolbutton24.caption
-msgid "ToolButton24"
 msgstr ""
 

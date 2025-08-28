@@ -190,7 +190,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="24">
+    <Units Count="26">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -322,9 +322,22 @@
         <Filename Value="ukeys.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fKeys"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uKeys"/>
       </Unit23>
+      <Unit24>
+        <Filename Value="udlgsort.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="dlgSort"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="comparer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Comparer"/>
+      </Unit25>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

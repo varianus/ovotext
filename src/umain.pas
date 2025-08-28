@@ -27,7 +27,7 @@ uses
   StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls, SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils,
   LazUTF8, SingleInstance, udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder,
   uMacroEditor, SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, lclintf, jsontools, umacroplayback, iconloader,
-  uKeys, LMessages;
+  uKeys, udlgsort, LMessages;
 
 type
 
@@ -50,6 +50,7 @@ type
     actFindLongestLine: TAction;
     actFullScreen: TAction;
     actFileNameToClipboard: TAction;
+    actCustomSort: TAction;
     actKeyStrokes: TAction;
     actRemoveEmpty: TAction;
     actMonitoring: TAction;
@@ -104,6 +105,7 @@ type
     MenuItem28: TMenuItem;
     MenuItem29: TMenuItem;
     MenuItem46: TMenuItem;
+    MenuItem53: TMenuItem;
     MenuItem56: TMenuItem;
     MenuItem57: TMenuItem;
     MenuItem58: TMenuItem;
@@ -255,6 +257,7 @@ type
     SearchFindNext: TAction;
     SearchReplace: TAction;
     lbMessage: TStaticText;
+    Separator3: TMenuItem;
     splLeftBar: TSplitter;
     StatusBar: TStatusBar;
     MainToolbar: TToolBar;
@@ -291,6 +294,7 @@ type
     procedure actCloseAllExceptThisExecute(Sender: TObject);
     procedure actCloseBeforeExecute(Sender: TObject);
     procedure ActCompressSpacesExecute(Sender: TObject);
+    procedure actCustomSortExecute(Sender: TObject);
     procedure actFileNameToClipboardExecute(Sender: TObject);
     procedure actFindLongestLineExecute(Sender: TObject);
     procedure actFontExecute(Sender: TObject);
@@ -1076,6 +1080,17 @@ begin
 
   Ed := EditorFactory.CurrentEditor;
   Ed.TextOperation(@RemoveSpacesInExcess);
+
+end;
+
+procedure TfMain.actCustomSortExecute(Sender: TObject);
+begin
+  with TdlgSort.Create(Self) do
+  begin
+    Editor := EditorFactory.CurrentEditor;
+    ShowModal;
+    Free;
+  end;
 
 end;
 
@@ -1920,7 +1935,6 @@ begin
   ed.BeginUpdate(True);
   try
     Ed.Sort(True);
-
   finally
     Ed.EndUpdate;
   end;

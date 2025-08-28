@@ -31,8 +31,8 @@ uses
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,
   SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds,
   SynEditMouseCmds, SynEditLines, SynEditWrappedView, Stringcostants, Forms, Graphics, Config, udmmain,
-  uCheckFileChange, SynEditHighlighter, LazSynEditText, Clipbrd, LConvEncoding, LazStringUtils,
-  ReplaceDialog, SupportFuncs, JsonTools, LCLVersion, lazutilities;
+  uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils,
+  ReplaceDialog, SupportFuncs, JsonTools, LCLVersion, Comparer;
 
 type
 
@@ -85,7 +85,7 @@ type
     function GetLineEndingType: TSynLinesFileLineEndType;
     function GuessLineEndType(AString: string): TSynLinesFileLineEndType;
     procedure OnReplace(Sender: TObject; const ASearch, AReplace: string; Line, Column: integer; var _Action: TSynReplaceAction);
-    procedure QuickSort(L, R: integer; CompareFn: TStringsSortCompare);
+    procedure QuickSort(L, R: integer; CompareFn: TCompareString);
     procedure SetDiskEncoding(AValue: string);
     procedure SetFileName(AValue: TFileName);
     procedure SetLineEndingType(AValue: TSynLinesFileLineEndType);
@@ -110,7 +110,8 @@ type
     property WordWrap: boolean read FWordWrap write SetWordWrap;
     property Monitoring: boolean read fMonitoring;
     procedure LoadFromFile(AFileName: TFileName);
-    procedure Sort(Ascending: boolean);
+    procedure Sort(Ascending: boolean = True);
+    procedure CustomSort(f: TCompareString);
     procedure TextOperation(Operation: TTextOperation; const Level: TTextOperationLevel = DefaultOperationLevel);
     procedure PushPos;
     procedure PopPos;
@@ -175,8 +176,8 @@ type
     //function TabRect(AIndex: Integer): TRect; reintroduce;
     //{$ENDIF}
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: integer); override;
-    Procedure StartMonitoring(Editor: TEditor);
-    Procedure StopMonitoring(Editor:TEditor);
+    procedure StartMonitoring(Editor: TEditor);
+    procedure StopMonitoring(Editor: TEditor);
     {$IFDEF NEEDCLOSEBTN}
     procedure PaintWindow(DC: HDC); override;
     {$ENDIF}
@@ -249,58 +250,56 @@ var
   BytesRead: longint;
   LineBuffer: string;
 begin
-    fStream := TFileStream.Create(FFileName, fmOpenRead, fmShareDenyNone);
-    try
-      wSize := fStream.Size;
+  fStream := TFileStream.Create(FFileName, fmOpenRead, fmShareDenyNone);
+  try
+    wSize := fStream.Size;
 
-      if wSize < FilePos then
-        FilePos := 0;
+    if wSize < FilePos then
+      FilePos := 0;
 
-      fStream.Seek(FilePos, fsFromBeginning);
-      BeginUpdate(false);
-      while fStream.Position < wSize do
-      begin
-        BytesRead := fStream.Read(buffer, SizeOf(buffer));
-        j := 0;
-        i := 0;
-        while i <= (BytesRead - 1) do
+    fStream.Seek(FilePos, fsFromBeginning);
+    BeginUpdate(False);
+    while fStream.Position < wSize do
+    begin
+      BytesRead := fStream.Read(buffer, SizeOf(buffer));
+      j := 0;
+      i := 0;
+      while i <= (int64(BytesRead) - 1) do
+        if (Buffer[I] = #10) or (Buffer[I] = #13) then
         begin
-          if (Buffer[I] = #10) or (Buffer[I] = #13) then
+          LineEndingCount := 0;
+          if LineEndingType = sfleCrLf then
           begin
-            LineEndingCount := 0;
-            if LineEndingType = sfleCrLf then
-            begin
-              Inc(LineEndingCount);
-              Inc(i);
-            end;
-            LineBuffer := Copy(buffer, j+1, i - j - LineEndingCount);
+            Inc(LineEndingCount);
             Inc(i);
-            if IncompleteLine then
-            begin
-              Lines[Lines.Count - 1] := Lines[Lines.Count - 1] + LineBuffer;
-              IncompleteLine := False;
-            end
-            else
-              Lines.Add(LineBuffer);
-            j := i;
+          end;
+          LineBuffer := Copy(buffer, j + 1, i - j - LineEndingCount);
+          Inc(i);
+          if IncompleteLine then
+          begin
+            Lines[Lines.Count - 1] := Lines[Lines.Count - 1] + LineBuffer;
+            IncompleteLine := False;
           end
           else
-            Inc(i);
-        end;
-        if j <> i then
-        begin
-          LineBuffer := Copy(buffer, j+1, i);
-          Lines.Add(LineBuffer);
-          IncompleteLine := True;
-        end;
+            Lines.Add(LineBuffer);
+          j := i;
+        end
+        else
+          Inc(i);
+      if j <> i then
+      begin
+        LineBuffer := Copy(buffer, j + 1, i);
+        Lines.Add(LineBuffer);
+        IncompleteLine := True;
       end;
-
-      FilePos := FStream.Position;
-      SetCaretY(maxint);
-      EndUpdate;
-    finally
-      fStream.Free;
     end;
+
+    FilePos := FStream.Position;
+    SetCaretY(maxint);
+    EndUpdate;
+  finally
+    fStream.Free;
+  end;
 
 end;
 
@@ -358,12 +357,12 @@ begin
   SyncEdit.Editor := self;
   SyncEdit.GutterGlyph.Assign(bm);
 
-//  SyncEdit.CaseSensitive := False;
+  //  SyncEdit.CaseSensitive := False;
   Gutter.Visible := ConfigObj.ShowRowNumber;
   WordWrap := ConfigObj.WrapLines;
 
   OnReplaceText := @OnReplace;
-  fMonitoring   := False;
+  fMonitoring := False;
   bm.Free;
 end;
 
@@ -418,7 +417,7 @@ begin
     fStream := TFileStream.Create(FFileName, fmOpenRead, fmShareDenyNone);
 
     FilePos := fStream.Size;
-    if FilePos > 20 * 1024 *1024 then
+    if FilePos > 20 * 1024 * 1024 then
       Highlighter := nil;
 
     SetLength(s, FilePos);
@@ -456,9 +455,19 @@ end;
 
 procedure TEditor.Sort(Ascending: boolean);
 var
-  f: TStringsSortCompare;
+  Cmp: TSimpleComparer;
 begin
-  f := @CompareStr;
+  cmp := TSimpleComparer.Create;
+  try
+    Cmp.Ascending := Ascending;
+    QuickSort(0, Lines.Count - 1, @(Cmp.Compare));
+  finally
+    cmp.Free
+  end;
+end;
+
+procedure TEditor.CustomSort(f: TCompareString);
+begin
   QuickSort(0, Lines.Count - 1, f);
 end;
 
@@ -497,7 +506,7 @@ begin
       FreeAndNil(fStream);
     end;
     TEditorFactory(Sheet.Owner).FWatcher.AddFile(FFileName, fwsOnDemand, Self);
-    Result    := True;
+    Result := True;
     FUntitled := False;
     Modified := False;
   except
@@ -520,7 +529,6 @@ end;
 procedure TEditor.StartMonitoring;
 begin
   if Modified then
-  begin
     case MessageDlg(RSMonitoring, Format(RSAskSave, [fFileName]), mtConfirmation, mbYesNoCancel, 0) of
       mrCancel:
         Exit;
@@ -528,7 +536,6 @@ begin
         Save;
       mrNo: ;
     end;
-  end;
 
   FMonitoring := True;
   LoadFromFile(FileName);
@@ -540,7 +547,7 @@ end;
 procedure TEditor.StopMonitoring;
 begin
   fMonitoring := False;
-  ReadOnly    := False;
+  ReadOnly := False;
   IncompleteLine := False;
 
 end;
@@ -579,10 +586,10 @@ begin
     fwscModified:
     begin
       if ed.Monitoring then
-        begin
-          Ed.PartialReload;
-          exit;
-        end;
+      begin
+        Ed.PartialReload;
+        exit;
+      end;
       if ed.Modified then
         dlgText := RSReloadModified
       else
@@ -667,11 +674,10 @@ begin
   Result := fDiskLineEndingType;
 end;
 
-procedure TEditor.QuickSort(L, R: integer; CompareFn: TStringsSortCompare);
+procedure TEditor.QuickSort(L, R: integer; CompareFn: TCompareString);
 var
   Pivot, vL, vR: integer;
 begin
-  //if ExchangeItems is override call that, else call (faster) ExchangeItemsInt
   if R - L <= 1 then
   begin // a little bit of time saver
     if L < R then

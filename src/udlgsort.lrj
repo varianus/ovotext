@@ -1,0 +1,15 @@
+{"version":1,"strings":[
+{"hash":187475700,"name":"tdlgsort.caption","sourcebytes":[100,108,103,83,111,114,116],"value":"dlgSort"},
+{"hash":370324,"name":"tdlgsort.buttonpanel1.okbutton.caption","sourcebytes":[83,111,114,116],"value":"Sort"},
+{"hash":4861987,"name":"tdlgsort.rbcolumnmode.caption","sourcebytes":[83,111,114,116,32,111,110,32,102,105,120,101,100,32,99,111,108,117,109,110,115],"value":"Sort on fixed columns"},
+{"hash":252461609,"name":"tdlgsort.rbdelimitedmode.caption","sourcebytes":[83,111,114,116,32,100,101,108,105,109,105,116,101,100,32,116,101,120,116,32,40,67,83,86,41],"value":"Sort delimited text (CSV)"},
+{"hash":4767230,"name":"tdlgsort.label1.caption","sourcebytes":[66,101,103,105,110],"value":"Begin"},
+{"hash":19524,"name":"tdlgsort.label2.caption","sourcebytes":[69,110,100],"value":"End"},
+{"hash":78003262,"name":"tdlgsort.label3.caption","sourcebytes":[67,111,108,117,109,110],"value":"Column"},
+{"hash":4456611,"name":"tdlgsort.cgdelimiters.caption","sourcebytes":[68,101,108,105,109,105,116,101,114,115],"value":"Delimiters"},
+{"hash":34,"name":"tdlgsort.cbquotechar.text","sourcebytes":[34],"value":"\""},
+{"hash":18544002,"name":"tdlgsort.label4.caption","sourcebytes":[81,117,111,116,105,110,103,32,99,104,97,114],"value":"Quoting char"},
+{"hash":32,"name":"tdlgsort.edchar.text","sourcebytes":[32],"value":" "},
+{"hash":5671618,"name":"tdlgsort.rgorder.caption","sourcebytes":[79,114,100,101,114],"value":"Order"},
+{"hash":150262642,"name":"tdlgsort.cbnumeric.caption","sourcebytes":[83,111,114,116,32,97,110,121,32,118,97,108,117,101,32,116,104,97,116,32,108,111,111,107,115,32,108,105,107,101,32,97,32,110,117,109,98,101,114,32,97,115,32,105,102,32,105,116,32,119,101,114,101,32,97,32,110,117,109,98,101,114],"value":"Sort any value that looks like a number as if it were a number"}
+]}
