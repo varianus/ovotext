@@ -27,6 +27,12 @@ uses
   Interfaces, // this includes the LCL widgetset
   Forms, DefaultTranslator, singleinstance,
   printer4lazarus, SynEditPrintExtProcs,
+  // Dark style
+  {$IFDEF DARKSTYLE}
+  uDarkStyleParams,
+  uDarkStyleSchemes,
+  uMetaDarkStyle,
+  {$ENDIF}
   //projects unit
   umain, uabout, udmmain, Stringcostants, SupportFuncs, config,
   uCheckFileChange, udglgoto, simplemrumanager, uMacroEditor, uActionMacro,
@@ -40,6 +46,11 @@ begin
   TSimpleSingleInstance(Application.SingleInstance).DefaultMessage := '--show';
   Application.Initialize;
   Application.Scaled := True;
+  {$IFDEF DARKSTYLE}
+  PreferredAppMode := pamDefault;
+  uMetaDarkStyle.ApplyMetaDarkStyle(DefaultDark);
+  {$ENDIF}
+
   if Application.SingleInstance.StartResult <> siClient then
     begin
       Application.CreateForm(TdmMain, dmMain);

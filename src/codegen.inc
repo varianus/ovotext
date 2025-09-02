@@ -24,6 +24,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$interfaces corba}
 {$modeswitch ADVANCEDRECORDS}
 
+{$IFDEF WINDOWS}
+  {$DEFINE DARKSTYLE}
+{$ENDIF}
+
 //if release is defined, try to be quiet and efficient...
 {$IF defined(Release)}
   {$HINTS OFF}
