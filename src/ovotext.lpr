@@ -37,7 +37,7 @@ uses
   umain, uabout, udmmain, Stringcostants, SupportFuncs, config,
   uCheckFileChange, udglgoto, simplemrumanager, uMacroEditor, uActionMacro,
   uReplaceMacro, uMacroRecorder, ReplaceDialog, LazLogger, SimpleSingleInstance,
-  JsonTools, umacroplayback, iconloader, udlgsort, Comparer;
+  JsonTools, umacroplayback, iconloader, udlgsort, Comparer, CmdLineParser;
 
 {$R *.res}
 begin

@@ -159,14 +159,14 @@
     </PublishOptions>
     <RunParams>
       <local>
-        <CommandLineParams Value="--debug-log=medialog.log"/>
+        <CommandLineParams Value="--debug-log=medialog.log c:\temp\test.txt -c 20 --row=10"/>
         <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T &apos;Lazarus Run Output&apos; -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
       <FormatVersion Value="2"/>
       <Modes Count="1">
         <Mode0 Name="default">
           <local>
-            <CommandLineParams Value="--debug-log=medialog.log"/>
+            <CommandLineParams Value="--debug-log=medialog.log c:\temp\test.txt -c 20 --row=10"/>
             <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T &apos;Lazarus Run Output&apos; -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
           </local>
         </Mode0>
@@ -193,7 +193,7 @@
         <PackageName Value="LCL"/>
       </Item6>
     </RequiredPackages>
-    <Units Count="26">
+    <Units Count="27">
       <Unit0>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -341,6 +341,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="Comparer"/>
       </Unit25>
+      <Unit26>
+        <Filename Value="cmdlineparser.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CmdLineParser"/>
+      </Unit26>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

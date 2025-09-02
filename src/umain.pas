@@ -27,7 +27,7 @@ uses
   StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls, SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils,
   LazUTF8, SingleInstance, udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder,
   uMacroEditor, SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, lclintf, jsontools, umacroplayback, iconloader,
-  uKeys, udlgsort, LMessages;
+  uKeys, udlgsort, CmdLineParser, LMessages;
 
 type
 
@@ -1244,15 +1244,30 @@ procedure TfMain.ServerReceivedParams(Sender: TBaseSingleInstance; aParams: TStr
 var
   str: string;
   Editor: TEditor;
+  Cmd: TCmdLineParser;
+  Value: string;
+  Row, Column: longint;
 begin
 
-  for str in aParams do
-    if copy(str, 1, 2) <> '--' then
+  Cmd := TCmdLineParser.Create;
+  try
+    cmd.DefineOption('r', 'row', '', True);
+    cmd.DefineOption('c', 'column', '', True);
+    Cmd.Parse(aParams);
+
+    for str in cmd.Arguments do
     begin
       Editor := EditorFactory.AddEditor(str);
       if Assigned(Editor) and not Editor.Untitled then
         MRU.AddToRecent(str);
+      Row := StrToIntDef(Cmd.GetOptionValue('row', '0'), 0);
+      Column := StrToIntDef(Cmd.GetOptionValue('column', '0'), 0);
+      if (Row <> 0) or (Column <> 0) then
+        Editor.CaretXY := Point(Column, Row);
     end;
+  finally
+    Cmd.Free;
+  end;
   Application.BringToFront;
   ShowOnTop;
 end;
