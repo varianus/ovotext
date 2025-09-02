@@ -36,7 +36,7 @@ type
     cbQuoteChar: TComboBox;
     cbNumeric: TCheckBox;
     edChar: TMaskEdit;
-    GroupBox1: TPanel;
+    pnlGeneral: TPanel;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
