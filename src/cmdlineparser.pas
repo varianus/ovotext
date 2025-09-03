@@ -87,9 +87,6 @@ type
     // Get number of arguments
     function ArgumentCount: integer;
 
-    // Display help/usage information
-    procedure ShowUsage(const AProgramName: string);
-
     // Properties
     property Options: TIntDictionary read FOptions;
     property Arguments: TStringList read FArguments;
@@ -107,9 +104,9 @@ begin
   // Define some common options by default
   SetLength(FOptionDefs, 0);
   DefineOption('h', 'help', 'Show help message', False);
-  DefineOption('v', 'verbose', 'Enable verbose output', False);
-  DefineOption('f', 'file', 'Input file', True);
-  DefineOption('o', 'output', 'Output file', True);
+  DefineOption('c', 'column', 'Navigate to colum', False);
+  DefineOption('r', 'row', 'Navigate to row ', True);
+
 end;
 
 destructor TCmdLineParser.Destroy;
@@ -322,49 +319,6 @@ begin
   Result := FArguments.Count;
 end;
 
-procedure TCmdLineParser.ShowUsage(const AProgramName: string);
-var
-  i: integer;
-  shortOpt, longOpt, desc: string;
-begin
-  WriteLn('Usage: ', ExtractFileName(AProgramName), ' [OPTIONS] [ARGUMENTS]');
-  WriteLn('');
-  WriteLn('Options:');
-
-  for i := 0 to High(FOptionDefs) do
-  begin
-    shortOpt := '';
-    longOpt := '';
-    desc := FOptionDefs[i].Description;
-
-    if FOptionDefs[i].ShortForm <> '' then
-      shortOpt := '-' + FOptionDefs[i].ShortForm;
-
-    if FOptionDefs[i].LongForm <> '' then
-    begin
-      longOpt := '--' + FOptionDefs[i].LongForm;
-      if FOptionDefs[i].HasValue then
-        longOpt := longOpt + '=VALUE';
-    end;
-
-    Write('  ');
-    if shortOpt <> '' then
-    begin
-      Write(shortOpt);
-      if longOpt <> '' then
-        Write(', ');
-    end;
-    if longOpt <> '' then
-      Write(longOpt);
-
-    // Pad to column 25 for description
-    while Length(Copy(shortOpt + longOpt, 1, 100)) < 20 do
-      Write(' ');
-
-    WriteLn(desc);
-  end;
-
-end;
 
 end.
 
