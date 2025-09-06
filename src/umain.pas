@@ -26,8 +26,8 @@ uses
   Classes, SysUtils, Math, FileUtil, LResources, Forms, Controls, Graphics, Dialogs, ActnList, Menus, ComCtrls,
   StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls, SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils,
   LazUTF8, SingleInstance, udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder,
-  uMacroEditor, SynEditLines, SynEdit, SynEditKeyCmds, replacedialog, lclintf, jsontools, umacroplayback, iconloader,
-  uKeys, udlgsort, CmdLineParser, LMessages;
+  uMacroEditor, SynEditLines, SynEdit, SynEditKeyCmds, laz.VirtualTrees, replacedialog, lclintf, jsontools,
+  umacroplayback, iconloader, uKeys, udlgsort, CmdLineParser, LMessages;
 
 type
 
@@ -38,6 +38,15 @@ type
   public
     FullPath: string;
     isDir: boolean;
+  end;
+
+type
+  // Node data structure
+  PNodeData = ^TNodeData;
+  TNodeData = record
+    Level: Integer;
+    Line: integer;
+    Caption: string;
   end;
 
   TfMain = class(TForm)
@@ -91,6 +100,7 @@ type
     ExportRTFToClipBoard: TAction;
     ExportRTFToFile: TAction;
     FilesTree: TTreeView;
+    lvFindResults: TLazVirtualStringTree;
     MenuItem100: TMenuItem;
     MenuItem101: TMenuItem;
     MenuItem102: TMenuItem;
@@ -379,6 +389,11 @@ type
     procedure FormWindowStateChange(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
     procedure actLowerCaseExecute(Sender: TObject);
+    procedure lvFindResultsDblClick(Sender: TObject);
+    procedure lvFindResultsGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
+      TextType: TVSTTextType; var CellText: String);
+    procedure lvFindResultsInitNode(Sender: TBaseVirtualTree; ParentNode, Node: PVirtualNode;
+      var InitialStates: TVirtualNodeInitStates);
     procedure mnuCleanRecentClick(Sender: TObject);
     procedure mnuReopenAllRecentClick(Sender: TObject);
     procedure mnuLineEndingsClick(Sender: TObject);
@@ -411,6 +426,7 @@ type
     ws: TWindowState;
     BrowsingPath: string;
 
+    procedure AddResultsToview(const FileName: string; Results: TFindAllResults);
     function AskFileName(Editor: TEditor): boolean;
     procedure ContextPopup(Sender: TObject; MousePos: TPoint; var Handled: boolean);
 
@@ -1302,7 +1318,6 @@ begin
   with ReplaceDialog do
   begin
     OnClose := @FindDialogClose;
-    //      Options := [ssoReplace, ssoEntireScope];
     OnFind := @ReplaceDialogFind;
     OnReplace := @ReplaceDialogReplace;
   end;
@@ -1572,6 +1587,46 @@ begin
 
 end;
 
+procedure TfMain.lvFindResultsDblClick(Sender: TObject);
+var
+  ResultIndex: TFindResult;
+var
+  Ed: TEditor;
+begin
+  // Find if file already open or do it
+  // locate position
+end;
+
+procedure TfMain.lvFindResultsGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
+  TextType: TVSTTextType; var CellText: String);
+
+var
+  Data, ParentData: PNodeData;
+begin
+  Data := Sender.GetNodeData(Node);
+  case Data^.Level of
+    0: if Column = 0 then
+         CellText:= Data^.Caption
+       else
+         CellText := '';
+    1: case Column of
+      0: CellText := InttoStr(Data^.Line);
+      1: CellText := Data^.Caption;
+    end;
+
+  end;
+end;
+
+procedure TfMain.lvFindResultsInitNode(Sender: TBaseVirtualTree; ParentNode, Node: PVirtualNode;
+  var InitialStates: TVirtualNodeInitStates);
+var
+  Data: PNodeData;
+begin
+  Data := Sender.GetNodeData(Node);
+  if Data^.Level < 1 then
+    InitialStates := InitialStates + [ivsHasChildren];
+end;
+
 procedure TfMain.mnuCleanRecentClick(Sender: TObject);
 begin
   MRU.Recent.Clear;
@@ -1766,6 +1821,7 @@ procedure TfMain.ReplaceDialogReplace(Sender: TObject);
 var
   ed: TEditor;
   Options: TMySynSearchOptions;
+  FindAllResults: TFindAllResults;
 begin
 
   ed := EditorFactory.CurrentEditor;
@@ -1782,6 +1838,12 @@ begin
     ReplaceText := ReplaceDialog.ReplaceText;
   end;
 
+  if ssoFindAll in Options then
+    begin
+      FindAllResults := ed.findall(ReplaceDialog.FindText, Options);
+      AddResultsToview(Ed.FileName, FindAllResults);
+    end
+  else
   if Ed.SearchReplace(FindText, ReplaceText, TSynSearchOptions(Options)) = 0 then
     ShowMessage(Format(RSTextNotfound, [ReplaceDialog.FindText]))
   else
@@ -1794,6 +1856,39 @@ begin
   if Assigned(ed.OnSearchReplace) then
     ed.OnSearchReplace(Ed, ReplaceDialog.FindText, ReplaceDialog.ReplaceText, Options);
 
+end;
+
+procedure TfMain.AddResultsToview(const FileName:string; Results:TFindAllResults);
+var
+  FileNode, LineNode: PVirtualNode;
+  Data: PNodeData;
+  LinesCount: Integer;
+  CurrentLine, i: integer;
+begin
+
+  FileNode := lvFindResults.AddChild(Nil);
+  CurrentLine := -1;
+  LinesCount := 0;
+  For i:= 0 to Results.Count -1 do
+    begin
+      if  Results[i].Line <> CurrentLine then
+        begin
+          CurrentLine := Results[i].Line;
+          LineNode := lvFindResults.AddChild(FileNode);
+          Data := lvFindResults.GetNodeData(LineNode);
+          Data^.Level := 1;
+          Data^.Line := CurrentLine;
+          LineNode := lvFindResults.AddChild(FileNode);
+          Data := lvFindResults.GetNodeData(LineNode);
+          Data^.Level := 1;
+          Data^.Line := CurrentLine;
+          Data^.Caption := Results[i].Text;
+        end;
+    end;
+
+  Data := lvFindResults.GetNodeData(FileNode);
+  Data^.Level := 0;
+  data^.Caption := format(RSFoundHeader,[FileName, Results.Count, LinesCount,'']);
 end;
 
 procedure TfMain.SearchFindAccept(Sender: TObject);

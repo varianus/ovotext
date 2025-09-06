@@ -13,14 +13,13 @@ object CustomReplaceDialog: TCustomReplaceDialog
   KeyPreview = True
   PopupMode = pmAuto
   Position = poMainFormCenter
-  LCLVersion = '4.99.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
   object TextLabel: TLabel
     Left = 16
     Height = 15
     Top = 12
-    Width = 60
+    Width = 59
     BorderSpacing.Left = 8
     BorderSpacing.Top = 14
     BorderSpacing.Right = 8
@@ -105,7 +104,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     object SelectedRadioButton: TRadioButton
       Left = 6
       Height = 19
-      Top = 8
+      Top = 7
       Width = 315
       Caption = 'Selected text'
       TabOrder = 0
@@ -113,7 +112,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     object GlobalRadioButton: TRadioButton
       Left = 6
       Height = 19
-      Top = 35
+      Top = 34
       Width = 315
       Caption = 'Global'
       Checked = True
@@ -138,7 +137,6 @@ object CustomReplaceDialog: TCustomReplaceDialog
     CancelButton.DefaultCaption = True
     CancelButton.OnClick = CancelButtonClick
     TabOrder = 9
-    DefaultButton = pbClose
     ShowButtons = [pbOK, pbCancel, pbClose]
     ShowGlyphs = []
   end
@@ -158,7 +156,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
       Left = 0
       Height = 19
       Top = 0
-      Width = 115
+      Width = 113
       Caption = 'Whole words only'
       TabOrder = 0
     end
@@ -166,7 +164,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
       Left = 0
       Height = 19
       Top = 23
-      Width = 93
+      Width = 91
       Caption = 'Case sensitive'
       TabOrder = 1
     end
@@ -174,7 +172,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
       Left = 0
       Height = 19
       Top = 46
-      Width = 107
+      Width = 105
       Caption = 'Search entire file'
       TabOrder = 2
     end
@@ -182,7 +180,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
       Left = 0
       Height = 19
       Top = 69
-      Width = 118
+      Width = 116
       Caption = 'Prompt on replace'
       TabOrder = 3
     end
@@ -191,7 +189,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     Left = 16
     Height = 19
     Top = 38
-    Width = 89
+    Width = 87
     Caption = 'Replace With'
     TabOrder = 2
     OnChange = cbReplaceChange
@@ -277,7 +275,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     object BackwardRadioButton: TRadioButton
       Left = 6
       Height = 19
-      Top = 7
+      Top = 6
       Width = 318
       Caption = 'Backward'
       TabOrder = 0
@@ -285,7 +283,7 @@ object CustomReplaceDialog: TCustomReplaceDialog
     object ForwardRadioButton: TRadioButton
       Left = 6
       Height = 19
-      Top = 33
+      Top = 32
       Width = 318
       Caption = 'Forward'
       Checked = True

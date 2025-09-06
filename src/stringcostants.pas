@@ -89,7 +89,7 @@ resourcestring
 
   RSMacroDelete  = 'Delete macro "%s" ?';
 
-
+  RSFoundHeader = '%s -> Found %d matches on %d lines of "%s"';
 
 implementation
 

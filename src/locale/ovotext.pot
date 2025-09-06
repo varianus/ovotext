@@ -28,9 +28,18 @@ msgctxt "replacedialog.rsfind"
 msgid "Find"
 msgstr ""
 
+#: replacedialog.rsfindall
+msgid "Find All"
+msgstr ""
+
 #: replacedialog.rsreplace
 msgctxt "replacedialog.rsreplace"
 msgid "Replace"
+msgstr ""
+
+#: replacedialog.rsreplaceall
+msgctxt "replacedialog.rsreplaceall"
+msgid "Replace All"
 msgstr ""
 
 #: simplesingleinstance.serrsetsingleinstanceglobalstarted
@@ -95,6 +104,11 @@ msgstr ""
 
 #: stringcostants.rserror
 msgid "Error"
+msgstr ""
+
+#: stringcostants.rsfoundheader
+#, object-pascal-format
+msgid "%s -> Found %d matches on %d lines of \"%s\""
 msgstr ""
 
 #: stringcostants.rskeepdeleted
@@ -211,6 +225,7 @@ msgid "Backward"
 msgstr ""
 
 #: tcustomreplacedialog.btnpanel.closebutton.caption
+msgctxt "tcustomreplacedialog.btnpanel.closebutton.caption"
 msgid "Replace All"
 msgstr ""
 
@@ -334,6 +349,7 @@ msgid "End"
 msgstr ""
 
 #: tdlgsort.label3.caption
+msgctxt "tdlgsort.label3.caption"
 msgid "Column"
 msgstr ""
 

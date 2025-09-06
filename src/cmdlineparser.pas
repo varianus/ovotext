@@ -103,9 +103,6 @@ begin
 
   // Define some common options by default
   SetLength(FOptionDefs, 0);
-  DefineOption('h', 'help', 'Show help message', False);
-  DefineOption('c', 'column', 'Navigate to colum', False);
-  DefineOption('r', 'row', 'Navigate to row ', True);
 
 end;
 

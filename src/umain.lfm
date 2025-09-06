@@ -219,17 +219,17 @@ object fMain: TfMain
   end
   object pnlLeft: TPanel
     Left = 0
-    Height = 621
+    Height = 476
     Top = 52
     Width = 189
     Align = alLeft
-    ClientHeight = 621
+    ClientHeight = 476
     ClientWidth = 189
     ParentBackground = False
     TabOrder = 3
     object FilesTree: TTreeView
       Left = 1
-      Height = 591
+      Height = 446
       Top = 29
       Width = 187
       Align = alClient
@@ -275,9 +275,30 @@ object fMain: TfMain
   end
   object splLeftBar: TSplitter
     Left = 189
-    Height = 621
+    Height = 476
     Top = 52
     Width = 5
+  end
+  object lvFindResults: TLazVirtualStringTree
+    Left = 0
+    Height = 145
+    Top = 528
+    Width = 945
+    Align = alBottom
+    DefaultText = 'Node'
+    Header.AutoSizeIndex = 0
+    Header.Columns = <    
+      item
+        Position = 0
+      end    
+      item
+        Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus]
+        Position = 1
+      end>
+    TabOrder = 5
+    TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowRoot, toThemeAware, toUseBlendedImages]
+    OnGetText = lvFindResultsGetText
+    OnInitNode = lvFindResultsInitNode
   end
   object mnuMain: TMainMenu
     Images = imgList

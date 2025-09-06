@@ -28,8 +28,9 @@ interface
 
 uses
   Classes, SysUtils, Controls, Dialogs, ComCtrls, LCLProc, LCLType,
+  Generics.Collections,
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,
-  SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds,
+  SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds, SynEditSearch,
   SynEditMouseCmds, SynEditLines, SynEditWrappedView, Stringcostants, Forms, Graphics, Config, udmmain,
   uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils,
   ReplaceDialog, SupportFuncs, JsonTools, LCLVersion, Comparer;
@@ -52,10 +53,18 @@ var
 type
   TTextOperation = function(const Param: string): string;
 
+type
+  TFindResult = class
+    Line: integer;
+    Column: integer;
+    Length: integer;
+    Text: string;
+  end;
 
+  TFindAllResults = specialize TObjectList<TFindResult>;
 
-  { TEditorFactory }
-
+type
+  { TEditor }
   TOnBeforeClose = procedure(Editor: TEditor; var Cancel: boolean) of object;
   TOnEditorEvent = procedure(Editor: TEditor) of object;
   TOnSearchReplaceEvent = procedure(Sender: TObject; const ASearch, AReplace: string; AOptions: TMySynSearchOptions) of object;
@@ -100,6 +109,7 @@ type
     destructor Destroy; override;
     property Sheet: TEditorTabSheet read FSheet;
     property OnSearchReplace: TOnSearchReplaceEvent read FOnSearchReplace write SetOnSearcReplace;
+    function FindAll(const SearchText: string; SearchOptions: TMySynSearchOptions): TFindAllResults;
     //-- Helper functions//
     procedure SetLineText(Index: integer; NewText: string);
     // -- File handling//
@@ -787,6 +797,46 @@ begin
   if _Top < ABounds.Top then _Top := ABounds.Top;
 end;
 
+function TEditor.FindAll(const SearchText: string; SearchOptions: TMySynSearchOptions): TFindAllResults;
+var
+  SearchEngine: TSynEditSearch;
+  FoundStart: TPoint;
+  FoundEnd: TPoint;
+  StartPos, EndPos: TPoint;
+  FoundItem: TFindResult;
+begin
+  Result := TFindAllResults.Create;
+
+  if (SearchText = '') or (Lines.Count = 0) then
+    Exit;
+  StartPos := Point(1,1);
+  EndPos := Point(lines.Count, Length(Lines[ Lines.Count-1]));
+
+  SearchEngine := TSynEditSearch.Create;
+  try
+    // Set search options
+    SearchEngine.Sensitive := ssoMatchCase in SearchOptions;
+    SearchEngine.Whole := ssoWholeWord in SearchOptions;
+    SearchEngine.Pattern := SearchText;
+    SearchEngine.RegularExpressions := ssoRegExpr in SearchOptions;
+    SearchEngine.RegExprMultiLine := ssoRegExprMultiLine in SearchOptions;
+
+    while SearchEngine.FindNextOne(Lines, StartPos, EndPos, FoundStart, FoundEnd) do
+      begin
+        FoundItem := TFindResult.Create;
+        Result.Add(FoundItem);
+        FoundItem.Column := FoundStart.X;
+        FoundItem.Line := FoundStart.Y;
+        FoundItem.Length := FoundEnd.Y + FoundStart.Y;
+        FoundItem.Text := TextBetweenPoints[FoundStart, FoundEnd];
+        StartPos := FoundEnd;
+      end;
+
+  finally
+    SearchEngine.Free;
+  end;
+
+end;
 
 procedure TEditor.OnReplace(Sender: TObject; const ASearch, AReplace:
   string; Line, Column: integer; var _Action: TSynReplaceAction);
