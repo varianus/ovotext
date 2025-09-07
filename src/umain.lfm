@@ -27,8 +27,8 @@ object fMain: TfMain
   OnWindowStateChange = FormWindowStateChange
   object StatusBar: TStatusBar
     Left = 0
-    Height = 23
-    Top = 673
+    Height = 21
+    Top = 675
     Width = 945
     Panels = <    
       item
@@ -219,17 +219,17 @@ object fMain: TfMain
   end
   object pnlLeft: TPanel
     Left = 0
-    Height = 476
+    Height = 478
     Top = 52
     Width = 189
     Align = alLeft
-    ClientHeight = 476
+    ClientHeight = 478
     ClientWidth = 189
     ParentBackground = False
     TabOrder = 3
     object FilesTree: TTreeView
       Left = 1
-      Height = 446
+      Height = 448
       Top = 29
       Width = 187
       Align = alClient
@@ -275,14 +275,14 @@ object fMain: TfMain
   end
   object splLeftBar: TSplitter
     Left = 189
-    Height = 476
+    Height = 478
     Top = 52
     Width = 5
   end
   object lvFindResults: TLazVirtualStringTree
     Left = 0
     Height = 145
-    Top = 528
+    Top = 530
     Width = 945
     Align = alBottom
     DefaultText = 'Node'
@@ -290,12 +290,15 @@ object fMain: TfMain
     Header.Columns = <    
       item
         Position = 0
+        Width = 150
       end    
       item
         Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus]
         Position = 1
+        Width = 1000
       end>
     TabOrder = 5
+    TreeOptions.AutoOptions = [toAutoDropExpand, toAutoScrollOnExpand, toAutoSort, toAutoSpanColumns, toAutoTristateTracking, toAutoDeleteMovedNodes, toAutoChangeScale]
     TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowRoot, toThemeAware, toUseBlendedImages]
     OnGetText = lvFindResultsGetText
     OnInitNode = lvFindResultsInitNode

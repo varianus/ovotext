@@ -54,14 +54,29 @@ type
   TTextOperation = function(const Param: string): string;
 
 type
-  TFindResult = class
-    Line: integer;
+  TMatch = record
     Column: integer;
     Length: integer;
-    Text: string;
   end;
 
-  TFindAllResults = specialize TObjectList<TFindResult>;
+  { TFindResult }
+
+  TFindResult = class
+  Private
+    FCount: integer;
+  public
+    Line: integer;
+    Text: string;
+    Matches: array of TMatch;
+    property Count:integer read FCount;
+    procedure AddMatch(Column, Length: integer);
+    Constructor Create;
+  end;
+
+  TFindAllResults = class(specialize TObjectList<TFindResult>)
+  public
+    SearchTerm: string;
+  end;
 
 type
   { TEditor }
@@ -804,14 +819,16 @@ var
   FoundEnd: TPoint;
   StartPos, EndPos: TPoint;
   FoundItem: TFindResult;
+  CurrLine: integer;
 begin
   Result := TFindAllResults.Create;
+  Result.SearchTerm:= SearchText;
 
   if (SearchText = '') or (Lines.Count = 0) then
     Exit;
   StartPos := Point(1,1);
-  EndPos := Point(lines.Count, Length(Lines[ Lines.Count-1]));
-
+  EndPos := Point(Length(Lines[ Lines.Count-1]), lines.Count);
+  CurrLine := -1;
   SearchEngine := TSynEditSearch.Create;
   try
     // Set search options
@@ -823,12 +840,15 @@ begin
 
     while SearchEngine.FindNextOne(Lines, StartPos, EndPos, FoundStart, FoundEnd) do
       begin
-        FoundItem := TFindResult.Create;
-        Result.Add(FoundItem);
-        FoundItem.Column := FoundStart.X;
-        FoundItem.Line := FoundStart.Y;
-        FoundItem.Length := FoundEnd.Y + FoundStart.Y;
-        FoundItem.Text := TextBetweenPoints[FoundStart, FoundEnd];
+        if CurrLine <> FoundStart.Y then
+          begin
+            FoundItem := TFindResult.Create;
+            Result.Add(FoundItem);
+            FoundItem.Text := Lines[FoundStart.Y-1];
+            FoundItem.Line := FoundStart.Y;
+            CurrLine := FoundStart.Y;
+          end;
+        FoundItem.AddMatch(FoundStart.X, FoundEnd.X + FoundStart.X);
         StartPos := FoundEnd;
       end;
 
@@ -1362,6 +1382,21 @@ destructor TEditorFactory.Destroy;
 begin
   FWatcher.Free;
   inherited Destroy;
+end;
+
+{ TFindResult }
+
+procedure TFindResult.AddMatch(Column, Length: integer);
+begin
+  inc(FCount);
+  SetLength(Matches, FCount);
+  Matches[FCount-1].Column:=Column;
+  Matches[FCount-1].Length:=Length;
+end;
+
+constructor TFindResult.Create;
+begin
+  FCount:=0;
 end;
 
 

@@ -1862,33 +1862,27 @@ procedure TfMain.AddResultsToview(const FileName:string; Results:TFindAllResults
 var
   FileNode, LineNode: PVirtualNode;
   Data: PNodeData;
-  LinesCount: Integer;
-  CurrentLine, i: integer;
+  MatchesCount: Integer;
+  i: integer;
 begin
 
   FileNode := lvFindResults.AddChild(Nil);
-  CurrentLine := -1;
-  LinesCount := 0;
+  MatchesCount:=0;
   For i:= 0 to Results.Count -1 do
     begin
-      if  Results[i].Line <> CurrentLine then
-        begin
-          CurrentLine := Results[i].Line;
-          LineNode := lvFindResults.AddChild(FileNode);
-          Data := lvFindResults.GetNodeData(LineNode);
-          Data^.Level := 1;
-          Data^.Line := CurrentLine;
-          LineNode := lvFindResults.AddChild(FileNode);
-          Data := lvFindResults.GetNodeData(LineNode);
-          Data^.Level := 1;
-          Data^.Line := CurrentLine;
-          Data^.Caption := Results[i].Text;
-        end;
+      LineNode := lvFindResults.AddChild(FileNode);
+      Data := lvFindResults.GetNodeData(LineNode);
+      Data^.Level := 1;
+      Data^.Line := Results[i].Line;
+      Data^.Caption := Results[i].Text;
+      MatchesCount:=MatchesCount+Results[i].Count;
     end;
 
   Data := lvFindResults.GetNodeData(FileNode);
   Data^.Level := 0;
-  data^.Caption := format(RSFoundHeader,[FileName, Results.Count, LinesCount,'']);
+  data^.Caption := format(RSFoundHeader,[FileName, MatchesCount, Results.Count,Results.SearchTerm]);
+
+  Results.Free;
 end;
 
 procedure TfMain.SearchFindAccept(Sender: TObject);
