@@ -43,10 +43,11 @@ type
 type
   // Node data structure
   PNodeData = ^TNodeData;
+
   TNodeData = record
-    Level: Integer;
-    Line: integer;
+    Level: integer;
     Caption: string;
+    Obj: TFindResult;
   end;
 
   TfMain = class(TForm)
@@ -390,8 +391,10 @@ type
     procedure HelpAboutExecute(Sender: TObject);
     procedure actLowerCaseExecute(Sender: TObject);
     procedure lvFindResultsDblClick(Sender: TObject);
+    procedure lvFindResultsDrawText(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
+      Column: TColumnIndex; const CellText: string; const CellRect: TRect; var DefaultDraw: boolean);
     procedure lvFindResultsGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
-      TextType: TVSTTextType; var CellText: String);
+      TextType: TVSTTextType; var CellText: string);
     procedure lvFindResultsInitNode(Sender: TBaseVirtualTree; ParentNode, Node: PVirtualNode;
       var InitialStates: TVirtualNodeInitStates);
     procedure mnuCleanRecentClick(Sender: TObject);
@@ -441,6 +444,7 @@ type
     procedure RecentFileEvent(Sender: TObject; const AFileName: string; const AData: TObject);
     procedure NewEditor(Editor: TEditor);
     procedure RecentMacroEvent(Sender: TObject; const AFileName: string; const AData: TObject);
+    procedure RenderLine(aCanvas: TCanvas; aRect: TRect; Obj: TFindResult);
     procedure ServerReceivedParams(Sender: TBaseSingleInstance; aParams: TStringList);
     procedure ShowTabs(Sender: TObject);
     procedure SetupSaveDialog(SaveMode: TSaveMode);
@@ -995,6 +999,7 @@ begin
     for i := 0 to EditorFactory.PageCount - 1 do
       TEditorTabSheet(EditorFactory.Pages[i]).Editor.Font.Assign(FontDialog.Font);
     ConfigObj.Font.Assign(FontDialog.Font);
+    lvFindResults.Font.Assign(ConfigObj.Font);
     ConfigObj.Dirty := True;
   end;
 
@@ -1234,6 +1239,7 @@ begin
     TEditorTabSheet(EditorFactory.Pages[i]).Editor.Font.Assign(FontDialog.Font);
 
   ConfigObj.Font.Assign(FontDialog.Font);
+  lvFindResults.Font.Assign(ConfigObj.Font);
 end;
 
 procedure TfMain.FormActivate(Sender: TObject);
@@ -1418,6 +1424,8 @@ begin
   pnlLeft.Visible := False;
   splLeftBar.Visible := False;
 
+  lvFindResults.Font.Assign(ConfigObj.Font);
+
 end;
 
 procedure TfMain.FormDeactivate(Sender: TObject);
@@ -1598,22 +1606,20 @@ begin
 end;
 
 procedure TfMain.lvFindResultsGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
-  TextType: TVSTTextType; var CellText: String);
-
+  TextType: TVSTTextType; var CellText: string);
 var
-  Data, ParentData: PNodeData;
+  Data: PNodeData;
 begin
   Data := Sender.GetNodeData(Node);
   case Data^.Level of
     0: if Column = 0 then
-         CellText:= Data^.Caption
-       else
-         CellText := '';
+        CellText := Data^.Caption
+      else
+        CellText := '';
     1: case Column of
-      0: CellText := InttoStr(Data^.Line);
-      1: CellText := Data^.Caption;
-    end;
-
+        0: CellText := IntToStr(Data^.Obj.Line);
+        1: CellText := Data^.Obj.Text;
+      end;
   end;
 end;
 
@@ -1625,6 +1631,69 @@ begin
   Data := Sender.GetNodeData(Node);
   if Data^.Level < 1 then
     InitialStates := InitialStates + [ivsHasChildren];
+end;
+
+procedure TfMain.lvFindResultsDrawText(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
+  Column: TColumnIndex; const CellText: string; const CellRect: TRect; var DefaultDraw: boolean);
+var
+  Data: PNodeData;
+  ts: TTextStyle;
+  ARect: TRect;
+begin
+  ARect := CellRect;
+  Data := Sender.GetNodeData(Node);
+
+  if (Data^.Level = 1) and (Column = 1) then
+  begin
+    TargetCanvas.FillRect(ARect);
+    InflateRect(ARect, -3, -3);
+  end
+  else
+  begin
+    DefaultDraw := True;
+    exit;
+  end;
+  DefaultDraw := False;
+  ts := Default(TTextStyle);
+  ts := TargetCanvas.TextStyle;
+  ts.Alignment := taLeftJustify;
+  TargetCanvas.TextStyle := ts;
+  RenderLine(TargetCanvas, ARect, Data^.obj);
+
+end;
+
+procedure TfMain.RenderLine(aCanvas: TCanvas; aRect: TRect; Obj: TFindResult);
+var
+  i: integer;
+  StartPos: integer;
+  x: integer;
+  aText: string;
+begin
+  StartPos := 1;
+  x := aRect.Left;
+  for i := 0 to Length(Obj.Matches) - 1 do
+  begin
+    aText := Copy(Obj.Text, StartPos, Obj.Matches[i].Column - StartPos);
+    aCanvas.Font.Color := clWindowText;
+    aCanvas.brush.Color := clWindow;
+    aCanvas.TextOut(x, aRect.Top, aText);
+    Inc(x, aCanvas.GetTextWidth(atext));
+    aText := Copy(obj.Text, Obj.Matches[i].Column, Obj.Matches[i].Length);
+    aCanvas.Font.Color := clHighlightText;
+    aCanvas.brush.Color := clHighlight;
+    aCanvas.TextOut(x, aRect.Top, aText);
+    Inc(x, aCanvas.GetTextWidth(atext) + 2);
+    StartPos := Obj.Matches[i].Column + Obj.Matches[i].Length + 1;
+  end;
+  if StartPos < Length(Obj.Text) then
+  begin
+    aText := copy(obj.Text, StartPos, Length(Obj.Text) - StartPos);
+    aCanvas.Font.Color := clWindowText;
+    aCanvas.brush.Color := clWindow;
+    aCanvas.TextOut(x, aRect.Top, aText);
+    //inc(x, aCanvas.GetTextWidth(atext));
+  end;
+
 end;
 
 procedure TfMain.mnuCleanRecentClick(Sender: TObject);
@@ -1839,10 +1908,10 @@ begin
   end;
 
   if ssoFindAll in Options then
-    begin
-      FindAllResults := ed.findall(ReplaceDialog.FindText, Options);
-      AddResultsToview(Ed.FileName, FindAllResults);
-    end
+  begin
+    FindAllResults := ed.findall(ReplaceDialog.FindText, Options);
+    AddResultsToview(Ed.FileName, FindAllResults);
+  end
   else
   if Ed.SearchReplace(FindText, ReplaceText, TSynSearchOptions(Options)) = 0 then
     ShowMessage(Format(RSTextNotfound, [ReplaceDialog.FindText]))
@@ -1858,31 +1927,31 @@ begin
 
 end;
 
-procedure TfMain.AddResultsToview(const FileName:string; Results:TFindAllResults);
+procedure TfMain.AddResultsToview(const FileName: string; Results: TFindAllResults);
 var
   FileNode, LineNode: PVirtualNode;
   Data: PNodeData;
-  MatchesCount: Integer;
+  MatchesCount: integer;
   i: integer;
 begin
 
-  FileNode := lvFindResults.AddChild(Nil);
-  MatchesCount:=0;
-  For i:= 0 to Results.Count -1 do
-    begin
-      LineNode := lvFindResults.AddChild(FileNode);
-      Data := lvFindResults.GetNodeData(LineNode);
-      Data^.Level := 1;
-      Data^.Line := Results[i].Line;
-      Data^.Caption := Results[i].Text;
-      MatchesCount:=MatchesCount+Results[i].Count;
-    end;
+  FileNode := lvFindResults.AddChild(nil);
+  MatchesCount := 0;
+  for i := 0 to Results.Count - 1 do
+  begin
+    LineNode := lvFindResults.AddChild(FileNode);
+    Data := lvFindResults.GetNodeData(LineNode);
+    Data^.Level := 1;
+    Data^.Obj := Results[i];
+    MatchesCount := MatchesCount + Results[i].Count;
+  end;
 
   Data := lvFindResults.GetNodeData(FileNode);
   Data^.Level := 0;
-  data^.Caption := format(RSFoundHeader,[FileName, MatchesCount, Results.Count,Results.SearchTerm]);
+  Data^.Caption := format(RSFoundHeader, [FileName, Results.SearchTerm, MatchesCount, Results.Count]);
 
-  Results.Free;
+  lvFindResults.Visible := True;
+  //  Results.Free;
 end;
 
 procedure TfMain.SearchFindAccept(Sender: TObject);

@@ -848,7 +848,7 @@ begin
             FoundItem.Line := FoundStart.Y;
             CurrLine := FoundStart.Y;
           end;
-        FoundItem.AddMatch(FoundStart.X, FoundEnd.X + FoundStart.X);
+        FoundItem.AddMatch(FoundStart.X, FoundEnd.X - FoundStart.X);
         StartPos := FoundEnd;
       end;
 

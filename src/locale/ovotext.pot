@@ -108,7 +108,7 @@ msgstr ""
 
 #: stringcostants.rsfoundheader
 #, object-pascal-format
-msgid "%s -> Found %d matches on %d lines of \"%s\""
+msgid "%s Find \"%s\" (%d matches, %d lines)"
 msgstr ""
 
 #: stringcostants.rskeepdeleted
