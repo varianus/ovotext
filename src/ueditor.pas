@@ -821,7 +821,7 @@ var
   FoundItem: TFindResult;
   CurrLine: integer;
 begin
-  Result := TFindAllResults.Create;
+  Result := TFindAllResults.Create(True);
   Result.SearchTerm:= SearchText;
 
   if (SearchText = '') or (Lines.Count = 0) then

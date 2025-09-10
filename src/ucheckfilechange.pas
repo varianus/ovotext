@@ -399,7 +399,7 @@ end;
 
 constructor TFileWatcher.Create;
 begin
-  WatchList := TWatchList.Create;
+  WatchList := TWatchList.Create([doOwnsValues]);
 end;
 
 destructor TFileWatcher.Destroy;

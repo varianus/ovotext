@@ -118,6 +118,7 @@ destructor TMacroRecorder.Destroy;
 begin
   RemoveUnsaved;
   FMacros.Free;
+  SynMacroRec.Free;
 
   inherited Destroy;
 end;
