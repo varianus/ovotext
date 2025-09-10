@@ -349,6 +349,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="CmdLineParser"/>
       </Unit26>
+      <Unit27>
+        <Filename Value="iconloader.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit27>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -378,6 +382,7 @@
     <Linking>
       <Debugging>
         <DebugInfoType Value="dsDwarf3"/>
+        <UseHeaptrc Value="True"/>
       </Debugging>
       <Options>
         <Win32>

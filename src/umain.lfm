@@ -1,12 +1,13 @@
 object fMain: TfMain
   Left = 973
-  Height = 696
+  Height = 676
   Top = 141
   Width = 945
   AllowDropFiles = True
   Caption = 'OvoText'
-  ClientHeight = 696
+  ClientHeight = 676
   ClientWidth = 945
+  Color = 3487029
   DoubleBuffered = True
   Font.Color = 16119285
   Font.Height = -12
@@ -28,7 +29,7 @@ object fMain: TfMain
   object StatusBar: TStatusBar
     Left = 0
     Height = 23
-    Top = 673
+    Top = 653
     Width = 945
     Panels = <    
       item
@@ -219,17 +220,17 @@ object fMain: TfMain
   end
   object pnlLeft: TPanel
     Left = 0
-    Height = 476
+    Height = 456
     Top = 52
     Width = 189
     Align = alLeft
-    ClientHeight = 476
+    ClientHeight = 456
     ClientWidth = 189
     ParentBackground = False
     TabOrder = 3
     object FilesTree: TTreeView
       Left = 1
-      Height = 446
+      Height = 426
       Top = 29
       Width = 187
       Align = alClient
@@ -275,14 +276,14 @@ object fMain: TfMain
   end
   object splLeftBar: TSplitter
     Left = 189
-    Height = 476
+    Height = 456
     Top = 52
     Width = 5
   end
   object lvFindResults: TLazVirtualStringTree
     Left = 0
     Height = 145
-    Top = 528
+    Top = 508
     Width = 945
     Align = alBottom
     DefaultText = 'Node'
@@ -304,7 +305,10 @@ object fMain: TfMain
     TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowRoot, toThemeAware, toUseBlendedImages]
     Visible = False
     OnDrawText = lvFindResultsDrawText
+    OnFreeNode = lvFindResultsFreeNode
     OnGetText = lvFindResultsGetText
+    OnPaintText = lvFindResultsPaintText
+    OnGetNodeDataSize = lvFindResultsGetNodeDataSize
     OnInitNode = lvFindResultsInitNode
   end
   object mnuMain: TMainMenu

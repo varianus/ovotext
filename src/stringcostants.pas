@@ -91,6 +91,8 @@ resourcestring
 
   RSFoundHeader = '%s Find "%s" (%d matches, %d lines)';
 
+  RSLine ='Line: %d';
+
 implementation
 
 end.

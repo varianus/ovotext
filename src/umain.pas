@@ -47,7 +47,7 @@ type
   TNodeData = record
     Level: integer;
     Caption: string;
-    Obj: TFindResult;
+    Obj: TObject;
   end;
 
   TfMain = class(TForm)
@@ -393,10 +393,14 @@ type
     procedure lvFindResultsDblClick(Sender: TObject);
     procedure lvFindResultsDrawText(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
       Column: TColumnIndex; const CellText: string; const CellRect: TRect; var DefaultDraw: boolean);
+    procedure lvFindResultsFreeNode(Sender: TBaseVirtualTree; Node: PVirtualNode);
+    procedure lvFindResultsGetNodeDataSize(Sender: TBaseVirtualTree; var NodeDataSize: integer);
     procedure lvFindResultsGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
       TextType: TVSTTextType; var CellText: string);
     procedure lvFindResultsInitNode(Sender: TBaseVirtualTree; ParentNode, Node: PVirtualNode;
       var InitialStates: TVirtualNodeInitStates);
+    procedure lvFindResultsPaintText(Sender: TBaseVirtualTree; const TargetCanvas: TCanvas; Node: PVirtualNode;
+      Column: TColumnIndex; TextType: TVSTTextType);
     procedure mnuCleanRecentClick(Sender: TObject);
     procedure mnuReopenAllRecentClick(Sender: TObject);
     procedure mnuLineEndingsClick(Sender: TObject);
@@ -1477,7 +1481,7 @@ begin
   iconRender.AddToImageList(dmMain.imgBookMark, [$3b, $3c]);
 
   dmMain.imgBookMark.EndUpdate;
-
+  iconRender.Free;
 end;
 
 procedure TfMain.mnuLangClick(Sender: TObject);
@@ -1617,8 +1621,8 @@ begin
       else
         CellText := '';
     1: case Column of
-        0: CellText := IntToStr(Data^.Obj.Line);
-        1: CellText := Data^.Obj.Text;
+        0: CellText := format(RSLine, [TFindResult(Data^.Obj).Line]);
+        1: CellText := TFindResult(Data^.Obj).Text;
       end;
   end;
 end;
@@ -1628,9 +1632,41 @@ procedure TfMain.lvFindResultsInitNode(Sender: TBaseVirtualTree; ParentNode, Nod
 var
   Data: PNodeData;
 begin
+  exit;
   Data := Sender.GetNodeData(Node);
   if Data^.Level < 1 then
-    InitialStates := InitialStates + [ivsHasChildren];
+    InitialStates := InitialStates + [ivsHasChildren]
+  else
+    InitialStates := InitialStates - [ivsHasChildren];
+
+end;
+
+
+procedure TfMain.lvFindResultsPaintText(Sender: TBaseVirtualTree; const TargetCanvas: TCanvas; Node: PVirtualNode;
+  Column: TColumnIndex; TextType: TVSTTextType);
+var
+  Data: PNodeData;
+begin
+  Data := Sender.GetNodeData(Node);
+  case Data^.Level of
+    0:
+    begin
+      TargetCanvas.Brush.Color := clactiveCaption;
+      TargetCanvas.Font.Color := clCaptionText;
+    end;
+
+    1: if (column > 0) then
+      begin
+        TargetCanvas.Brush.Color := clInactiveCaption;
+        TargetCanvas.Font.Color := clInactiveCaptionText;
+      end
+    else
+      begin
+        TargetCanvas.Brush.Color := clRed;
+        TargetCanvas.Font.Color := clWhite;
+      end
+
+  end;
 end;
 
 procedure TfMain.lvFindResultsDrawText(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
@@ -1647,6 +1683,8 @@ begin
   begin
     TargetCanvas.FillRect(ARect);
     InflateRect(ARect, -3, -3);
+ //   DefaultDraw := True;
+  //  exit;
   end
   else
   begin
@@ -1658,8 +1696,23 @@ begin
   ts := TargetCanvas.TextStyle;
   ts.Alignment := taLeftJustify;
   TargetCanvas.TextStyle := ts;
-  RenderLine(TargetCanvas, ARect, Data^.obj);
+  RenderLine(TargetCanvas, ARect, TFindResult(Data^.obj));
 
+end;
+
+procedure TfMain.lvFindResultsFreeNode(Sender: TBaseVirtualTree; Node: PVirtualNode);
+var
+  Data: PNodeData;
+begin
+  Data := Sender.GetNodeData(Node);
+  data^.Caption := '';
+  if Data^.Level = 0 then
+    Data^.Obj.Free;
+end;
+
+procedure TfMain.lvFindResultsGetNodeDataSize(Sender: TBaseVirtualTree; var NodeDataSize: integer);
+begin
+  NodeDataSize := SizeOf(TNodeData);
 end;
 
 procedure TfMain.RenderLine(aCanvas: TCanvas; aRect: TRect; Obj: TFindResult);
@@ -1949,7 +2002,7 @@ begin
   Data := lvFindResults.GetNodeData(FileNode);
   Data^.Level := 0;
   Data^.Caption := format(RSFoundHeader, [FileName, Results.SearchTerm, MatchesCount, Results.Count]);
-
+  Data^.Obj := Results;
   lvFindResults.Visible := True;
   //  Results.Free;
 end;
