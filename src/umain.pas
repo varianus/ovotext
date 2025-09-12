@@ -399,8 +399,6 @@ type
       TextType: TVSTTextType; var CellText: string);
     procedure lvFindResultsInitNode(Sender: TBaseVirtualTree; ParentNode, Node: PVirtualNode;
       var InitialStates: TVirtualNodeInitStates);
-    procedure lvFindResultsPaintText(Sender: TBaseVirtualTree; const TargetCanvas: TCanvas; Node: PVirtualNode;
-      Column: TColumnIndex; TextType: TVSTTextType);
     procedure mnuCleanRecentClick(Sender: TObject);
     procedure mnuReopenAllRecentClick(Sender: TObject);
     procedure mnuLineEndingsClick(Sender: TObject);
@@ -1641,62 +1639,42 @@ begin
 
 end;
 
-
-procedure TfMain.lvFindResultsPaintText(Sender: TBaseVirtualTree; const TargetCanvas: TCanvas; Node: PVirtualNode;
-  Column: TColumnIndex; TextType: TVSTTextType);
-var
-  Data: PNodeData;
-begin
-  Data := Sender.GetNodeData(Node);
-  case Data^.Level of
-    0:
-    begin
-      TargetCanvas.Brush.Color := clactiveCaption;
-      TargetCanvas.Font.Color := clCaptionText;
-    end;
-
-    1: if (column > 0) then
-      begin
-        TargetCanvas.Brush.Color := clInactiveCaption;
-        TargetCanvas.Font.Color := clInactiveCaptionText;
-      end
-    else
-      begin
-        TargetCanvas.Brush.Color := clRed;
-        TargetCanvas.Font.Color := clWhite;
-      end
-
-  end;
-end;
-
 procedure TfMain.lvFindResultsDrawText(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
   Column: TColumnIndex; const CellText: string; const CellRect: TRect; var DefaultDraw: boolean);
 var
   Data: PNodeData;
-  ts: TTextStyle;
-  ARect: TRect;
 begin
-  ARect := CellRect;
   Data := Sender.GetNodeData(Node);
+{  case Data^.Level of
+    0:
+    begin
+      TargetCanvas.Brush.Color := clgreen;
+      TargetCanvas.Font.Color := clCaptionText;
+    end;
+    1: case column of
+        0: begin
+          TargetCanvas.Brush.Color := clgreen;
+          TargetCanvas.Font.Color := clInactiveCaptionText;
+        end;
+        1: begin
+          TargetCanvas.Brush.Color := clred;
+//        TargetCanvas.Font.Color := clInactiveCaptionText;
+        end;
+      end;
 
-  if (Data^.Level = 1) and (Column = 1) then
-  begin
-    TargetCanvas.FillRect(ARect);
-    InflateRect(ARect, -3, -3);
- //   DefaultDraw := True;
-  //  exit;
-  end
-  else
+  end;                 }
+
+  if (Data^.Level = 0) or (Column = 0) then
   begin
     DefaultDraw := True;
     exit;
   end;
   DefaultDraw := False;
-  ts := Default(TTextStyle);
-  ts := TargetCanvas.TextStyle;
-  ts.Alignment := taLeftJustify;
-  TargetCanvas.TextStyle := ts;
-  RenderLine(TargetCanvas, ARect, TFindResult(Data^.obj));
+  //ts := Default(TTextStyle);
+  //ts := TargetCanvas.TextStyle;
+  //ts.Alignment := taLeftJustify;
+  //TargetCanvas.TextStyle := ts;
+  RenderLine(TargetCanvas, CellRect, TFindResult(Data^.obj));
 
 end;
 
@@ -1705,7 +1683,7 @@ var
   Data: PNodeData;
 begin
   Data := Sender.GetNodeData(Node);
-  data^.Caption := '';
+  Data^.Caption := '';
   if Data^.Level = 0 then
     Data^.Obj.Free;
 end;
@@ -1727,24 +1705,22 @@ begin
   for i := 0 to Length(Obj.Matches) - 1 do
   begin
     aText := Copy(Obj.Text, StartPos, Obj.Matches[i].Column - StartPos);
-    aCanvas.Font.Color := clWindowText;
-    aCanvas.brush.Color := clWindow;
+    aCanvas.Font.Style := [];
     aCanvas.TextOut(x, aRect.Top, aText);
     Inc(x, aCanvas.GetTextWidth(atext));
+
     aText := Copy(obj.Text, Obj.Matches[i].Column, Obj.Matches[i].Length);
-    aCanvas.Font.Color := clHighlightText;
-    aCanvas.brush.Color := clHighlight;
+    aCanvas.Font.Style := [fsUnderline];
     aCanvas.TextOut(x, aRect.Top, aText);
-    Inc(x, aCanvas.GetTextWidth(atext) + 2);
-    StartPos := Obj.Matches[i].Column + Obj.Matches[i].Length + 1;
+
+    Inc(x, aCanvas.GetTextWidth(atext));
+    StartPos := Obj.Matches[i].Column + Obj.Matches[i].Length;
   end;
   if StartPos < Length(Obj.Text) then
   begin
     aText := copy(obj.Text, StartPos, Length(Obj.Text) - StartPos);
-    aCanvas.Font.Color := clWindowText;
-    aCanvas.brush.Color := clWindow;
+    aCanvas.Font.Style := [];
     aCanvas.TextOut(x, aRect.Top, aText);
-    //inc(x, aCanvas.GetTextWidth(atext));
   end;
 
 end;
@@ -2004,6 +1980,11 @@ begin
   Data^.Caption := format(RSFoundHeader, [FileName, Results.SearchTerm, MatchesCount, Results.Count]);
   Data^.Obj := Results;
   lvFindResults.Visible := True;
+  lvFindResults.Expanded[FileNode]:= true;
+
+  lvFindResults.Header.Columns[0].MinWidth := 200;//max(lvFindResults.Header.Columns[0].MinWidth, lvFindResults.Canvas.TextExtent(format(RSLine, [Results.LinesCount*100])).width);
+  lvFindResults.Header.Columns[1].MinWidth := 3000; // Find a sane value....
+
   //  Results.Free;
 end;
 

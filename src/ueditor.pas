@@ -75,7 +75,9 @@ type
 
   TFindAllResults = class(specialize TObjectList<TFindResult>)
   public
+    LinesCount:integer;
     SearchTerm: string;
+
   end;
 
 type
@@ -823,6 +825,7 @@ var
 begin
   Result := TFindAllResults.Create(True);
   Result.SearchTerm:= SearchText;
+  Result.LinesCount := Lines.Count;
 
   if (SearchText = '') or (Lines.Count = 0) then
     Exit;

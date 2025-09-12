@@ -287,16 +287,17 @@ object fMain: TfMain
     Width = 945
     Align = alBottom
     DefaultText = 'Node'
-    Header.AutoSizeIndex = 0
+    Header.AutoSizeIndex = 1
     Header.Columns = <    
       item
+        MinWidth = 100
         Position = 0
-        Width = 10
+        Width = 100
       end    
       item
         Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus]
         Position = 1
-        Width = 1000
+        Width = 824
       end>
     Header.Options = [hoAutoResize, hoColumnResize]
     ScrollBarOptions.AlwaysVisible = True
@@ -307,7 +308,6 @@ object fMain: TfMain
     OnDrawText = lvFindResultsDrawText
     OnFreeNode = lvFindResultsFreeNode
     OnGetText = lvFindResultsGetText
-    OnPaintText = lvFindResultsPaintText
     OnGetNodeDataSize = lvFindResultsGetNodeDataSize
     OnInitNode = lvFindResultsInitNode
   end
