@@ -15,6 +15,7 @@ object fMain: TfMain
   ParentDoubleBuffered = False
   Position = poOwnerFormCenter
   ShowHint = True
+  LCLVersion = '4.99.0.0'
   Visible = True
   OnActivate = FormActivate
   OnClose = FormClose
@@ -1173,7 +1174,7 @@ object fMain: TfMain
     object actZoomOut: TAction
       Category = 'Navigation'
       Caption = 'Zoom Out'
-      ImageIndex = 33
+      ImageIndex = 37
       ShortCut = 16493
       OnExecute = actZoomOutExecute
     end
