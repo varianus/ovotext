@@ -1430,7 +1430,7 @@ begin
   if ParamCount > 0 then
   try
     ParamList := TStringList.Create;
-    for i := 1 to ParamCount do
+    for i := 0 to ParamCount do
       ParamList.Add(ParamStr(i));
     ServerReceivedParams(Application.SingleInstance, ParamList);
   finally
