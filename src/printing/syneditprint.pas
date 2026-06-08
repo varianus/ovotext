@@ -86,7 +86,7 @@ unit SynEditPrint;
 interface
 
 uses
-  LCLType, SysUtils, Classes, Graphics, Printers, SynEdit, SynEditPrintTypes, LazEditTextAttributes,
+  LCLType, SysUtils, Classes, Graphics, Printers, SynEdit, SynEditPrintTypes, LazEditTextAttributes, LazEditHighlighter,
   SynEditPrintHeaderFooter, SynEditPrinterInfo, SynEditPrintMargins,
   SynEditMiscProcs, SynEditPrintExtProcs, SynEditHighlighter;
 
@@ -120,7 +120,7 @@ type
     FLineHeight: Integer;
     FHighlight: Boolean;
     FColors: Boolean;
-    FHighlighter: TSynCustomHighlighter;
+    FHighlighter: TLazEditCustomRangesHighlighter;
     FOldFont: TFont;
     FSynOK: Boolean;
     FLineNumbers: Boolean;
@@ -147,7 +147,7 @@ type
     procedure WriteLineNumber;
     procedure HandleWrap(Text: string; MaxWidth: Integer);
     procedure TextOut(Text: string; AList: TList);
-    procedure SetHighlighter(const Value: TSynCustomHighlighter);
+    procedure SetHighlighter(const Value: TLazEditCustomRangesHighlighter);
     procedure RestoreCurrentFont;
     procedure SaveCurrentFont;
     procedure SetPixelsPrInch;
@@ -186,7 +186,7 @@ type
     property PageOffset: Integer read FPageOffset write FPageOffset default 0;
     property OnPrintLine: TPrintLineEvent read FOnPrintLine write FOnPrintLine;
     property OnPrintStatus: TPrintStatusEvent read FOnPrintStatus write FOnPrintStatus;
-    property Highlighter: TSynCustomHighlighter read FHighlighter write SetHighlighter;
+    property Highlighter: TLazEditCustomRangesHighlighter read FHighlighter write SetHighlighter;
     property LineNumbersInMargin: Boolean read FLineNumbersInMargin
     write FLineNumbersInMargin default False;
   end;
@@ -293,7 +293,7 @@ begin
   end;
 end;
 
-procedure TSynEditPrint.SetHighlighter(const Value: TSynCustomHighlighter);
+procedure TSynEditPrint.SetHighlighter(const Value: TLazEditCustomRangesHighlighter);
 begin
   FHighlighter := Value;
   FRangesOK := False;
@@ -345,7 +345,7 @@ begin
     FLines.Objects[0] := TObject(fHighlighter.GetRange);
     i := 1;
     while (i < Lines.Count) do begin
-      FHighlighter.SetLine(FLines[i - 1], i - 1);
+      FHighlighter.StartAtLineIndex(i-1);// SetLine(FLines[i - 1], i - 1);
       FHighlighter.NextToEol;
       FLines.Objects[i] := Tobject(FHighlighter.GetRange);
       Inc(i);
@@ -510,7 +510,7 @@ begin
   if FSynOK then begin
     SaveCurrentFont;
     FHighlighter.SetRange(FLines.Objects[FLineNumber - 1]);
-    FHighlighter.SetLine(Text, FLineNumber);
+    FHighlighter.StartAtLineIndex(FLineNumber);// SetLine(Text, FLineNumber);
     Token := '';
     TokenStart := 0;
     LCount := 0;
@@ -712,7 +712,7 @@ end;
 procedure TSynEditPrint.SetSynEdit(const Value: TSynEdit);
 begin
   Lines := Value.Lines;
-  HighLighter := Value.Highlighter;
+  HighLighter := TLazEditCustomRangesHighlighter(Value.Highlighter);
   Font := Value.Font;
   FTabWidth := Value.TabWidth;                                                  //sb 2000-09-23
 end;

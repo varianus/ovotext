@@ -32,7 +32,7 @@ uses
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,
   SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds, SynEditSearch,
   SynEditMouseCmds, SynEditLines, SynEditWrappedView, Stringcostants, Forms, Graphics, Config, udmmain,
-  uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils,
+  uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils, LazUTF16, LazEditHighlighter,
   ReplaceDialog, SupportFuncs, JsonTools, LCLVersion, Comparer;
 
 type
@@ -120,7 +120,7 @@ type
     procedure SetUntitled(AValue: boolean);
     procedure SetWordWrap(AValue: boolean);
   protected
-    procedure SetHighlighter(const Value: TSynCustomHighlighter); override;
+    procedure SetHighlighter(const Value: TLazEditCustomHighlighter); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -341,7 +341,7 @@ begin
     WordWrapper.Free;
 end;
 
-procedure TEditor.SetHighlighter(const Value: TSynCustomHighlighter);
+procedure TEditor.SetHighlighter(const Value: TLazEditCustomHighlighter);
 begin
   inherited SetHighlighter(Value);
   DoOnStatusChange([]);
@@ -1225,7 +1225,7 @@ end;
 procedure TEditorFactory.ReloadHighLighters;
 var
   i, j: integer;
-  fhg: TSynCustomHighlighter;
+  fhg: TLazEditCustomHighlighter;
   DefaultAttr: TFontAttributes;
   DefaultAttrGutter: TFontAttributes;
   SpecialAttrGutter: TFontAttributes;

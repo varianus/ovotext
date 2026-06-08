@@ -24,7 +24,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls, Spin, ComCtrls, ueditor, uActionMacro,
-  uReplaceMacro, SynEditKeyCmds, SynEdit, ActnList, LCLProc, uMacroRecorder, Stringcostants;
+  uReplaceMacro, SynEditKeyCmds, SynEdit, SynGutter, SynGutterBase, SynGutterChanges, SynGutterLineNumber, ActnList,
+  LCLProc, uMacroRecorder, Stringcostants;
 
 type
 
