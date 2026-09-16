@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="12"/>
+    <Version Value="13"/>
     <PathDelim Value="\"/>
     <General>
       <Flags>
         <SaveOnlyProjectUnits Value="True"/>
-        <CompatibilityMode Value="True"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
       <Title Value="ovotext"/>
@@ -32,9 +31,9 @@
       <CharSet Value="04B0"/>
       <StringTable Comments="A simple editor" CompanyName="Marco Caselli" FileDescription="Marco Caselli Editor" InternalName="ovotext" LegalCopyright="Marco Caselli" LegalTrademarks="Marco Caselli" ProductName="ovotext" ProductVersion="0.1"/>
     </VersionInfo>
-    <BuildModes Count="4">
-      <Item1 Name="Debug" Default="True"/>
-      <Item2 Name="Release">
+    <BuildModes>
+      <Item Name="Debug" Default="True"/>
+      <Item Name="Release">
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
@@ -73,8 +72,8 @@
             </OtherDefines>
           </Other>
         </CompilerOptions>
-      </Item2>
-      <Item3 Name="Debug64">
+      </Item>
+      <Item Name="Debug64">
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
@@ -112,8 +111,8 @@
             </Options>
           </Linking>
         </CompilerOptions>
-      </Item3>
-      <Item4 Name="Release64">
+      </Item>
+      <Item Name="Release64">
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
@@ -149,7 +148,7 @@
             <CustomOptions Value="-O4 -dRELEASE"/>
           </Other>
         </CompilerOptions>
-      </Item4>
+      </Item>
       <SharedMatrixOptions Count="1">
         <Item1 ID="188379435715" Modes="Release"/>
       </SharedMatrixOptions>
@@ -159,193 +158,199 @@
     </PublishOptions>
     <RunParams>
       <local>
-        <CommandLineParams Value="--debug-log=medialog.log c:\temp\test.txt -c 20 --row=10"/>
+        <CommandLineParams Value="c:\temp\test.txt"/>
         <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T &apos;Lazarus Run Output&apos; -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
       <FormatVersion Value="2"/>
-      <Modes Count="1">
-        <Mode0 Name="default">
+      <Modes>
+        <Mode Name="default">
           <local>
-            <CommandLineParams Value="--debug-log=medialog.log c:\temp\test.txt -c 20 --row=10"/>
+            <CommandLineParams Value="c:\temp\test.txt"/>
             <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T &apos;Lazarus Run Output&apos; -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
           </local>
-        </Mode0>
+        </Mode>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="6">
-      <Item1>
+    <RequiredPackages>
+      <Item>
+        <PackageName Value="SynEditDsgn"/>
+      </Item>
+      <Item>
+        <PackageName Value="laz.virtualtreeview_package"/>
+      </Item>
+      <Item>
         <PackageName Value="MetaDarkStyle"/>
-      </Item1>
-      <Item2>
+      </Item>
+      <Item>
         <PackageName Value="LazUtils"/>
-      </Item2>
-      <Item3>
+      </Item>
+      <Item>
         <PackageName Value="Printer4Lazarus"/>
-      </Item3>
-      <Item4>
+      </Item>
+      <Item>
         <PackageName Value="FCL"/>
-      </Item4>
-      <Item5>
+      </Item>
+      <Item>
         <PackageName Value="SynEdit"/>
         <MinVersion Major="1" Valid="True"/>
-      </Item5>
-      <Item6>
+      </Item>
+      <Item>
         <PackageName Value="LCL"/>
-      </Item6>
+      </Item>
     </RequiredPackages>
-    <Units Count="27">
-      <Unit0>
+    <Units>
+      <Unit>
         <Filename Value="ovotext.lpr"/>
         <IsPartOfProject Value="True"/>
-      </Unit0>
-      <Unit1>
+      </Unit>
+      <Unit>
         <Filename Value="umain.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit1>
-      <Unit2>
+      </Unit>
+      <Unit>
         <Filename Value="uabout.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit2>
-      <Unit3>
+      </Unit>
+      <Unit>
         <Filename Value="udmmain.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="dmMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-      </Unit3>
-      <Unit4>
+      </Unit>
+      <Unit>
         <Filename Value="stringcostants.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Stringcostants"/>
-      </Unit4>
-      <Unit5>
+      </Unit>
+      <Unit>
         <Filename Value="supportfuncs.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SupportFuncs"/>
-      </Unit5>
-      <Unit6>
+      </Unit>
+      <Unit>
         <Filename Value="ueditor.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit6>
-      <Unit7>
+      </Unit>
+      <Unit>
         <Filename Value="config.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Config"/>
-      </Unit7>
-      <Unit8>
+      </Unit>
+      <Unit>
         <Filename Value="ucheckfilechange.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uCheckFileChange"/>
-      </Unit8>
-      <Unit9>
+      </Unit>
+      <Unit>
         <Filename Value="udglgoto.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="dlgGoTo"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uDglGoTo"/>
-      </Unit9>
-      <Unit10>
+      </Unit>
+      <Unit>
         <Filename Value="printing\syneditprintextprocs.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SynEditPrintExtProcs"/>
-      </Unit10>
-      <Unit11>
+      </Unit>
+      <Unit>
         <Filename Value="simplemrumanager.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit11>
-      <Unit12>
+      </Unit>
+      <Unit>
         <Filename Value="highlighters\SynExportRTF.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit12>
-      <Unit13>
+      </Unit>
+      <Unit>
         <Filename Value="umacroeditor.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FMacroEditor"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMacroEditor"/>
-      </Unit13>
-      <Unit14>
+      </Unit>
+      <Unit>
         <Filename Value="umacrorecorder.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uMacroRecorder"/>
-      </Unit14>
-      <Unit15>
+      </Unit>
+      <Unit>
         <Filename Value="ureplacemacro.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uReplaceMacro"/>
-      </Unit15>
-      <Unit16>
+      </Unit>
+      <Unit>
         <Filename Value="uactionmacro.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uActionMacro"/>
-      </Unit16>
-      <Unit17>
+      </Unit>
+      <Unit>
         <Filename Value="supportclasses.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SupportClasses"/>
-      </Unit17>
-      <Unit18>
+      </Unit>
+      <Unit>
         <Filename Value="replacedialog.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="CustomReplaceDialog"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ReplaceDialog"/>
-      </Unit18>
-      <Unit19>
+      </Unit>
+      <Unit>
         <Filename Value="simplesingleinstance.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SimpleSingleInstance"/>
-      </Unit19>
-      <Unit20>
+      </Unit>
+      <Unit>
         <Filename Value="codegen.inc"/>
         <IsPartOfProject Value="True"/>
-      </Unit20>
-      <Unit21>
+      </Unit>
+      <Unit>
         <Filename Value="jsontools.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="JsonTools"/>
-      </Unit21>
-      <Unit22>
+      </Unit>
+      <Unit>
         <Filename Value="umacroplayback.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fMacroPlayBack"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit22>
-      <Unit23>
+      </Unit>
+      <Unit>
         <Filename Value="ukeys.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fKeys"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uKeys"/>
-      </Unit23>
-      <Unit24>
+      </Unit>
+      <Unit>
         <Filename Value="udlgsort.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="dlgSort"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit24>
-      <Unit25>
+      </Unit>
+      <Unit>
         <Filename Value="comparer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Comparer"/>
-      </Unit25>
-      <Unit26>
+      </Unit>
+      <Unit>
         <Filename Value="cmdlineparser.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="CmdLineParser"/>
-      </Unit26>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -375,6 +380,7 @@
     <Linking>
       <Debugging>
         <DebugInfoType Value="dsDwarf3"/>
+        <UseHeaptrc Value="True"/>
       </Debugging>
       <Options>
         <Win32>
@@ -389,16 +395,16 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="3">
-      <Item1>
+    <Exceptions>
+      <Item>
         <Name Value="EAbort"/>
-      </Item1>
-      <Item2>
+      </Item>
+      <Item>
         <Name Value="ECodetoolError"/>
-      </Item2>
-      <Item3>
+      </Item>
+      <Item>
         <Name Value="EFOpenError"/>
-      </Item3>
+      </Item>
     </Exceptions>
   </Debugging>
 </CONFIG>

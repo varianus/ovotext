@@ -34,13 +34,13 @@ type
   TSearchMode = (smNormal, smExtended, smRegexp);
 
   TMySynSearchOption = (ssoMatchCase, ssoWholeWord,
-      ssoBackwards,
-      ssoEntireScope, ssoSelectedOnly,
-      ssoReplace, ssoReplaceAll,
-      ssoPrompt,
-      ssoSearchInReplacement,    // continue search-replace in replacement (with ssoReplaceAll) // replace recursive
-      ssoRegExpr, ssoRegExprMultiLine,
-      ssoFindContinue, ssoExtended);
+    ssoBackwards,
+    ssoEntireScope, ssoSelectedOnly,
+    ssoReplace, ssoReplaceAll,
+    ssoPrompt,
+    ssoSearchInReplacement,    // continue search-replace in replacement (with ssoReplaceAll) // replace recursive
+    ssoRegExpr, ssoRegExprMultiLine,
+    ssoFindContinue, ssoExtended, ssoFindAll);
   TMySynSearchOptions = set of TMySynSearchOption;
 
 
@@ -70,7 +70,7 @@ type
     procedure CancelButtonClick(Sender: TObject);
     procedure cbReplaceChange(Sender: TObject);
     procedure CloseButtonClick(Sender: TObject);
-    procedure EditFindKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure EditFindKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
@@ -100,9 +100,12 @@ type
 
   end;
 
-ResourceString
+resourcestring
   rsFIND = 'Find';
   rsREPLACE = 'Replace';
+  rsFINDAll = 'Find All';
+  rsREPLACEAll = 'Replace All';
+
   lisUEReplaceThisOccurrenceOfWith = 'Replace this occurrence of "%s"%s with "%s"?';
 
 implementation
@@ -111,18 +114,18 @@ implementation
 
 procedure TCustomReplaceDialog.SaveHistory;
 begin
-  ConfigObj.WriteStrings('History','Find', EditFind.Items);
-  ConfigObj.WriteStrings('History','Replace', EditReplace.Items);
-  ConfigObj.ConfigHolder.Find('History/Options', true).AsString:=SetToString(PTypeInfo(TypeInfo(TmySynSearchOptions)), LongInt(GetOptions), true);
+  ConfigObj.WriteStrings('History', 'Find', EditFind.Items);
+  ConfigObj.WriteStrings('History', 'Replace', EditReplace.Items);
+  ConfigObj.ConfigHolder.Find('History/Options', True).AsString := SetToString(PTypeInfo(TypeInfo(TmySynSearchOptions)), longint(GetOptions), True);
 
 end;
 
-Procedure TCustomReplaceDialog.LoadHistory;
+procedure TCustomReplaceDialog.LoadHistory;
 var
   tmp: string;
 begin
-  ConfigObj.ReadStrings('History','Find', EditFind.Items);
-  ConfigObj.ReadStrings('History','Replace', EditReplace.Items);
+  ConfigObj.ReadStrings('History', 'Find', EditFind.Items);
+  ConfigObj.ReadStrings('History', 'Replace', EditReplace.Items);
   try
     tmp := Configobj.ConfigHolder.GetValueDef('History/Options', '');
     FOptions := TMySynSearchOptions(StringToSet(PTypeInfo(TypeInfo(TMySynSearchOptions)), tmp));
@@ -136,7 +139,7 @@ end;
 
 procedure TCustomReplaceDialog.Replace;
 begin
-  SaveHistory;
+    SaveHistory;
   if Assigned(FOnReplace) then
     FOnReplace(Self);
 end;
@@ -148,9 +151,9 @@ end;
 
 procedure TCustomReplaceDialog.OKButtonClick(Sender: TObject);
 begin
-  fReplaceAllClickedLast := false;
-  EditFind.AddHistoryItem(EditFind.Text,10,true,true);
-  EditReplace.AddHistoryItem(EditReplace.Text,10,true,true);
+  fReplaceAllClickedLast := False;
+  EditFind.AddHistoryItem(EditFind.Text, 10, True, True);
+  EditReplace.AddHistoryItem(EditReplace.Text, 10, True, True);
   Replace;
   ModalResult := mrNone;
 end;
@@ -158,13 +161,13 @@ end;
 procedure TCustomReplaceDialog.CloseButtonClick(Sender: TObject);
 begin
   fReplaceAllClickedLast := True;
-  EditFind.AddHistoryItem(EditFind.Text,10,true,true);
-  EditReplace.AddHistoryItem(EditReplace.Text,10,true,true);
+  EditFind.AddHistoryItem(EditFind.Text, 10, True, True);
+  EditReplace.AddHistoryItem(EditReplace.Text, 10, True, True);
   Replace;
   ModalResult := mrNone;
 end;
 
-procedure TCustomReplaceDialog.EditFindKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TCustomReplaceDialog.EditFindKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
 begin
   if (Key = VK_RETURN) and not cbReplace.Checked then
     Find;
@@ -190,9 +193,9 @@ end;
 procedure TCustomReplaceDialog.cbReplaceChange(Sender: TObject);
 begin
   if cbReplace.Checked then
-    Options:=Options + [ssoReplace]
+    Options := Options + [ssoReplace]
   else
-    Options:=Options - [ssoReplace];
+    Options := Options - [ssoReplace];
 
 end;
 
@@ -214,12 +217,12 @@ begin
   CaseSensitiveCheckBox.Checked := ssoMatchCase in AValue;
   WholeWordsOnlyCheckBox.Checked := ssoWholeWord in AValue;
   if ssoRegExpr in AValue then
-     rgSearchMode.ItemIndex := 2
+    rgSearchMode.ItemIndex := 2
   else
   if ssoExtended in AValue then
-     rgSearchMode.ItemIndex := 1
+    rgSearchMode.ItemIndex := 1
   else
-     rgSearchMode.ItemIndex := 0;
+    rgSearchMode.ItemIndex := 0;
 
   cbReplace.Checked := ssoReplace in AValue;
   PromptOnReplaceCheckBox.Checked := ssoPrompt in AValue;
@@ -234,10 +237,11 @@ begin
   else
     ForwardRadioButton.Checked := True;
 
-  if ssoReplace in AValue then
+{  if ssoReplace in AValue then
     BtnPanel.ShowButtons := BtnPanel.ShowButtons + [pbClose]
   else
     BtnPanel.ShowButtons := BtnPanel.ShowButtons - [pbClose];
+ }
 
   EditReplace.Enabled := ssoReplace in AValue;
   PromptOnReplaceCheckBox.Enabled := ssoReplace in AValue;
@@ -247,11 +251,14 @@ begin
   begin
     Caption := rsREPLACE;
     BtnPanel.OKButton.Caption := rsREPLACE;
+    BtnPanel.CloseButton.Caption := rsREPLACEAll;
   end
   else
   begin
     Caption := rsFIND;
     BtnPanel.OKButton.Caption := rsFIND;
+    BtnPanel.CloseButton.Caption := rsFINDAll;
+
   end;
 
 end;
@@ -279,9 +286,9 @@ begin
     Include(Result, ssoWholeWord);
 
   case rgSearchMode.ItemIndex of
-  0:;
-  1: Include(Result, ssoExtended);
-  2: Include(Result, ssoRegExpr);
+    0: ;
+    1: Include(Result, ssoExtended);
+    2: Include(Result, ssoRegExpr);
   end;
 
   if PromptOnReplaceCheckBox.Checked then
@@ -291,10 +298,14 @@ begin
     include(Result, ssoSelectedOnly);
   if BackwardRadioButton.Checked then
     include(Result, ssoBackwards);
-  if pbClose in BtnPanel.ShowButtons then
+  if cbReplace.Checked then
     include(Result, ssoReplace);
   if fReplaceAllClickedLast then
-    include(Result, ssoReplaceAll);
+    if ssoReplace in Result then
+      include(Result, ssoReplaceAll)
+    else
+      include(Result, ssoFindAll);
+
 end;
 
 function TCustomReplaceDialog.GetReplaceText: string;

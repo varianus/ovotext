@@ -89,7 +89,9 @@ resourcestring
 
   RSMacroDelete  = 'Delete macro "%s" ?';
 
+  RSFoundHeader = '%s Find "%s" (%d matches, %d lines)';
 
+  RSLine ='Line: %d';
 
 implementation
 

@@ -28,9 +28,18 @@ msgctxt "replacedialog.rsfind"
 msgid "Find"
 msgstr ""
 
+#: replacedialog.rsfindall
+msgid "Find All"
+msgstr ""
+
 #: replacedialog.rsreplace
 msgctxt "replacedialog.rsreplace"
 msgid "Replace"
+msgstr ""
+
+#: replacedialog.rsreplaceall
+msgctxt "replacedialog.rsreplaceall"
+msgid "Replace All"
 msgstr ""
 
 #: simplesingleinstance.serrsetsingleinstanceglobalstarted
@@ -97,6 +106,11 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
+#: stringcostants.rsfoundheader
+#, object-pascal-format
+msgid "%s Find \"%s\" (%d matches, %d lines)"
+msgstr ""
+
 #: stringcostants.rskeepdeleted
 #, object-pascal-format
 msgid ""
@@ -104,6 +118,11 @@ msgid ""
 "\n"
 "This file has been deleted by another application.\n"
 "Do you want to keep it in the editor?"
+msgstr ""
+
+#: stringcostants.rsline
+#, object-pascal-format
+msgid "Line: %d"
 msgstr ""
 
 #: stringcostants.rsmacro
@@ -211,6 +230,7 @@ msgid "Backward"
 msgstr ""
 
 #: tcustomreplacedialog.btnpanel.closebutton.caption
+msgctxt "tcustomreplacedialog.btnpanel.closebutton.caption"
 msgid "Replace All"
 msgstr ""
 
@@ -334,6 +354,7 @@ msgid "End"
 msgstr ""
 
 #: tdlgsort.label3.caption
+msgctxt "tdlgsort.label3.caption"
 msgid "Column"
 msgstr ""
 

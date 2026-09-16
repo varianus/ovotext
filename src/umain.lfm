@@ -1,12 +1,13 @@
 object fMain: TfMain
   Left = 973
-  Height = 696
+  Height = 676
   Top = 141
   Width = 945
   AllowDropFiles = True
   Caption = 'OvoText'
-  ClientHeight = 696
+  ClientHeight = 676
   ClientWidth = 945
+  Color = 3487029
   DoubleBuffered = True
   Font.Color = 16119285
   Font.Height = -12
@@ -14,6 +15,7 @@ object fMain: TfMain
   ParentDoubleBuffered = False
   Position = poOwnerFormCenter
   ShowHint = True
+  LCLVersion = '4.99.0.0'
   Visible = True
   OnActivate = FormActivate
   OnClose = FormClose
@@ -28,7 +30,7 @@ object fMain: TfMain
   object StatusBar: TStatusBar
     Left = 0
     Height = 23
-    Top = 673
+    Top = 653
     Width = 945
     Panels = <    
       item
@@ -219,17 +221,17 @@ object fMain: TfMain
   end
   object pnlLeft: TPanel
     Left = 0
-    Height = 621
+    Height = 456
     Top = 52
     Width = 189
     Align = alLeft
-    ClientHeight = 621
+    ClientHeight = 456
     ClientWidth = 189
     ParentBackground = False
     TabOrder = 3
     object FilesTree: TTreeView
       Left = 1
-      Height = 591
+      Height = 426
       Top = 29
       Width = 187
       Align = alClient
@@ -275,9 +277,41 @@ object fMain: TfMain
   end
   object splLeftBar: TSplitter
     Left = 189
-    Height = 621
+    Height = 456
     Top = 52
     Width = 5
+  end
+  object lvFindResults: TLazVirtualStringTree
+    Left = 0
+    Height = 145
+    Top = 508
+    Width = 945
+    Align = alBottom
+    DefaultText = 'Node'
+    Header.AutoSizeIndex = 1
+    Header.Columns = <    
+      item
+        MinWidth = 100
+        Position = 0
+        Width = 100
+      end    
+      item
+        Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus]
+        Position = 1
+        Width = 824
+      end>
+    Header.Options = [hoAutoResize, hoColumnResize]
+    ScrollBarOptions.AlwaysVisible = True
+    TabOrder = 5
+    TreeOptions.AutoOptions = [toAutoDropExpand, toAutoScrollOnExpand, toAutoSort, toAutoSpanColumns, toAutoTristateTracking, toAutoDeleteMovedNodes, toAutoChangeScale]
+    TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowRoot, toThemeAware, toUseBlendedImages]
+    Visible = False
+    OnDblClick = lvFindResultsDblClick
+    OnDrawText = lvFindResultsDrawText
+    OnFreeNode = lvFindResultsFreeNode
+    OnGetText = lvFindResultsGetText
+    OnGetNodeDataSize = lvFindResultsGetNodeDataSize
+    OnInitNode = lvFindResultsInitNode
   end
   object mnuMain: TMainMenu
     Images = imgList
@@ -1141,7 +1175,7 @@ object fMain: TfMain
     object actZoomOut: TAction
       Category = 'Navigation'
       Caption = 'Zoom Out'
-      ImageIndex = 33
+      ImageIndex = 37
       ShortCut = 16493
       OnExecute = actZoomOutExecute
     end

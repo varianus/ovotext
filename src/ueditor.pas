@@ -28,10 +28,11 @@ interface
 
 uses
   Classes, SysUtils, Controls, Dialogs, ComCtrls, LCLProc, LCLType,
+  Generics.Collections,
   SynEditTypes, SynEdit, SynGutter, SynGutterMarks, SynGutterLineNumber,
-  SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds,
+  SynPluginMultiCaret, SynPluginSyncroEdit, SynEditKeyCmds, SynEditSearch,
   SynEditMouseCmds, SynEditLines, SynEditWrappedView, Stringcostants, Forms, Graphics, Config, udmmain,
-  uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils,
+  uCheckFileChange, SynEditHighlighter, Clipbrd, LConvEncoding, LazStringUtils, LazUTF16, LazEditHighlighter,
   ReplaceDialog, SupportFuncs, JsonTools, LCLVersion, Comparer;
 
 type
@@ -52,10 +53,45 @@ var
 type
   TTextOperation = function(const Param: string): string;
 
+type
+  TMatch = record
+    Column: integer;
+    Length: integer;
+  end;
+
+  { TFindResult }
+
+  { TFoundFile }
+
+  TFoundFile = class
+  public
+    FileName:TFileName;
+    constructor Create(AFileName:TFileName); overload;
+  end;
 
 
-  { TEditorFactory }
 
+  TFindResult = class
+  private
+    FCount: integer;
+  public
+    Line: integer;
+    Text: string;
+    Matches: array of TMatch;
+    property Count: integer read FCount;
+    procedure AddMatch(Column, Length: integer);
+    constructor Create;
+  end;
+
+  TFindAllResults = class(specialize TObjectList<TFindResult>)
+  public
+    LinesCount: integer;
+    SearchTerm: string;
+    FileName: TFileName;
+  end;
+
+type
+  { TEditor }
   TOnBeforeClose = procedure(Editor: TEditor; var Cancel: boolean) of object;
   TOnEditorEvent = procedure(Editor: TEditor) of object;
   TOnSearchReplaceEvent = procedure(Sender: TObject; const ASearch, AReplace: string; AOptions: TMySynSearchOptions) of object;
@@ -94,12 +130,13 @@ type
     procedure SetUntitled(AValue: boolean);
     procedure SetWordWrap(AValue: boolean);
   protected
-    procedure SetHighlighter(const Value: TSynCustomHighlighter); override;
+    procedure SetHighlighter(const Value: TLazEditCustomHighlighter); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     property Sheet: TEditorTabSheet read FSheet;
     property OnSearchReplace: TOnSearchReplaceEvent read FOnSearchReplace write SetOnSearcReplace;
+    function FindAll(const SearchText: string; SearchOptions: TMySynSearchOptions): TFindAllResults;
     //-- Helper functions//
     procedure SetLineText(Index: integer; NewText: string);
     // -- File handling//
@@ -134,6 +171,8 @@ type
     property Editor: TEditor read FEditor;
     //--//
   end;
+
+  { TEditorFactory }
 
   TEditorFactory = class(TPageControl)
   private
@@ -178,6 +217,7 @@ type
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: integer); override;
     procedure StartMonitoring(Editor: TEditor);
     procedure StopMonitoring(Editor: TEditor);
+    function FindIndexByFile(const FileName: TFileName): integer;
     {$IFDEF NEEDCLOSEBTN}
     procedure PaintWindow(DC: HDC); override;
     {$ENDIF}
@@ -205,8 +245,8 @@ begin
   FFileName := AValue;
   if FFileName <> EmptyStr then
   begin
-    FUntitled := False;
-    Highlighter := ConfigObj.getHighLighter(ExtractFileExt(fFileName));
+    FUntitled      := False;
+    Highlighter    := ConfigObj.getHighLighter(ExtractFileExt(fFileName));
     FSheet.Caption := ExtractFileName(fFileName)
       {$IFDEF NEEDCLOSEBTN}
       // reserve spaces for emulated close button
@@ -314,7 +354,7 @@ begin
     WordWrapper.Free;
 end;
 
-procedure TEditor.SetHighlighter(const Value: TSynCustomHighlighter);
+procedure TEditor.SetHighlighter(const Value: TLazEditCustomHighlighter);
 begin
   inherited SetHighlighter(Value);
   DoOnStatusChange([]);
@@ -336,8 +376,8 @@ var
 begin
 
   inherited Create(AOwner);
-  TabWidth := NUMBEROFSPACEFORTAB;
-  Options := Options + [eoAltSetsColumnMode];
+  TabWidth     := NUMBEROFSPACEFORTAB;
+  Options      := Options + [eoAltSetsColumnMode];
   MouseOptions := MouseOptions + [emCtrlWheelZoom, emRightMouseMovesCursor];
 
   DeleteKeyStroke(Keystrokes, Ord('N'), [ssCtrl]);
@@ -362,7 +402,7 @@ begin
   WordWrap := ConfigObj.WrapLines;
 
   OnReplaceText := @OnReplace;
-  fMonitoring := False;
+  fMonitoring   := False;
   bm.Free;
 end;
 
@@ -389,7 +429,7 @@ var
   i: integer;
 begin
   Result := sfleSystem;
-  i := 1;
+  i      := 1;
   while i <= length(AString) do
   begin
     if AString[i] in [#10, #13] then
@@ -506,9 +546,9 @@ begin
       FreeAndNil(fStream);
     end;
     TEditorFactory(Sheet.Owner).FWatcher.AddFile(FFileName, fwsOnDemand, Self);
-    Result := True;
+    Result    := True;
     FUntitled := False;
-    Modified := False;
+    Modified  := False;
   except
     Result := False;
   end;
@@ -517,9 +557,9 @@ begin
     begin
       Error := GetLastOSError;
       case MessageDlg(RSError, Format(RSCannotSave, [fFileName, Error, SysErrorMessage(Error)]), mtError, [mbRetry, mbCancel, mbIgnore], 0) of
-        mrAbort: Result := False;
+        mrAbort: Result  := False;
         mrIgnore: Result := True;
-        mrRetry: Retry := True;
+        mrRetry: Retry   := True;
       end;
     end;
   until not Retry;
@@ -547,7 +587,7 @@ end;
 procedure TEditor.StopMonitoring;
 begin
   fMonitoring := False;
-  ReadOnly := False;
+  ReadOnly    := False;
   IncompleteLine := False;
 
 end;
@@ -570,7 +610,7 @@ begin
     if not Result then
       case MessageDlg(RSError, Format(RSCannotCreate, [AFileName]), mtError, [mbRetry, mbAbort], 0) of
         mrAbort: Result := False;
-        mrRetry: Retry := True;
+        mrRetry: Retry  := True;
       end;
   until not Retry;
 
@@ -629,8 +669,8 @@ var
   DefaultAttr: TFontAttributes;
   j: integer;
 begin
-  DefaultAttr := ConfigObj.ReadFontAttributes('Schema/Default/Gutter/', FontAttributes());
-  SpecialAttr := ConfigObj.ReadFontAttributes('Schema/Default/LineNumber/', FontAttributes());
+  DefaultAttr  := ConfigObj.ReadFontAttributes('Schema/Default/Gutter/', FontAttributes());
+  SpecialAttr  := ConfigObj.ReadFontAttributes('Schema/Default/LineNumber/', FontAttributes());
   Gutter.Color := DefaultAttr.Background;
 
   for j := 0 to Gutter.Parts.Count - 1 do
@@ -640,7 +680,7 @@ begin
       gutter.Parts[j].MarkupInfo.BeginUpdate;
       gutter.Parts[j].MarkupInfo.Background := DefaultAttr.Background;
       gutter.Parts[j].MarkupInfo.Foreground := DefaultAttr.Foreground;
-      gutter.Parts[j].MarkupInfo.Style := DefaultAttr.Styles;
+      gutter.Parts[j].MarkupInfo.Style      := DefaultAttr.Styles;
       gutter.Parts[j].MarkupInfo.EndUpdate;
     end;
 
@@ -650,7 +690,7 @@ begin
       gutter.Parts[j].MarkupInfo.BeginUpdate;
       gutter.Parts[j].MarkupInfo.Background := SpecialAttr.Background;
       gutter.Parts[j].MarkupInfo.Foreground := SpecialAttr.Foreground;
-      gutter.Parts[j].MarkupInfo.Style := SpecialAttr.Styles;
+      gutter.Parts[j].MarkupInfo.Style      := SpecialAttr.Styles;
       gutter.Parts[j].MarkupInfo.EndUpdate;
     end;
   end;
@@ -728,11 +768,11 @@ begin
 
   if (tomSelection in Level) and SelAvail then
   begin
-    tmpst := TStringList.Create;
+    tmpst      := TStringList.Create;
     tmpst.Text := SelText;
     for i := 0 to tmpst.Count - 1 do
       tmpst[i] := Operation(tmpst[i]);
-    SelText := copy(tmpst.Text, 1, Length(tmpst.Text) - Length(LineEnding));
+    SelText    := copy(tmpst.Text, 1, Length(tmpst.Text) - Length(LineEnding));
   end
   else
   if (tomLines in Level) then
@@ -776,10 +816,10 @@ var
   P: TPoint;
   ABounds: TRect;
 begin
-  P := ClientToScreen(Point(CaretXPix, CaretYPix));
+  P     := ClientToScreen(Point(CaretXPix, CaretYPix));
   ABounds := Screen.MonitorFromPoint(P).WorkareaRect;
   _Left := ClientOrigin.X + (AWidth - AWidth) div 2;
-  _Top := P.Y - AHeight - 3 * LineHeight;
+  _Top  := P.Y - AHeight - 3 * LineHeight;
   if _Top < ABounds.Top + 10 then
     _Top := P.Y + 2 * LineHeight;
   if _Top + AHeight > ABounds.Bottom then
@@ -787,6 +827,53 @@ begin
   if _Top < ABounds.Top then _Top := ABounds.Top;
 end;
 
+function TEditor.FindAll(const SearchText: string; SearchOptions: TMySynSearchOptions): TFindAllResults;
+var
+  SearchEngine: TSynEditSearch;
+  FoundStart: TPoint;
+  FoundEnd: TPoint;
+  StartPos, EndPos: TPoint;
+  FoundItem: TFindResult;
+  CurrLine: integer;
+begin
+  Result := TFindAllResults.Create(True);
+  Result.SearchTerm := SearchText;
+  Result.LinesCount := Lines.Count;
+  Result.FileName := FileName;
+
+  if (SearchText = '') or (Lines.Count = 0) then
+    Exit;
+  StartPos := Point(1, 1);
+  EndPos   := Point(Length(Lines[Lines.Count - 1]), Lines.Count);
+  CurrLine := -1;
+  SearchEngine := TSynEditSearch.Create;
+  try
+    // Set search options
+    SearchEngine.Sensitive := ssoMatchCase in SearchOptions;
+    SearchEngine.Whole     := ssoWholeWord in SearchOptions;
+    SearchEngine.Pattern   := SearchText;
+    SearchEngine.RegularExpressions := ssoRegExpr in SearchOptions;
+    SearchEngine.RegExprMultiLine := ssoRegExprMultiLine in SearchOptions;
+
+    while SearchEngine.FindNextOne(Lines, StartPos, EndPos, FoundStart, FoundEnd) do
+    begin
+      if CurrLine <> FoundStart.Y then
+      begin
+        FoundItem := TFindResult.Create;
+        Result.Add(FoundItem);
+        FoundItem.Text := Lines[FoundStart.Y - 1];
+        FoundItem.Line := FoundStart.Y;
+        CurrLine := FoundStart.Y;
+      end;
+      FoundItem.AddMatch(FoundStart.X, FoundEnd.X - FoundStart.X);
+      StartPos := FoundEnd;
+    end;
+
+  finally
+    SearchEngine.Free;
+  end;
+
+end;
 
 procedure TEditor.OnReplace(Sender: TObject; const ASearch, AReplace:
   string; Line, Column: integer; var _Action: TSynReplaceAction);
@@ -813,7 +900,7 @@ begin
 
   case a of
     mrYes: _Action := raReplace;
-    mrNo: _Action := raSkip;
+    mrNo: _Action  := raSkip;
     mrAll, mrYesToAll: _Action := raReplaceAll;
     else
       _Action := raCancel;
@@ -944,7 +1031,7 @@ begin
 
   Result.FSheet := Sheet;
 
-  Result.Align := alClient;
+  Result.Align  := alClient;
   Sheet.FEditor := Result;
 
   Result.Font.Color := DefaultAttr.Foreground;
@@ -962,7 +1049,7 @@ begin
   Result.Parent := Sheet;
   if FileName = EmptyStr then
   begin
-    Sheet.Caption := Format(RSNewFile, [fUntitledCounter])
+    Sheet.Caption    := Format(RSNewFile, [fUntitledCounter])
       {$IFDEF NEEDCLOSEBTN}
       // reserve spaces for emulated close button
       + Space(6)
@@ -1082,12 +1169,12 @@ var
   Editor: TEditor;
 begin
   OutName := ConfigObj.ConfigDir + 'session.sav';
-  Node := TJsonNode.Create;
-  Files := Node.Add('Files', nkArray);
+  Node    := TJsonNode.Create;
+  Files   := Node.Add('Files', nkArray);
   for i := 0 to PageCount - 1 do
   begin
     Editor := TEditorTabSheet(Pages[i]).Editor;
-    Data := Files.Add('Data');
+    Data   := Files.Add('Data');
     Data.Add('File', Editor.FileName);
     Data.Add('Row', Editor.CaretY);
     Data.Add('Col', Editor.CaretX);
@@ -1105,17 +1192,17 @@ var
   Editor: TEditor;
 begin
   InName := ConfigObj.ConfigDir + 'session.sav';
-  Node := TJsonNode.Create;
+  Node   := TJsonNode.Create;
   try
     try
       Node.LoadFromFile(InName);
       Files := Node.Child('Files');
       for i := 0 to Files.Count - 1 do
       begin
-        Data := Files.Child(i);
+        Data   := Files.Child(i);
         Editor := AddEditor(Data.Child('File').AsString);
-        X := Data.Child('Col').AsInteger;
-        Y := Data.Child('Row').AsInteger;
+        X      := Data.Child('Col').AsInteger;
+        Y      := Data.Child('Row').AsInteger;
         Editor.CaretXY := Point(X, Y);
       end;
 
@@ -1152,7 +1239,7 @@ end;
 procedure TEditorFactory.ReloadHighLighters;
 var
   i, j: integer;
-  fhg: TSynCustomHighlighter;
+  fhg: TLazEditCustomHighlighter;
   DefaultAttr: TFontAttributes;
   DefaultAttrGutter: TFontAttributes;
   SpecialAttrGutter: TFontAttributes;
@@ -1184,7 +1271,7 @@ begin
         ed.gutter.Parts[j].MarkupInfo.BeginUpdate;
         ed.gutter.Parts[j].MarkupInfo.Background := DefaultAttrGutter.Background;
         ed.gutter.Parts[j].MarkupInfo.Foreground := DefaultAttrGutter.Foreground;
-        ed.gutter.Parts[j].MarkupInfo.Style := DefaultAttrGutter.Styles;
+        ed.gutter.Parts[j].MarkupInfo.Style      := DefaultAttrGutter.Styles;
         ed.gutter.Parts[j].MarkupInfo.EndUpdate;
       end;
 
@@ -1194,7 +1281,7 @@ begin
         ed.gutter.Parts[j].MarkupInfo.BeginUpdate;
         ed.gutter.Parts[j].MarkupInfo.Background := SpecialAttrGutter.Background;
         ed.gutter.Parts[j].MarkupInfo.Foreground := SpecialAttrGutter.Foreground;
-        ed.gutter.Parts[j].MarkupInfo.Style := SpecialAttrGutter.Styles;
+        ed.gutter.Parts[j].MarkupInfo.Style      := SpecialAttrGutter.Styles;
         ed.gutter.Parts[j].MarkupInfo.EndUpdate;
       end;
 
@@ -1239,6 +1326,23 @@ begin
   editor.StopMonitoring;
 end;
 
+function TEditorFactory.FindIndexByFile(const FileName: TFileName): integer;
+var
+  i: integer;
+  Sheet: TEditorTabSheet;
+begin
+  Result := -1;
+  for i := 0 to PageCount - 1 do
+  begin
+    Sheet := TEditorTabSheet(Pages[i]);
+    if Sheet.Editor.FileName = FileName then
+    begin
+      Result := i;
+      Exit;
+    end;
+  end;
+end;
+
 {$IFDEF NEEDCLOSEBTN}
 procedure TEditorFactory.PaintWindow(DC: HDC);
 var
@@ -1248,14 +1352,14 @@ var
   offs: integer;
 begin
   inherited PaintWindow(DC);
-  c := TCanvas.Create;
+  c    := TCanvas.Create;
   c.Handle := dc;
   offs := Scale96ToScreen(16);
 
   for i := 0 to PageCount - 1 do
   begin
-    r := TabRect(i);
-    h := (r.Bottom - r.Top - offs) div 2;
+    r  := TabRect(i);
+    h  := (r.Bottom - r.Top - offs) div 2;
     h2 := offs + h;
     Images.DrawForPPI(c, r.Right - h2, r.Top + h, 7, 16, Screen.PixelsPerInch, 1);
   end;
@@ -1301,10 +1405,10 @@ begin
   inherited Create(AOwner);
   DoubleBuffered := True;
   //Style :=  tsFlatButtons;
-  FWatcher := TFileWatcher.Create;
+  FWatcher   := TFileWatcher.Create;
   FWatcher.OnFileStateChange := @OnFileChange;
   fUntitledCounter := 0;
-  Options := Options + [nboShowCloseButtons];
+  Options    := Options + [nboShowCloseButtons];
   OnShowHint := @ShowHintEvent;
 end;
 
@@ -1312,6 +1416,28 @@ destructor TEditorFactory.Destroy;
 begin
   FWatcher.Free;
   inherited Destroy;
+end;
+
+{ TFoundFile }
+
+constructor TFoundFile.Create(AFileName: TFileName);
+begin
+  FileName := AFileName;
+end;
+
+{ TFindResult }
+
+procedure TFindResult.AddMatch(Column, Length: integer);
+begin
+  Inc(FCount);
+  SetLength(Matches, FCount);
+  Matches[FCount - 1].Column := Column;
+  Matches[FCount - 1].Length := Length;
+end;
+
+constructor TFindResult.Create;
+begin
+  FCount := 0;
 end;
 
 

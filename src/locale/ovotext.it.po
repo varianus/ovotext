@@ -41,10 +41,20 @@ msgctxt "replacedialog.rsfind"
 msgid "Find"
 msgstr "Trova"
 
+#: replacedialog.rsfindall
+msgid "Find All"
+msgstr ""
+
 #: replacedialog.rsreplace
 msgctxt "replacedialog.rsreplace"
 msgid "Replace"
 msgstr "Sostituisci"
+
+#: replacedialog.rsreplaceall
+#, fuzzy
+msgctxt "replacedialog.rsreplaceall"
+msgid "Replace All"
+msgstr "Sostituisci tutto"
 
 #: simplesingleinstance.serrsetsingleinstanceglobalstarted
 msgid "You cannot change the single instance global property when it's been started."
@@ -120,6 +130,11 @@ msgstr ""
 msgid "Error"
 msgstr "Errore"
 
+#: stringcostants.rsfoundheader
+#, object-pascal-format
+msgid "%s Find \"%s\" (%d matches, %d lines)"
+msgstr ""
+
 #: stringcostants.rskeepdeleted
 #, object-pascal-format
 msgid ""
@@ -132,6 +147,11 @@ msgstr ""
 "\n"
 "Questo file è stato cancellato da un'altra applicazione.\n"
 "Vuoi mantenerlo nell'editor?"
+
+#: stringcostants.rsline
+#, object-pascal-format
+msgid "Line: %d"
+msgstr ""
 
 #: stringcostants.rsmacro
 msgctxt "stringcostants.rsmacro"
@@ -254,6 +274,7 @@ msgid "Backward"
 msgstr "Indietro"
 
 #: tcustomreplacedialog.btnpanel.closebutton.caption
+msgctxt "tcustomreplacedialog.btnpanel.closebutton.caption"
 msgid "Replace All"
 msgstr "Sostituisci tutto"
 
