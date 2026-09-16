@@ -120,6 +120,11 @@ msgid ""
 "Do you want to keep it in the editor?"
 msgstr ""
 
+#: stringcostants.rsline
+#, object-pascal-format
+msgid "Line: %d"
+msgstr ""
+
 #: stringcostants.rsmacro
 msgctxt "stringcostants.rsmacro"
 msgid "Macro"

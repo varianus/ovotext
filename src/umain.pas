@@ -26,8 +26,8 @@ uses
   Classes, SysUtils, Math, FileUtil, LResources, Forms, Controls, Graphics, Dialogs, ActnList, Menus, ComCtrls,
   StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls, SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils,
   LazUTF8, SingleInstance, udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder,
-  uMacroEditor, SynEditLines, SynEdit, SynEditKeyCmds, laz.VirtualTrees, replacedialog, lclintf, jsontools,
-  umacroplayback, iconloader, uKeys, udlgsort, CmdLineParser, LMessages;
+  uMacroEditor, SynEditLines, SynEdit, SynEditKeyCmds, SynHighlighterMarkdown, laz.VirtualTrees, replacedialog, lclintf,
+  jsontools, umacroplayback, iconloader, uKeys, udlgsort, CmdLineParser, LMessages;
 
 type
 
@@ -1415,7 +1415,6 @@ begin
     HighList.Free;
   end;
 
-
   for Key in ConfigObj.ThemeList.Keys do
   begin
     mnuTheme := TMenuItem.Create(Self);
@@ -1617,12 +1616,47 @@ end;
 
 procedure TfMain.lvFindResultsDblClick(Sender: TObject);
 var
-  ResultIndex: TFindResult;
-var
-  Ed: TEditor;
+  CurrTab: TEditorTabSheet;
+  Node, ParentNode: PVirtualNode;
+  TabIndex: integer;
+  Data, ParentData: PNodeData;
+  Start: TPoint;
 begin
-  // Find if file already open or do it
-  // locate position
+
+  Node := lvFindResults.GetFirstSelected();
+  Data := lvFindResults.GetNodeData(Node);
+  if not Assigned(Node) then
+    exit;
+
+  if Data^.Level = 0 then
+  begin
+    TabIndex := EditorFactory.FindIndexByFile(TFindAllResults(Data^.obj).FileName);
+    if TabIndex <> -1 then
+      EditorFactory.ActivePageIndex := TabIndex;
+    Exit;
+  end
+  else
+  begin
+    ParentNode := Node^.Parent;
+    if not Assigned(ParentNode) then
+      exit;
+
+    ParentData := lvFindResults.GetNodeData(ParentNode);
+
+    TabIndex := EditorFactory.FindIndexByFile(TFindAllResults(ParentData^.obj).FileName);
+    if TabIndex <> -1 then
+    begin
+      EditorFactory.ActivePageIndex := TabIndex;
+      CurrTab := TEditorTabSheet(EditorFactory.Pages[TabIndex]);
+      CurrTab.SetFocus;
+      start := Point(TFindResult(Data^.Obj).Matches[0].Column, TFindResult(Data^.Obj).Line);
+      CurrTab.Editor.CaretXY := Start;
+      CurrTab.Editor.BlockBegin := Start;
+      Start.Offset(TFindResult(Data^.Obj).Matches[0].Length, 0);
+      CurrTab.Editor.BlockEnd := Start;
+    end;
+
+  end;
 end;
 
 procedure TfMain.lvFindResultsGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
@@ -1644,6 +1678,8 @@ begin
         1:
           CellText := TFindResult(Data^.Obj).Text;
       end;
+   else
+     CellText := EmptyStr;
   end;
 end;
 
@@ -1992,7 +2028,8 @@ var
   i: integer;
 begin
 
-  FileNode     := lvFindResults.AddChild(nil);
+  FileNode := lvFindResults.AddChild(nil);
+
   MatchesCount := 0;
   for i := 0 to Results.Count - 1 do
   begin
@@ -2003,9 +2040,10 @@ begin
     MatchesCount := MatchesCount + Results[i].Count;
   end;
 
-  Data      := lvFindResults.GetNodeData(FileNode);
+  Data := lvFindResults.GetNodeData(FileNode);
   Data^.Level := 0;
   Data^.Caption := format(RSFoundHeader, [FileName, Results.SearchTerm, MatchesCount, Results.Count]);
+
   Data^.Obj := Results;
   lvFindResults.Visible := True;
   lvFindResults.Expanded[FileNode] := True;
@@ -2042,7 +2080,7 @@ begin
 
   if (scSelection in Changes) then
     StatusBar.Panels[2].Text :=
-      Format(RSStatusBarSel, [Editor.SelEnd - Editor.SelStart]);
+      Format(RSStatusBarSel, [Length(Editor.SelText)]);
 
   if (scModified in Changes) then
     if Editor.Modified then

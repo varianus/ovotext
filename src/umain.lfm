@@ -306,6 +306,7 @@ object fMain: TfMain
     TreeOptions.AutoOptions = [toAutoDropExpand, toAutoScrollOnExpand, toAutoSort, toAutoSpanColumns, toAutoTristateTracking, toAutoDeleteMovedNodes, toAutoChangeScale]
     TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowRoot, toThemeAware, toUseBlendedImages]
     Visible = False
+    OnDblClick = lvFindResultsDblClick
     OnDrawText = lvFindResultsDrawText
     OnFreeNode = lvFindResultsFreeNode
     OnGetText = lvFindResultsGetText
