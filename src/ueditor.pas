@@ -182,6 +182,8 @@ type
     fUntitledCounter: integer;
     FWatcher: TFileWatcher;
     function GetCurrentEditor: TEditor;
+    procedure LoadProject(FileName: TFileName);
+    procedure SaveProject(FileName: TFileNAme);
     procedure SetOnBeforeClose(AValue: TOnBeforeClose);
     procedure SetOnNewEditor(AValue: TOnEditorEvent);
     procedure ShowHintEvent(Sender: TObject; HintInfo: PHintInfo);
@@ -1162,13 +1164,16 @@ begin
 end;
 
 procedure TEditorFactory.SaveSession;
+begin
+  SaveProject(ConfigObj.ConfigDir + 'session.sav');
+end;
+
+procedure TEditorFactory.SaveProject(FileName:TFileNAme);
 var
-  OutName: string;
   Node, Files, Data: TJsonNode;
   i: integer;
   Editor: TEditor;
 begin
-  OutName := ConfigObj.ConfigDir + 'session.sav';
   Node    := TJsonNode.Create;
   Files   := Node.Add('Files', nkArray);
   for i := 0 to PageCount - 1 do
@@ -1179,23 +1184,21 @@ begin
     Data.Add('Row', Editor.CaretY);
     Data.Add('Col', Editor.CaretX);
   end;
-  Node.SaveToFile(OutName, True);
+  Node.SaveToFile(FileName, True);
   Node.Free;
 
 end;
 
-procedure TEditorFactory.RestoreSession;
+procedure TEditorFactory.LoadProject(FileName:TFileName);
 var
-  InName: string;
   Node, Files, Data: TJsonNode;
   i, X, Y: integer;
   Editor: TEditor;
 begin
-  InName := ConfigObj.ConfigDir + 'session.sav';
   Node   := TJsonNode.Create;
   try
     try
-      Node.LoadFromFile(InName);
+      Node.LoadFromFile(FileName);
       Files := Node.Child('Files');
       for i := 0 to Files.Count - 1 do
       begin
@@ -1207,13 +1210,25 @@ begin
       end;
 
     except
-      ShowMessage('Error Restoring Session');
+      ShowMessage('Error loading project ');
     end;
 
   finally
     Node.Free;
   end;
 
+end;
+
+procedure TEditorFactory.RestoreSession;
+var
+  InName: string;
+  Node, Files, Data: TJsonNode;
+  i, X, Y: integer;
+  Editor: TEditor;
+begin
+  InName := ConfigObj.ConfigDir + 'session.sav';
+  if FileExists(InName) then
+    LoadProject(InName);
 end;
 
 procedure TEditorFactory.DoCheckFileChanges;

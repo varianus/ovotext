@@ -173,6 +173,9 @@
     </RunParams>
     <RequiredPackages>
       <Item>
+        <PackageName Value="ovocomponents"/>
+      </Item>
+      <Item>
         <PackageName Value="SynEditDsgn"/>
       </Item>
       <Item>

@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Dialogs, Controls,
-  SupportFuncs, SynEditHighlighter, SynExportHTML, Graphics, config,
+  SupportFuncs, SynEditHighlighter, SynExportHTML, Graphics, config, FontImageList,
   SynExportRTF;
 
 
@@ -33,7 +33,8 @@ type
   { TdmMain }
 
   TdmMain = class(TDataModule)
-    imgBookMark: TImageList;
+    imgBookMark: TFontImageList;
+    procedure imgBookMarkInitialize(Sender: TObject);
   private
     fRTFExporter : TSynExporterRTF;
     fHTMLExporter : TSynExporterHTML;
@@ -56,6 +57,15 @@ uses lclproc;
 {$R *.lfm}
 
 { TdmMain }
+
+procedure TdmMain.imgBookMarkInitialize(Sender: TObject);
+begin
+  With (Sender as TFontImageList) do
+   begin
+     FontSource := fsrcResource;
+     FontName := 'OVOFONT';
+   end;
+end;
 
 function TdmMain.GetSynExporterHTML: TSynExporterHTML;
 begin

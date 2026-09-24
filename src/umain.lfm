@@ -66,7 +66,7 @@ object fMain: TfMain
     BorderWidth = 3
     ButtonHeight = 26
     ButtonWidth = 28
-    Images = imgList
+    Images = ImgList
     ParentShowHint = False
     ShowHint = True
     TabOrder = 1
@@ -237,7 +237,6 @@ object fMain: TfMain
       Align = alClient
       DragMode = dmAutomatic
       HideSelection = False
-      Images = dmMain.imgBookMark
       MultiSelect = True
       ReadOnly = True
       RightClickSelect = True
@@ -256,7 +255,7 @@ object fMain: TfMain
       Height = 28
       Top = 1
       Width = 187
-      Images = imgList
+      Images = ImgList
       TabOrder = 1
       object ToolButton21: TToolButton
         Left = 1
@@ -264,12 +263,12 @@ object fMain: TfMain
         Action = FileOpenFolder
       end
       object ToolButton22: TToolButton
-        Left = 29
+        Left = 28
         Top = 2
         Action = FileReloadFolder
       end
       object ToolButton23: TToolButton
-        Left = 57
+        Left = 55
         Top = 2
         Action = FileCloseFolder
       end
@@ -314,7 +313,7 @@ object fMain: TfMain
     OnInitNode = lvFindResultsInitNode
   end
   object mnuMain: TMainMenu
-    Images = imgList
+    Images = ImgList
     Left = 72
     Top = 72
     object MenuItem1: TMenuItem
@@ -652,7 +651,7 @@ object fMain: TfMain
       end
     end
   end
-  object imgList: TImageList
+  object OldimgList: TImageList
     Height = 24
     Scaled = True
     Width = 24
@@ -670,7 +669,7 @@ object fMain: TfMain
     Top = 72
   end
   object pumEdit: TPopupMenu
-    Images = imgList
+    Images = ImgList
     Left = 72
     Top = 144
     object MenuItem32: TMenuItem
@@ -715,7 +714,7 @@ object fMain: TfMain
     Top = 176
   end
   object pumTabs: TPopupMenu
-    Images = imgList
+    Images = ImgList
     Left = 72
     Top = 216
     object MenuItem63: TMenuItem
@@ -760,7 +759,7 @@ object fMain: TfMain
     Top = 176
   end
   object ActionList: TActionList
-    Images = imgList
+    Images = ImgList
     OnUpdate = ActionListUpdate
     Left = 248
     Top = 72
@@ -1287,5 +1286,29 @@ object fMain: TfMain
   object SelectDirectoryDialog1: TSelectDirectoryDialog
     Left = 248
     Top = 251
+  end
+  object ImgList: TFontImageList
+    FontName = 'C:\source\ovotext\src\ovotextfont.ttf'
+    FontSource = fsrcFileName
+    OnInitialize = ImgListInitialize
+    Height = 23
+    Width = 23
+    Left = 608
+    Top = 72
+    Bitmap = {
+    }
+    GlyphsData = {
+      2B00000010000000080000801100000008000080120000000800008013000000
+      0800008014000000080000801500000008000080160000000800008017000000
+      08000080180000000800008019000000080000801A000000080000801B000000
+      080000801C000000080000801D000000080000801E000000080000801F000000
+      0800008020000000080000802100000008000080220000000800008023000000
+      0800008024000000080000802500000008000080260000000800008027000000
+      08000080280000000800008029000000080000802B000000080000802C000000
+      080000802D000000080000802E000000080000802F0000000800008030000000
+      0800008031000000080000803200000008000080330000000800008034000000
+      080000803500000008000080360000000800008037000000080000800E000000
+      080000800F000000080000802A00000008000080380000000D000080
+    }
   end
 end

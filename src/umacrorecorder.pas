@@ -42,7 +42,7 @@ type
 
   TMacroList = class ( specialize TObjectList<TMacro>)
   public
-    function MacroNames(List:TStrings):Integer;
+    function MacroNames(AList:TStrings):Integer;
   end;
 
 
@@ -92,13 +92,13 @@ uses
 
 { TMacroList }
 
-function TMacroList.MacroNames(List: TStrings): Integer;
+function TMacroList.MacroNames(AList: TStrings): Integer;
 var
   i: Integer;
 begin
-  List.Clear;
+  AList.Clear;
   for i:= 0 to Count -1 do
-    List.AddObject(Items[I].name, Items[i]);
+    AList.AddObject(Items[I].name, Items[i]);
 end;
 
 constructor TMacroRecorder.Create(Factory: TEditorFactory);

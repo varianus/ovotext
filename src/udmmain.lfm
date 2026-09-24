@@ -4,8 +4,18 @@ object dmMain: TdmMain
   HorizontalOffset = 695
   VerticalOffset = 311
   Width = 725
-  object imgBookMark: TImageList
-    Left = 56
+  object imgBookMark: TFontImageList
+    FontName = 'C:\source\ovotext\src\ovotextfont.ttf'
+    FontSource = fsrcFileName
+    OnInitialize = imgBookMarkInitialize
+    Left = 192
     Top = 24
+    Bitmap = {
+    }
+    GlyphsData = {
+      0B00000003000000080000800400000008000080050000000800008006000000
+      080000800700000008000080080000000800008009000000080000800A000000
+      080000800B000000080000800C000000080000800D00000008000080
+    }
   end
 end

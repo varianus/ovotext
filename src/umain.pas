@@ -27,7 +27,7 @@ uses
   StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls, SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils,
   LazUTF8, SingleInstance, udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder,
   uMacroEditor, SynEditLines, SynEdit, SynEditKeyCmds, SynHighlighterMarkdown, laz.VirtualTrees, replacedialog, lclintf,
-  jsontools, umacroplayback, iconloader, uKeys, udlgsort, CmdLineParser, LMessages;
+  jsontools, umacroplayback, iconloader, uKeys, udlgsort, CmdLineParser, FontImageList, LMessages;
 
 type
 
@@ -101,6 +101,7 @@ type
     ExportRTFToClipBoard: TAction;
     ExportRTFToFile: TAction;
     FilesTree: TTreeView;
+    ImgList: TFontImageList;
     lvFindResults: TLazVirtualStringTree;
     MenuItem100: TMenuItem;
     MenuItem101: TMenuItem;
@@ -207,7 +208,7 @@ type
     EditUndo: TEditUndo;
     FileOpen: TFileOpen;
     FileSaveAs: TFileSaveAs;
-    imgList: TImageList;
+    OldImgList: TImageList;
     MenuItem10: TMenuItem;
     MenuItem11: TMenuItem;
     MenuItem12: TMenuItem;
@@ -390,6 +391,7 @@ type
     procedure FormWindowStateChange(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
     procedure actLowerCaseExecute(Sender: TObject);
+    procedure ImgListInitialize(Sender: TObject);
     procedure lvFindResultsDblClick(Sender: TObject);
     procedure lvFindResultsDrawText(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
       Column: TColumnIndex; const CellText: string; const CellRect: TRect; var DefaultDraw: boolean);
@@ -439,7 +441,6 @@ type
     procedure BeforeCloseEditor(Editor: TEditor; var Cancel: boolean);
     procedure ExpandNode(NodeDir: TFileTreeNode; const Path: string);
     procedure LoadDir(Path: string);
-    procedure LoadImageList;
     procedure mnuLangClick(Sender: TObject);
     procedure mnuThemeClick(Sender: TObject);
     procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
@@ -1325,8 +1326,6 @@ var
   HighList: TStringList;
 begin
 
-  LoadImageList;
-
   Application.SingleInstance.OnServerReceivedParams := @ServerReceivedParams;
   MRU := TMRUMenuManager.Create(Self);
   MRU.MenuItem := mnuOpenRecent;
@@ -1452,53 +1451,6 @@ begin
   //ActionList.State := asSuspended;
 end;
 
-procedure TfMain.LoadImageList;
-var
-  s: TResourceStream;
-  iconRender: TIconRenderer;
-begin
-  S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
-  ImgList.BeginUpdate;
-  ImgList.Clear;
-  ImgList.Scaled := False;
-  ImgList.Height := MulDiv(24, Screen.PixelsPerInch, 96);
-  ImgList.Width  := ImgList.Height;
-
-  iconRender := TIconRenderer.Create(S);
-  iconRender.Color := GetSysColor(COLOR_BTNTEXT);
-  iconRender.SetSize(24, 22);
-  iconRender.AddToImageList(imglist, [
-    $41, $42, $43, $44, $45,  // 0.. 4  A B C D E
-    $46, $47, $48, $49, $4a,  // 5.. 9  F G H I J
-    $4b, $4c, $4d, $4e, $4f,  //10..14  K L M N O
-    $50, $51, $52, $53, $54,  //15..19  P Q R S T
-    $55, $56, $57, $58, $59,  //20..24  U V W X Y
-    $5a, $61, $62, $63, $64,  //25..29  Z a b c d
-    $65, $66, $67, $68, $69,  //30..34  e f g h i
-    $6a, $6b, $6c, $6d, $6E,  //35..39  j k l m n
-    $3b, $3c, $5b]);          //40..42  ; < [
-
-  iconRender.Color := GetSysColor(COLOR_HIGHLIGHT);
-  iconRender.AddToImageList(imglist, [$6E]);  //43
-
-  ImgList.EndUpdate;
-
-  dmMain.imgBookMark.BeginUpdate;
-  dmMain.imgBookMark.Clear;
-  dmMain.imgBookMark.Height := MulDiv(16, Screen.PixelsPerInch, 96);
-  dmMain.imgBookMark.Width  := dmMain.imgBookMark.Height;
-
-  iconRender.Color := GetSysColor(COLOR_HIGHLIGHT);
-  iconRender.SetSize(16, 16);
-  iconRender.AddToImageList(dmMain.imgBookMark, [$30, $31, $32, $33, $34,
-    $35, $36, $37, $38, $39, $3a]);   // 0 1 2 3 4 5 6 7 8 9
-  iconRender.Color := GetSysColor(COLOR_BTNTEXT);
-  iconRender.AddToImageList(dmMain.imgBookMark, [$3b, $3c]);
-
-  dmMain.imgBookMark.EndUpdate;
-  iconRender.Free;
-end;
-
 procedure TfMain.mnuLangClick(Sender: TObject);
 var
   idx: integer;
@@ -1612,6 +1564,15 @@ begin
   Ed := EditorFactory.CurrentEditor;
   Ed.TextOperation(@LowerCase);
 
+end;
+
+procedure TfMain.ImgListInitialize(Sender: TObject);
+begin
+  With (Sender as TFontImageList) do
+   begin
+     FontSource := fsrcResource;
+     FontName := 'OVOFONT';
+   end;
 end;
 
 procedure TfMain.lvFindResultsDblClick(Sender: TObject);
