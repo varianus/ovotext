@@ -541,6 +541,12 @@ begin
 
     fStream := TFileStream.Create(FFileName, fmOpenWrite + fmCreate, fmShareExclusive);
     try
+      if FDiskEncoding = EncodingUCS2LE then
+        fStream.Write(UTF16LEBOM,2)
+      else
+        if FDiskEncoding = EncodingUCS2BE then
+          fStream.Write(UTF16BEBOM,2);
+
       fStream.Write(S[1], Length(s));
     finally
       FreeAndNil(fStream);
