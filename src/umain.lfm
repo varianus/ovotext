@@ -7,7 +7,7 @@ object fMain: TfMain
   Caption = 'OvoText'
   ClientHeight = 676
   ClientWidth = 945
-  Color = 3487029
+  Color = clWindow
   DoubleBuffered = True
   Font.Color = 16119285
   Font.Height = -12
@@ -15,7 +15,7 @@ object fMain: TfMain
   ParentDoubleBuffered = False
   Position = poOwnerFormCenter
   ShowHint = True
-  LCLVersion = '4.99.0.0'
+  LCLVersion = '5.99.0.0'
   Visible = True
   OnActivate = FormActivate
   OnClose = FormClose
@@ -220,7 +220,7 @@ object fMain: TfMain
     Visible = False
   end
   object pnlLeft: TPanel
-    Left = 0
+    Left = 28
     Height = 456
     Top = 52
     Width = 189
@@ -267,15 +267,10 @@ object fMain: TfMain
         Top = 2
         Action = FileReloadFolder
       end
-      object ToolButton23: TToolButton
-        Left = 55
-        Top = 2
-        Action = FileCloseFolder
-      end
     end
   end
   object splLeftBar: TSplitter
-    Left = 189
+    Left = 217
     Height = 456
     Top = 52
     Width = 5
@@ -311,6 +306,22 @@ object fMain: TfMain
     OnGetText = lvFindResultsGetText
     OnGetNodeDataSize = lvFindResultsGetNodeDataSize
     OnInitNode = lvFindResultsInitNode
+  end
+  object ToolBar2: TToolBar
+    Left = 0
+    Height = 456
+    Top = 52
+    Width = 28
+    Align = alLeft
+    Caption = 'ToolBar2'
+    Images = ImgList
+    TabOrder = 6
+    Orientation = tboVertical
+    object ToolButton26: TToolButton
+      Left = 1
+      Top = 2
+      Action = ViewToggleFolder
+    end
   end
   object mnuMain: TMainMenu
     Images = ImgList
@@ -650,13 +661,6 @@ object fMain: TfMain
         Action = HelpAbout
       end
     end
-  end
-  object OldimgList: TImageList
-    Height = 24
-    Scaled = True
-    Width = 24
-    Left = 344
-    Top = 72
   end
   object AppProperties: TApplicationProperties
     ShowButtonGlyphs = sbgSystem
@@ -1228,11 +1232,11 @@ object fMain: TfMain
       ImageIndex = 39
       OnExecute = FileOpenFolderExecute
     end
-    object FileCloseFolder: TAction
-      Category = 'File'
-      Caption = 'Close Folder'
-      ImageIndex = 41
-      OnExecute = FileCloseFolderExecute
+    object ViewToggleFolder: TAction
+      Category = 'View'
+      Caption = 'Folder'
+      ImageIndex = 19
+      OnExecute = ViewToggleFolderExecute
     end
     object FileBrowseFolder: TAction
       Category = 'File'

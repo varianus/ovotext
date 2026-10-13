@@ -27,7 +27,7 @@ uses
   StdActns, uEditor, LCLType, Clipbrd, StdCtrls, ExtCtrls, SynEditTypes, PrintersDlgs, Config, SupportFuncs, LazUtils,
   LazUTF8, SingleInstance, udmmain, uDglGoTo, SynEditPrint, simplemrumanager, SynMacroRecorder, uMacroRecorder,
   uMacroEditor, SynEditLines, SynEdit, SynEditKeyCmds, SynHighlighterMarkdown, laz.VirtualTrees, replacedialog, lclintf,
-  jsontools, umacroplayback, iconloader, uKeys, udlgsort, CmdLineParser, FontImageList, LMessages;
+  jsontools, umacroplayback, uKeys, udlgsort, CmdLineParser, FontImageList, LMessages;
 
 type
 
@@ -69,7 +69,7 @@ type
     actSaveSession: TAction;
     actUnQuote: TAction;
     FileBrowseFolder: TAction;
-    FileCloseFolder: TAction;
+    ViewToggleFolder: TAction;
     FileReloadFolder: TAction;
     FileOpenFolder: TAction;
     actMacroSave: TAction;
@@ -208,7 +208,6 @@ type
     EditUndo: TEditUndo;
     FileOpen: TFileOpen;
     FileSaveAs: TFileSaveAs;
-    OldImgList: TImageList;
     MenuItem10: TMenuItem;
     MenuItem11: TMenuItem;
     MenuItem12: TMenuItem;
@@ -274,6 +273,7 @@ type
     StatusBar: TStatusBar;
     MainToolbar: TToolBar;
     ToolBar1: TToolBar;
+    ToolBar2: TToolBar;
     ToolButton1: TToolButton;
     ToolButton10: TToolButton;
     ToolButton11: TToolButton;
@@ -289,9 +289,9 @@ type
     ToolButton20: TToolButton;
     ToolButton21: TToolButton;
     ToolButton22: TToolButton;
-    ToolButton23: TToolButton;
     ToolButton24: TToolButton;
     ToolButton25: TToolButton;
+    ToolButton26: TToolButton;
     ToolButton3: TToolButton;
     tbbClose: TToolButton;
     tbbCloseAll: TToolButton;
@@ -334,7 +334,7 @@ type
     procedure actUnQuoteExecute(Sender: TObject);
     procedure actWrapLinesExecute(Sender: TObject);
     procedure FileBrowseFolderExecute(Sender: TObject);
-    procedure FileCloseFolderExecute(Sender: TObject);
+    procedure ViewToggleFolderExecute(Sender: TObject);
     procedure FileReloadFolderExecute(Sender: TObject);
     procedure actShowRowNumberExecute(Sender: TObject);
     procedure actShowToolbarExecute(Sender: TObject);
@@ -810,10 +810,21 @@ begin
   LoadDir(ExtractFileDir(Ed.FileName));
 end;
 
-procedure TfMain.FileCloseFolderExecute(Sender: TObject);
+procedure TfMain.ViewToggleFolderExecute(Sender: TObject);
 begin
-  pnlLeft.Visible    := False;
-  splLeftBar.Visible := False;
+  if pnlLeft.Visible then
+  begin
+    pnlLeft.Visible    := False;
+    splLeftBar.Visible := False;
+    ViewToggleFolder.ImageIndex := 19;
+  end
+  else
+  begin
+    pnlLeft.Visible    := True;
+    splLeftBar.Visible := True;
+    ViewToggleFolder.ImageIndex := 41;
+  end;
+
 end;
 
 procedure TfMain.FileReloadFolderExecute(Sender: TObject);
@@ -1492,6 +1503,7 @@ begin
   ConfigObj.WriteStrings('Recent', 'Files', MRU.Recent);
   Mru.Free;
   SynMacroRec.Free;
+  Macros.Free;
   FreeAndNil(EditorFactory);
   ReplaceDialog.Free;
 end;
@@ -1568,11 +1580,11 @@ end;
 
 procedure TfMain.ImgListInitialize(Sender: TObject);
 begin
-  With (Sender as TFontImageList) do
-   begin
-     FontSource := fsrcResource;
-     FontName := 'OVOFONT';
-   end;
+  with (Sender as TFontImageList) do
+  begin
+    FontSource := fsrcResource;
+    FontName   := 'OVOFONT';
+  end;
 end;
 
 procedure TfMain.lvFindResultsDblClick(Sender: TObject);
@@ -1639,8 +1651,8 @@ begin
         1:
           CellText := TFindResult(Data^.Obj).Text;
       end;
-   else
-     CellText := EmptyStr;
+    else
+      CellText := EmptyStr;
   end;
 end;
 

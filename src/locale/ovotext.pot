@@ -869,10 +869,6 @@ msgstr ""
 msgid "Close all tab"
 msgstr ""
 
-#: tfmain.fileclosefolder.caption
-msgid "Close Folder"
-msgstr ""
-
 #: tfmain.fileexit.caption
 msgid "Exit"
 msgstr ""
@@ -1095,5 +1091,13 @@ msgstr ""
 
 #: tfmain.searchreplace.hint
 msgid "Search and Replace"
+msgstr ""
+
+#: tfmain.toolbar2.caption
+msgid "ToolBar2"
+msgstr ""
+
+#: tfmain.viewtogglefolder.caption
+msgid "Folder"
 msgstr ""
 

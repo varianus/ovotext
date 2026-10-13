@@ -916,10 +916,6 @@ msgstr "Chiudi Tutto"
 msgid "Close all tab"
 msgstr "Chiudi tutte le schede"
 
-#: tfmain.fileclosefolder.caption
-msgid "Close Folder"
-msgstr "Chiudi cartella"
-
 #: tfmain.fileexit.caption
 msgid "Exit"
 msgstr "Esci"
@@ -1143,4 +1139,12 @@ msgstr "&Sostituisci…"
 #: tfmain.searchreplace.hint
 msgid "Search and Replace"
 msgstr "Cerca e Sostituisce"
+
+#: tfmain.toolbar2.caption
+msgid "ToolBar2"
+msgstr ""
+
+#: tfmain.viewtogglefolder.caption
+msgid "Folder"
+msgstr ""
 
